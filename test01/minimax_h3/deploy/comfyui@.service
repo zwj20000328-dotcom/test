@@ -1,0 +1,47 @@
+# MiniMax H3 — systemd 进程守护（8 实例开机自启 + 崩溃自动重启）
+#
+# 这是【模板单元】（带 @），配合实例化单元 comfyui@.service 用实例序号 0..7 拉起 8 个实例。
+# headless 服务器上比 nohup 更可靠：崩溃自动重启、开机自启、日志进 journald。
+#
+# 安装：
+#   sudo cp comfyui@.service /etc/systemd/system/comfyui@.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now comfyui@0 comfyui@1 comfyui@2 comfyui@3 \
+#                                 comfyui@4 comfyui@5 comfyui@6 comfyui@7
+#   # 一次性拉起全部：
+#   # sudo systemctl enable --now 'comfyui@{0..7}'   （bash 花括号展开）
+#   查看状态：systemctl status comfyui@3 ; 日志：journalctl -u comfyui@3 -f
+
+[Unit]
+Description=ComfyUI MiniMax H3 instance on GPU %i
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+# ComfyUI 安装目录，按实际改
+WorkingDirectory=/root/ComfyUI
+# conda 环境路径按实际改（source activate 方式在 systemd 里要用绝对 python）
+Environment="PATH=/root/miniconda3/envs/minimax-h3/bin:/usr/local/cuda/bin:/usr/bin:/bin"
+Environment="HF_ENDPOINT=https://hf-mirror.com"
+Environment="CUDA_VISIBLE_DEVICES=%i"
+
+# %i = 实例序号（0..7）。端口 = 8188 + %i。
+# CUDA_VISIBLE_DEVICES=%i 让本进程只看到第 %i 张卡（在进程内即 cuda:0）。
+ExecStart=/root/miniconda3/envs/minimax-h3/bin/python main.py \
+    --listen 127.0.0.1 \
+    --port 818%i \
+    --extra-model-paths-config /data/minimax-h3/extra_model_paths.yaml \
+    --output-directory /data/minimax-h3/inst%i/output \
+    --temp-directory /data/minimax-h3/inst%i/temp \
+    --user-directory /data/minimax-h3/inst%i/user \
+    --disable-auto-launch
+
+Restart=always
+RestartSec=10
+# 冷启动加载模型可能数分钟，给足启动超时
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target

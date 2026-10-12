@@ -1,0 +1,228 @@
+The Art of Programming
+======================
+
+Chapter 1: Introduction to Algorithms
+
+An algorithm is a finite sequence of well-defined instructions for solving a class of problems or performing a computation. Algorithms are fundamental to computer science and software engineering.
+
+The study of algorithms is not just about finding solutions, but about finding efficient solutions. When we talk about efficiency, we usually refer to time complexity and space complexity.
+
+Time Complexity
+---------------
+Time complexity describes how the runtime of an algorithm grows with the size of the input. We use Big O notation to express this:
+
+- O(1): Constant time - the algorithm takes the same time regardless of input size
+- O(log n): Logarithmic time - common in divide-and-conquer algorithms
+- O(n): Linear time - the algorithm processes each element once
+- O(n log n): Linearithmic time - common in efficient sorting algorithms
+- O(n²): Quadratic time - typical of nested loops
+- O(2^n): Exponential time - common in brute-force solutions
+
+Space Complexity
+----------------
+Space complexity describes how much extra memory an algorithm needs. This is also expressed in Big O notation.
+
+For example, merge sort has O(n) space complexity because it needs extra arrays for merging, while quicksort can be implemented with O(log n) space using in-place partitioning.
+
+Chapter 2: Data Structures
+
+Arrays and Lists
+----------------
+An array is a contiguous block of memory that stores elements of the same type. Access by index is O(1), but insertion and deletion are O(n) in the worst case.
+
+A linked list stores elements in nodes, where each node points to the next. Insertion and deletion at a known position are O(1), but access by index is O(n).
+
+Stacks and Queues
+-----------------
+A stack follows Last-In-First-Out (LIFO) order. Operations: push (add to top), pop (remove from top). Both are O(1).
+
+A queue follows First-In-First-Out (FIFO) order. Operations: enqueue (add to back), dequeue (remove from front). Both are O(1) with proper implementation.
+
+Trees
+-----
+A binary tree is a tree where each node has at most two children. A binary search tree (BST) maintains the property that left child < parent < right child.
+
+Balanced trees like AVL trees and Red-Black trees guarantee O(log n) height, ensuring O(log n) operations.
+
+Graphs
+------
+A graph consists of vertices (nodes) and edges. Graphs can be directed or undirected, weighted or unweighted.
+
+Common representations:
+- Adjacency matrix: O(V²) space, O(1) edge lookup
+- Adjacency list: O(V + E) space, O(degree) edge lookup
+
+Chapter 3: Sorting Algorithms
+
+Bubble Sort
+-----------
+The simplest sorting algorithm. Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.
+Time: O(n²), Space: O(1)
+
+Selection Sort
+--------------
+Finds the minimum element and places it at the beginning. Repeats for the remaining elements.
+Time: O(n²), Space: O(1)
+
+Insertion Sort
+--------------
+Builds the sorted array one element at a time by inserting each element into its correct position.
+Time: O(n²) worst case, O(n) best case, Space: O(1)
+
+Merge Sort
+----------
+Divides the array in half, recursively sorts each half, then merges them.
+Time: O(n log n), Space: O(n)
+
+Quick Sort
+----------
+Selects a pivot, partitions the array around the pivot, then recursively sorts each partition.
+Time: O(n log n) average, O(n²) worst case, Space: O(log n)
+
+Chapter 4: Search Algorithms
+
+Linear Search
+-------------
+Checks each element sequentially until the target is found.
+Time: O(n)
+
+Binary Search
+-------------
+Works on sorted arrays. Repeatedly divides the search interval in half.
+Time: O(log n)
+
+Depth-First Search (DFS)
+------------------------
+Explores as far as possible along each branch before backtracking. Uses a stack (or recursion).
+Time: O(V + E) for graphs
+
+Breadth-First Search (BFS)
+--------------------------
+Explores all neighbors at the current depth before moving to the next level. Uses a queue.
+Time: O(V + E) for graphs
+
+Chapter 5: Dynamic Programming
+
+Dynamic programming is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable when the problem has:
+
+1. Optimal substructure: The optimal solution contains optimal solutions to subproblems
+2. Overlapping subproblems: The same subproblems are solved multiple times
+
+Fibonacci Sequence
+------------------
+The classic example. F(n) = F(n-1) + F(n-2), with F(0) = 0, F(1) = 1.
+
+Naive recursive solution: O(2^n)
+With memoization: O(n)
+With tabulation: O(n) time, O(n) space
+Optimized: O(n) time, O(1) space
+
+Knapsack Problem
+----------------
+Given weights and values of n items, put them in a knapsack of capacity W to get the maximum total value.
+
+The 0/1 knapsack uses a 2D DP table:
+dp[i][w] = max(dp[i-1][w], dp[i-1][w-wi] + vi)
+
+Time: O(nW), Space: O(nW) or O(W) optimized
+
+Longest Common Subsequence
+--------------------------
+Find the longest subsequence present in both strings.
+
+dp[i][j] = dp[i-1][j-1] + 1 if s1[i] == s2[j]
+dp[i][j] = max(dp[i-1][j], dp[i][j-1]) otherwise
+
+Time: O(mn), Space: O(mn)
+
+Chapter 6: Greedy Algorithms
+
+Greedy algorithms make the locally optimal choice at each step, hoping to find a global optimum.
+
+Activity Selection
+------------------
+Given activities with start and finish times, select the maximum number of non-overlapping activities.
+
+Sort by finish time, then greedily select activities that don't overlap with the last selected.
+Time: O(n log n) for sorting
+
+Huffman Coding
+--------------
+A greedy algorithm for lossless data compression. Builds a binary tree where more frequent characters have shorter codes.
+
+Time: O(n log n)
+
+Dijkstra's Algorithm
+--------------------
+Finds the shortest path from a source vertex to all other vertices in a weighted graph with non-negative edges.
+
+Uses a priority queue (min-heap).
+Time: O((V + E) log V)
+
+Chapter 7: Graph Algorithms
+
+Minimum Spanning Tree
+---------------------
+Kruskal's algorithm: Sort edges by weight, add edges that don't form a cycle.
+Time: O(E log E)
+
+Prim's algorithm: Start from any vertex, always add the minimum weight edge connecting the tree to a non-tree vertex.
+Time: O(E log V) with binary heap
+
+Topological Sort
+----------------
+A linear ordering of vertices in a DAG such that for every directed edge (u, v), u comes before v.
+
+Can be done using DFS (reverse post-order) or Kahn's algorithm (in-degree based).
+Time: O(V + E)
+
+Strongly Connected Components
+-----------------------------
+Tarjan's algorithm or Kosaraju's algorithm can find all SCCs in a directed graph.
+Time: O(V + E)
+
+Chapter 8: String Algorithms
+
+KMP Algorithm
+-------------
+Knuth-Morris-Pratt algorithm for string matching. Preprocesses the pattern to build a failure function, avoiding unnecessary comparisons.
+Time: O(n + m) where n is text length and m is pattern length
+
+Rabin-Karp Algorithm
+--------------------
+Uses rolling hash for string matching. Good for multiple pattern matching.
+Time: O(n + m) average, O(nm) worst case
+
+Trie
+----
+A tree-like data structure for storing strings. Each node represents a character.
+- Insert: O(m) where m is string length
+- Search: O(m)
+- Prefix search: O(m + k) where k is number of matches
+
+Chapter 9: Advanced Topics
+
+Segment Trees
+-------------
+A tree data structure for storing intervals. Allows querying which intervals contain a point, or aggregating values over a range.
+Build: O(n), Query: O(log n), Update: O(log n)
+
+Fenwick Trees (Binary Indexed Trees)
+-------------------------------------
+A simpler alternative to segment trees for prefix sum queries.
+Build: O(n), Query: O(log n), Update: O(log n)
+
+Network Flow
+------------
+The maximum flow problem: find the maximum flow from source to sink in a flow network.
+
+Ford-Fulkerson method: repeatedly find augmenting paths.
+Edmonds-Karp: use BFS to find shortest augmenting path. Time: O(VE²)
+
+Conclusion
+----------
+This book has covered the fundamental algorithms and data structures that every programmer should know. Understanding these concepts is essential for writing efficient code and solving complex problems.
+
+Remember: the best algorithm for a problem depends on the specific constraints and requirements. Always analyze your problem carefully before choosing an approach.
+
+Happy coding!
