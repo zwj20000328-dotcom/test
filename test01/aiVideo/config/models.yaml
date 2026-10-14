@@ -1,0 +1,256 @@
+# 模型清单 —— 唯一事实源 (single source of truth)
+# 每个 repo_id 均已在 ModelScope / hf-mirror 上 curl 核验可达 (HTTP 200)。
+# scripts/download_models.sh 读取本文件生成下载命令。
+# commercial_ok: true=可商用成片; "conditional"=需接受条款/有门槛; false=严禁进商业成片。
+
+meta:
+  target_gpu: "8x A800-40GB"
+  cuda_runtime: "cu128"          # 冻结基线；torch 2.8.0+cu128 (CUDA13 驱动前向兼容)
+  torch: "2.8.0"
+  python: "3.11"
+  arch_note: "A800=Ampere sm80, 无原生FP8张量核; fp8仅省显存且计算偏慢, 优先 bf16/GGUF"
+  model_root: "/data/models"
+  primary_mirror: "modelscope"    # 国内CDN优先; hf-mirror 兜底
+
+# ---------------------------------------------------------------------------
+# LLM —— 剧本解析 / 分镜 / 导演
+# ---------------------------------------------------------------------------
+llm:
+  - name: Qwen3-32B-AWQ
+    repo_id: Qwen/Qwen3-32B-AWQ
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Qwen/Qwen3-32B-AWQ
+    local_dir: Qwen3-32B-AWQ
+    license: Apache-2.0
+    commercial_ok: true
+    role: primary            # 常驻 GPU0, vLLM awq_marlin, 承担解析/分镜/prompt/导演
+    gpu: "GPU0"
+    vram_gb: "~22 (int4 + KV)"
+    engine: vllm
+    vllm_args: "--quantization awq_marlin --max-model-len 32768 --gpu-memory-utilization 0.90"
+
+  - name: Qwen3-30B-A3B-Instruct-2507
+    repo_id: Qwen/Qwen3-30B-A3B-Instruct-2507
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Qwen/Qwen3-30B-A3B-Instruct-2507
+    local_dir: Qwen3-30B-A3B
+    license: Apache-2.0
+    commercial_ok: true
+    role: worker             # 262k ctx, 需要全剧全局一致性时临时起 TP=GPU0+1 bf16
+    gpu: "GPU0+1 (按需)"
+    vram_gb: "~60 bf16 TP2 / ~31 FP8"
+    note: "MoE 3.3B active, 高吞吐批量 fan-out; FP8 在 A800 为模拟内核需实测"
+
+  - name: Qwen3-14B
+    repo_id: Qwen/Qwen3-14B
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Qwen/Qwen3-14B
+    local_dir: Qwen3-14B
+    license: Apache-2.0
+    commercial_ok: true
+    role: fallback           # 轻量/开发档, 单卡, 同 chat template 与 schema
+    gpu: "单卡"
+    vram_gb: "~28 bf16"
+    optional: true
+
+  - name: Qwen2.5-VL-32B-Instruct
+    repo_id: Qwen/Qwen2.5-VL-32B-Instruct
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Qwen/Qwen2.5-VL-32B-Instruct
+    local_dir: Qwen2.5-VL-32B
+    license: Apache-2.0
+    commercial_ok: true
+    role: critic             # 可选: 核查关键帧角色/服装/画面中文, 回写 prompt
+    gpu: "2卡 按需"
+    vram_gb: "~64 bf16 TP2"
+    optional: true
+
+# ---------------------------------------------------------------------------
+# T2I —— 关键帧 + 角色一致性
+# ---------------------------------------------------------------------------
+image:
+  - name: Qwen-Image-2.1
+    repo_id: Qwen/Qwen-Image-2.1
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Qwen/Qwen-Image-2.1
+    local_dir: Qwen-Image-2.1
+    license: qwen-research   # ⚠ 需注册接受条款
+    commercial_ok: conditional
+    role: primary            # 7B 多参考生成, 最多10张参考, GPU1/2 各一副本
+    gpu: "GPU1,GPU2"
+    vram_gb: "~18-20 bf16 / ~12 8bit"
+    alt_if_license_blocked: [Qwen/Qwen-Image, Qwen/Qwen-Image-Edit-2511]
+
+  - name: Qwen-Image-Edit-2511
+    repo_id: Qwen/Qwen-Image-Edit-2511
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Qwen/Qwen-Image-Edit-2511
+    local_dir: Qwen-Image-Edit-2511
+    license: Apache-2.0
+    commercial_ok: true
+    role: identity_edit      # 改姿态/表情且保身份时走这条 (许可干净)
+    gpu: "GPU1,GPU2 按需"
+    vram_gb: "~18-22 fp8 / ~30-40 bf16"
+
+# ---------------------------------------------------------------------------
+# I2V —— 图生视频
+# ---------------------------------------------------------------------------
+video:
+  - name: Wan2.2-I2V-A14B-Diffusers
+    repo_id: Wan-AI/Wan2.2-I2V-A14B-Diffusers
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Wan-AI/Wan2.2-I2V-A14B-Diffusers
+    local_dir: Wan2.2-I2V-A14B
+    license: Apache-2.0
+    commercial_ok: true
+    role: primary            # 终渲 720x1280 81帧@16fps≈5s, MoE双专家, 2卡/job, tiled VAE
+    gpu: "GPU3+4, GPU5+6"
+    vram_gb: "~55-60 (2卡 bf16)"
+
+  - name: Wan2.2-TI2V-5B-Diffusers
+    repo_id: Wan-AI/Wan2.2-TI2V-5B-Diffusers
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Wan-AI/Wan2.2-TI2V-5B-Diffusers
+    local_dir: Wan2.2-TI2V-5B
+    license: Apache-2.0
+    commercial_ok: true
+    role: preview            # 480p 预览/animatic, 每卡1路(8路), 校时/校运镜
+    gpu: "每卡1路"
+    vram_gb: "~12-14 bf16"
+
+  - name: Wan2.2-Animate-2-14B
+    repo_id: Wan-AI/Wan2.2-Animate-2-14B
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/Wan-AI/Wan2.2-Animate-2-14B
+    local_dir: Wan2.2-Animate2
+    license: Apache-2.0
+    commercial_ok: true
+    role: performance        # 角色表演/动作特写/近似口型
+    gpu: "同视频池 2卡 或 蒸馏单卡"
+    vram_gb: "~55-60 2卡"
+
+  - name: Wan2.2-I2V-A14B-GGUF
+    repo_id: QuantStack/Wan2.2-I2V-A14B-GGUF
+    source: hf-mirror
+    mirror_url: https://hf-mirror.com/QuantStack/Wan2.2-I2V-A14B-GGUF
+    local_dir: Wan2.2-I2V-A14B-GGUF
+    license: Apache-2.0 (derived)
+    commercial_ok: true
+    role: throughput         # 吞吐档 Q6_K 单卡 (ComfyUI-GGUF), 7路并行
+    gpu: "GPU1-7 单卡各1路"
+    vram_gb: "~24 Q6 两专家 + T5/VAE"
+
+# ---------------------------------------------------------------------------
+# TTS —— 配音
+# ---------------------------------------------------------------------------
+tts:
+  - name: CosyVoice2-0.5B
+    repo_id: iic/CosyVoice2-0.5B
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/iic/CosyVoice2-0.5B
+    local_dir: CosyVoice2
+    license: Apache-2.0
+    commercial_ok: true
+    role: primary            # 零样本克隆+情绪+流式, GPU7常驻, add_zero_shot_spk持久化音色
+    gpu: "GPU7"
+    vram_gb: "2-4"
+
+  - name: GPT-SoVITS
+    repo_id: AI-ModelScope/GPT-SoVITS
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/AI-ModelScope/GPT-SoVITS
+    local_dir: GPT-SoVITS
+    license: MIT
+    commercial_ok: true
+    role: refine             # 招牌主角音色微调/兜底
+    gpu: "GPU7 按需"
+    vram_gb: "推理2-4 / 微调6-8"
+    optional: true
+
+# ---------------------------------------------------------------------------
+# ASR —— 字幕对齐 / 安全网
+# ---------------------------------------------------------------------------
+asr:
+  - name: FunASR Paraformer-large SeACo
+    repo_id: iic/speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/iic/speech_seaco_paraformer_large_asr_nat-zh-cn-16k-common-vocab8404-pytorch
+    local_dir: paraformer
+    license: Apache-2.0
+    commercial_ok: true
+    role: zh_align           # 中文对齐/热词(角色名)
+    gpu: "GPU7"
+    vram_gb: "2-4"
+
+  - name: faster-whisper-large-v3
+    repo_id: Systran/faster-whisper-large-v3
+    source: hf-mirror
+    mirror_url: https://hf-mirror.com/Systran/faster-whisper-large-v3
+    local_dir: faster-whisper-large-v3
+    license: MIT
+    commercial_ok: true
+    role: en_safety_net      # 英文段 ASR 安全网
+    gpu: "GPU7 / CPU"
+    vram_gb: "int8 2-3 / fp16 4-6"
+
+  - name: SenseVoiceSmall
+    repo_id: iic/SenseVoiceSmall
+    repo_id_hf: FunAudioLLM/SenseVoiceSmall
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/iic/SenseVoiceSmall
+    local_dir: SenseVoiceSmall
+    license: Apache-2.0
+    commercial_ok: true
+    role: qc_events          # 仅做 QC / 音频事件标签
+    gpu: "GPU7"
+    vram_gb: "2-4"
+    optional: true
+
+# ---------------------------------------------------------------------------
+# 音乐 / 音效
+# ---------------------------------------------------------------------------
+music:
+  - name: Ace-Step1.5
+    repo_id: ACE-Step/Ace-Step1.5
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/ACE-Step/Ace-Step1.5
+    local_dir: AceStep15
+    license: MIT
+    commercial_ok: true
+    role: bgm_primary        # 定制生成床乐, 固定 motif/seed 跨集
+    gpu: "GPU7 按需"
+    vram_gb: "~20-24 bf16"
+
+  - name: ACE-Step-v1-3.5B
+    repo_id: ACE-Step/ACE-Step-v1-3.5B
+    source: modelscope
+    mirror_url: https://modelscope.cn/models/ACE-Step/ACE-Step-v1-3.5B
+    local_dir: ACE-Step-v1
+    license: Apache-2.0
+    commercial_ok: true
+    role: bgm_batch          # 批量/快速
+    gpu: "GPU7"
+    vram_gb: "16-18 / CPU-offload 10-12"
+
+  - name: CLAP htsat-unfused
+    repo_id: laion/clap-htsat-unfused
+    source: hf-mirror
+    mirror_url: https://hf-mirror.com/laion/clap-htsat-unfused
+    local_dir: clap-htsat-unfused
+    license: Apache-2.0
+    commercial_ok: true
+    role: retrieval          # BGM/SFX 本地版权库检索路由, 离线索引
+    gpu: "CPU / 单卡"
+    vram_gb: "~1"
+
+# ---------------------------------------------------------------------------
+# 严禁进商业成片的 NC/研究许可 (仅记录, 不下载)
+# ---------------------------------------------------------------------------
+forbidden_for_commercial:
+  - black-forest-labs/FLUX.1-dev
+  - facebook/musicgen-*
+  - hkchengrex/MMAudio (官方权重)
+  - fishaudio/fish-speech
+  - 2Noise/ChatTTS
+  - SWivid/F5-TTS
+  - YuE2

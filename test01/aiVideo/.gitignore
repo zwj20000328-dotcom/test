@@ -1,0 +1,13 @@
+.probe/
+out/
+projects/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+research/*.json
+*.mp4
+*.wav
+!examples/**
