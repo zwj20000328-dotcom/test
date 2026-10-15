@@ -115,6 +115,12 @@ class SessionState:
         if not self._confirm_settings_card():
             return s   # 用户中止
 
+        # 2b. IDENTITY_LOCK：中文外形 -> 固定英文 identity_blob（角色一致性地基）
+        ui.title("正在锁定角色身份（identity_blob）…")
+        with ui.Progress("生成英文身份串") as p:
+            self.engine.identity_lock(s.canon)
+        self.save()
+
         # 3. 规格确认（决策 #2：用户指定、模型建议）
         self._confirm_spec(episodes, episode_seconds)
 

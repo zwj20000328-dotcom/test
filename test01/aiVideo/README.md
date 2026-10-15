@@ -198,11 +198,12 @@ aiVideo/
 - ✅ 会话崩溃安全持久化（原子写、按集分片）、undo、分支树
 - ✅ 确定性节奏校验 `craft.py`（时长/镜头数/对白预算，强制每集 240-300 秒）
 - ✅ 交接 `run.py --from-session <名>`：剧本 + canon.json 直接进视频流水线
+- ✅ **S2 canon 复用 + 场景级批量**：EnrichStage 复用 canon.json 的 identity_blob（零 LLM 推导角色圣经），
+  `run_scene` 一次生成整场景（调用数 ~1620→~210），失败自动回退 `run_shot`；seed 用 hashlib 派生跨进程稳定
 
 **待在服务器接线**（需 GPU + 真实模型；引擎接口已定义，从未在真机跑过）：
 - ⏳ 装环境 → 下模型 → 起 vLLM/Celery 服务 → 把 `engines/*` 指向真实模型端点跑通一部
 - ⏳ ArcFace QC 引擎（`insightface`）、LoRA trainer（musubi-tuner/ai-toolkit）—— 目前仅接口/钩子
-- ⏳ S2 EnrichStage 读取 canon.json 复用 identity_blob（当前仍走 LLM 推导；接口已预留）
 - ⏳ 现场 `nvidia-smi` 确认驱动 ≥580
 - ⏳ 现场校准：真实单镜/单场景生成延迟，据此定 chunked 生成的并发度
 

@@ -173,17 +173,17 @@ def main(argv: list[str]) -> int:
 
     orch = Orchestrator(project_dir=project_dir, stages=stages, dry_run=args.dry_run)
     orch.use_engines(engines)
-    if canon_path:
-        orch.config["canon_path"] = canon_path
 
     log.info("=== AI 短剧工作流启动 ===")
     log.info("剧本：%s", sp)
     log.info("项目：%s", project_dir)
     log.info("模式：%s%s", "STUB(占位)" if args.stubs else "REAL", "  DRY-RUN" if args.dry_run else "")
 
-    # S0 + S1：首次运行则解析；续跑则加载已有进度（按剧本哈希检测是否被改动）
+    # S0 + S1：首次运行则解析；续跑则加载已有进度（按剧本哈希检测是否被改动）。
+    # canon_path 传入后，orchestrator 载入 canon.json 到 config['canon']，
+    # S2 EnrichStage 复用 identity_blob 等（零 LLM 推导角色圣经）。
     try:
-        orch.ensure_ingested(sp, fresh=args.fresh)
+        orch.ensure_ingested(sp, fresh=args.fresh, canon_path=canon_path)
     except ScreenplayChangedError as e:
         log.error("剧本变更检测：\n%s", e)
         return 3

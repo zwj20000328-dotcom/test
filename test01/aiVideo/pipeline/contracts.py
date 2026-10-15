@@ -203,6 +203,10 @@ class Manifest(_Base):
     # 必须由用户显式确认（run.py --fresh），不能静默覆盖。
     source_path: Optional[str] = None
     source_hash: Optional[str] = None
+    # 阶段 A（剧本生成）交付的 canon.json 路径。存在时 S2 EnrichStage 直接复用其中的
+    # identity_blob / voice_tag / seed_base，不再调 LLM 重新推导角色圣经（省 1 次调用，
+    # 且保证剧本与视频的角色描述单一来源、完全一致）。手写剧本无此文件时为 None。
+    canon_path: Optional[str] = None
     meta: Meta = Field(default_factory=Meta)
     logline: Optional[str] = None
     characters: list[Character] = Field(default_factory=list)
@@ -211,6 +215,21 @@ class Manifest(_Base):
     # 全局回填：
     final_path: Optional[str] = None
     stats_cache: dict[str, Any] = Field(default_factory=dict)
+
+    def duplicate_character_names(self) -> list[str]:
+        """返回重复的角色名（一致性锚定会错配）。
+
+        不在 model_validator 里硬 raise：那样会让一个历史 manifest.json（含重名）
+        在 load 时直接失败、brick 断点续跑。唯一性由输入门 validate.py 的
+        DUP_CHARACTER(error) 在解析前拦截；这里只提供查询能力供诊断。
+        """
+        seen: set[str] = set()
+        dupes: list[str] = []
+        for c in self.characters:
+            if c.name in seen and c.name not in dupes:
+                dupes.append(c.name)
+            seen.add(c.name)
+        return dupes
 
     # ---- 便捷遍历 ----
     def iter_scenes(self) -> Iterator[Scene]:

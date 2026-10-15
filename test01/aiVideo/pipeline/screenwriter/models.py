@@ -126,7 +126,8 @@ class Canon(_Base):
     genre: str = ""
     tone: str = ""
     era: str = ""                          # 时代背景
-    style: str = ""                        # 画风（写进 front-matter）
+    style: str = ""                        # 画风（中文，写进 front-matter）
+    style_en: str = ""                     # 全剧统一英文画风前缀（IDENTITY_LOCK 产出，阶段 B 复用）
     core_conflict: str = ""
     payoff_types: list[str] = Field(default_factory=list)   # 爽点类型：打脸/逆袭/身份反差
 

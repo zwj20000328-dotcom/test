@@ -122,10 +122,8 @@ def test_from_session_end_to_end(session_dir, tmp_path):
 
 
 def test_from_session_passes_canon_path(session_dir, tmp_path, monkeypatch):
-    """canon.json 路径应进 orchestrator.config，供 EnrichStage 复用。"""
+    """canon.json 应被载入并解析进 orchestrator.config['canon']，供 S2 复用。"""
     captured = {}
-    real_main = run_mod.main
-
     from pipeline.orchestrator import Orchestrator
     orig_init = Orchestrator.__init__
 
@@ -137,8 +135,13 @@ def test_from_session_passes_canon_path(session_dir, tmp_path, monkeypatch):
     run_mod.main(["--from-session", "demo", "--sessions-dir", str(session_dir),
                   "--projects-dir", str(tmp_path / "p"), "--stubs", "--dry-run"])
     assert "orch" in captured
-    assert captured["orch"].config.get("canon_path"), "canon_path 未透传给 orchestrator"
-    assert Path(captured["orch"].config["canon_path"]).exists()
+    orch = captured["orch"]
+    # canon 已被解析成 dict（不只是路径字符串），EnrichStage 可直接读 identity_blob
+    canon = orch.config.get("canon")
+    assert isinstance(canon, dict), "canon 应被解析成 dict 存入 config"
+    assert canon.get("characters"), "canon 应含角色"
+    # manifest 记录了 canon_path 溯源
+    assert orch.manifest.canon_path and Path(orch.manifest.canon_path).exists()
 
 
 def test_missing_input_exits_2(tmp_path):

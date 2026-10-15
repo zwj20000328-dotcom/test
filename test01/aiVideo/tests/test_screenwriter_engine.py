@@ -83,6 +83,21 @@ class MockLLM:
             return {"total_episodes": 30, "episode_seconds": 270,
                     "reasoning": "3 条主线，按每集 1 个推进点需 28-32 集",
                     "estimated_shots": 1620}
+        if "global_style" in props:                      # IDENTITY_LOCK
+            # 必须从 prompt 解析实际角色名（林晚/顾沉），不能返回硬编码模板名，
+            # 否则 engine 的 by_name 匹配不上、identity_blob 仍为 None（真实 bug）。
+            import re
+            user = messages[-1]["content"]
+            names = [n.strip() for n in
+                     re.findall(r"^-\s*([^：:（(\n]+)[：:]", user, re.M)]
+            return {
+                "characters": [
+                    {"name": n, "identity_blob": f"EN blob for {n}",
+                     "costume": f"costume of {n}"}
+                    for n in (names or ["林晚", "顾沉"])
+                ],
+                "global_style": "cinematic realism, warm grade, 9:16 vertical",
+            }
         if "reversal_episodes" in props:                 # 季度弧线
             return {
                 "acts": [
@@ -180,6 +195,93 @@ def test_plan_settings_uses_plan_temperature():
     llm = MockLLM()
     ScreenwriterEngine(llm).plan_settings("x")
     assert llm.json_calls[0]["temperature"] == pytest.approx(0.6)
+
+
+# --------------------------------------------------------------------------- #
+# IDENTITY_LOCK：中文外形 -> 英文 identity_blob（角色一致性地基）
+# --------------------------------------------------------------------------- #
+
+
+def test_identity_lock_fills_all_characters():
+    """identity_lock 必须为每个角色填入非空 identity_blob。
+
+    若缺失，canon.identity_blob 恒为 None，阶段 B EnrichStage 复用 canon 时
+    拿到空身份串，角色一致性锚直接失效（已实测发现并修复的真实 bug）。
+    """
+    eng = ScreenwriterEngine(MockLLM())
+    canon = eng.plan_settings("落魄千金闪婚")
+    # plan_settings 只填 appearance_zh，identity_blob 此时应为 None
+    assert all(c.identity_blob is None for c in canon.characters)
+    eng.identity_lock(canon)
+    assert all(c.identity_blob for c in canon.characters), \
+        "identity_lock 后仍有角色 identity_blob 为 None"
+    assert all(c.costume for c in canon.characters)
+
+
+def test_identity_lock_uses_actual_names():
+    """identity_blob 必须对应实际角色名，不能是硬编码模板名。"""
+    eng = ScreenwriterEngine(MockLLM())
+    canon = eng.plan_settings("x")
+    eng.identity_lock(canon)
+    linwan = canon.character("林晚")
+    assert "林晚" in linwan.identity_blob, f"identity_blob 未含实际名：{linwan.identity_blob}"
+
+
+def test_identity_lock_sets_style_en():
+    """global_style 应写入 canon.style_en，供阶段 B 复用为 prompt 前缀。"""
+    eng = ScreenwriterEngine(MockLLM())
+    canon = eng.plan_settings("x")
+    eng.identity_lock(canon)
+    assert canon.style_en and "cinematic" in canon.style_en
+
+
+def test_identity_lock_idempotent():
+    """已填的角色不重复处理（幂等可重入）。"""
+    llm = MockLLM()
+    eng = ScreenwriterEngine(llm)
+    canon = eng.plan_settings("x")
+    eng.identity_lock(canon)
+    n_first = sum(1 for c in llm.json_calls if "global_style" in c["props"])
+    eng.identity_lock(canon)   # 再调一次
+    n_second = sum(1 for c in llm.json_calls if "global_style" in c["props"])
+    assert n_first == 1, f"首次 identity_lock 应调 1 次 LLM，实得 {n_first}"
+    assert n_second == n_first, "identity_lock 不幂等，重复调用了 LLM"
+
+
+def test_identity_lock_called_in_cli_flow():
+    """完整 CLI 流程中 identity_lock 必须被调用（不能漏掉）。"""
+    import tempfile
+    from pathlib import Path
+    from pipeline.screenwriter.cli import SessionState
+    from pipeline.screenwriter.session import SessionStore
+    from pipeline.screenwriter import ui
+
+    # 打桩 UI
+    for fn in ("title", "heading", "dim", "success", "warn", "error", "echo", "panel", "table", "rule"):
+        setattr(ui, fn, lambda *a, **k: None)
+    ui.ask = lambda p, default=None, **k: default or "y"
+    ui.ask_multiline = lambda p, **k: "x"
+    ui.confirm = lambda p, default=False: True
+    class _P:
+        def __init__(s, *a, **k): pass
+        def __enter__(s): return s
+        def __exit__(s, *a): pass
+        def update(s, *a, **k): pass
+    ui.Progress = _P
+    ui.progress_bar = lambda d, t, w=24: ""
+
+    llm = MockLLM()
+    eng = ScreenwriterEngine(llm)
+    d = Path(tempfile.mkdtemp())
+    store = SessionStore(d)
+    sess = store.create("t", synopsis="x", now="t0")
+    st = SessionState(store=store, engine=eng, session=sess, now=lambda: "t1")
+    st.run_new(title="t", synopsis="x", episodes=2, episode_seconds=270, involvement=3)
+    # identity_lock 调用应在 json_calls 里留下 global_style 记录
+    identity_calls = [c for c in llm.json_calls if "global_style" in c["props"]]
+    assert identity_calls, "identity_lock 未在 CLI 流程中被调用"
+    # 且所有角色都有了 identity_blob
+    assert all(c.identity_blob for c in sess.canon.characters)
 
 
 def test_plan_spec_uses_model_suggestion():

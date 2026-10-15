@@ -18,6 +18,7 @@
 """
 from __future__ import annotations
 
+import json
 import logging
 import time
 from dataclasses import dataclass, field
@@ -136,8 +137,13 @@ class Orchestrator:
         data = Path(screenplay_md).read_bytes()
         return hashlib.sha256(data).hexdigest()[:16]
 
-    def ingest(self, screenplay_md: Path | str) -> Manifest:
+    def ingest(self, screenplay_md: Path | str,
+               canon_path: Optional[Path | str] = None) -> Manifest:
         """S0 校验 + S1 解析：把 .md 变成 manifest.json。
+
+        canon_path: 阶段 A 交付的 canon.json（若有）。存在时载入 ctx.config['canon']，
+        S2 EnrichStage 会直接复用其中的 identity_blob/voice_tag/seed_base，
+        **零 LLM 调用**重建角色圣经，且保证剧本与视频角色描述单一来源。
 
         注意：这会**丢弃**该 project 已有的全部进度（重新解析即从零开始）。
         续跑场景请用 ensure_ingested()，它会按剧本哈希决定加载还是重新解析。
@@ -157,11 +163,35 @@ class Orchestrator:
         self.manifest.project = self.project_dir.name
         self.manifest.source_path = str(Path(screenplay_md).resolve())
         self.manifest.source_hash = self.screenplay_hash(screenplay_md)
+        self._load_canon(canon_path)
         self.manifest.save(self.manifest_path)
         log.info("S1 解析完成：%s", self.manifest.stats())
         return self.manifest
 
-    def ensure_ingested(self, screenplay_md: Path | str, fresh: bool = False) -> Manifest:
+    def _load_canon(self, canon_path: Optional[Path | str]) -> None:
+        """载入 canon.json 到 manifest.canon_path + ctx.config['canon']。
+
+        容错：文件不存在或损坏时记 warning 并继续（退化为 LLM 推导角色圣经），
+        不因 canon 缺失而阻断整条流水线。
+        """
+        if not canon_path:
+            return
+        p = Path(canon_path)
+        if not p.exists():
+            log.warning("canon.json 不存在（%s），S2 将改用 LLM 推导角色圣经。", p)
+            return
+        try:
+            canon = json.loads(p.read_text(encoding="utf-8"))
+        except Exception as e:  # noqa: BLE001
+            log.warning("canon.json 解析失败（%s），S2 将改用 LLM 推导。", e)
+            return
+        self.manifest.canon_path = str(p)
+        self.config["canon"] = canon
+        n = len(canon.get("characters") or [])
+        log.info("已载入 canon.json（%d 角色）—— S2 将复用，零 LLM 推导。", n)
+
+    def ensure_ingested(self, screenplay_md: Path | str, fresh: bool = False,
+                        canon_path: Optional[Path | str] = None) -> Manifest:
         """幂等入口：首次运行则解析，续跑则加载已有进度。
 
         决策逻辑：
@@ -170,9 +200,12 @@ class Orchestrator:
           - 有 manifest 且剧本哈希一致：加载（续跑），保留所有已完成镜头的状态。
           - 有 manifest 但剧本哈希不同：抛 ScreenplayChangedError。因为重新解析会丢弃
             进度（可能几十小时渲染成果），必须由用户显式确认，绝不静默覆盖。
+
+        canon_path 为空时，续跑会用 manifest 里已记录的 canon_path（ingest 时存的），
+        保证续跑同样能复用 canon、S2 不重复推导。
         """
         if fresh or not self.manifest_path.exists():
-            return self.ingest(screenplay_md)
+            return self.ingest(screenplay_md, canon_path=canon_path)
 
         existing = Manifest.load(self.manifest_path)
         current = self.screenplay_hash(screenplay_md)
@@ -184,6 +217,8 @@ class Orchestrator:
                 f"若想保留进度，请撤销对剧本的改动。"
             )
         self.manifest = existing
+        # 续跑也要载入 canon（优先本次传入，否则用 manifest 记录的）
+        self._load_canon(canon_path or existing.canon_path)
         log.info("续跑：加载已有 manifest（%s）", self.manifest.stats()["by_status"])
         return self.manifest
 
@@ -228,6 +263,11 @@ class Orchestrator:
             if hasattr(spec.stage, "run_episode"):
                 # episode 级阶段（assemble / 真实 bgm）：按集调用 run_episode
                 summary[stage_name] = self._run_episode_level(spec)
+                self.manifest.save(self.manifest_path)
+                continue
+            if hasattr(spec.stage, "run_scene"):
+                # scene 级批量阶段（S2 enrich）：整场景一次生成，失败回退 per-shot
+                summary[stage_name] = self._run_scene_level(spec, resume=resume)
                 self.manifest.save(self.manifest_path)
                 continue
             summary[stage_name] = self._run_per_shot(spec, resume=resume)
@@ -298,6 +338,91 @@ class Orchestrator:
 
         checkpoint(force=True)
         return counts
+
+    def _run_scene_level(self, spec: StageSpec, resume: bool = True) -> dict:
+        """scene 级批量阶段（S2 enrich）。
+
+        每个场景一次 run_scene 调用生成整场所有镜头；返回的 shot.id 标记为 produces。
+        回退保证：
+          - run_scene 抛异常（截断/解析失败/网络）-> 该场景所有目标镜头回退 run_shot 逐镜生成
+          - run_scene 成功但漏了某些镜头（返回的 shot_index 不全）-> 只回退漏掉的镜头
+        这样"整场景批量失败"不会让任何镜头卡死，最差退化为 per-shot。
+        同样按 checkpoint_every / checkpoint_interval 增量存档。
+        """
+        stage = spec.stage
+        counts = {"processed": 0, "skipped": 0, "failed": 0,
+                  "scenes": 0, "scene_failed_fallback": 0}
+        targets = set(stage.consumes)
+        dirty = 0
+        last_save = time.monotonic()
+
+        def checkpoint(force: bool = False) -> None:
+            nonlocal dirty, last_save
+            if not dirty:
+                return
+            if force or dirty >= self.checkpoint_every or \
+                    (time.monotonic() - last_save) >= self.checkpoint_interval:
+                self.manifest.save(self.manifest_path)
+                dirty = 0
+                last_save = time.monotonic()
+
+        for scene in self.manifest.iter_scenes():
+            # 本场景中仍需处理的镜头（resume 时跳过已越过的）
+            pending = [sh for sh in scene.shots
+                       if (not resume) or sh.status in targets
+                       or sh.status == stage.produces]
+            todo = [sh for sh in scene.shots if sh.status in targets]
+            if not todo:
+                counts["skipped"] += len(pending)
+                continue
+            counts["scenes"] += 1
+
+            done_ids: list[str] = []
+            scene_ok = False
+            for attempt in range(spec.retries + 1):
+                try:
+                    done_ids = stage.run_scene(scene, self.ctx) or []
+                    scene_ok = True
+                    break
+                except Exception as e:  # noqa: BLE001
+                    log.warning("阶段 %s 场景 %s 批量第 %d 次失败：%s（将回退 per-shot）",
+                                stage.name, scene.id, attempt + 1, e)
+            if not scene_ok:
+                counts["scene_failed_fallback"] += 1
+
+            done_set = set(done_ids)
+            for sh in todo:
+                if sh.id in done_set:
+                    sh.status = stage.produces
+                    counts["processed"] += 1
+                    dirty += 1
+                    continue
+                # 未被批量覆盖（整场失败，或返回漏了这一镜）-> 回退 per-shot
+                ok = self._fallback_shot(stage, sh, spec)
+                if ok:
+                    counts["processed"] += 1
+                else:
+                    counts["failed"] += 1
+                dirty += 1
+            checkpoint()
+
+        checkpoint(force=True)
+        return counts
+
+    def _fallback_shot(self, stage, shot: Shot, spec: StageSpec) -> bool:
+        """对单个镜头走 run_shot 回退（带 spec.retries 次重试）。成功返回 True。"""
+        for attempt in range(spec.retries + 1):
+            try:
+                new_status = stage.run_shot(shot, self.ctx)
+                shot.status = new_status
+                return new_status not in (ShotStatus.failed, ShotStatus.needs_human)
+            except Exception as e:  # noqa: BLE001
+                log.error("阶段 %s 回退处理 %s 第 %d 次失败：%s",
+                          stage.name, shot.id, attempt + 1, e)
+                if attempt == spec.retries:
+                    shot.status = ShotStatus.failed
+                    shot.qc.notes = f"{stage.name} fallback failed: {e}"
+        return False
 
     def _dispatch(self, stage: Stage, shot: Shot) -> ShotStatus:
         """把单镜头任务分发到执行面（本地串行 or Celery）。"""

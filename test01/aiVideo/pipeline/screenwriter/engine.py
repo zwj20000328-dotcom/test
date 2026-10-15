@@ -86,6 +86,31 @@ _SETTINGS_SCHEMA = {
     "required": ["title", "logline", "genre", "core_conflict", "characters"],
 }
 
+# 身份锁定：中文外形 -> 固定英文 identity_blob（进每个图像 prompt，保证跨集长相一致）。
+# 这是 spec 的 IDENTITY_LOCK 步骤——若缺失，canon 里 identity_blob 恒为 None，
+# 阶段 B 的 EnrichStage 复用 canon 时会拿到空身份串，角色一致性锚直接失效。
+_IDENTITY_SCHEMA = {
+    "type": "object", "additionalProperties": False,
+    "properties": {
+        "characters": {
+            "type": "array",
+            "items": {
+                "type": "object", "additionalProperties": False,
+                "properties": {
+                    "name": {"type": "string"},
+                    "identity_blob": {"type": "string",
+                                      "description": "FIXED English appearance string: hair, face shape, eyes, build, signature costume/accessory. Reused verbatim in every image prompt."},
+                    "costume": {"type": "string", "description": "English costume/wardrobe description"},
+                },
+                "required": ["name", "identity_blob"],
+            },
+        },
+        "global_style": {"type": "string",
+                         "description": "unified English style prefix for all shots: cinematic look, color grade, era"},
+    },
+    "required": ["characters", "global_style"],
+}
+
 _SPEC_SCHEMA = {
     "type": "object", "additionalProperties": False,
     "properties": {
@@ -344,6 +369,49 @@ class ScreenwriterEngine:
                 knows_from_ep=1, hidden_from=f.get("hidden_from") or [],
                 source_ep=None,   # 由 plan_season 安排揭示集
             ))
+        return canon
+
+    def identity_lock(self, canon: Canon) -> Canon:
+        """IDENTITY_LOCK：把每个角色的中文外形转成固定英文 identity_blob。
+
+        这是角色一致性的地基——identity_blob 会被阶段 B 的 EnrichStage 逐字复用进
+        每个图像 prompt。若跳过这一步，canon.identity_blob 恒为 None，下游要么拿不到
+        身份锚、要么被迫重新调 LLM 推导（与剧本阶段的描述可能不一致）。
+
+        只处理 identity_blob 尚为空的角色，幂等可重入。
+        """
+        todo = [c for c in canon.characters if not c.identity_blob]
+        if not todo:
+            return canon
+        msg = [
+            {"role": "system", "content": self._SYS_PLANNER},
+            {"role": "user", "content": (
+                f"剧名：{canon.title}｜画风：{canon.style}\n"
+                "下面是角色的中文外形描述，请为每个角色生成 identity_blob —— "
+                "一个**固定的英文外貌串**，包含发型/脸型/眼型/体态/标志性服装与配饰，"
+                "将被逐字复用进每一个图像生成 prompt 以保证 20-50 集长相一致。\n"
+                "同时给出 costume（英文服装）与 global_style（全剧统一英文画风前缀）。\n\n"
+                + "\n".join(f"- {c.name}：{c.appearance_zh}（{c.gender or ''}{c.age or ''}岁，{c.role}）"
+                            for c in todo)
+            )},
+        ]
+        d = self.llm.json(msg, _IDENTITY_SCHEMA, temperature=self.cfg.temp_plan,
+                          max_tokens=self.cfg.max_tokens_plan)
+        by_name = {c.name: c for c in todo}
+        for cc in d.get("characters") or []:
+            tgt = by_name.get(cc.get("name"))
+            if tgt is None:
+                continue
+            tgt.identity_blob = cc.get("identity_blob")
+            if cc.get("costume"):
+                tgt.costume = cc["costume"]
+        # global_style 记进 canon.style_en（供阶段 B 复用为 prompt 前缀）
+        gs = d.get("global_style")
+        if gs:
+            canon.style_en = gs
+        missing = [c.name for c in todo if not c.identity_blob]
+        if missing:
+            log.warning("IDENTITY_LOCK 未覆盖角色：%s（将回退用中文外形）", missing)
         return canon
 
     def plan_spec(self, canon: Canon, synopsis: str,

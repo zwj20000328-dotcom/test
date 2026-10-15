@@ -36,6 +36,15 @@ _ACTS = [
     ("收尾", 0.85, 1.00, "打脸完成，关系落定，留续集钩子"),
 ]
 
+# 模板角色的英文 identity_blob（IDENTITY_LOCK 占位产出）。
+# 缺省角色用 _DEFAULT_IDENTITY 兜底，避免 KeyError。
+_TEMPLATE_IDENTITY = {
+    "女主角": "young Chinese woman, 26, long straight black hair, oval face, almond eyes, plain dress, gentle yet resilient",
+    "男主角": "Chinese man, 30, neat short hair, sharp brows, dark suit, upright build, wristwatch on left wrist",
+    "反派": "Chinese woman, 30, elaborate curly hair, red lips, elegant gown, sharp piercing eyes",
+}
+_DEFAULT_IDENTITY = "Chinese adult character, distinctive facial features, consistent wardrobe"
+
 
 class StubScreenwriterLLM:
     """按 schema 返回合法占位响应的假 LLM。"""
@@ -72,6 +81,23 @@ class StubScreenwriterLLM:
                     {"fact": "男主角的真实身份另有隐情", "holder": "男主角",
                      "hidden_from": ["女主角"]},
                 ],
+            }
+
+        # IDENTITY_LOCK：中文外形 -> 英文 identity_blob（global_style 是此 schema 独有的键）
+        if "global_style" in props:
+            # 必须从 prompt 解析**实际角色名**（如"林晚/顾沉"），不能返回硬编码模板名，
+            # 否则 engine 的 by_name 匹配不上，identity_blob 仍为 None。
+            # prompt 格式为每行 "- {name}：{外形}（{gender}{age}岁，{role}）"
+            names = self._extract_identity_names(user_text)
+            chars = []
+            for i, name in enumerate(names):
+                blob = _TEMPLATE_IDENTITY.get(name) or (
+                    f"{_DEFAULT_IDENTITY}, variant {i + 1}")
+                chars.append({"name": name, "identity_blob": blob,
+                              "costume": blob.split(",")[-1].strip()})
+            return {
+                "characters": chars,
+                "global_style": "cinematic realism, warm grade, shallow depth of field, 9:16 vertical",
             }
 
         # 规格建议
@@ -378,3 +404,22 @@ class StubScreenwriterLLM:
         names = re.findall(r"^-\s*([^：:（(\n]+)", block.group(1), re.M)
         names = [n.strip() for n in names if n.strip()]
         return names or ["女主角", "男主角"]
+
+    @staticmethod
+    def _extract_identity_names(text: str) -> list[str]:
+        """从 IDENTITY_LOCK prompt 抽实际角色名。
+
+        engine.identity_lock 的行格式为：`- {name}：{外形}（{gender}{age}岁，{role}）`。
+        必须抽**实际名**（林晚/顾沉…）而非返回硬编码模板名，否则 engine 的 by_name
+        匹配不上、identity_blob 仍为 None（这正是曾导致一致性锚丢失的 bug）。
+        """
+        import re
+        names = re.findall(r"^-\s*([^：:（(\n]+)[：:]", text, re.M)
+        names = [n.strip() for n in names if n.strip()]
+        # 去重保序
+        seen, out = set(), []
+        for n in names:
+            if n not in seen:
+                seen.add(n)
+                out.append(n)
+        return out

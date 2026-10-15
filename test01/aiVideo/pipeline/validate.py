@@ -229,10 +229,11 @@ def validate(text: str, path: str = "<string>") -> Report:
                 desc = m.group(2).strip()
                 char_names.add(name)
                 if name in char_first_line:
-                    rep.add(WARN, char_first_line[name], "DUP_CHARACTER",
+                    rep.add(ERROR, char_first_line[name], "DUP_CHARACTER",
                             f"角色 '{name}' 在角色表中重复登记（首次见 L{char_first_line[name]}，"
                             f"此处 L{ln_no}）",
-                            "同一角色只登记一次；外形描述应一致，否则一致性锚定会冲突")
+                            "同一角色只登记一次；重名会让 identity_blob/音色锚定错配，"
+                            "角色一致性直接崩坏，必须修正")
                 else:
                     char_first_line[name] = ln_no
                 if len(desc) < 8:
