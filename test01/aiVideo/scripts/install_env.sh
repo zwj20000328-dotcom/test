@@ -8,6 +8,10 @@
 # ============================================================================
 set -euo pipefail
 
+# ---- 路径 --------------------------------------------------------------------
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
+
 # ---- 可调参数 ----------------------------------------------------------------
 ENV_NAME="${ENV_NAME:-drama}"
 PY_VER="${PY_VER:-3.11}"
@@ -96,6 +100,11 @@ PY
 # ---- 5) 推理栈 ----------------------------------------------------------------
 log "安装推理/编排依赖 (阿里云 PyPI 镜像)"
 # 版本按 cu128+torch2.8 基线对齐；flash-attn 无预编译 wheel，源码编译较慢，先不装(可选)。
+# requirements-server.txt 是权威依赖清单（含核心控制面 + GPU 全栈），此处安装并额外补齐
+# 未列入 pinned 清单的推理框架。
+if [ -f "${REPO_DIR}/requirements-server.txt" ]; then
+  pip install -r "${REPO_DIR}/requirements-server.txt"
+fi
 pip install \
   "xformers==0.0.30" \
   "modelscope==1.40.2" \
@@ -106,7 +115,7 @@ pip install \
   "celery" "redis" \
   "ffmpeg-python" "moviepy" \
   "pydantic>=2" "pyyaml" "rich" "tqdm" "pillow" "soundfile" "librosa" \
-  "opencv-python-headless"
+  "opencv-python-headless" "insightface" "requests" "pytest"
 
 # ---- 6) 镜像环境变量 (写入 ~/.bashrc，供后续下载/推理使用) ----------------------
 log "写入镜像环境变量到 ~/.bashrc"

@@ -1,0 +1,60 @@
+# 服务器 GPU 全栈依赖（仅 8×A800 / CUDA13 / Linux 部署机）
+#
+# ⚠️ torch 不在此文件里装 —— 必须走阿里云 pytorch-wheels 镜像（cu128 基线，已核验 wheel 存在）：
+#   pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 \
+#     --index-url https://mirrors.aliyun.com/pytorch-wheels/cu128/
+# 推荐直接用 scripts/install_env.sh，它按正确顺序装齐全部依赖并做镜像配置。
+#
+# 本文件用于补齐/复核，安装时指定国内源：
+#   pip install -r requirements-server.txt -i https://mirrors.aliyun.com/pypi/simple
+
+-r requirements-core.txt
+
+# ---- 推理框架 ----
+# LLM 服务（Qwen3-32B-AWQ，GPU0 常驻，OpenAI 兼容端点 + guided_json）
+vllm>=0.6
+# 扩散/视频管线（Qwen-Image-2.1 关键帧、Wan2.2-I2V 视频）
+diffusers==0.41.0
+transformers>=4.45
+accelerate>=1.0
+sentencepiece
+protobuf
+xformers==0.0.30          # cp311 + cu128；A800=sm80 走 bf16
+# flash-attn 无预编译 wheel（需源码编译，耗时）；Wan/Qwen-Image 不强依赖，默认不装
+
+# ---- 模型下载（国内镜像）----
+modelscope==1.40.2        # 主下载通道（国内 CDN）
+huggingface_hub
+hf_transfer               # 配合 HF_ENDPOINT=https://hf-mirror.com 加速
+
+# ---- 语音 ----
+# CosyVoice2 需从其代码仓安装（GitHub 被墙，用 gitee/gitcode 镜像离线装）：
+#   git clone https://gitcode.com/gh_mirrors/co/CosyVoice && cd CosyVoice && pip install -r requirements.txt
+# 其运行时依赖：
+conformer
+hyperpyyaml
+onnxruntime-gpu
+WeTextProcessing
+# ASR 字幕对齐（Paraformer 中文 / faster-whisper 英文安全网）
+funasr
+faster-whisper
+
+# ---- 任务队列（8 卡调度）----
+celery>=5.3
+redis>=5.0
+
+# ---- 媒体处理（Python 侧；ffmpeg 本体用 conda-forge 装以带 libass）----
+ffmpeg-python
+moviepy
+soundfile
+librosa
+opencv-python-headless
+pillow
+
+# ---- 角色一致性 QC（S4 人脸相似度门）----
+insightface               # ArcFace 人脸嵌入，用于跨集长相一致性校验
+onnxruntime-gpu
+
+# ---- 可选增强 ----
+# 互动式剧本 CLI 的更好输入体验（缺失时自动降级）
+prompt_toolkit>=3.0

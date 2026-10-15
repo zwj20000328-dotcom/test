@@ -1,0 +1,16 @@
+# 控制面核心依赖 —— 任何机器可装（含 Windows 开发机），用于：
+#   剧本解析/校验、manifest 契约、编排状态机、字幕、ffmpeg 命令构造、互动式剧本生成、测试
+# 安装：
+#   pip install -r requirements-core.txt -i https://mirrors.aliyun.com/pypi/simple
+#
+# GPU 推理栈见 requirements-server.txt（仅 Linux 部署机需要）。
+
+pydantic>=2.5,<3
+PyYAML>=6.0
+requests>=2.31
+
+# 互动式 CLI：富交互为可选增强，缺失时代码自动降级到纯 ANSI + input()
+rich>=13.0
+
+# 测试
+pytest>=8.0

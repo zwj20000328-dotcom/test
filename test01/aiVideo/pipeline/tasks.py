@@ -79,29 +79,61 @@ def _find_shot(m: Manifest, shot_id: str):
     raise KeyError(f"shot {shot_id} 不在 manifest 中")
 
 
+_STAGE_CACHE: dict = {}
+
+# stage 名 -> 它实际需要的引擎。
+# 必须按需构造：每个 worker 用 CUDA_VISIBLE_DEVICES 钉死在特定物理卡上，
+# 若构造全部引擎，image 引擎的 cuda:1 会在 video worker（只可见 GPU3,4）上映射到
+# 错误的物理卡或直接失败，且会白白把每个模型都加载进每个 worker。
+_STAGE_ENGINES = {
+    "enrich": ["llm"],
+    "assets": ["image", "tts"],
+    "keyframe": ["image"],
+    "video": ["video"],
+    # 只要 TI2V-5B：若同时列 video 会把 A14B 也加载进显存（数十 GB 浪费）。
+    # 缺 TI2V-5B 时 build_stages 不注册 preview 阶段——preview 本就是可选阶段。
+    # run.py 单进程模式另有回退（video_preview or video），不受此映射影响。
+    "preview": ["video_preview"],
+    "tts": ["tts"],
+    "bgm": ["music"],
+    # CPU 阶段不需要 GPU 引擎
+    "subtitle": [],
+    "assemble": [],
+    "concat": [],
+}
+
+
 def _get_stage(name: str):
-    """按名加载真实 stage（服务器部署时各 stage 已接线真实引擎）。"""
+    """按名加载真实 stage。
+
+    结果缓存：worker 是常驻进程，一个 video worker 要处理数百个任务，
+    每次都重建引擎会重复做 vLLM 健康检查甚至重载模型权重（数万次任务下不可接受）。
+    缓存也意味着每个 worker 只加载一次自己那份模型权重并常驻其钉绑的 GPU。
+    """
+    if name in _STAGE_CACHE:
+        return _STAGE_CACHE[name]
     from run import build_stages   # 复用 run.py 的装配逻辑
-    engines = _load_engines()
-    stages = build_stages(use_stubs=os.environ.get("USE_STUBS") == "1", engines=engines)
+    use_stubs = os.environ.get("USE_STUBS") == "1"
+    engines = _load_engines(only=None if use_stubs else _STAGE_ENGINES.get(name))
+    stages = build_stages(use_stubs=use_stubs, engines=engines)
     spec = stages.get(name)
     if spec is None:
         raise RuntimeError(f"stage '{name}' 未注册")
+    _STAGE_CACHE[name] = spec.stage
     return spec.stage
 
 
-def _load_engines() -> dict:
-    """加载真实模型引擎（vLLM client / DiffSynth / CosyVoice…）。
+def _load_engines(only: list[str] | None = None) -> dict:
+    """加载真实模型引擎 —— 统一走 pipeline/engines/factory.py（与 run.py 同一落点）。
 
-    服务器上按需实现：
-      llm   -> vLLM OpenAI 兼容 client（LLM_BASE_URL）
-      image -> Qwen-Image-2.1 (DiffSynth)
-      video -> Wan2.2-I2V-A14B (DiffSynth)
-      tts   -> CosyVoice2
-      music -> ACE-Step
-    本机默认返回空 dict（build_stages 在 use_stubs 下用 StubEngine）。
+    工厂按 config/models.yaml + AIVIDEO_* 环境变量构造；缺失的引擎不返回对应键，
+    build_stages() 据此跳过该阶段。本机（无 GPU/模型）会返回空 dict。
+
+    only：只构造指定引擎（见 _STAGE_ENGINES）。worker 按 CUDA_VISIBLE_DEVICES 钉绑，
+    故每个 worker 只应加载它自己那份模型，不构造无关引擎。
     """
-    return {}
+    from .engines.factory import build_engines
+    return build_engines(only=only, stubs=os.environ.get("USE_STUBS") == "1")
 
 
 # --------------------------------------------------------------------------- #

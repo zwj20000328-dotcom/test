@@ -30,6 +30,10 @@ from .parser import parse_screenplay
 log = logging.getLogger("orchestrator")
 
 
+class ScreenplayChangedError(RuntimeError):
+    """续跑时发现剧本被改动 —— 重新解析会丢弃进度，需用户显式 --fresh 确认。"""
+
+
 # --------------------------------------------------------------------------- #
 # Stage 适配器协议
 # --------------------------------------------------------------------------- #
@@ -82,12 +86,18 @@ STAGE_ORDER: list[str] = [
     "enrich",       # S2 LLM 分镜/prompt
     "assets",       # S3 角色资产锁定（每剧一次，非 per-shot）
     "keyframe",     # S4 关键帧 (+QC)
-    "video",        # S5 图生视频
+    "preview",      # S5a 480p 预览（可选，见 OPTIONAL_STAGES）
+    "video",        # S5 图生视频（终渲）
     "tts",          # S6 配音
     "subtitle",     # S7 字幕
     "bgm",          # S8 BGM/SFX
     "assemble",     # S9 分集装配 (per-shot 归入集 + 集级拼接)
 ]
+
+# 可选阶段：只有被 --only 显式点名时才跑。
+# preview 要额外 3-6 小时 GPU，默认跳过；但"先预览再终渲"能避免白烧 81 小时，
+# 故保留为显式选项。video 阶段同时消费 keyframed 和 drafted，两条路径都通。
+OPTIONAL_STAGES: frozenset = frozenset({"preview"})
 
 
 # --------------------------------------------------------------------------- #
@@ -102,6 +112,8 @@ class Orchestrator:
         stages: Optional[dict[str, StageSpec]] = None,
         config: Optional[dict] = None,
         dry_run: bool = False,
+        checkpoint_every: int = 20,
+        checkpoint_interval: float = 300.0,
     ):
         self.project_dir = Path(project_dir)
         self.project_dir.mkdir(parents=True, exist_ok=True)
@@ -110,10 +122,26 @@ class Orchestrator:
         self.dry_run = dry_run
         self.stages: dict[str, StageSpec] = stages or {}
         self._celery = None
+        # 增量存档阈值：每 N 个镜头或每 M 秒落盘一次（取先到者）。
+        # 默认 20 镜 / 300 秒：终渲单镜 4-8 分钟，故实际按镜头数触发居多；
+        # 轻量阶段（解析/字幕）则按秒触发，避免为 3000 镜频繁写 10-20MB JSON。
+        self.checkpoint_every = checkpoint_every
+        self.checkpoint_interval = checkpoint_interval
 
     # ---- 生命周期 ----
+    @staticmethod
+    def screenplay_hash(screenplay_md: Path | str) -> str:
+        """剧本内容哈希，用于检测续跑时剧本是否被改动。"""
+        import hashlib
+        data = Path(screenplay_md).read_bytes()
+        return hashlib.sha256(data).hexdigest()[:16]
+
     def ingest(self, screenplay_md: Path | str) -> Manifest:
-        """S0 校验 + S1 解析：把 .md 变成 manifest.json。"""
+        """S0 校验 + S1 解析：把 .md 变成 manifest.json。
+
+        注意：这会**丢弃**该 project 已有的全部进度（重新解析即从零开始）。
+        续跑场景请用 ensure_ingested()，它会按剧本哈希决定加载还是重新解析。
+        """
         from .validate import validate  # 延迟导入，避免循环
         text = Path(screenplay_md).read_text(encoding="utf-8")
 
@@ -127,8 +155,36 @@ class Orchestrator:
         raw = parse_screenplay(text)
         self.manifest = manifest_from_raw(raw)
         self.manifest.project = self.project_dir.name
+        self.manifest.source_path = str(Path(screenplay_md).resolve())
+        self.manifest.source_hash = self.screenplay_hash(screenplay_md)
         self.manifest.save(self.manifest_path)
         log.info("S1 解析完成：%s", self.manifest.stats())
+        return self.manifest
+
+    def ensure_ingested(self, screenplay_md: Path | str, fresh: bool = False) -> Manifest:
+        """幂等入口：首次运行则解析，续跑则加载已有进度。
+
+        决策逻辑：
+          - fresh=True：强制重新解析（丢弃进度）。用于剧本改动后重建。
+          - 无 manifest.json：首次运行 → 解析。
+          - 有 manifest 且剧本哈希一致：加载（续跑），保留所有已完成镜头的状态。
+          - 有 manifest 但剧本哈希不同：抛 ScreenplayChangedError。因为重新解析会丢弃
+            进度（可能几十小时渲染成果），必须由用户显式确认，绝不静默覆盖。
+        """
+        if fresh or not self.manifest_path.exists():
+            return self.ingest(screenplay_md)
+
+        existing = Manifest.load(self.manifest_path)
+        current = self.screenplay_hash(screenplay_md)
+        if existing.source_hash and existing.source_hash != current:
+            raise ScreenplayChangedError(
+                f"剧本已改动（manifest 记录 {existing.source_hash}，当前 {current}）。\n"
+                f"项目 {self.project_dir.name} 已有进度：{existing.stats()['by_status']}\n"
+                f"重新解析会丢弃全部进度。若确认要重建，请加 --fresh；\n"
+                f"若想保留进度，请撤销对剧本的改动。"
+            )
+        self.manifest = existing
+        log.info("续跑：加载已有 manifest（%s）", self.manifest.stats()["by_status"])
         return self.manifest
 
     def load(self) -> Manifest:
@@ -186,12 +242,32 @@ class Orchestrator:
         return summary
 
     def _should_run(self, name: str, only: Optional[list[str]]) -> bool:
-        return only is None or name in only
+        # 显式点名 -> 一定跑（包括可选阶段）
+        if only is not None:
+            return name in only
+        # 未点名（全跑模式）-> 可选阶段默认跳过
+        return name not in OPTIONAL_STAGES
 
     def _run_per_shot(self, spec: StageSpec, resume: bool = True) -> dict:
         stage = spec.stage
         counts = {"processed": 0, "skipped": 0, "failed": 0}
         targets = list(stage.consumes)
+
+        # 增量存档：长 stage（video 在 30 集规模下约 81 小时）若只在结束时存一次，
+        # 中途崩溃会丢掉整个 stage 的进度并从头重渲。按镜头数/耗时双阈值触发。
+        dirty = 0
+        last_save = time.monotonic()
+
+        def checkpoint(force: bool = False) -> None:
+            nonlocal dirty, last_save
+            if not dirty:
+                return
+            elapsed = time.monotonic() - last_save
+            if force or dirty >= self.checkpoint_every or elapsed >= self.checkpoint_interval:
+                self.manifest.save(self.manifest_path)
+                dirty = 0
+                last_save = time.monotonic()
+
         for shot in self.manifest.iter_shots():
             if resume and shot.status not in targets:
                 # 已经越过本阶段（或还没到）——只在状态匹配时处理
@@ -208,6 +284,7 @@ class Orchestrator:
                         counts["failed"] += 1
                     else:
                         counts["processed"] += 1
+                    dirty += 1
                     break
                 except Exception as e:  # noqa: BLE001
                     log.error("阶段 %s 处理 %s 第 %d 次失败：%s",
@@ -216,6 +293,10 @@ class Orchestrator:
                         shot.status = ShotStatus.failed
                         shot.qc.notes = f"{stage.name} failed: {e}"
                         counts["failed"] += 1
+                        dirty += 1
+            checkpoint()
+
+        checkpoint(force=True)
         return counts
 
     def _dispatch(self, stage: Stage, shot: Shot) -> ShotStatus:

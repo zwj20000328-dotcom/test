@@ -199,9 +199,13 @@ def test_keyframe_qc_retry_then_pass(manifest, tmp_path):
     assert shot.keyframe_path and Path(shot.keyframe_path).exists()
 
 
-def test_keyframe_qc_exhausts_to_human(manifest, tmp_path):
-    """QC 始终不过 -> needs_human（不无限重试）。"""
-    qc = MockFaceQC(pass_after=999)   # 永远返回 0.30
+def test_keyframe_qc_below_threshold_accepts_best(manifest, tmp_path):
+    """QC 始终不过阈值 -> 仍接受最优候选并出片，绝不阻塞等人。
+
+    产品决策 #3：视频链路全自动无人值守。若这里返回 needs_human，
+    ~3000 镜头的任务会死锁（没人来解），所以必须 best-of-N 择优后继续。
+    """
+    qc = MockFaceQC(pass_after=999)   # 永远返回 0.30（低于阈值 0.55）
     stage = KeyframeStage(MockImage(), qc, face_sim_threshold=0.55, max_attempts=3)
     ctx = StageContext(project_dir=tmp_path, manifest=manifest)
     shot = next(manifest.iter_shots())
@@ -209,8 +213,72 @@ def test_keyframe_qc_exhausts_to_human(manifest, tmp_path):
     shot.visual_prompt_en = "test"
     _attach_char_with_sheet(manifest, shot, tmp_path)
     st = stage.run_shot(shot, ctx)
-    assert st == ShotStatus.needs_human
+    assert st == ShotStatus.keyframed, "全自动模式下不得阻塞"
+    assert shot.keyframe_path and Path(shot.keyframe_path).exists()
+    assert shot.qc.face_sim_pass is False           # 诚实记录未达标
+    assert "ACCEPTED-BELOW-THRESHOLD" in shot.qc.notes   # 进事后 QC 报告
+    assert shot.qc.attempts == 3                    # 确实试满了 N 次
+
+
+def test_keyframe_picks_highest_scoring_candidate(manifest, tmp_path):
+    """best-of-N：分数逐次上升时应采用最高分那张，而非第一张。"""
+    class RisingQC:
+        def __init__(self):
+            self.n = 0
+
+        def embed(self, img):
+            return [1.0]
+
+        def similarity(self, a, b):
+            self.n += 1
+            return [0.20, 0.40, 0.90][min(self.n - 1, 2)]   # 第三次才达标
+
+    stage = KeyframeStage(MockImage(), RisingQC(), face_sim_threshold=0.55, max_attempts=3)
+    ctx = StageContext(project_dir=tmp_path, manifest=manifest)
+    shot = next(manifest.iter_shots())
+    shot.status = ShotStatus.enriched
+    shot.visual_prompt_en = "test"
+    _attach_char_with_sheet(manifest, shot, tmp_path)
+    st = stage.run_shot(shot, ctx)
+    assert st == ShotStatus.keyframed
+    assert shot.qc.face_sim == 0.90, f"应采用最高分候选，实得 {shot.qc.face_sim}"
+    assert shot.qc.face_sim_pass is True
+    # 第 3 次达标即提前结束，不多生成
     assert shot.qc.attempts == 3
+
+
+def test_keyframe_engine_failure_is_failed(manifest, tmp_path):
+    """引擎反复抛异常（真故障，非质量不达标）-> failed，且不写 keyframe_path。"""
+    class BrokenImage:
+        def generate(self, *a, **kw):
+            raise RuntimeError("CUDA OOM")
+
+        def edit(self, *a, **kw):
+            raise RuntimeError("CUDA OOM")
+
+    stage = KeyframeStage(BrokenImage(), MockFaceQC(pass_after=0), max_attempts=2)
+    ctx = StageContext(project_dir=tmp_path, manifest=manifest)
+    shot = next(manifest.iter_shots())
+    shot.status = ShotStatus.enriched
+    shot.visual_prompt_en = "test"
+    _attach_char_with_sheet(manifest, shot, tmp_path)
+    st = stage.run_shot(shot, ctx)
+    assert st == ShotStatus.failed
+    assert shot.keyframe_path is None
+    assert "exceptions" in (shot.qc.notes or "")
+
+
+def test_keyframe_never_returns_needs_human(manifest, tmp_path):
+    """不变量：全自动模式下 keyframe 阶段永不返回 needs_human。"""
+    for pass_after in (0, 1, 2, 999):
+        stage = KeyframeStage(MockImage(), MockFaceQC(pass_after=pass_after),
+                              face_sim_threshold=0.55, max_attempts=3)
+        ctx = StageContext(project_dir=tmp_path / f"c{pass_after}", manifest=manifest)
+        shot = next(manifest.iter_shots())
+        shot.status = ShotStatus.enriched
+        shot.visual_prompt_en = "test"
+        _attach_char_with_sheet(manifest, shot, tmp_path / f"c{pass_after}")
+        assert stage.run_shot(shot, ctx) != ShotStatus.needs_human
 
 
 def test_video_needs_keyframe(manifest, tmp_path):

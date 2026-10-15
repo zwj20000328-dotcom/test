@@ -222,9 +222,22 @@ class AssembleResult:
     returncode: int = 0
 
 
+class FFmpegMissingError(RuntimeError):
+    """ffmpeg 不可用（未安装或不在 PATH）。
+
+    这是**环境问题**，不是数据问题：必须让装配阶段一次性失败退出，
+    而不是把成千上万个镜头逐个标记为 failed —— 后者会污染 manifest 状态，
+    且 failed 不在任何阶段的 consumes 里，装好 ffmpeg 后重跑也无法自动恢复。
+    """
+
+
 def run_cmd(cmd: list[str], dry_run: bool = False, listfile: Optional[str] = None,
             listfile_content: Optional[str] = None) -> AssembleResult:
-    """执行 ffmpeg 命令。若命令含 <LISTFILE> 占位，先写出临时 list 文件再替换。"""
+    """执行 ffmpeg 命令。若命令含 <LISTFILE> 占位，先写出临时 list 文件再替换。
+
+    ffmpeg 缺失时抛 FFmpegMissingError（不返回 ok=False），以便调用方区分
+    "环境未就绪" 与 "这条命令本身失败"。
+    """
     real = list(cmd)
     tmp_list = None
     if listfile_content is not None:
@@ -238,7 +251,12 @@ def run_cmd(cmd: list[str], dry_run: bool = False, listfile: Optional[str] = Non
         proc = subprocess.run(real, capture_output=True, text=True)
         return AssembleResult(proc.returncode == 0, real, proc.stdout, proc.stderr, proc.returncode)
     except FileNotFoundError:
-        return AssembleResult(False, real, stderr="ffmpeg 未安装或不在 PATH")
+        raise FFmpegMissingError(
+            "ffmpeg 未安装或不在 PATH。装配阶段需要 ffmpeg（且启用 libass 以烧录字幕）。\n"
+            "  Linux 部署机：conda install -c conda-forge ffmpeg\n"
+            "  或见 scripts/install_env.sh\n"
+            "提示：只想验证控制流而不实际渲染，请加 --dry-run。"
+        )
 
 
 if __name__ == "__main__":

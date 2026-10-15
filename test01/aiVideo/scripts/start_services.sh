@@ -73,6 +73,16 @@ conda activate "$ENV_NAME"
 export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
 export MODELSCOPE_CACHE="${MODELSCOPE_CACHE:-$MODEL_ROOT}"
 
+# ---- 引擎工厂配置（pipeline/engines/factory.py 读这些；run.py 与 Celery worker 共用）----
+# 注意：不需要在这里设 AIVIDEO_*_DEVICE。各 worker 已用 CUDA_VISIBLE_DEVICES 钉绑物理卡，
+# 工厂会把默认的 cuda:1/cuda:3,cuda:4/cuda:7 自动重映射为进程内的 cuda:0/... （见
+# factory.normalize_device 与 tests/test_engine_factory.py 的重映射测试）。
+export AIVIDEO_MODEL_ROOT="${AIVIDEO_MODEL_ROOT:-$MODEL_ROOT}"
+export AIVIDEO_LLM_BASE_URL="${AIVIDEO_LLM_BASE_URL:-http://localhost:${VLLM_PORT}/v1}"
+export AIVIDEO_LLM_MODEL="${AIVIDEO_LLM_MODEL:-qwen3-32b}"
+export AIVIDEO_VIDEO_MODE="${AIVIDEO_VIDEO_MODE:-final}"          # final | preview | perform
+export AIVIDEO_BGM_LIBRARY="${AIVIDEO_BGM_LIBRARY:-}"             # 可选：本地版权曲库目录
+
 # ---- 1) Redis（Celery broker/backend）----
 if ! command -v redis-server >/dev/null 2>&1; then
   log "未找到 redis-server，尝试 conda 安装..."

@@ -360,6 +360,11 @@ def parse_screenplay(text: str) -> dict[str, Any]:
         raw = lines[i]
         line = raw.rstrip()
         stripped = line.strip()
+        # 结构匹配用 norm：去掉**前导**空白（含全角空格 U+3000，中文输入法常见）。
+        # 不归一化会导致 `　**镜头**：` / `　> 台词` 不匹配任何结构正则，
+        # 整条落入 raw_text 后被空镜头过滤丢弃 —— validate 还报零 error（静默丢数据）。
+        # 只去前导，不动内部，因此值里的全角空格/标点原样保留。
+        norm = line.lstrip()
         i += 1
 
         if not stripped:
@@ -370,14 +375,14 @@ def parse_screenplay(text: str) -> dict[str, Any]:
             continue
 
         # ---- H1 剧名 ----
-        if m := _H1_RE.match(line):
+        if m := _H1_RE.match(norm):
             if not script.title:
                 script.title = m.group(1).strip()
             in_character_table = False
             continue
 
         # ---- H2 集 / 角色表 ----
-        if m := _H2_RE.match(line):
+        if m := _H2_RE.match(norm):
             flush_shot()
             current_shot = None
             current_scene = None
@@ -392,7 +397,7 @@ def parse_screenplay(text: str) -> dict[str, Any]:
             continue
 
         # ---- H3 场景 ----
-        if m := _H3_RE.match(line):
+        if m := _H3_RE.match(norm):
             flush_shot()
             current_shot = None
             in_character_table = False
@@ -410,7 +415,7 @@ def parse_screenplay(text: str) -> dict[str, Any]:
 
         # ---- 角色表条目 ----
         if in_character_table:
-            if m := _CHAR_BULLET_RE.match(line):
+            if m := _CHAR_BULLET_RE.match(norm):
                 name = m.group(1).strip()
                 desc = m.group(2).strip()
                 char_counter += 1
@@ -425,7 +430,7 @@ def parse_screenplay(text: str) -> dict[str, Any]:
             continue
 
         # ---- blockquote 对白 ----
-        if m := _QUOTE_RE.match(line):
+        if m := _QUOTE_RE.match(norm):
             # 顶层引用（非场景内）可能是 logline
             if current_scene is None:
                 content = m.group(1).strip()
@@ -442,7 +447,7 @@ def parse_screenplay(text: str) -> dict[str, Any]:
 
         # ---- 场景内：字段标记 / 正文 ----
         if current_scene is not None:
-            if m := _FIELD_RE.match(line):
+            if m := _FIELD_RE.match(norm):
                 key = _normalize_field_key(m.group(1))
                 val = m.group(2).strip()
                 # 镜头/动作/音效/转场 归属"当前镜头"，并开启新镜头语义边界（镜头行=新分镜）

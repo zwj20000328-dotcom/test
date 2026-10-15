@@ -150,7 +150,8 @@ class EnrichStage:
             f"【本镜镜头】{shot.camera or ''}\n【本镜动作】{shot.action or ''}\n"
             f"【音效】{', '.join(shot.sfx)}\n【转场】{shot.transition or ''}\n"
             f"【对白】\n{dialogue}\n\n"
-            f"目标时长参考 {m.meta.episode_seconds or 9} 秒/集，单镜 3-8 秒、16fps。"
+            f"目标时长参考 {m.meta.episode_seconds or 270} 秒/集（约 4-5 分钟），"
+            "本镜为其中的一个分镜，单镜 3-8 秒、16fps。"
             "输出该镜的 visual_prompt_en / motion_prompt_en / est_seconds / num_frames / "
             "on_screen_text（中文，若无则空串）/ tts_instruction / music_tag。"
         )

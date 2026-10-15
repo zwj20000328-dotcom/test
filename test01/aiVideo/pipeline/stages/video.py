@@ -16,7 +16,9 @@ log = logging.getLogger("stages.video")
 
 class VideoStage:
     name = "video"
-    consumes = (ShotStatus.keyframed,)
+    # 消费 keyframed（未跑预览）或 drafted（跑过 480p 预览并校过时）。
+    # 必须同时接受两者，否则"先预览后终渲"这条推荐路径会在 preview 之后卡住。
+    consumes = (ShotStatus.keyframed, ShotStatus.drafted)
     produces = ShotStatus.rendered
 
     def __init__(self, video_engine):

@@ -19,6 +19,7 @@ manifest.json 的结构由本模块定义。每个阶段读取 → 处理 → **
 from __future__ import annotations
 
 import json
+import os
 from enum import Enum
 from pathlib import Path
 from typing import Any, Iterator, Optional
@@ -197,6 +198,11 @@ class Manifest(_Base):
     """整部剧的顶层状态对象，序列化为 projects/<drama>/manifest.json。"""
     schema_version: str = "1.0"
     project: Optional[str] = None
+    # 溯源：记录本 manifest 是从哪份剧本、哪个版本解析出来的。
+    # 用于续跑时判断"剧本是否被改过"——改过则重新解析会丢弃所有已完成进度，
+    # 必须由用户显式确认（run.py --fresh），不能静默覆盖。
+    source_path: Optional[str] = None
+    source_hash: Optional[str] = None
     meta: Meta = Field(default_factory=Meta)
     logline: Optional[str] = None
     characters: list[Character] = Field(default_factory=list)
@@ -254,15 +260,21 @@ class Manifest(_Base):
         return cls.model_validate(data)
 
     def save(self, path: Optional[Path | str] = None) -> None:
+        """原子写入：先写临时文件再 os.replace，避免中途崩溃损坏整份状态。
+
+        在数十小时的渲染任务里这是必需的——写一半的 JSON 会让全剧状态不可恢复，
+        比丢进度更严重。
+        """
         if path is None:
             raise ValueError("save() 需要 path，除非用 round-trip 保存")
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         self.stats_cache = self.stats()
-        path.write_text(
-            json.dumps(self.model_dump(mode="json", exclude_none=False), ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
+        payload = json.dumps(self.model_dump(mode="json", exclude_none=False),
+                             ensure_ascii=False, indent=2)
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        tmp.write_text(payload, encoding="utf-8")
+        os.replace(tmp, path)   # POSIX/Windows 上均为原子操作
 
     def to_dict(self) -> dict[str, Any]:
         self.stats_cache = self.stats()
