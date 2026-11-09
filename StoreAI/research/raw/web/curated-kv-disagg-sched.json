@@ -1,0 +1,2061 @@
+[
+ {
+  "id": "2608.08097v2",
+  "title": "OasisKV: Scaling In-Decode KV Cache Beyond HBM with Lookahead Sparse Prefetching",
+  "abstract": "Large language model (LLM) inference serving is increasingly constrained by memory rather than compute. As long-context and long-form reasoning workloads become more prevalent, the key-value (KV) cache dominates both memory footprint and memory traffic at the token generation (i.e., decode) stage. HBM capacity has therefore become a critical bottleneck, constraining inference batch size and throughput. This paper introduces OasisKV, a memory-centric LLM inference system that alleviates HBM limitations by offloading the KV-cache to alternative memory tiers. Exploiting the sparsity of decode-time attention and leveraging speculative decoding to predict important tokens, OasisKV selectively prefetches and stages only the most relevant KV entries in HBM for efficient LLM inference computation. To support growing LLM context and the larger batches enabled by sparse HBM residency, OasisKV employs tiered KV management across decode, prefill, and remote-memory nodes, relaxing decode-host memory capacity limits under disaggregated serving. An asynchronous prefetch pipeline hides off-GPU transfer latency while bounding per-step traffic to fit the available bandwidth. We implement OasisKV on vLLM. With only 2,048 KV tokens resident in HBM, OasisKV maintains average accuracy within a negligible 0.61 points of full attention on LongBench v2 for long-context understanding and across AIME24-25 and GPQA-Diamond for long-form reasoning. This sparsity translates into a 1.86x throughput gain over vLLM on AIME24. Synthetic long-context workloads further show up to 2.2x higher throughput in multi-GPU serving. Under prefill-decode disaggregation, OasisKV achieves 2.29x vLLM's throughput while supporting 2.42x as many concurrent requests under the same host-memory budget.",
+  "published": "2026-08-08T12:27:03Z",
+  "updated": "2026-10-25T10:57:32Z",
+  "authors": [
+   "Can Xiao",
+   "Sukmin Cho",
+   "Junbong We",
+   "Zhixiong Niu",
+   "Jianyi Cheng",
+   "Yiren Zhao",
+   "Youngjin Kwon",
+   "Yongqiang Xiong",
+   "Rui Ma",
+   "Junyi Liu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 89
+ },
+ {
+  "id": "2512.11920v1",
+  "title": "CXL-SpecKV: A Disaggregated FPGA Speculative KV-Cache for Datacenter LLM Serving",
+  "abstract": "Large Language Models (LLMs) have revolutionized natural language processing tasks, but their deployment in datacenter environments faces significant challenges due to the massive memory requirements of key-value (KV) caches. During the autoregressive decoding process, KV caches consume substantial GPU memory, limiting batch sizes and overall system throughput. To address these challenges, we propose \\textbf{CXL-SpecKV}, a novel disaggregated KV-cache architecture that leverages Compute Express Link (CXL) interconnects and FPGA accelerators to enable efficient speculative execution and memory disaggregation. Our approach introduces three key innovations: (i) a CXL-based memory disaggregation framework that offloads KV-caches to remote FPGA memory with low latency, (ii) a speculative KV-cache prefetching mechanism that predicts and preloads future tokens' cache entries, and (iii) an FPGA-accelerated KV-cache compression and decompression engine that reduces memory bandwidth requirements by up to 4$\\times$. When evaluated on state-of-the-art LLM models, CXL-SpecKV achieves up to 3.2$\\times$ higher throughput compared to GPU-only baselines, while reducing memory costs by 2.8$\\times$ and maintaining accuracy. Our system demonstrates that intelligent memory disaggregation combined with speculative execution can effectively address the memory wall challenge in large-scale LLM serving. Our code implementation has been open-sourced at https://github.com/FastLM/CXL-SpecKV.",
+  "published": "2025-12-11T15:40:36Z",
+  "updated": "2025-12-11T15:40:36Z",
+  "authors": [
+   "Dong Liu",
+   "Yanxuan Yu"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "Accepted to FPGA'26 Oral",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 2
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"memory disaggregation\" AND (abs:LLM OR abs:inference)",
+    "rank": 3
+   }
+  ],
+  "score": 80
+ },
+ {
+  "id": "2512.18194v1",
+  "title": "TraCT: Disaggregated LLM Serving with CXL Shared Memory KV Cache at Rack-Scale",
+  "abstract": "Disaggregated LLM serving improves resource efficiency by separating the compute-intensive prefill phase from the latency-critical decode phase. However, this architecture introduces a fundamental bottleneck: key/value (KV) tensors generated during prefill must be transferred to decode workers, and existing systems rely on RDMA-based network paths for this exchange. As model sizes and context lengths increase, KV transfer dominates both time-to-first-token (TTFT) and peak throughput, and remains highly sensitive to network contention even when prefix reuse is high. This paper presents TraCT, a rack-scale LLM serving system that uses CXL shared memory as both a KV-transfer substrate and a rack-wide prefix-aware KV cache. TraCT enables GPUs to write and read KV blocks directly through CXL load/store and DMA operations, eliminating the NIC hop that constrains existing disaggregated pipelines. However, to realize this design, multiple new challenges such as synchronization, consistency, and data management on non-coherent CXL memory need to be addressed. TraCT proposes various software solutions such as the two-tier inter-node synchronization mechanism to address these challenges. We implement TraCT on the Dynamo LLM inference framework and show that, across static and synthetic workloads, TraCT reduces average TTFT by up to 9.8x, lowers P99 latency by up to 6.2x, and improves peak throughput by up to 1.6x compared to RDMA and DRAM-based caching baselines.",
+  "published": "2025-12-20T03:42:19Z",
+  "updated": "2025-12-20T03:42:19Z",
+  "authors": [
+   "Dongha Yoon",
+   "Younghoon Min",
+   "Hoshik Kim",
+   "Sam H. Noh",
+   "Jongryool Kim"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 2
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 3
+   }
+  ],
+  "score": 73
+ },
+ {
+  "id": "2406.17565v3",
+  "title": "MemServe: Context Caching for Disaggregated LLM Serving with Elastic Memory Pool",
+  "abstract": "Large language model (LLM) serving has transformed from stateless to stateful systems, utilizing techniques like context caching and disaggregated inference. These optimizations extend the lifespan and domain of the KV cache, necessitating a new architectural approach. We present MemServe, a unified system that integrates both inter-request and intra-request optimizations. MemServe introduces MemPool, an elastic memory pool managing distributed memory and KV caches across serving instances. Using MemPool APIs, MemServe combines context caching with disaggregated inference for the first time, supported by a global scheduler that enhances cache reuse through a global prompt tree-based locality-aware policy. Tests show that MemServe significantly improves job completion time and time-to-first-time.",
+  "published": "2024-06-25T14:02:08Z",
+  "updated": "2024-12-21T13:55:49Z",
+  "authors": [
+   "Cunchen Hu",
+   "Heyang Huang",
+   "Junhao Hu",
+   "Jiang Xu",
+   "Xusheng Chen",
+   "Tao Xie",
+   "Chenxi Wang",
+   "Sa Wang",
+   "Yungang Bao",
+   "Ninghui Sun",
+   "Yizhou Shan"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 71
+ },
+ {
+  "id": "2606.19746v1",
+  "title": "SAC: Disaggregated KV Cache System for Sparse Attention LLMs with CXL",
+  "abstract": "The scaling of LLMs toward long-context inference has shifted the primary serving system bottleneck from computation to memory capacity. Traditional solutions for dense attention models rely on RDMA-based disaggregated memory pools, which perform coarse-grained fetching of the entire prefix KV cache from remote storage to local memory before decoding. However, this approach is fundamentally inefficient for emerging sparse attention models. While only a small fraction of KV entries are active during decoding, these systems still fetch the full KV cache locally, leading to severe transmission bottlenecks and local memory wastage. To address this, we propose SAC, the first efficient disaggregated KV cache system optimized for sparse attention models. By leveraging the low-latency, cache-line granularity load/store semantics of Compute Express Link (CXL), SAC fetches only the required top-k KV entries on demand during inference. Evaluations on DeepSeek-V3.2 using SGLang show that SAC achieves 2.1x higher throughput, 9.7x lower TTFT, and 1.8x lower TBT compared to RDMA-based baselines, establishing CXL-based disaggregation as the superior infrastructure for emerging sparse attention models.",
+  "published": "2026-06-18T03:21:32Z",
+  "updated": "2026-06-18T03:21:32Z",
+  "authors": [
+   "Ruiyang Ma",
+   "Teng Ma",
+   "Junru Li",
+   "Hantian Zha",
+   "Xuchun Shang",
+   "Qingda Hu",
+   "Zheng Liu",
+   "Xinjun Yang",
+   "Tao Ma",
+   "Guojie Luo"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 2
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 4
+   }
+  ],
+  "score": 70
+ },
+ {
+  "id": "2502.03589v1",
+  "title": "HACK: Homomorphic Acceleration via Compression of the Key-Value Cache for Disaggregated LLM Inference",
+  "abstract": "Disaggregated Large Language Model (LLM) inference has gained popularity as it separates the computation-intensive prefill stage from the memory-intensive decode stage, avoiding the prefill-decode interference and improving resource utilization. However, transmitting Key-Value (KV) data between the two stages can be a bottleneck, especially for long prompts. Additionally, the computation time overhead for prefill and decode is key for optimizing Job Completion Time (JCT), and KV data size can become prohibitive for long prompts and sequences. Existing KV quantization methods can alleviate the transmission bottleneck and reduce memory requirements, but they introduce significant dequantization overhead, exacerbating the computation time. We propose Homomorphic Acceleration via Compression of the KV cache (HACK) for disaggregated LLM inference. HACK eliminates the heavy KV dequantization step, and directly performs computations on quantized KV data to approximate and reduce the cost of the expensive matrix-multiplication step. Extensive trace-driven experiments show that HACK reduces JCT by up to 70.9% compared to disaggregated LLM inference baseline and by up to 52.3% compared to state-of-the-art KV quantization methods.",
+  "published": "2025-02-05T20:09:51Z",
+  "updated": "2025-02-05T20:09:51Z",
+  "authors": [
+   "Zeyu Zhang",
+   "Haiying Shen",
+   "Shay Vargaftik",
+   "Ran Ben Basat",
+   "Michael Mitzenmacher",
+   "Minlan Yu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 61
+ },
+ {
+  "id": "2605.13734v1",
+  "title": "KVServe: Service-Aware KV Cache Compression for Communication-Efficient Disaggregated LLM Serving",
+  "abstract": "LLMs are widely adopted in production, pushing inference systems to their limits. Disaggregated LLM serving (e.g., PD separation and KV state disaggregation) improves scalability and cost efficiency, but it also turns KV into an explicit payload crossing network and storage boundaries, making KV a dominant end-to-end bottleneck. Existing KV compression are typically static runtime configurations, despite production service context varies over time in workload mix, bandwidth, and SLO/quality budgets. As a result, a fixed choice can be suboptimal or even increase latency. We present \\emph{KVServe}, the first service-aware and adaptive KV communication compression framework for disaggregated LLM serving: KVServe (1) unifies KV compression into a modular strategy space with new components and cross-method recomposition; (2) introduces Bayesian Profiling Engine that efficiently searches this space and distills a 3D Pareto candidate set, reducing $50\\times$ offline search overhead; and (3) deploys a Service-Aware Online Controller that combines an analytical latency model with a lightweight bandit to select profiles under constraints and correct offline-to-online mismatch. Integrated into vLLM and evaluated across datasets, models, GPUs and networks, KVServe achieves up to $9.13\\times$ JCT speedup in PD-separated serving and up to $32.8\\times$ TTFT reduction in KV-disaggregated serving.",
+  "published": "2026-05-13T16:12:33Z",
+  "updated": "2026-05-13T16:12:33Z",
+  "authors": [
+   "Zedong Liu",
+   "Xinyang Ma",
+   "Dejun Luo",
+   "Hairui Zhao",
+   "Bing Lu",
+   "Wenjing Huang",
+   "Yida Gu",
+   "Xingchen Liu",
+   "Zheng Wei",
+   "Jinyang Liu",
+   "Dingwen Tao",
+   "Guangming Tan"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.NI"
+  ],
+  "comment": "Accepted by SIGCOMM 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 59
+ },
+ {
+  "id": "2608.23658v1",
+  "title": "Elastic KV Cache for LLM Serving:A Working Reclamation Mechanism, and Why Chunked Prefill Already Closes the Gap",
+  "abstract": "An LLM serving engine sizes its key-value (KV) cache once, at startup, permanently setting aside a reserve for the worst-case prefill activation. During decode-dominant phases that reserve sits idle, yet it cannot be handed to the KV pool because it is exactly the memory a large prefill needs. We ask whether this reserve is reclaimable, and build a mechanism to test it. Our elastic KV cache lends the reserve to the KV pool during decode and returns it before prefill, driven by the scheduler's one-step-ahead view of the next batch. It is pure userspace on the CUDA virtual-memory path: two physical handles mapped into one contiguous virtual range per layer, so the attention kernel is unchanged and no driver patch is required. It decommits in a few milliseconds and recommits in tens of milliseconds, works with CUDA graphs and prefix caching, and never triggers an out-of-memory event. A static commit of the same memory is unsafe, crashing on prefill bursts, which makes the dynamic toggle necessary. Having built the mechanism, we test the premise it rests on and report an honest negative result. It only pays off if a small prefill chunk size badly hurts prefill latency. In a controlled experiment injecting long prompts into a live decode load, that penalty is small (median time-to-first-token differs by about 1% between chunk sizes of 8192 and 32768 tokens), because prefill is compute bound and decode consumes only about one token per sequence per step. Simply lowering max_num_batched_tokens recovers more KV than the controller does, at nearly equal latency. The reserve also dilutes under tensor parallelism, from 16% of KV at TP1 to 2.7% at TP4. We state precisely when reclaiming the reserve could still help, and release the mechanism as a reusable userspace elastic-VMM allocator.",
+  "published": "2026-08-24T15:49:39Z",
+  "updated": "2026-08-24T15:49:39Z",
+  "authors": [
+   "Sathishkumar Sivashanmugam"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 56
+ },
+ {
+  "id": "2506.06769v1",
+  "title": "Containerized In-Storage Processing and Computing-Enabled SSD Disaggregation",
+  "abstract": "ISP minimizes data transfer for analytics but faces challenges in adaptation and disaggregation. We propose DockerSSD, an ISP model leveraging OS-level virtualization and lightweight firmware to enable containerized data processing directly on SSDs. Key features include Ethernet over NVMe for network-based ISP management and Virtual Firmware for secure, efficient container execution. DockerSSD supports disaggregated storage pools, reducing host overhead and enhancing large-scale services like LLM inference. It achieves up to 2.0x better performance for I/O-intensive workloads, and 7.9x improvement in distributed LLM inference.",
+  "published": "2025-06-07T11:35:03Z",
+  "updated": "2025-06-07T11:35:03Z",
+  "authors": [
+   "Miryeong Kwon",
+   "Donghyun Gouk",
+   "Eunjee Na",
+   "Jiseon Kim",
+   "Junhee Kim",
+   "Hyein Woo",
+   "Eojin Ryu",
+   "Hyunkyu Choi",
+   "Jinwoo Baek",
+   "Hanyeoreum Bae",
+   "Mahmut Kandemir",
+   "Myoungsoo Jung"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 2
+   }
+  ],
+  "score": 54
+ },
+ {
+  "id": "2607.28150v1",
+  "title": "SmartGen: Seamless Disaggregated LLM Inference with Selective KV Cache Transfer",
+  "abstract": "Disaggregating the prefill and decoding stages of large language model (LLM) inference into two separate sets of nodes is widely adopted in today's LLM serving systems. However, such an architecture poses significant challenges for self-hosted LLM deployments on rented cloud instances, since transferring enormous key-value (KV) caches between disaggregated nodes can easily saturate the limited inter-node network bandwidth. In this paper, we propose to mitigate the network bottleneck by selectively transferring essential KV cache entries across the two stages. There are two challenges to achieve selective KV cache transfer, i.e., accurate KV selection during the prefill stage, and efficient KV fetching during the decoding stage. To address these challenges, we design SmartGen, a KV cache transfer engine that allows seamless disaggregated LLM inference with three data transfer paths. Specifically, we leverage 1) a profile-based proactive transfer path to identify and push essential KV cache entries to the decoding node during the prefill stage, 2) a parallel on-demand transfer path to simultaneously fetch remote and local KV cache entries during the decoding stage, and 3) a speculative transfer path to finally deliver all KV caches to the decoding node. Experimental results show that SmartGen reduces time-to-second-token by up to 4.3x compared with the typical full KV cache transfer approach while offering comparable subsequent decoding performance and accuracy.",
+  "published": "2026-07-30T12:56:05Z",
+  "updated": "2026-07-30T12:56:05Z",
+  "authors": [
+   "Xuchuan Luo",
+   "Jiacheng Shen",
+   "Xin Wang",
+   "Yangfan Zhou"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 3
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2604.15039v2",
+  "title": "Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter",
+  "abstract": "Prefill-decode (PD) disaggregation has become the standard architecture for large-scale LLM serving, but in practice its deployment boundary is still determined by KVCache transfer. In conventional dense-attention models, prefill generates huge KVCache traffics that keep prefill and decode tightly coupled within a single high-bandwidth network domain, limiting heterogeneous deployment and resource elasticity. Recent hybrid-attention architectures substantially reduce KVCache size, making cross-cluster KVCache transport increasingly plausible. However, smaller KVCache alone does not make heterogeneous cross-datacenter PD serving practical: real workloads remain bursty, request lengths are highly skewed, prefix caches are unevenly distributed, and inter-cluster bandwidth fluctuates. A naive design that fully externalizes prefill can therefore still suffer from congestion, unstable queueing, and poor utilization. We present Prefill-as-a-Service (PrfaaS), a cross-datacenter serving architecture that selectively offloads long-context prefill to standalone, compute-dense prefill clusters and transfers the resulting KVCache over commodity Ethernet to local PD clusters for decode. Rather than treating reduced KVCache as sufficient, PrfaaS combines model-side KV efficiency with system-side selective offloading, bandwidth-aware scheduling, and cache-aware request placement. This design removes the requirement that heterogeneous accelerators share the same low-latency RDMA fabric, enabling independent scaling of prefill and decode capacity across loosely coupled clusters. In a case study using an internal 1T-parameter hybrid model, a PrfaaS-augmented heterogeneous deployment achieves 54% higher serving throughput and 64% lower P90 TTFT than a homogeneous PD baseline, with approximately 15% throughput gain at equal cost, while consuming only modest cross-datacenter bandwidth.",
+  "published": "2026-04-16T14:07:41Z",
+  "updated": "2026-04-22T03:05:12Z",
+  "authors": [
+   "Ruoyu Qin",
+   "Weiran He",
+   "Yaoyu Wang",
+   "Zheming Li",
+   "Xinran Xu",
+   "Yongwei Wu",
+   "Weimin Zheng",
+   "Mingxing Zhang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "16 pages, 5 figures, 6 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2512.02281v1",
+  "title": "Trinity: Disaggregating Vector Search from Prefill-Decode Disaggregation in LLM Serving",
+  "abstract": "Prefill and decode (PD) disaggregation separates prompt prefill and token-by-token decode stages into distinct GPU pools and has become the dominant architecture for large-scale LLM serving in industry. Also, retrieval tasks via vector search remains entangled with the model inference process, like heterogeneous RAG requests and prompt answer caches, inflating tail latency. We are motivated to investigate how vector search should be orchestrated along with PD disaggregation with a dedicated deployment architecture without violating SLOs in various retrieval workloads. We present Trinity, a practical framework that consolidates all retrieval into a single, shared vector-search GPU pool and make it work with PD disaggregated LLM serving in match. Trinity introduces (1) a novel architecture for deploying GPU-based vector search service in PD disaggregation. (2) Continuous batching for vector search that make full used of GPUs under heterogeneous queries; (3) Stage-aware scheduling that preempts vector search requests between both decode and prefill tasks.",
+  "published": "2025-12-01T23:53:42Z",
+  "updated": "2025-12-01T23:53:42Z",
+  "authors": [
+   "Yi Liu",
+   "Chen Qian"
+  ],
+  "categories": [
+   "cs.DB"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 2
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 3
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2504.19867v1",
+  "title": "semi-PD: Towards Efficient LLM Serving via Phase-Wise Disaggregated Computation and Unified Storage",
+  "abstract": "Existing large language model (LLM) serving systems fall into two categories: 1) a unified system where prefill phase and decode phase are co-located on the same GPU, sharing the unified computational resource and storage, and 2) a disaggregated system where the two phases are disaggregated to different GPUs. The design of the disaggregated system addresses the latency interference and sophisticated scheduling issues in the unified system but leads to storage challenges including 1) replicated weights for both phases that prevent flexible deployment, 2) KV cache transfer overhead between the two phases, 3) storage imbalance that causes substantial wasted space of the GPU capacity, and 4) suboptimal resource adjustment arising from the difficulties in migrating KV cache. Such storage inefficiency delivers poor serving performance under high request rates. In this paper, we identify that the advantage of the disaggregated system lies in the disaggregated computation, i.e., partitioning the computational resource to enable the asynchronous computation of two phases. Thus, we propose a novel LLM serving system, semi-PD, characterized by disaggregated computation and unified storage. In semi-PD, we introduce a computation resource controller to achieve disaggregated computation at the streaming multi-processor (SM) level, and a unified memory manager to manage the asynchronous memory access from both phases. semi-PD has a low-overhead resource adjustment mechanism between the two phases, and a service-level objective (SLO) aware dynamic partitioning algorithm to optimize the SLO attainment. Compared to state-of-the-art systems, semi-PD maintains lower latency at higher request rates, reducing the average end-to-end latency per request by 1.27-2.58x on DeepSeek series models, and serves 1.55-1.72x more requests adhering to latency constraints on Llama series models.",
+  "published": "2025-04-28T15:00:03Z",
+  "updated": "2025-04-28T15:00:03Z",
+  "authors": [
+   "Ke Hong",
+   "Lufang Chen",
+   "Zhong Wang",
+   "Xiuhong Li",
+   "Qiuli Mao",
+   "Jianping Ma",
+   "Chao Xiong",
+   "Guanyu Wu",
+   "Buhe Han",
+   "Guohao Dai",
+   "Yun Liang",
+   "Yu Wang"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "18 pages, 16 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 51
+ },
+ {
+  "id": "2610.26131v1",
+  "title": "A Hybrid GPU and Processing-Near-Memory Architecture with Shared DRAM for Efficient Prefill-Decode Disaggregation",
+  "abstract": "The growing adoption of large language models (LLMs) has significantly increased the compute and memory demands of inference serving. A key challenge arises from the mismatch between compute-bound prefill and memory-bound decoding: when executed together, the two phases interfere, while separating them via prefill-decode (PD) disaggregation leads to substantial resource underutilization. Specifically, prefill leaves memory bandwidth underutilized, whereas decoding underutilizes compute resources. Prior approaches, such as GPU Streaming Multiprocessor (SM) partitioning, attempt to improve utilization by spatially dividing GPU resources. However, these approaches remain fundamentally limited, as memory-bound decoding still requires a large number of SMs to saturate bandwidth, reducing the compute resources available for prefill and resulting in an inherent trade-off. To address this limitation, we propose DuoPD, a hybrid PD-disaggregation architecture that integrates lightweight Processing-Near-Memory (PNM) units into the HBM logic die. Unlike prior PIM/PNM designs that rely on costly internal bandwidth scaling and offload only partial decoding operations, DuoPD enables full decoding execution on PNM by leveraging bandwidth sharing with the GPU over a shared HBM interface. This allows compute-bound prefill and memory-bound decoding to execute concurrently with minimal interference, improving both compute and memory utilization. To realize this design, we develop a compact PNM microarchitecture, a TSV-level bandwidth sharing mechanism, and a hierarchical data mapping scheme tailored for hybrid GPU-PNM execution. Evaluations on server-scale LLMs demonstrate that DuoPD achieves up to 2.23x higher end-to-end throughput than conventional PD-disaggregation.",
+  "published": "2026-10-19T10:22:27Z",
+  "updated": "2026-10-19T10:22:27Z",
+  "authors": [
+   "Sanghyeok Han",
+   "Inseong Choi",
+   "Byungkuk Yoon",
+   "Gyeonghwan Park",
+   "Jae-Joon Kim"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "15 pages, 16 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2609.26763v1",
+  "title": "SARA: SLO-Aware Resource Allocation for Disaggregated Agentic LLM Services",
+  "abstract": "Recent advances in large language models (LLMs) are driving the emergence of multi-modal and agentic services for mobile users through cloud and edge infrastructures, where long-context workloads pose daunting challenges for inference latency. Existing disaggregated LLM serving systems largely rely on hardware profiling, configuration enumeration, or heuristic scheduling, offering limited analytical guidance for cost-efficient resource allocation. In this paper, we propose SARA, a Service level objectives (SLOs)-Aware Resource Allocation framework for disaggregated agentic LLM serving systems, which maximizes goodput under a deployment cost constraint and a series of quantile-based SLO constraints. By capitalizing on queuing theory, we first model the prefill, KV cache transfer, and decode stages as an M/G/k queue, an M/G/1 queue, and a generalized birth-death process, respectively. The analysis reveals that the prefill and decode stages are dominantly limited by computational capacity and high-bandwidth memory (HBM) resources, respectively. With these mathematical models, we further derive tractable tail behaviors of different stage-wise service level metrics for both light- and heavy-tailed workloads. These characterizations explicitly map workload, model architecture, and hardware parameters to stage-wise SLO constraints and minimum resource requirements. Finally, we develop an effective resource allocation framework to maximize system goodput under limited cost budgets. Simulation and hardware results demonstrate that the proposed framework accurately predicts the stage-wise SLO with mean errors below 5%, and improves system goodput by 26.6% on average over state-of-the-art baseline methods under the same deployment cost.",
+  "published": "2026-09-22T17:42:35Z",
+  "updated": "2026-09-22T17:42:35Z",
+  "authors": [
+   "Shicong Liu",
+   "Xianghao Yu",
+   "Zhen Gao",
+   "Jun Zhang"
+  ],
+  "categories": [
+   "cs.PF",
+   "cs.DC"
+  ],
+  "comment": "17 pages, 12 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2606.29986v1",
+  "title": "HBM Is Not All You Need: Efficient Disaggregated LLM Serving across Memory-heterogeneous Accelerators",
+  "abstract": "LLM inference comprises a compute-bound prefill phase and a memory-bound decode phase, and recent systems disaggregate them onto separate hardware. Yet today's datacenter GPUs rely on costly HBM whose bandwidth sits almost entirely idle during prefill. LLM serving across memory-heterogeneous accelerators (MemHA) pairs GDDR-based accelerators for prefill with HBM-based GPUs for decode, promising lower cost without sacrificing performance. Pushed to its most economical form, MemHA serving is inherently cross-vendor, since the best-suited chip for each phase may come from a different vendor. This breaks two assumptions that single-vendor disaggregation takes for granted -- a KV format both ends consume natively, and a shared software stack. We present \\textbf{HMA-Serve}, a MemHA-centric disaggregated serving system pairing GDDR-based accelerators for prefill with HBM-based GPUs for decode efficiently. HMA-Serve achieves this through (1) phase-wise quantization, applying vendor-native low precision for high-throughput prefill while keeping decode in high-precision BF16, (2) a compute-transfer pipeline that overlaps each layer's KV cache transfer with later-layer prefill to reduce time-to-first-token (TTFT), and (3) deferred dequantization, shipping raw quantized bytes and reconstructing them lazily on the decode GPU to reduce network bandwidth and HBM usage. Across four Qwen3 models (4B--32B) and three production traces, HMA-Serve delivers up to $3.2\\times$ higher goodput than state-of-the-art memory-homogeneous methods and $4.8\\times$ higher goodput-per-dollar, with no measurable loss on generation-quality benchmarks.",
+  "published": "2026-06-29T09:00:38Z",
+  "updated": "2026-06-29T09:00:38Z",
+  "authors": [
+   "Zhixiang Wei",
+   "Yun Wang",
+   "James Yen",
+   "Mingyuan Xia",
+   "Zhengwei Qi"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 45
+ },
+ {
+  "id": "2509.07379v2",
+  "title": "DuoServe-MoE: Dual-Phase Expert Prefetch and Caching for LLM Inference QoS Assurance",
+  "abstract": "Large Language Models (LLMs) are increasingly deployed as Internet/Web services (LLM-as-a-Service) with strict latency Service-Level Objectives (SLOs) under tight GPU memory budgets. Mixture-of-Experts (MoE) models improve quality and throughput via sparse expert activation, but serving them efficiently is challenging because expert weights dominate memory footprint and incur costly host--device transfers when offloaded. Moreover, MoE serving exhibits a phase disparity: the prefill phase tends to activate experts densely across many tokens, while the decode phase activates only a few experts per step. A uniform expert loading/caching policy across phases leads to either peak-memory blowup (prefill) or tail-latency inflation (decode). We present DuoServe-MoE, a QoS-oriented MoE serving system that decouples prefill and decode and applies phase-specialized expert scheduling. For prefill, DuoServe-MoE uses a two-stream CUDA pipeline to overlap expert prefetching with non-MoE computation, reducing expert residency time and peak GPU memory. For decode, it employs a lightweight layer-level predictor trained offline from activation traces to prefetch only likely experts without model changes. Experiments on representative MoE LLMs show that DuoServe-MoE improves TTFT by up to $5.34\\times$ and end-to-end latency by up to $7.55\\times$ over representative baselines, while maintaining low runtime GPU memory usage under resource-constrained deployment.",
+  "published": "2025-09-09T04:00:43Z",
+  "updated": "2026-04-09T05:45:21Z",
+  "authors": [
+   "Yuning Zhang",
+   "Grant Pinkert",
+   "Nan Yang",
+   "Yanli Li",
+   "Dong Yuan"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 45
+ },
+ {
+  "id": "2506.02006v2",
+  "title": "MorphServe: Efficient and Workload-Aware LLM Serving via Runtime Quantized Layer Swapping and KV Cache Resizing",
+  "abstract": "Efficiently serving large language models (LLMs) under dynamic and bursty workloads remains a key challenge for real-world deployment. Existing serving frameworks and static model compression techniques fail to adapt to workload fluctuations, leading to either service-level objective (SLO) violations under full-precision serving or persistent accuracy degradation with static quantization. We present MorphServe, a dynamic, workload-aware LLM serving framework based on morphological adaptation. MorphServe introduces two asynchronous, token-level runtime mechanisms: quantized layer swapping, which selectively replaces less impactful layers with quantized alternatives during high-load periods, and pressure-aware KV cache resizing, which dynamically adjusts KV cache capacity in response to memory pressure. These mechanisms enable state-preserving transitions with minimum runtime overhead and are fully compatible with modern scheduling and attention techniques. Extensive experiments on Vicuna and Llama family models with real-world workloads demonstrate that MorphServe reduces average SLO violations by 92.45 percent and improves the P95 TTFT latency by 2.2x-3.9x compared to full-precision serving, without compromising generation quality. These results establish MorphServe as a practical and elastic solution for LLM deployment in dynamic environments.",
+  "published": "2025-05-24T06:12:31Z",
+  "updated": "2026-01-07T03:04:41Z",
+  "authors": [
+   "Zhaoyuan Su",
+   "Zeyu Zhang",
+   "Tingfeng Lan",
+   "Zirui Wang",
+   "Haiying Shen",
+   "Juncheng Yang",
+   "Yue Cheng"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "19 pages, 7 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   }
+  ],
+  "score": 43
+ },
+ {
+  "id": "2603.28018v1",
+  "title": "Low-Latency Edge LLM Handover via Joint KV Cache Transfer and Token Prefill",
+  "abstract": "Edge deployment of large language models (LLMs) can reduce latency for interactive services, but mobility introduces service interruptions when an user equipment (UE) hands over between base stations (BSs). To promptly resume decoding, the target-side edge server must recover the UE context state, which can be provisioned either by token forwarding followed by prefill computation or by direct key-value (KV) cache transmission over backhaul. This paper proposes a unified handover (HO) design that jointly selects the prefill length and schedules backhaul KV cache delivery to minimize the worst-user LLM HO delay for multiple UEs. The resulting scheme admits a tractable step-wise solution with explicit feasibility conditions and a constructive rate-scheduling policy. Simulations show that the proposed method consistently outperforms baselines across a wide range of backhaul capacities, prefill speeds, and context sizes, providing practical guidelines for mobility-aware Edge LLM token streaming.",
+  "published": "2026-03-30T04:22:10Z",
+  "updated": "2026-03-30T04:22:10Z",
+  "authors": [
+   "Seunghun Lee",
+   "Jihong Park",
+   "Ce Zheng",
+   "Hyuncheol Park"
+  ],
+  "categories": [
+   "eess.SP"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 42
+ },
+ {
+  "id": "2508.01989v1",
+  "title": "Prefill-Decode Aggregation or Disaggregation? Unifying Both for Goodput-Optimized LLM Serving",
+  "abstract": "An ongoing debate considers whether prefill-decode (PD) aggregation or disaggregation is superior for serving large language models (LLMs). This has driven optimizations for both approaches, each showing distinct advantages. This paper compares PD aggregation and disaggregation, showing that each excels under different service-level objectives (SLOs): aggregation is optimal for tight time-to-first-token (TTFT) and relaxed time-per-output-token (TPOT), while disaggregation excels for strict TPOT and relaxed TTFT. However, under balanced TTFT and TPOT SLOs, neither approach delivers optimal goodput. This paper proposes TaiChi, an LLM serving system that unifies PD disaggregation and aggregation for optimal goodput under any combination of TTFT and TPOT SLOs. TaiChi uses a unified disaggregation-aggregation architecture with differentiated-capability GPU instances: prefill-heavy (fast prefill, high-interference decode) and decode-heavy (low-interference decode, slow prefill). Three configurable sliders control the ratio between these instances and their chunk sizes. TaiChi adapts to various SLO regimes by adjusting sliders. When TTFT constraints are tight, TaiChi resembles a PD aggregation configuration; when TPOT dominates, it adapts toward PD disaggregation. Crucially, under balanced SLOs, TaiChi enables a hybrid mode for superior goodput. The key innovation behind this hybrid mode is latency shifting: selectively reallocating GPU resources from requests that meet SLOs to those at risk of violation, maximizing the number of SLO-satisfied requests. This fine-grained latency shifting is orchestrated by two scheduling mechanisms: flowing decode scheduling to control TPOTs and length-aware prefill scheduling to manage TTFTs, which jointly optimize request assignment. Our experiments show TaiChi improves goodput by up to 77% over state-of-the-art systems under balanced TTFT and TPOT SLOs.",
+  "published": "2025-08-04T02:13:53Z",
+  "updated": "2025-08-04T02:13:53Z",
+  "authors": [
+   "Chao Wang",
+   "Pengfei Zuo",
+   "Zhangyu Chen",
+   "Yunkai Liang",
+   "Zhou Yu",
+   "Ming-Chang Yang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "17 pages, 19 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 42
+ },
+ {
+  "id": "2607.02043v1",
+  "title": "Towards Load-Aware Prefill Deflection for Disaggregated LLM Serving",
+  "abstract": "Disaggregated LLM serving runs prefill and decode on separate GPU pools to keep the two phases from interfering. In practice, this creates a new asymmetry: under bursty, heavy-tailed workloads prefill nodes saturate while decode nodes have compute underutilized, and on a production-style A100 cluster with 2 prefill and 2 decode nodes (2P2D), we find that prefill execution accounts for only 2-23% of P95 Time-to-First-Token (TTFT). Queuing and inter-node GPU-GPU KV-cache transfer account for the rest. We present a proactive prefill-deflecting scheduler that lets decode nodes serve prefill phase of requests as chunked-prefill steps interleaved with their in-flight decode batches. For each queued request, we estimate the TTFT it would see on the prefill node, and on every decode node, search for the largest chunk schedule that keeps in-flight decodes within their Time-Between-Tokens (TBT) SLO and deflect when the decode path helps tail latency. Because the prefill phase of deflected requests runs in place on the decode node, the inter-node KV transfer is eliminated. Implemented on vLLM and evaluated on production-style traces with DeepSeek-V2-Lite, our approach reduces P95 TTFT by upto 81% and raises SLO attainment by upto 79% over state-of-the-art disaggregated schedulers, at sub-millisecond per-request routing cost.",
+  "published": "2026-07-02T11:10:05Z",
+  "updated": "2026-07-02T11:10:05Z",
+  "authors": [
+   "Shrikara Arun",
+   "Anjaly Parayil",
+   "Srikant Bharadwaj",
+   "Renee St. Amant",
+   "Victor Rühle"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 41
+ },
+ {
+  "id": "2606.04415v2",
+  "title": "FlexNPU: Transparent NPU Virtualization for Dynamic LLM Prefill-Decode Co-location",
+  "abstract": "Modern AI serving increasingly relies on NPUs for conventional inference and large language model serving. However, current NPU deployments commonly expose physical devices directly to applications, which limits runtime control over scheduling and makes it difficult to adapt execution to phase-level workload behavior. This limitation is particularly evident in LLM serving, where the prefill phase is compute-intensive while the decode phase is often constrained by memory bandwidth and KV-cache accesses. Static prefill-decode (PD) disaggregation reduces phase interference, but can introduce resource imbalance and unnecessary data movement. We present FlexNPU, a transparent user-space virtualization layer for Ascend NPUs. FlexNPU interposes on AscendCL APIs and routes NPU operations through per-device daemons, decoupling unmodified from physical NPU devices without modifying model code, AI frameworks, or NPU drivers. This runtime boundary allows FlexNPU to virtualize NPU objects, control operator dispatch, and support phase-aware scheduling for LLM serving. In particular, FlexNPU enables dynamic PD co-location, which adapts scheduling between prefill and decode according to their complementary resource characteristics. We implement FlexNPU on Huawei Ascend NPUs and evaluate it with typical LLM workloads. Compared with direct NPU passthrough, FlexNPU introduces no measurable inference overhead and slightly improves throughput in some scenarios. On a 384-card Ascend 910C deployment of DeepSeek-R1, FlexNPU improves throughput over static PD disaggregation by 5.15% and 26.33%. On Qwen2.5-7B, compared with static PD co-location, FlexNPU maintains comparable throughput while reducing TTFT by over 92% across tested workloads with nearly unchanged TPOT. These results show that transparent NPU virtualization is a practical substrate for efficient and responsive LLM serving.",
+  "published": "2026-06-03T03:49:34Z",
+  "updated": "2026-06-08T07:36:57Z",
+  "authors": [
+   "Jiongjiong Gu",
+   "Jianfeng Wang",
+   "Zidong Han",
+   "Yongqiao Wang",
+   "Pengfei Xia",
+   "Mingjie Zhang",
+   "Hong Liu",
+   "Yuanyi Xia",
+   "Jiajia Chu",
+   "Yifeng Tang",
+   "Hui Zang",
+   "Xin Yao",
+   "Qijie Qiu",
+   "Yuzhao Wang",
+   "Chuanfei Xu",
+   "Lin Zhang",
+   "Zhuonan Lai",
+   "Hongming Huang",
+   "Jiawei Qiu",
+   "Gong Zhang",
+   "Weipeng Cao",
+   "Zhong Ming"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2605.29639v1",
+  "title": "RTP-LLM: High-Performance Alibaba LLM Inference Engine",
+  "abstract": "Large Language Models (LLMs) have revolutionized AI applications, but deploying them at scale presents significant challenges. We present RTP-LLM, a high-performance inference engine for industrial-scale LLM deployment, successfully deployed across Alibaba Group serving over 100 million users. RTP-LLM addresses fundamental bottlenecks through integrated design. It optimizes model loading via file-order-driven I/O and parallel I/O-communication overlapping. The Prefill-Decode Disaggregation architecture decouples compute-intensive prefill from memory-bound decode phases, combined with hierarchical multi-tiered KV cache management enabling efficient cache reuse. In addition, RTP-LLM incorporates modular speculative decoding supporting multiple algorithms, adaptive KV cache quantization, and decoupled multimodal processing, with support for multi-level parallelism. Comprehensive evaluations across diverse model architectures (8B-235B parameters) have been conducted, where both controlled benchmarks and real production workloads are used. The results demonstrate RTP-LLM's superior performance against vLLM and SGLang: 4.7x-6.3x model loading speedup, 35-37% TTFT P95 latency reduction with 215% cache reuse improvement in production traffic scheduling, 1.12x-2.48x and 1.86x-2.52x throughput improvements in speculative decoding and multimodal inference, respectively, and 35-40% batch latency reduction with 1.9x-3.0x TTFT improvement in quantized inference. RTP-LLM's production-proven architecture and open-source availability make it a comprehensive solution for industrial LLM deployment.",
+  "published": "2026-05-28T09:07:06Z",
+  "updated": "2026-05-28T09:07:06Z",
+  "authors": [
+   "Boyu Tan",
+   "Jiarui Guo",
+   "Zongwei Lv",
+   "Hanbo Sun",
+   "Tong Yang",
+   "Kan Liu",
+   "Xinfei Shi",
+   "Zetao Hu",
+   "Yaxin Yu",
+   "Chi Zhang",
+   "Jianning Zhang",
+   "Xi Yang",
+   "Wei Zhang",
+   "Bo Cai",
+   "Silu Zhou",
+   "Xiyu Wang",
+   "Na He",
+   "Yinghao Yu",
+   "Wending Bao",
+   "Guiyang Huang",
+   "Yuxing Yuan",
+   "Juncheng Yin",
+   "Nan Wang",
+   "Lin Yang",
+   "Zechao Zhang",
+   "Lu Chen",
+   "Guoding Li",
+   "Tao Lan",
+   "Lin Qu"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "model-loading-serving",
+    "query": "abs:\"model loading\" AND (abs:inference OR abs:serving)",
+    "rank": 2
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2509.17542v2",
+  "title": "Disaggregated Prefill and Decoding Inference System for Large Language Model Serving on Multi-Vendor GPUs",
+  "abstract": "LLM-based applications have been widely used in various industries, but with the increasing of models size, an efficient large language model (LLM) inference system is an urgent problem to be solved for service providers. Since the inference system is divided into two stage with different characteristics: Prefill and Decode, the two stage will interfere with each other during the inference process. Toward this end, a P-D disaggregated inference framework is proposed by some researchers. Current research is done on homogeneous GPUs, and lacks deployment solutions based on business scenarios. Compared with homogeneous GPUs, using heterogeneous GPUs to construct inference systems can better improve resource utilization and reduce costs. Even if GPUs from different vendors are used to build inference systems, on the basis of reducing costs, the resource utilization rate can be improved and the dependence on a single vendor can be reduced. Therefore, a P-D disaggreagetd inference system based on heterogeneous GPUs is designed, and the heterogeneous compatible transmission module in the system is designed to address heterogeneous GPU data compatibility issues. Then, a joint optimization algorithm of parallel strategy and instance number allocation is proposed to obtain the deployment solutions. Finally, the experimental results show that the P-D disaggregated inference system can well solve the hybrid inference problem of heterogeneous GPUs from different vendors, and the joint optimization algorithm can obtain the optimal deployment solution.",
+  "published": "2025-09-22T09:00:32Z",
+  "updated": "2025-09-28T03:02:32Z",
+  "authors": [
+   "Xing Chen",
+   "Rong Shi",
+   "Lu Zhao",
+   "Lingbin Wang",
+   "Xiao Jin",
+   "Yueqiang Chen",
+   "Hongfeng Sun"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2610.39216v1",
+  "title": "PDScope: Breaking the Prefill-Decode Seesaw for Memory-Bound MoE Inference",
+  "abstract": "Local deployment of MoE-based LLMs on CPU-GPU nodes is attractive for cost and privacy reasons, yet limited GPU memory forces most experts into CPU memory. Prefill is then compute-bound and benefits from aggressive GPU loading, while decode is I/O-bound and requires conservative PCIe transfers. These demands cannot be amortized under low batching---typical of local assistants and document tools---forcing phase-agnostic schedulers into a seesaw: favoring prefill's aggressive loading injects unmaskable I/O that stalls decode, while favoring decode's conservative transfers starves prefill's GPU of work. We observe that expert routing is predictable in phase-specific ways, allowing us to decouple the two phases and optimize prediction, scheduling, and execution independently for each phase. PDScope predicts expert activations to guide placement and prefetching, adapts these policies to each phase's bottleneck via cross-layer cost modeling, and compiles decisions into overhead-free pipelines using a static computation graph, cache prefetching, and zero-copy asynchronous I/O. On mainstream MoE models, PDScope achieves 2.5-10.3x higher prefill throughput and 2.1-6.1x higher decode throughput than existing systems, showing that phase-aware co-design unlocks efficient MoE inference under memory constraints and extends naturally to multi-batch settings.",
+  "published": "2026-10-29T02:37:09Z",
+  "updated": "2026-10-29T02:37:09Z",
+  "authors": [
+   "Enda Yu",
+   "Dezun Dong",
+   "Zhaoning Zhang",
+   "Xiaojian Yang",
+   "Weiling Yang",
+   "Shaonan Ma",
+   "Dongsheng Li",
+   "Yongwei Wu",
+   "Xiangke Liao"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "accepted by PPoPP'27",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:memory AND (abs:LLM OR abs:transformer) AND abs:system",
+    "rank": 2
+   }
+  ],
+  "score": 37
+ },
+ {
+  "id": "2608.03741v1",
+  "title": "When Does Disaggregation Pay? Simulating Prefill--Decode--Attention--FFN Specialization for Agentic LLM Inference",
+  "abstract": "Agentic inference now dominates the LLM inference landscape, requiring LLMs to actively engage in multi-turn interactions with tool-calling capabilities. This introduces a more complex workload for the underlying inference system: serving stages such as prefill and decode exhibit substantially different behaviors and demand distinct compute and memory-bandwidth capabilities. As a result, a single homogeneous GPU system now struggles to support agentic inference, motivating an industry shift toward heterogeneous systems with disaggregated serving capabilities, such as the emerging Vera-Rubin platform with GPUs and Groq LPUs. However, the question of what the optimal hardware should look like for each component in a heterogeneous system remains underexplored. To this end, we propose a novel simulation framework for disaggregated serving, termed \\textbf{HeteroPanacea}, that enables system-level simulation across three dimensions: 1) disaggregated quantization, 2) automated intra- and inter-device parallelization scheduling, and 3) PDAF (prefill-decode-attention-FFN) NPU architectural heterogeneity. By combining these three axes, we provide a cross-stack simulation framework for future heterogeneous agentic serving systems. We confirm the benefit of Prefill Decode disaggregation, simulating increased serving throughput by up to 75\\% compared to traditional serving with current GPUs and demonstrate 4 way Prefill Decode Attention FFN disaggregation is the most consistent for increasing throughput across different models, assuming custom NPUs. We also investigate the relationship between model architecture and gain from disaggregation by running a set of ablation studies.",
+  "published": "2026-08-04T14:35:25Z",
+  "updated": "2026-08-04T14:35:25Z",
+  "authors": [
+   "Przemyslaw Forys",
+   "Haoran Wu",
+   "Can Xiao",
+   "Jiayi Nie",
+   "Tony Liu",
+   "Rika Antonova",
+   "Timothy Jones",
+   "Robert Mullins",
+   "Wayne Luk",
+   "Aaron Zhao",
+   "George A. Constantinides"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 3
+   }
+  ],
+  "score": 37
+ },
+ {
+  "id": "2504.14489v3",
+  "title": "Towards High-Goodput LLM Serving with Prefill-decode Multiplexing",
+  "abstract": "Large Language Model (LLM) serving must meet stringent Service Level Objectives (SLOs) for both the prefill and decode phases. Some existing solutions disaggregate the two phases, causing potential resource idleness or compute redundancy. Others split the prefill phase into chunks and fuse it with decode iteration, creating a dilemma between SLO compliance and high utilization. To address these issues, an efficient serving system should dynamically adapt compute allocation, decouple compute from memory management, and execute prefill and decode independently. We present MuxWise, an LLM serving framework that adopts a new paradigm, intra-GPU prefill-decode multiplexing, to meet these requirements. To fully exploit the paradigm, MuxWise integrates a bubble-less multiplex engine, a contention-tolerant estimator, and an SLO-aware dispatcher. Evaluation shows that MuxWise improves peak throughput under SLO guarantees by an average of 2.20x (up to 3.06x) over state-of-the-art baselines.",
+  "published": "2025-04-20T04:46:34Z",
+  "updated": "2026-02-07T09:18:21Z",
+  "authors": [
+   "Yukang Chen",
+   "Weihao Cui",
+   "Han Zhao",
+   "Ziyi Xu",
+   "Xiaoze Fan",
+   "Xusheng Chen",
+   "Yangjie Zhou",
+   "Shixuan Sun",
+   "Bingsheng He",
+   "Quan Chen"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   }
+  ],
+  "score": 37
+ },
+ {
+  "id": "2609.16206v1",
+  "title": "Calibrate, Then Route: A Measured Study of Learned Request Routing for Disaggregated LLM Serving",
+  "abstract": "Disaggregated LLM serving places compute heavy prefill and memory heavy decode on separate GPU pools. Systems such as DistServe, Splitwise, and Mooncake make this separation fast, but routing still determines which instances handle each request. We study a router that estimates the additional completion time on each instance using exact prompt length, predicted output length, post admission KV cache pressure, and SLO class. We develop the policy in a discrete event simulator and validate it on eight NVIDIA A40 GPUs, each running a vLLM engine, with NIXL transferring KV caches between pools. All workloads run at measured saturation. Across three mixed, bursty arrival traces, the calibrated router achieves the highest mean goodput at 0.864, compared with 0.835 to 0.847 for round robin, least loaded, and a length heuristic. It also shows the lowest variance across traces. It beats round robin and the length heuristic on all three traces and least loaded on two. On the third, it trails by 0.003, within run to run noise. Hardware calibration matters: simulator derived constants cost 4.5 goodput points and roughly 40 percent of the tail latency advantage, reducing the scorer to little more than queue counting. Benefits grow with decode pool size and traffic heterogeneity but disappear in pools with three instances, where queue counts are often enough. Under extreme scarcity, greedy cost minimization concentrates requests on the cheapest scored instance, and blind spreading performs better. With calibrated costs, the learned router matches the goodput of round robin using six GPUs instead of seven.",
+  "published": "2026-09-14T18:39:18Z",
+  "updated": "2026-09-14T18:39:18Z",
+  "authors": [
+   "Srikanta Datta Tumkur",
+   "Jay Iyer",
+   "Mehar Simhadri",
+   "Sai Pavan Kumar",
+   "Sai Kapil Kumar",
+   "Ramesh Nampelly"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   },
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 2
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2608.06557v1",
+  "title": "Cascade: Exploiting SLO-Aware latency budget for fair and high goodput LLM inference serving",
+  "abstract": "The reasoning and agentic capabilities of large language models have expanded the range of applications they support, from short interactive exchanges to long, compute-heavy requests. LLM serving platforms today define response-latency service-level objectives, even though requests within the same service can differ by orders of magnitude in input length, generation length, execution cost, and the availability of reusable KV-cache state. As a result, requests governed by the same service level objective have different urgency: after accounting for the time required to execute them, some have substantial latency headroom while others have almost none. We define this headroom---the difference between a request's service level objective and its predicted remaining service time---as its per-request latency budget. We present Cascade, an LLM serving system that estimates and continuously updates this budget from request characteristics, KV-cache state, and current system load. Unlike prior SLO-aware schedulers that use deadlines to govern request ordering alone, Cascade uses a single per-request budget to jointly coordinate request scheduling and KV-cache management across the memory hierarchy. Its scheduler prioritizes requests with little remaining budget, while its memory manager uses the same budget to decide whether non-resident KV state should be restored or prefetched from a deeper tier, retained in HBM, or recomputed. By directing queueing and data-movement overhead toward requests that can absorb it, Cascade improves SLO-satisfied goodput while preserving fairness across heterogeneous request classes. On production traces across three large language models, Cascade improves goodput by up to2.4x and reduces SLO violations by 40% relative to the default vLLM first-come, first-served scheduler.",
+  "published": "2026-08-06T20:14:21Z",
+  "updated": "2026-08-06T20:14:21Z",
+  "authors": [
+   "Muhammad Adnan",
+   "Rohan Mahapatra",
+   "Prashant J. Nair",
+   "Daniel Berger",
+   "Pantea Zardoshti",
+   "Rodrigo Fonseca",
+   "Esha Choukse"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2503.20552v1",
+  "title": "Injecting Adrenaline into LLM Serving: Boosting Resource Utilization and Throughput via Attention Disaggregation",
+  "abstract": "In large language model (LLM) serving systems, executing each request consists of two phases: the compute-intensive prefill phase and the memory-intensive decoding phase. To prevent performance interference between the two phases, current LLM serving systems typically adopt prefill-decoding disaggregation, where the two phases are split across separate machines. However, we observe this approach leads to significant resource underutilization. Specifically, prefill instances that are compute-intensive suffer from low memory utilization, while decoding instances that are memory-intensive experience low compute utilization. To address this problem, this paper proposes Adrenaline, an attention disaggregation and offloading mechanism designed to enhance resource utilization and performance in LLM serving systems. Adrenaline's key innovation lies in disaggregating part of the attention computation in the decoding phase and offloading them to prefill instances. The memory-bound nature of decoding-phase attention computation inherently enables an effective offloading strategy, yielding two complementary advantages: 1) improved memory capacity and bandwidth utilization in prefill instances, and 2) increased decoding batch sizes that enhance compute utilization in decoding instances, collectively boosting overall system performance. Adrenaline achieves these gains through three key techniques: low-latency decoding synchronization, resource-efficient prefill colocation, and load-aware offloading scheduling. Experimental results show that Adrenaline achieves 2.28x higher memory capacity and 2.07x better memory bandwidth utilization in prefill instances, up to 1.67x improvements in compute utilization for decoding instances, and 1.68x higher overall inference throughput compared to state-of-the-art systems.",
+  "published": "2025-03-26T13:48:35Z",
+  "updated": "2025-03-26T13:48:35Z",
+  "authors": [
+   "Yunkai Liang",
+   "Zhangyu Chen",
+   "Pengfei Zuo",
+   "Zhi Zhou",
+   "Xu Chen",
+   "Zhou Yu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "14 pages, 18 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 2
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2606.01839v1",
+  "title": "Observation, Not Prediction: Conversation-Level Disaggregated Scheduling for Agentic Serving",
+  "abstract": "LLM-based agents resolve a user task through many turns of dependent inference and tool calls, producing a workload whose total cost is unknown when the task arrives. Existing multi-turn systems keep the turn as the scheduling unit and decide, turn by turn, whether to disaggregate prefill from decode. That decision rests on the turn's decode length, tool behavior, and KV growth, quantities that are not observable when the scheduler must act, forcing the system to predict them. We show this dependence on prediction is imposed by the scheduling unit, not the workload. Raising the scheduling unit from the turn to the conversation converts turn-level irregularity into a stable, two-phase structure: 1) a compute-bound turn-1 prefill followed by 2) a long, memory-bound tail. Thus, with the conversation as the scheduling unit, placement reduces to reading the first-turn input length and per-decoder KV occupancy, both directly observable. We instantiate this principle in ConServe, which routes the first-turn prefill to a high-throughput prefiller, transfers the KV cache exactly once, and pins the conversation to a single decoder for its entire tail, with no learned model of decode-side cost. Against a per-turn prediction baseline, ConServe reduces p95 time-to-first-effective-token (the latency of a conversation's first user-visible output) by 51.08% and improves energy efficiency by 7.51% while preserving last-turn TBT and SLOs; mapping the two phases onto heterogeneous GPU tiers adds a further 22.75% in energy efficiency.",
+  "published": "2026-06-01T07:51:09Z",
+  "updated": "2026-06-01T07:51:09Z",
+  "authors": [
+   "Jianru Ding",
+   "Ryien Hosseini",
+   "Pouya Mahdi Gholami",
+   "Mingyuan Xiang",
+   "Henry Hoffmann"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AR",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 34
+ },
+ {
+  "id": "2607.18002v2",
+  "title": "ExpertPlex: A High-Goodput Disaggregated Serving System for MoE LLMs with Adaptive Persistent Kernels",
+  "abstract": "LLMs scale Mixture-of-Experts (MoE) parameters for superior intelligence, but massive weights and dynamic computation impede efficient serving. Existing instance-level prefill-decode disaggregation isolates the phases on separate full-model replicas. As MoE weights grow, each instance may span tens to hundreds of GPUs, making resource allocation increasingly coarse. Configured prefill-to-decode ratios thus often mismatch demand, overprovisioning one phase while overloading the other. Prefill-decode colocation avoids this duplication, but existing Green Context solutions partition each GPU by phase and fix phase resources during a kernel. They cannot track resource changes across operations or layerwise variation in routed expert load, causing head-of-line blocking or idle reserved resources. Partitioning every GPU also leaves each phase with fewer local resources, forces wider parallelism and more communication, and lets prefill and decode traffic interfere on the shared network. We present ExpertPlex, which shares massive MoE experts across phases while disaggregating lightweight attention modules. Expert sharing eliminates over 95% of duplicate model weights and multiplexes dynamically sparse computation, while attention disaggregation reduces attention communication cost. ExpertPlex further uses (1) adaptive persistent kernels to schedule dynamic expert computation at tile granularity for efficient, isolated execution; (2) attention-initiated MoE communication to avoid network interference and enable cross-phase communication-computation overlap; and (3) a tile-to-cluster model to optimize these mechanisms for maximum goodput. Experiments serving MiniMax-M2.7 and GLM-5.1-FP8 show that ExpertPlex improves goodput by up to 2.01$\\times$ over instance-level prefill-decode disaggregation and 1.66$\\times$ over prefill-decode colocation.",
+  "published": "2026-07-20T14:34:43Z",
+  "updated": "2026-07-21T05:51:58Z",
+  "authors": [
+   "Bingyang Wu",
+   "Chao Jin",
+   "Zili Zhang",
+   "Xinming Wei",
+   "Yinmin Zhong",
+   "Ruidong Zhu",
+   "Chengxu Yang",
+   "Xin Jin",
+   "Yuliang Liu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2509.04467v4",
+  "title": "PDTrim: Targeted Pruning for Prefill-Decode Disaggregation in Inference",
+  "abstract": "Large Language Models (LLMs) demonstrate exceptional capabilities across various tasks, but their deployment is constrained by high computational and memory costs. Model pruning provides an effective means to alleviate these demands. However, existing methods often ignore the characteristics of prefill-decode (PD) disaggregation in practice. In this paper, we propose a pruning method that is highly integrated with PD disaggregation, enabling more precise pruning of blocks. Our approach constructs pruning and distillation sets to perform iterative block removal, obtaining better pruning solutions. Moreover, we analyze the pruning sensitivity of the prefill and decode stages and identify removable blocks specific to each stage, making it well suited for PD disaggregation deployment. Extensive experiments demonstrate our approach consistently achieves strong performance in both PD disaggregation and PD unified (non-PD disaggregation) settings, and can also be extended to other non-block pruning methods. Under the same settings, our method achieves improved performance and faster inference.",
+  "published": "2025-08-29T02:29:52Z",
+  "updated": "2025-12-14T14:46:31Z",
+  "authors": [
+   "Hao Zhang",
+   "Mengsi Lyu",
+   "Zhuo Chen",
+   "Xingrun Xing",
+   "Yulong Ao",
+   "Yonghua Lin"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "Minor revisions",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2504.09285v2",
+  "title": "DynaServe: Unified and Elastic Execution for Dynamic Disaggregated LLM Serving",
+  "abstract": "LLM inference must meet strict latency SLOs (e.g., 100 ms P99 time-between-tokens) while maximizing goodput. Yet, real-world variability in prompt and response lengths skews compute-intensive prefill and memory-bound decode phases, making both colocated (even with chunked prefill) and disaggregated deployments unable to simultaneously deliver low tail latency and high throughput. We introduce DynaServe, a high-performance LLM serving system built atop vLLM that unifies and extends both paradigms for maximizing goodput under SLO constraints, when handling unbalanced and dynamic workloads. It relies on a micro-request abstraction, which arbitrarily splits each request at any token boundary into at most two cooperating segments. A two-level scheduling framework then balances micro-request load across unified GPU instances. The global scheduler rapidly selects per-request split points by considering both the request's prefill/decode time ratio and the current load across GPU instances. The local schedulers on each GPU instance independently form SLO-aware batches, adjusting their composition in response to workload fluctuations, potential latency spikes and per-GPU under/over utilization. On real-world traces, DynaServe boosts the overall serving capacity from 1.15$\\times$ to 3.07$\\times$, improves goodput by up to 1.91$\\times$ and 1.61$\\times$, and improves the performance by up to 60\\% in a hybrid workload under SLO compared to state-of-the-art colocated and disaggregated baselines.",
+  "published": "2025-04-12T17:09:54Z",
+  "updated": "2025-05-22T03:32:05Z",
+  "authors": [
+   "Chaoyi Ruan",
+   "Yinhe Chen",
+   "Dongqi Tian",
+   "Yandong Shi",
+   "Yongji Wu",
+   "Jialin Li",
+   "Cheng Li"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   },
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 3
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2605.28302v1",
+  "title": "How Far Can Disaggregation Go? A Design-Space Exploration of Attention-FFN Disaggregation for Efficient MoE LLM Serving",
+  "abstract": "Modern large language model (LLM) inference has progressively disaggregated to keep pace with growing model sizes and tight TTFT and TPOT service-level objectives: from chunked-prefill aggregation, to prefill-decode (P/D) disaggregation, and most recently to operator-level Attention-FFN Disaggregation (AFD). This trend is especially important for mixture-of-experts (MoE) models, where memory-bound attention, compute-intensive expert FFNs, and MoE dispatch/combine communication create distinct resource demands. AFD further exposes this heterogeneity by placing attention and MoE-FFN execution on separate GPU groups. Each level of disaggregation deepens the scheduling design space across workload characteristics, resource allocation, and interconnect topology, raising the central question: when does each level actually pay off? We systematically characterize this trade-off for MoE inference across realistic workloads spanning input/output sequence lengths, prefix-KV reuse, and per-user latency constraints. Using chunked-prefill and P/D disaggregation as baselines, we study the benefits and limits of AFD at scale through a framework that fuses on-device kernel measurements with high-fidelity network simulation. Under strict TTFT/TPOT SLOs, AFD sustains around 4k tokens/s of system throughput on DeepSeek-V3.2 across chat, coding, and agentic-coding workloads, where non-AFD deployments are infeasible. We distill concrete takeaways for jointly optimizing throughput and interactivity, including how to partition attention and FFN across GPUs as a function of workload and model architecture, providing design principles for current rack- and cluster-scale deployments as well as future disaggregated AI infrastructure.",
+  "published": "2026-05-27T10:55:57Z",
+  "updated": "2026-05-27T10:55:57Z",
+  "authors": [
+   "Hanjiang Wu",
+   "Abhimanyu Rajeshkumar Bambhaniya",
+   "Sarbartha Banerjee",
+   "Tuhin Khare",
+   "Sudarshan Srinivasan",
+   "Suvinay Subramanian",
+   "Souvik Kundu",
+   "Madhu Kumar",
+   "Midhilesh Elavazhagan",
+   "William Won",
+   "Amir Yazdanbakhsh",
+   "Tushar Krishna"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 31
+ },
+ {
+  "id": "2501.14743v1",
+  "title": "KVDirect: Distributed Disaggregated LLM Inference",
+  "abstract": "Large Language Models (LLMs) have become the new foundation for many applications, reshaping human society like a storm. Disaggregated inference, which separates prefill and decode stages, is a promising approach to improving hardware utilization and service quality. However, due to inefficient inter-node communication, existing systems restrict disaggregated inference to a single node, limiting resource allocation flexibility and reducing service capacity. This paper introduces KVDirect, which optimizes KV cache transfer to enable a distributed disaggregated LLM inference. KVDirect achieves this through the following contributions. First, we propose a novel tensor-centric communication mechanism that reduces the synchronization overhead in traditional distributed GPU systems. Second, we design a custom communication library to support dynamic GPU resource scheduling and efficient KV cache transfer. Third, we introduce a pull-based KV cache transfer strategy that reduces GPU resource idling and improves latency. Finally, we implement KVDirect as an open-source LLM inference framework. Our evaluation demonstrates that KVDirect reduces per-request latency by 55% compared to the baseline across diverse workloads under the same resource constraints.",
+  "published": "2024-12-13T21:54:16Z",
+  "updated": "2024-12-13T21:54:16Z",
+  "authors": [
+   "Shiyang Chen",
+   "Rain Jiang",
+   "Dezhi Yu",
+   "Jinlai Xu",
+   "Mengyuan Chao",
+   "Fanlong Meng",
+   "Chenyu Jiang",
+   "Wei Xu",
+   "Hang Liu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG",
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 31
+ },
+ {
+  "id": "2610.15579v1",
+  "title": "Approximation Algorithms for Dual-Memory Request Scheduling in Disaggregated LLM Inference",
+  "abstract": "Disaggregated LLM inference executes the prefill and decode phases on separate resource pools, reducing interference between the two phases. However, this architecture introduces a coupled scheduling problem because a request that completes prefill retains its prompt KV cache in prefill memory until it is admitted to the decode pool. Prefill and decode admission decisions therefore jointly determine memory occupancy and request completion times. To the best of our knowledge, this problem lacks a formal formulation, and no approximation guarantees are known for request scheduling in disaggregated LLM inference. We formalize this setting as the dual-memory request scheduling (DMRS) problem, whose objective is to minimize the sum of request completion times, and prove that it is strongly NP-hard. We develop two deterministic polynomial-time approximation algorithms. The first applies to instances satisfying $α<1$ and $β<1$ and achieves an approximation ratio of $8+\\frac{4}{1-α}+\\frac{8}{1-β}$, where $α$ and $β$ are the maximum normalized prefill and peak decode memory demands among all requests, respectively. In particular, it yields a $32$-approximation when $α,β\\leq 1/2$. The second algorithm applies to all feasible instances and achieves a uniform $36$-approximation. Finally, evaluations on two H100 GPUs using trace-derived offline workloads show that the proposed algorithms reduce the sum of request completion times relative to multiple vLLM deployment baselines.",
+  "published": "2026-10-11T12:49:58Z",
+  "updated": "2026-10-11T12:49:58Z",
+  "authors": [
+   "Xin Wang",
+   "Hong Shen",
+   "Hui Tian",
+   "Ye Tao"
+  ],
+  "categories": [
+   "cs.DS"
+  ],
+  "comment": "30 pages, 15 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 4
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2609.18112v1",
+  "title": "Token Latency Fairness: Performance Isolation for Multi-Tenant LLM Serving",
+  "abstract": "LLM serving is typically offered as a shared, multi-tenant service, where high-demand workloads from one client can cause latency SLO violations for others. Existing solutions for performance isolation equalize client throughput in the long run, for example through queueing and batching fairness. However, these approaches do not provide latency isolation guarantees; as a result, well-behaved clients can still experience significant degradation to their token-level latencies. In this paper, we present FairInference, which provides the novel δ-token fairness guarantee: for a well-behaved client, if a token is generated in d time units in isolation, it will be generated within d + δ time units in multi-tenant execution, providing strong latency isolation guarantees for LLM serving. To achieve this, FairInference addresses a key challenge of LLM serving: bounding delays from sharing GPU resources without support for fine-grained scheduling or resource allocation. In FairInference, the scheduler enforces per-token deadlines, while bounding the delays from GPU compute sharing and accounting for the additional delays introduced by the shared KV caching in GPU memory. We show that FairInference effectively bounds token-level latency spikes for well-behaved clients and improves overall throughput compared to state-of-the-art LLM serving systems.",
+  "published": "2026-09-16T04:33:08Z",
+  "updated": "2026-09-16T04:33:08Z",
+  "authors": [
+   "Dev Bali",
+   "Soujanya Ponnapalli",
+   "Yichuan Wang",
+   "Natacha Crooks",
+   "Scott Shenker",
+   "Matei Zaharia"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2606.16264v1",
+  "title": "Tropical: Enhancing SLO Attainment in Disaggregated LLM Serving via SLO-Aware Multiplexing",
+  "abstract": "To guarantee service quality in transformer based large language model (LLM) serving, it is essential to meet the latency constraints of both the prefill phase (measured by Time-to-First-Token, TTFT) and the decode phase (measured by Time-per-Output-Token, TPOT). Non-disaggregated serving places prefill and decode on the same worker, while disaggregated serving places the prefill and decode on isolated workers. However, no single architecture excels in both TTFT and TPOT metrics. After conducting a root cause analysis, we concluded that indisaggregated LLM serving, prefill execution has minimal interference with decode execution but result in high queuing times. In contrast,non-disaggregated LLM serving effectively reduces queuing times but introduces significant interference between prefills and decodes. In order to leverage the best aspects of both non-disaggregated anddisaggregated LLM serving, we have designed and implemented Tropical.Tropical introduces an sevice-level objectives (SLO)-aware multiplexing strategy that balances the queuing time and the interference, enabling the LLM serving to achieve high TTFT and TPOT SLOs simultaneously. Our evaluation of real-world datasets reveals that Tropical outperforms both state-of-the-art non-disaggregated and disaggregated LLM serving systems, achieving up to 2.09 more requests within a 90% SLO attainment. Specially, compared to the disaggregated LLM serving system, Tropicalimproves P90 TTFT performance by 9 with only an 15% reduction in P90 TPOT. Against the non-disaggregated LLM serving systems, Tropicaldelivers a 2.8 performance improvement in P90 TPOT while maintaining the same P90 TTFT.",
+  "published": "2026-06-15T06:11:23Z",
+  "updated": "2026-06-15T06:11:23Z",
+  "authors": [
+   "Jinming Ma",
+   "Jiefei Chen",
+   "Xiuhong Li",
+   "Jiangfei Duan",
+   "Haojie Duanmu",
+   "Xingcheng Zhang",
+   "Chao Yang",
+   "Dahua Lin"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2605.02329v3",
+  "title": "Taming Request Imbalance: SLO-Aware Scheduling for Disaggregated LLM Inference",
+  "abstract": "In production environments, large language model (LLM) serving is required to meet stringent service-level objectives (SLOs) amid highly variable request patterns. In practice, request lengths follow a long-tail distribution, which gives rise to head-of-line blocking on the prefill side and underutilization caused by stragglers on the decode side in disaggregated serving architectures. Current systems, which adopt first-come-first-served (FCFS) scheduling for prefill and continuous batching for decode, lack the ability to adapt to this imbalance, resulting in compromised SLO attainment and reduced throughput. To address these challenges, we propose Kairos, an SLO-aware scheduling system equipped with two complementary mechanisms. On the prefill side, Kairos employs urgency-based priority scheduling: it predicts prefill completion times and dynamically selects requests to maximize the attainment of time-to-first-token (TTFT) SLOs. On the decode side, Kairos introduces slack-guided adaptive batching, which leverages the gap between per-step decode time and the time-per-output-token (TPOT) SLO to greedily pack short requests. This approach maximizes throughput while strictly adhering to SLO requirements. We implement Kairos and conduct evaluations using an online serving dataset and a state-of-the-art LLM. Experimental results demonstrate that, compared with state-of-the-art baselines, Kairos improves TTFT SLO attainment by up to 23.9\\%, TPOT SLO attainment by up to 27.1\\%, end-to-end SLO attainment by up to 33.8\\%, and decode throughput by up to 19.3\\%.",
+  "published": "2026-05-04T08:29:47Z",
+  "updated": "2026-08-11T12:56:52Z",
+  "authors": [
+   "Qipeng Wang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2509.17357v1",
+  "title": "Cronus: Efficient LLM inference on Heterogeneous GPU Clusters via Partially Disaggregated Prefill",
+  "abstract": "Efficient LLM inference is critical for real-world applications, especially within heterogeneous GPU clusters commonly found in organizations and on-premise datacenters as GPU architecture rapidly evolves. Current disaggregated prefill strategies, which separate the prefill and decode stages of LLM inference across different GPUs, often suffer from suboptimal performance due to imbalances between GPU capabilities and workload demands. On the other hand, extending conventional data parallelism and pipeline parallelism to heterogeneous setups incurs high inference latencies. To address these challenges, we introduce Cronus, a novel LLM inference system designed to dynamically balance workloads across heterogeneous GPUs using partially disaggregated prefill. Cronus partitions each prefill stage and executes its initial portion on the low-end GPU, while overlapping the remaining prefill and decode stages of earlier requests on the high-end GPU. Extensive evaluations across various high-end and low-end GPU combinations demonstrate that Cronus significantly improves the throughput over disaggregated prefill. It also reduces TTFT P99 and TBT P99 significantly over DP and PP while maintaining similar or better throughput.",
+  "published": "2025-09-22T05:22:50Z",
+  "updated": "2025-09-22T05:22:50Z",
+  "authors": [
+   "Yunzhao Liu",
+   "Qiang Xu",
+   "Y. Charlie Hu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 2
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2609.07883v1",
+  "title": "Deadline-Aware Adaptive Prefill Chunking for Efficient Large Language Model Serving",
+  "abstract": "Continuous batching improves large language model (LLM) serving throughput, but long prompt prefills can delay decode iterations and violate inter-token latency objectives. Chunked prefill mitigates this interference, yet its chunk size is normally fixed: small chunks protect decode latency but repeatedly pay launch overhead, while large chunks improve prefill efficiency but create latency spikes. We introduce SLOWeave, an online scheduling method that selects the largest prefill chunk predicted to finish before the earliest active decode deadline. The decision requires no workload-specific chunk-size tuning and is computed by a logarithmic-time search over a monotone iteration-cost model. We prove that, whenever a decode-only iteration is feasible and the cost predictor is accurate, SLOWeave maximizes immediate prefill progress among decisions that preserve every active request's next-token deadline. We evaluate the method in a reproducible event-driven simulator and an iteration-level GPU runtime across chat, mixed-context, long-context, and bursty workloads. Under a 25ms time-per-output-token objective, SLOWeave improves goodput over the strongest fixed-chunk baseline by 39% on mixed requests and 38% on long-context requests. Under a stricter 10ms objective, the gains rise to 3.3$\\times$ and 2.4$\\times$, respectively. These results isolate adaptive chunk sizing as a useful serving primitive and provide an implementation-ready controller for integration with iteration-level LLM runtimes.",
+  "published": "2026-09-07T18:47:57Z",
+  "updated": "2026-09-07T18:47:57Z",
+  "authors": [
+   "Siyu Song",
+   "Qi Bai",
+   "Jinbo Hao",
+   "Kai Li",
+   "Chenchen Wang",
+   "Jiayu Sun"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 29
+ },
+ {
+  "id": "2506.21901v1",
+  "title": "A Survey of LLM Inference Systems",
+  "abstract": "The past few years has witnessed specialized large language model (LLM) inference systems, such as vLLM, SGLang, Mooncake, and DeepFlow, alongside rapid LLM adoption via services like ChatGPT. Driving these system design efforts is the unique autoregressive nature of LLM request processing, motivating new techniques for achieving high performance while preserving high inference quality over high-volume and high-velocity workloads. While many of these techniques are discussed across the literature, they have not been analyzed under the framework of a complete inference system, nor have the systems themselves been analyzed and compared. In this survey, we review these techniques, starting from operators and algorithms for request processing, then moving on to techniques for model optimization and execution, including kernel design, batching, and scheduling, before ending with techniques for memory management, including paged memory, eviction and offloading techniques, quantization, and cache persistence. Through these discussions, we show that these techniques fundamentally rely on load prediction, adaptive mechanisms, and cost reduction in order to overcome the challenges introduced by autoregressive generation and achieve the goals of the system. We then discuss how these techniques can be combined to form single-replica and multi-replica inference systems, including disaggregated inference systems that offer more control over resource allocation and serverless systems that can be deployed over shared hardware infrastructure. We end with a discussion of remaining challenges.",
+  "published": "2025-06-27T04:38:20Z",
+  "updated": "2025-06-27T04:38:20Z",
+  "authors": [
+   "James Pan",
+   "Guoliang Li"
+  ],
+  "categories": [
+   "cs.DB"
+  ],
+  "comment": "25 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "model-loading-serving",
+    "query": "abs:serverless AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 2
+   },
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 3
+   }
+  ],
+  "score": 29
+ },
+ {
+  "id": "2510.27656v2",
+  "title": "fabric-lib: RDMA Point-to-Point Communication for LLM Systems",
+  "abstract": "Emerging Large Language Model (LLM) system patterns, such as disaggregated inference, Mixture-of-Experts (MoE) routing, and asynchronous reinforcement fine-tuning, require flexible point-to-point communication beyond simple collectives. Existing implementations are locked to specific Network Interface Controllers (NICs), hindering integration into inference engines and portability across hardware providers. We present fabric-lib, which bridges the functionality of common NICs to expose a uniform interface. fabric-lib exposes one-sided WriteImm operations with a ImmCounter primitive for completion notification, without ordering assumptions of network transport, transparently managing multiple NICs per GPU. We demonstrate peak throughput of 400 Gbps on both NVIDIA ConnectX-7 and AWS Elastic Fabric Adapter (EFA). We showcase fabric-lib through three production systems: (1) KvCache transfer for disaggregated inference with dynamic scaling, (2) RL weight updates achieving 1.3 seconds for trillion-parameter models, and (3) MoE dispatch/combine implementation exceeding DeepEP decode latency on ConnectX-7, with the first viable latencies on EFA. We demonstrate that our portable point-to-point communication complements collectives while avoiding lock-in. fabric-lib is open-sourced at https://github.com/perplexityai/pplx-garden/",
+  "published": "2025-10-31T17:28:22Z",
+  "updated": "2026-04-13T17:38:54Z",
+  "authors": [
+   "Nandor Licker",
+   "Kevin Hu",
+   "Vladimir Zaytsev",
+   "Lequn Chen"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2509.04827v3",
+  "title": "VoltanaLLM: Energy-Efficient and SLO-Aware Disaggregated LLM Serving via Adaptive Frequency Control and State-Space Routing",
+  "abstract": "The energy cost of Large Language Model (LLM) inference is rapidly becoming a barrier to sustainable and scalable deployment. Although modern serving architectures expose distinct prefill and decode behaviors, existing systems fail to exploit these phase differences for energy-efficient serving under strict latency SLOs. This paper introduces VoltanaLLM, the first system that explicitly targets and reduces the energy bloat in modern prefill-decode (P/D) disaggregated LLM serving. Guided by a control-theory perspective, VoltanaLLM separates two levers: per-instance operating-point selection (GPU frequency per iteration) and system-level state-space routing of requests. We empirically observe that LLM inference exhibits a U-shaped energy-frequency curve creating \"sweet spots\" that depend on phase behavior and load. VoltanaLLM exploits this by combining phase-specific, iteration-level frequency selection driven by a lightweight, online-adaptive latency predictor, with a decode state-space guided router that avoids architectural granularity-induced inefficiencies, all while meeting desired SLOs. We implement VoltanaLLM using SGLang and evaluate it across multiple models and real-world workloads. Our results show VoltanaLLM reduces end-to-end energy by up to 36.3% versus a static max-frequency baseline while maintaining high SLO attainment, and generalizes to newer GPUs. These results point to sustainable LLM serving via phase-aware, iteration-level frequency selection coupled with architecture-aware routing. Source code is available in https://github.com/Supercomputing-System-AI-Lab/VoltanaLLM.",
+  "published": "2025-09-05T05:58:16Z",
+  "updated": "2026-06-22T21:20:39Z",
+  "authors": [
+   "Jiahuan Yu",
+   "Aryan Taneja",
+   "Junfeng Lin",
+   "Minjia Zhang"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "Accepted by ISC High Performance 2026: https://ieeexplore.ieee.org/abstract/document/11520495/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2508.06133v5",
+  "title": "LLM Serving Optimization with Variable Prefill and Decode Lengths",
+  "abstract": "We study offline scheduling for large language model (LLM) serving under a fixed KV-cache memory budget, where requests have heterogeneous prompt (prefill) and response (decode) lengths. Given a backlog of requests available at time zero, the scheduler forms mixed prefill/decode batches over time to minimize total end-to-end latency. We show that heterogeneity in prompt lengths fundamentally changes the problem: minimizing total latency is NP-hard, and standard policies that prioritize short outputs or small total sequence sizes can have unbounded approximation ratios. We propose Sorted-F, which repeatedly selects feasible batches using an F-metric that balances batch cardinality against downstream decode cost. With exact batch selection, Sorted-F achieves a constant-factor approximation guarantee in the unit-time, uninterrupted-decoding model with known output lengths; the guarantee also holds under a static peak-memory batch constraint. We develop an exact pseudopolynomial dynamic program for this static subproblem, scalable local-search and greedy heuristics, LP-guided variants, and a receding-horizon online extension. Experiments on public conversational and long-document summarization workloads show that F-metric-based scheduling substantially reduces latency relative to standard baselines and remains close to the LP relaxation lower bound on tractable instances.",
+  "published": "2025-08-08T08:54:21Z",
+  "updated": "2026-09-29T16:28:41Z",
+  "authors": [
+   "Meixuan Wang",
+   "Yinyu Ye",
+   "Zijie Zhou"
+  ],
+  "categories": [
+   "math.OC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2506.05508v1",
+  "title": "Beyond the Buzz: A Pragmatic Take on Inference Disaggregation",
+  "abstract": "As inference scales to multi-node deployments, disaggregation - splitting inference into distinct phases - offers a promising path to improving the throughput-interactivity Pareto frontier. Despite growing enthusiasm and a surge of open-source efforts, practical deployment of disaggregated serving remains limited due to the complexity of the optimization search space and system-level coordination. In this paper, we present the first systematic study of disaggregated inference at scale, evaluating hundreds of thousands of design points across diverse workloads and hardware configurations. We find that disaggregation is most effective for prefill-heavy traffic patterns and larger models. Our results highlight the critical role of dynamic rate matching and elastic scaling in achieving Pareto-optimal performance. Our findings offer actionable insights for efficient disaggregated deployments to navigate the trade-off between system throughput and interactivity.",
+  "published": "2025-06-05T18:47:49Z",
+  "updated": "2025-06-05T18:47:49Z",
+  "authors": [
+   "Tiyasa Mitra",
+   "Ritika Borkar",
+   "Nidhi Bhatia",
+   "Ramon Matas",
+   "Shivam Raj",
+   "Dheevatsa Mudigere",
+   "Ritchie Zhao",
+   "Maximilian Golub",
+   "Arpan Dutta",
+   "Sailaja Madduri",
+   "Dharmesh Jani",
+   "Brian Pharris",
+   "Bita Darvish Rouhani"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2511.20982v3",
+  "title": "DOPD: A Dynamic PD-Disaggregation Architecture for Maximizing Goodput in LLM Inference Serving",
+  "abstract": "To meet strict Service-Level Objectives (SLOs),contemporary Large Language Models (LLMs) decouple the prefill and decoding stages and place them on separate GPUs to mitigate the distinct bottlenecks inherent to each phase. However, the heterogeneity of LLM workloads causes producerconsumer imbalance between the two instance types in such disaggregated architecture. To address this problem, we propose DOPD (Dynamic Optimal Prefill/Decoding), a dynamic LLM inference system that adjusts instance allocations to achieve an optimal prefill-to-decoding (P/D) ratio based on real-time load monitoring. Combined with an appropriate request-scheduling policy, DOPD effectively resolves imbalances between prefill and decoding instances and mitigates resource allocation mismatches due to mixed-length requests under high concurrency. Experimental evaluations show that, compared with vLLM and DistServe (representative aggregation-based and disaggregationbased approaches), DOPD improves overall system goodput by up to 1.5X, decreases P90 time-to-first-token (TTFT) by up to 67.5%, and decreases P90 time-per-output-token (TPOT) by up to 22.8%. Furthermore, our dynamic P/D adjustment technique performs proactive reconfiguration based on historical load, achieving over 99% SLOs attainment while using less additional resources.",
+  "published": "2025-11-26T02:27:10Z",
+  "updated": "2026-03-09T04:31:26Z",
+  "authors": [
+   "Junhan Liao",
+   "Minxian Xu",
+   "Wanyi Zheng",
+   "Yan Wang",
+   "Kejiang Ye",
+   "Rajkumar Buyya",
+   "Chengzhong Xu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "14 pages",
+  "journal_ref": "IEEE Transactions on Services Computing 2026",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2412.20322v1",
+  "title": "GreenLLM: Disaggregating Large Language Model Serving on Heterogeneous GPUs for Lower Carbon Emissions",
+  "abstract": "LLMs have been widely adopted across many real-world applications. However, their widespread use comes with significant environmental costs due to their high computational intensity and resource demands. Specifically, this has driven the development of new generations of high-performing GPUs, exacerbating the problem of electronic waste and accelerating the premature disposal of devices. To address this problem, this paper focuses on reducing the carbon emissions of LLM serving by reusing older, low-performing GPUs. We present GreenLLM, an SLO-aware LLM serving framework designed to minimize carbon emissions by reusing older GPUs. GreenLLM builds on two identified use cases that disaggregate specific computations onto older GPUs, reducing carbon emissions while meeting performance goals. To deepen our understanding of the potential carbon savings from disaggregation, we also provide a theoretical analysis of its relationship with carbon intensity and GPU lifetime. Our evaluations show that GreenLLM reduces carbon emissions by up to 40.6% compared to running standard LLM serving on new GPU only, meeting latency SLOs for over 90% of requests across various applications, latency requirements, carbon intensities, and GPU lifetimes.",
+  "published": "2024-12-29T02:20:33Z",
+  "updated": "2024-12-29T02:20:33Z",
+  "authors": [
+   "Tianyao Shi",
+   "Yanran Wu",
+   "Sihang Liu",
+   "Yi Ding"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "15 pages, 15 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2608.21719v1",
+  "title": "PowerSlider: Exploiting Phase Asymmetry for LLM Serving under Demand Response",
+  "abstract": "AI inference clusters are increasingly constrained by instantaneous power, not just energy: grid operators condition new capacity on demand response, imposing time-varying power caps. Existing LLM serving systems optimize a static energy objective or shed fixed priority tiers under load; either way, goodput collapses when the power envelope moves. An LLM pipeline is not a uniform load: compute-bound prefill loses throughput almost linearly with GPU frequency, memory-bound answer decode sustains it down to $0.57\\times$ nominal, and reasoning's thinking phase couples KV-cache capacity to scheduling -- so a cap should be steered to where each watt costs the least performance. PowerSlider does so with a new Flex SLO contract that turns bounded user slack into an optimization constraint, prefill--think--answer disaggregation exposing per-stage frequency and KV control, and a Karush--Kuhn--Tucker (KKT) online solver re-solving within 7.7 ms of every cap change, backed by a consolidated fail-safe that power-gates drained instances when DVFS bottoms out on static power. On SGLang with production traces, \\sys{} sustains 78.3\\% online goodput at a 30\\% cap reduction versus 47.6\\% for the best of five baselines ($1.64\\times$), holds latency-critical tails within $1.3\\times$ of nominal (baselines: $2.3$--$6\\times$, up to $12\\times$), and delivers 92\\% mean goodput through a replayed CAISO grid-emergency day bottoming at $0.41\\times$ (54\\% at the trough; every baseline below 7\\%).",
+  "published": "2026-08-22T01:48:35Z",
+  "updated": "2026-08-22T01:48:35Z",
+  "authors": [
+   "Yueying Li",
+   "Jiayang Chen",
+   "Yuanfan Chen",
+   "Leo Han",
+   "Haoran Qiu",
+   "Esha Choukse",
+   "Rodrigo Fonseca",
+   "Udit Gupta"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2605.05467v1",
+  "title": "Nitsum: Serving Tiered LLM Requests with Adaptive Tensor Parallelism",
+  "abstract": "LLM serving is increasingly multi-tenant: the same deployment must handle latency-critical interactive requests and more relaxed background workloads under a fixed GPU budget. This creates a tiered-SLO setting where maximizing overall goodput (requests that satisfy both TTFT and TPOT targets) is challenging because workload mix, request lengths, and load intensity vary over time. Existing systems mainly optimize request-level controls (e.g., queuing and batching) while keeping execution configuration largely static, which limits adaptation under multi-tier contention. We present Nitsum, a distributed LLM serving system that treats tensor parallelism (TP) as a first-class runtime control surface rather than a static deployment choice. Nitsum jointly optimizes TP level, prefill/decode GPU split, and request scheduling. To make frequent TP adaptation practical, Nitsum introduces TP-aware weight reuse and fast KV migration. Experiments on real traces and targeted microbenchmarks show that Nitsum improves SLO-compliant goodput over SoTA by up to 5.3 times.",
+  "published": "2026-05-06T21:42:55Z",
+  "updated": "2026-05-06T21:42:55Z",
+  "authors": [
+   "Vikranth Srivatsa",
+   "Zijian He",
+   "Pu Guo",
+   "Dongming Li",
+   "Yiying Zhang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 1
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2505.11916v2",
+  "title": "Arrow: Adaptive Scheduling Mechanisms for Disaggregated LLM Inference Architecture",
+  "abstract": "Existing large language model (LLM) serving systems typically employ Prefill-Decode disaggregated architecture to prevent computational interference between the prefill and decode phases. However, in real-world LLM serving scenarios, significant fluctuations in request input/output lengths lead to imbalanced computational loads between prefill and decode nodes under traditional static node allocation strategies, consequently preventing efficient utilization of computing resources to improve the system's goodput. To address this challenge, we design and implement Arrow, an adaptive scheduler that leverages stateless instances and latency characteristics of prefill and decode tasks to achieve efficient adaptive request and instance scheduling. Arrow dynamically adjusts the number of instances handling prefill and decode tasks based on real-time cluster performance metrics, substantially enhancing the system's capability to handle traffic spikes and load variations. Our evaluation under diverse real-world workloads shows that Arrow achieves up to $2.55 \\times$ higher request serving rates compared to state-of-the-art Prefill-Decode disaggregated serving systems.",
+  "published": "2025-05-17T09:00:09Z",
+  "updated": "2025-11-06T09:41:18Z",
+  "authors": [
+   "Yu Wu",
+   "Tongxuan Liu",
+   "Yuting Zeng",
+   "Siyu Wu",
+   "Jun Xiong",
+   "Xianzhe Dong",
+   "Hailong Yang",
+   "Ke Zhang",
+   "Jing Li"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2502.07903v1",
+  "title": "HexGen-2: Disaggregated Generative Inference of LLMs in Heterogeneous Environment",
+  "abstract": "Disaggregating the prefill and decoding phases represents an effective new paradigm for generative inference of large language models (LLM), which eliminates prefill-decoding interference and optimizes resource allocation. However, it is still an open problem about how to deploy the disaggregated inference paradigm across a group of heterogeneous GPUs, which can be an economical alternative to deployment over homogeneous high-performance GPUs. Towards this end, we introduce HexGen-2, a distributed system for efficient and economical LLM serving on heterogeneous GPUs following the disaggregated paradigm. Built on top of HexGen, the core component of HexGen-2 is a scheduling algorithm that formalizes the allocation of disaggregated LLM inference computations and communications over heterogeneous GPUs and network connections as a constraint optimization problem. We leverage the graph partitioning and max-flow algorithms to co-optimize resource allocation, parallel strategies for distinct inference phases, and the efficiency of inter-phase key-value (KV) cache communications. We conduct extensive experiments to evaluate HexGen-2, i.e., on OPT (30B) and Llama-2 (70B) models in various real-world settings, the results reveal that HexGen-2 delivers up to a 2.0 times and on average a 1.3 times improvement in serving throughput, reduces the average inference latency by 1.5 times compared with state-of-the-art systems given the same price budget, and achieves comparable inference performance with a 30% lower price budget.",
+  "published": "2025-02-11T19:17:35Z",
+  "updated": "2025-02-11T19:17:35Z",
+  "authors": [
+   "Youhe Jiang",
+   "Ran Yan",
+   "Binhang Yuan"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "ICLR 2025",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2310.09949v4",
+  "title": "Chameleon: a Heterogeneous and Disaggregated Accelerator System for Retrieval-Augmented Language Models",
+  "abstract": "A Retrieval-Augmented Language Model (RALM) combines a large language model (LLM) with a vector database to retrieve context-specific knowledge during text generation. This strategy facilitates impressive generation quality even with smaller models, thus reducing computational demands by orders of magnitude. To serve RALMs efficiently and flexibly, we propose Chameleon, a heterogeneous accelerator system integrating both LLM and vector search accelerators in a disaggregated architecture. The heterogeneity ensures efficient serving for both inference and retrieval, while the disaggregation allows independent scaling of LLM and vector search accelerators to fulfill diverse RALM requirements. Our Chameleon prototype implements vector search accelerators on FPGAs and assigns LLM inference to GPUs, with CPUs as cluster coordinators. Evaluated on various RALMs, Chameleon exhibits up to 2.16$\\times$ reduction in latency and 3.18x speedup in throughput compared to the hybrid CPU-GPU architecture. The promising results pave the way for adopting heterogeneous accelerators for not only LLM inference but also vector search in future RALM systems.",
+  "published": "2023-10-15T20:57:25Z",
+  "updated": "2025-03-24T18:01:48Z",
+  "authors": [
+   "Wenqi Jiang",
+   "Marco Zeller",
+   "Roger Waleffe",
+   "Torsten Hoefler",
+   "Gustavo Alonso"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.AR",
+   "cs.CL"
+  ],
+  "comment": "Accepted by VLDB 2025",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2610.32638v1",
+  "title": "InferSlice: A Reference Architecture for SLO-driven LLM Inference over a Telco Wide-Area Network",
+  "abstract": "LLM inference is increasingly deployed as a core service for enterprise and interactive applications, but sovereignty, compliance, latency and resource-locality requirements can limit the suitability of centralised cloud deployments. Telco operators offer geographically distributed compute and network infrastructure for addressing these constraints. However, existing LLM serving frameworks are designed for tightly coupled data centres and provide limited support for coordinating geographically distributed and heterogeneous resources. We present InferSlice, a reference architecture for Service-Level Objective (SLO)-driven LLM inference over a telco infrastructure, integrating network slicing, GPU partitioning, elastic serving and observability. Led by BT in collaboration with the University of Bristol and NVIDIA, and realised on the JOINER UK national-scale wide-area network (WAN), InferSlice is evaluated on service differentiation across tiers, elastic scale-out, client-edge bandwidth as a bottleneck, and the reach of tensor, pipeline, data parallelism, and prefill/decode disaggregation over the WAN. Our results show that, on a general-purpose telco network, tiers yield distinct latency-throughput regimes, and weight streaming shortens scale-out time. Replication is placement-insensitive but memory-bound; pipeline parallelism tolerates near- and mid-cross-site hops, while tensor parallelism and disaggregation fail beyond a single subnet hop. We share practical insights from operating SLO-driven inference on a telco network, lessons learned and open questions, and hope to encourage further research on distributed and heterogeneous LLM inference systems.",
+  "published": "2026-10-23T13:51:02Z",
+  "updated": "2026-10-23T13:51:02Z",
+  "authors": [
+   "Juan Parra-Ullauri",
+   "Anthony Chiu",
+   "Hari Madhukumar",
+   "Zhaozhou Wu",
+   "Anderson Bravalheri",
+   "Alex Healing",
+   "Andy Corston-Petrie",
+   "Dimitra Simeonidou",
+   "Nektaria Efthymiou"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:memory AND (abs:LLM OR abs:transformer) AND abs:system",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 4
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2606.17104v1",
+  "title": "Prefill/Decode-Aware Evaluation of LLM Inference on Emerging AI Accelerators",
+  "abstract": "As large language models (LLMs) are increasingly deployed in latency- and cost-sensitive settings, inference efficiency has become a central systems challenge. While GPUs dominate current deployments, a growing number of AI accelerators claim advantages for LLM inference, yet it remains unclear under which conditions such accelerators outperform GPUs in practice. Recent inference systems decompose execution into Prefill and Decode phases, which exhibit distinct computational characteristics and latency metrics, commonly captured by time to first token (TTFT) and time per output token (TPOT). This paper presents a phase-aware evaluation of LLM inference performance across GPUs and emerging AI accelerators using a common model, Llama2-7B. By separately measuring Prefill and Decode performance, we reveal that accelerator advantages differ by phase and metric. Our results show that GPUs consistently excel in the compute-intensive Prefill phase, while GroqRack achieves significantly lower TPOT during Decode (batching not currently supported). However, GPUs regain an advantage in Decode throughput as batch size increases. These findings demonstrate that each platform exhibits distinct phase-dependent strengths. We further analyze heterogeneous Prefill/Decode disaggregation across different accelerator platforms, identifying performance gains and the workload and network conditions under which such gains are realized.",
+  "published": "2026-06-14T12:23:29Z",
+  "updated": "2026-06-14T12:23:29Z",
+  "authors": [
+   "Shun Usami",
+   "Venkatram Vishwanath",
+   "E. Wes Bethel"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC"
+  ],
+  "comment": "8 pages, 5 figures. Accepted to the Workshop on HPC for AI Foundation Models & LLMs for Science (HPAI4S'26), co-located with IEEE IPDPS 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2605.16637v1",
+  "title": "HexAGenT: Efficient Agentic LLM Serving via Workflow- and Heterogeneity-Aware Scheduling",
+  "abstract": "Agentic LLM applications increasingly execute user requests as multi-step workflows involving planning, tool use, branching, refinement, and synthesis. In such settings, users experience the end-to-end latency of an entire workflow, not the latency of any single LLM call. In this paper, we study how to schedule online agentic workflows across heterogeneous prefill-decode disaggregated LLM serving clusters to efficiently meet workflow-level latency objectives. The problem is challenging because workflow dependencies are revealed incrementally at runtime, calls have heterogeneous prompts, outputs, and KV-cache requirements, and the prefill and decode stages impose different compute, memory, and transfer constraints across heterogeneous GPUs. To solve this problem, we present HexAGenT, a workflow-aware scheduler for a heterogeneous prefill-decode inference service. HexAGenT models each request as an online-revealed DAG, maintains a running estimate of the workflow's standalone completion horizon, prioritizes ready calls by projected risk of missing that horizon, and jointly selects prefill placement, decode placement, and local queue priority while accounting for KV-cache capacity and cross-stage transfer latency. Across representative agentic workloads and heterogeneous A100/H100/H200 clusters, HexAGenT reduces the SLO scale required for timely workflow completion by an average of 20.1% at 95% attainment and 33.0% at 99% attainment, with maximum reductions of 45.0% and 80.5%, respectively.",
+  "published": "2026-05-15T21:09:34Z",
+  "updated": "2026-05-15T21:09:34Z",
+  "authors": [
+   "You Peng",
+   "Youhe Jiang",
+   "Wenshuang Li",
+   "Xu Xu",
+   "Ke Zhou",
+   "Jiawei Jiang",
+   "Chen Wang",
+   "Binhang Yuan"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2602.18755v3",
+  "title": "DualScale: Energy-Efficient Disaggregated LLM Serving via Phase-Aware Placement and DVFS",
+  "abstract": "Prefill/decode disaggregation is increasingly adopted in LLM serving to improve the latency-throughput tradeoff and meet strict TTFT and TPOT SLOs. However, LLM inference remains energy-hungry: autoscaling alone is too coarse-grained to track fast workload fluctuations, and applying fine-grained DVFS under disaggregation is complicated by phase-asymmetric dynamics and coupling between provisioning and frequency control. We present DualScale, a two-tier energy optimization framework for disaggregated LLM serving. DualScale jointly optimizes placement and DVFS across prefill and decode using predictive latency and power models. At coarse timescales, DualScale computes phase-aware placement and baseline frequencies that minimize energy while satisfying SLO constraints. At fine timescales, DualScale dynamically adapts GPU frequency per iteration using stage-specific control: model predictive control (MPC) for prefill to account for queue evolution and future TTFT impact, and lightweight slack-aware adaptation for decode to exploit its smoother, memory-bound dynamics. This hierarchical design enables coordinated control across timescales while preserving strict serving SLOs. Evaluation on a 16x H100 cluster serving Llama 3.3 70B with production-style traces shows that DualScale meets TTFT/TPOT SLOs while reducing energy by up to 39% in prefill and 48% in decode relative to DistServe.",
+  "published": "2026-02-21T08:31:49Z",
+  "updated": "2026-04-03T22:02:59Z",
+  "authors": [
+   "Omar Basit",
+   "Yunzhao Liu",
+   "Z. Jonny Kong",
+   "Y. Charlie Hu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2604.09562v1",
+  "title": "StreamServe: Adaptive Speculative Flows for Low-Latency Disaggregated LLM Serving",
+  "abstract": "Efficient LLM serving must balance throughput and latency across diverse, bursty workloads. We introduce StreamServe, a disaggregated prefill decode serving architecture that combines metric aware routing across compute lanes with adaptive speculative decoding that tunes speculation depth online from runtime signals. StreamServe comprises four components: StreamScheduler for request orchestration, FlowGuard for multi signal routing, PipeServe Engine for disaggregated prefill decode execution on multi GPU, and SpecuStream for runtime adaptive speculation. We evaluate StreamServe on four benchmarks ALPACA, GSM8K, HUMANEVAL, and SUM with 80 queries each and 320 total using 4 A800 40GB GPUs configured as two stream pairs. Across these workloads, StreamServe reduces latency by 11 to 18 times relative to tensor parallel vLLM baselines and reaches throughput up to 2235 tokens per second on summarization tasks. Time per output token remains stable across configurations, indicating that the gains arise from architectural efficiency rather than token quality degradation. Although evaluated on a single node 4 GPU setup, these results suggest that jointly adapting routing and speculation within a disaggregated framework creates a distinct operating regime for LLM inference.",
+  "published": "2026-02-11T21:03:47Z",
+  "updated": "2026-02-11T21:03:47Z",
+  "authors": [
+   "Satyam Kumar",
+   "Arpit Singh Gautam",
+   "Kailash Talreja",
+   "Saurabh Jha"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:disaggregated AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2601.11589v2",
+  "title": "LAPS: A Length-Aware-Prefill LLM Serving System",
+  "abstract": "LAPS identifies and disaggregates requests with different prompt lengths in LLM serving to reduce TTFT latency. While recent systems have decoupled the prefill and decode stages to improve throughput, they still rely on unified scheduling policies that fail to adapt to heterogeneous workload characteristics. We observe that prompt-length variations lead to distinct performance bottlenecks, motivating an adaptive scheduling strategy. LAPS disaggregates multi-turn long-prefill requests from short-prefill ones and introduces a length-aware smart batching mechanism for short-prefill workloads. It adopts a dual-queue design that supports temporal disaggregation on a single prefill instance or spatial disaggregation across multiple instances. For short-prefill batches, a batch waiting window and CUDA Graph-based clustering mitigate interference from heterogeneous computation, reducing batching delay and lowering average latency. In real multi-turn workloads, LAPS reduces prefill latency by over 30\\% compared to vanilla SGLang under prefill-decode disaggregation, and further decreases SLO violations by 28\\% in multi-instance deployments with vanilla data-parallel configuration. Compared to the SGLang router with load balancing, it further lowers SLO violations by 12\\% in multi-GPU settings. Under high concurrency and mixed-request scenarios, LAPS improves request throughput by 35\\% serving Qwen2.5-32B model for prefill instance, demonstrating its effectiveness in optimizing heterogeneous LLM serving workloads.",
+  "published": "2026-01-04T18:14:24Z",
+  "updated": "2026-01-27T19:01:18Z",
+  "authors": [
+   "Jianshu She",
+   "Zonghang Li",
+   "Hongchao Du",
+   "Shangyu Wu",
+   "Wenhao Zheng",
+   "Eric Xing",
+   "Zhengzhong Liu",
+   "Huaxiu Yao",
+   "Jason Xue",
+   "Qirong Ho"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "12 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:\"LLM serving\" AND (abs:scheduling OR abs:goodput OR abs:SLO)",
+    "rank": 2
+   }
+  ],
+  "score": 25
+ }
+]

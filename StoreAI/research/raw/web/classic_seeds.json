@@ -1,0 +1,622 @@
+[
+ {
+  "id": "1402.1022v1",
+  "title": "The ORCA Option for KM3NeT",
+  "abstract": "It has recently been suggested that the neutrino mass hierarchy can be experimentally determined from the oscillation pattern of atmospheric neutrinos passing through the Earth by measuring the two-dimensional arrival pattern of neutrinos in energy and zenith angle, in the energy regime of about 3-20 GeV. ORCA (Oscillation Research with Cosmics in the Abyss) is a study addressing the feasibility of such a measurement employing the deep-sea neutrino telescope technology developed for the KM3NeT project. In the following, the underlying physics and resulting experimental signatures will be discussed and some aspects of the ongoing simulation studies presented. A preliminary sensitivity estimate derived from a simplified study strongly indicates that an exposure of at least 20 Mton-years will be required to arrive at conclusive results.",
+  "published": "2014-02-05T11:56:01Z",
+  "updated": "2014-02-05T11:56:01Z",
+  "authors": [
+   "Ulrich F. Katz"
+  ],
+  "categories": [
+   "astro-ph.IM",
+   "hep-ex",
+   "hep-ph"
+  ],
+  "comment": "Proceedings prepared for the 15th International Workshop on Neutrino Telescopes, 11-15 Mar 2013, Venice, Italy (C13-03-11.5); 10 pages, 9 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"Orca\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2401.09670v3",
+  "title": "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving",
+  "abstract": "DistServe improves the performance of large language models (LLMs) serving by disaggregating the prefill and decoding computation. Existing LLM serving systems colocate the two phases and batch the computation of prefill and decoding across all users and requests. We find that this strategy not only leads to strong prefill-decoding interferences but also couples the resource allocation and parallelism plans for both phases. LLM applications often emphasize individual latency for each phase: time to first token (TTFT) for the prefill phase and time per output token (TPOT) of each request for the decoding phase. In the presence of stringent latency requirements, existing systems have to prioritize one latency over the other, or over-provision compute resources to meet both. DistServe assigns prefill and decoding computation to different GPUs, hence eliminating prefill-decoding interferences. Given the application's TTFT and TPOT requirements, DistServe co-optimizes the resource allocation and parallelism strategy tailored for each phase. DistServe also places the two phases according to the serving cluster's bandwidth to minimize the communication caused by disaggregation. As a result, DistServe significantly improves LLM serving performance in terms of the maximum rate that can be served within both TTFT and TPOT constraints on each GPU. Our evaluations show that on various popular LLMs, applications, and latency requirements, DistServe can serve 7.4x more requests or 12.6x tighter SLO, compared to state-of-the-art systems, while staying within latency constraints for > 90% of requests.",
+  "published": "2024-01-18T01:03:38Z",
+  "updated": "2024-06-06T15:50:51Z",
+  "authors": [
+   "Yinmin Zhong",
+   "Shengyu Liu",
+   "Junda Chen",
+   "Jianbo Hu",
+   "Yibo Zhu",
+   "Xuanzhe Liu",
+   "Xin Jin",
+   "Hao Zhang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "OSDI 2024",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"DistServe\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2505.03763v1",
+  "title": "Splitwiser: Efficient LM inference with constrained resources",
+  "abstract": "Efficient inference of LLMs remains a crucial challenge, with two main phases: a compute-intensive prompt computation and a memory-intensive token generation. Despite existing batching and scheduling techniques, token generation phases fail to fully utilize compute resources, especially when compared to prompt computation phases. To address these challenges, we propose Splitwiser, a methodology that splits the two phases of an LLM inference request onto the same GPU, thereby reducing overhead and improving memory access and cache utilization. By eliminating the need to transfer data across devices, Splitwiser aims to minimize network-related overheads. In this report, we describe the basic structure of our proposed pipeline while sharing preliminary results and analysis. We implement our proposed multiprocessing design on two widely-used and independent LLM architectures: Huggingface and vLLM. We open-source our code for the respective implementations: 1) Huggingface (https://github.com/asad-aali/splitwiser), and 2) vLLM (https://github.com/adney11/vllm-sysml).",
+  "published": "2025-04-21T00:21:08Z",
+  "updated": "2025-04-21T00:21:08Z",
+  "authors": [
+   "Asad Aali",
+   "Adney Cardoza",
+   "Melissa Capo"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"Splitwise\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2407.00023v2",
+  "title": "Preble: Efficient Distributed Prompt Scheduling for LLM Serving",
+  "abstract": "Prompts to large language models (LLMs) have evolved beyond simple user questions. For LLMs to solve complex problems, today's practices are to include domain-specific instructions, illustration of tool usages, and/or long context such as textbook chapters in prompts. As such, many parts of prompts are repetitive across requests. Recent works propose to cache and reuse KV state of prompts. However, they are all confined to a single-GPU optimization, while production LLM serving systems are distributed by nature. This paper proposes Preble, the first distributed LLM serving platform that targets and optimizes for prompt sharing. We designed a distributed scheduling system that co-optimizes KV state reuse and computation load-balancing with a new scheduling algorithm and a hierarchical scheduling mechanism. Our evaluation of Preble with real workloads and request arrival patterns on two open-source LLMs shows that Preble outperforms the SOTA serving systems by 1.5X to 14.5X on average latency and 2X to 10X on p99 latency.",
+  "published": "2024-05-08T06:30:58Z",
+  "updated": "2024-10-03T17:50:33Z",
+  "authors": [
+   "Vikranth Srivatsa",
+   "Zijian He",
+   "Reyna Abhyankar",
+   "Dongming Li",
+   "Yiying Zhang"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"Preble\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2312.07104v2",
+  "title": "SGLang: Efficient Execution of Structured Language Model Programs",
+  "abstract": "Large language models (LLMs) are increasingly used for complex tasks that require multiple generation calls, advanced prompting techniques, control flow, and structured inputs/outputs. However, efficient systems are lacking for programming and executing these applications. We introduce SGLang, a system for efficient execution of complex language model programs. SGLang consists of a frontend language and a runtime. The frontend simplifies programming with primitives for generation and parallelism control. The runtime accelerates execution with novel optimizations like RadixAttention for KV cache reuse and compressed finite state machines for faster structured output decoding. Experiments show that SGLang achieves up to 6.4x higher throughput compared to state-of-the-art inference systems on various large language and multi-modal models on tasks including agent control, logical reasoning, few-shot learning benchmarks, JSON decoding, retrieval-augmented generation pipelines, and multi-turn chat. The code is publicly available at https://github.com/sgl-project/sglang",
+  "published": "2023-12-12T09:34:27Z",
+  "updated": "2024-06-06T00:10:06Z",
+  "authors": [
+   "Lianmin Zheng",
+   "Liangsheng Yin",
+   "Zhiqiang Xie",
+   "Chuyue Sun",
+   "Jeff Huang",
+   "Cody Hao Yu",
+   "Shiyi Cao",
+   "Christos Kozyrakis",
+   "Ion Stoica",
+   "Joseph E. Gonzalez",
+   "Clark Barrett",
+   "Ying Sheng"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.PL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"SGLang\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2410.10745v1",
+  "title": "FlexGen: Flexible Multi-View Generation from Text and Image Inputs",
+  "abstract": "In this work, we introduce FlexGen, a flexible framework designed to generate controllable and consistent multi-view images, conditioned on a single-view image, or a text prompt, or both. FlexGen tackles the challenges of controllable multi-view synthesis through additional conditioning on 3D-aware text annotations. We utilize the strong reasoning capabilities of GPT-4V to generate 3D-aware text annotations. By analyzing four orthogonal views of an object arranged as tiled multi-view images, GPT-4V can produce text annotations that include 3D-aware information with spatial relationship. By integrating the control signal with proposed adaptive dual-control module, our model can generate multi-view images that correspond to the specified text. FlexGen supports multiple controllable capabilities, allowing users to modify text prompts to generate reasonable and corresponding unseen parts. Additionally, users can influence attributes such as appearance and material properties, including metallic and roughness. Extensive experiments demonstrate that our approach offers enhanced multiple controllability, marking a significant advancement over existing multi-view diffusion models. This work has substantial implications for fields requiring rapid and flexible 3D content creation, including game development, animation, and virtual reality. Project page: https://xxu068.github.io/flexgen.github.io/.",
+  "published": "2024-10-14T17:23:13Z",
+  "updated": "2024-10-14T17:23:13Z",
+  "authors": [
+   "Xinli Xu",
+   "Wenhang Ge",
+   "Jiantao Lin",
+   "Jiawei Feng",
+   "Lie Xu",
+   "HanFeng Zhao",
+   "Shunsi Zhang",
+   "Ying-Cong Chen"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI"
+  ],
+  "comment": "16 pages, 13 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"FlexGen\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2312.11514v3",
+  "title": "LLM in a flash: Efficient Large Language Model Inference with Limited Memory",
+  "abstract": "Large language models (LLMs) are central to modern natural language processing, delivering exceptional performance in various tasks. However, their substantial computational and memory requirements present challenges, especially for devices with limited DRAM capacity. This paper tackles the challenge of efficiently running LLMs that exceed the available DRAM capacity by storing the model parameters in flash memory, but bringing them on demand to DRAM. Our method involves constructing an inference cost model that takes into account the characteristics of flash memory, guiding us to optimize in two critical areas: reducing the volume of data transferred from flash and reading data in larger, more contiguous chunks. Within this hardware-informed framework, we introduce two principal techniques. First, \"windowing\" strategically reduces data transfer by reusing previously activated neurons, and second, \"row-column bundling\", tailored to the sequential data access strengths of flash memory, increases the size of data chunks read from flash memory. These methods collectively enable running models up to twice the size of the available DRAM, with a 4-5x and 20-25x increase in inference speed compared to naive loading approaches in CPU and GPU, respectively. Our integration of sparsity awareness, context-adaptive loading, and a hardware-oriented design paves the way for effective inference of LLMs on devices with limited memory.",
+  "published": "2023-12-12T18:57:08Z",
+  "updated": "2024-07-30T23:37:20Z",
+  "authors": [
+   "Keivan Alizadeh",
+   "Iman Mirzadeh",
+   "Dmitry Belenko",
+   "Karen Khatamifard",
+   "Minsik Cho",
+   "Carlo C Del Mundo",
+   "Mohammad Rastegari",
+   "Mehrdad Farajtabar"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "ACL 2024",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"LLM in a Flash\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "astro-ph/0109419v1",
+  "title": "Extragalactic H2O Masers",
+  "abstract": "Study of extragalactic H2O masers has progressed significantly in the 25 years since their discovery. Existing in star forming regions and in the accretion disks supermassive black holes, they are familiar and unfamiliar at the same time. A review of how our understanding has grown, up to the present day, is followed by comments on future prospects.",
+  "published": "2001-09-24T16:33:13Z",
+  "updated": "2001-09-24T16:33:13Z",
+  "authors": [
+   "L. J. Greenhill"
+  ],
+  "categories": [
+   "astro-ph"
+  ],
+  "comment": "To appear in the proceedings of IAU Symposium #206: Cosmic Masers (Mangaratiba, Brazil; March 2001); 11 pages. Uses newpasp.sty",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"H2O\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2309.17453v4",
+  "title": "Efficient Streaming Language Models with Attention Sinks",
+  "abstract": "Deploying Large Language Models (LLMs) in streaming applications such as multi-round dialogue, where long interactions are expected, is urgently needed but poses two major challenges. Firstly, during the decoding stage, caching previous tokens' Key and Value states (KV) consumes extensive memory. Secondly, popular LLMs cannot generalize to longer texts than the training sequence length. Window attention, where only the most recent KVs are cached, is a natural approach -- but we show that it fails when the text length surpasses the cache size. We observe an interesting phenomenon, namely attention sink, that keeping the KV of initial tokens will largely recover the performance of window attention. In this paper, we first demonstrate that the emergence of attention sink is due to the strong attention scores towards initial tokens as a \"sink\" even if they are not semantically important. Based on the above analysis, we introduce StreamingLLM, an efficient framework that enables LLMs trained with a finite length attention window to generalize to infinite sequence lengths without any fine-tuning. We show that StreamingLLM can enable Llama-2, MPT, Falcon, and Pythia to perform stable and efficient language modeling with up to 4 million tokens and more. In addition, we discover that adding a placeholder token as a dedicated attention sink during pre-training can further improve streaming deployment. In streaming settings, StreamingLLM outperforms the sliding window recomputation baseline by up to 22.2x speedup. Code and datasets are provided at https://github.com/mit-han-lab/streaming-llm.",
+  "published": "2023-09-29T17:59:56Z",
+  "updated": "2024-04-07T00:56:53Z",
+  "authors": [
+   "Guangxuan Xiao",
+   "Yuandong Tian",
+   "Beidi Chen",
+   "Song Han",
+   "Mike Lewis"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "ICLR 2024",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"Efficient Streaming Language Models with Attention Sinks\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2404.14469v2",
+  "title": "SnapKV: LLM Knows What You are Looking for Before Generation",
+  "abstract": "Large Language Models (LLMs) have made remarkable progress in processing extensive contexts, with the Key-Value (KV) cache playing a vital role in enhancing their performance. However, the growth of the KV cache in response to increasing input length poses challenges to memory and time efficiency. To address this problem, this paper introduces SnapKV, an innovative and fine-tuning-free approach that efficiently minimizes KV cache size while still delivering comparable performance in real-world applications. We discover that each attention head in the model consistently focuses on specific prompt attention features during generation. Meanwhile, this robust pattern can be obtained from an 'observation' window located at the end of the prompts. Drawing on this insight, SnapKV automatically compresses KV caches by selecting clustered important KV positions for each attention head. Our approach significantly reduces the growing computational overhead and memory footprint when processing long input sequences. Specifically, SnapKV achieves a consistent decoding speed with a 3.6x increase in generation speed and an 8.2x enhancement in memory efficiency compared to the baseline when processing inputs of 16K tokens. At the same time, it maintains comparable performance to the baseline models across 16 long sequence datasets. Moreover, SnapKV can process up to 380K context tokens on a single A100-80GB GPU using HuggingFace implementation with minor changes, exhibiting only a negligible accuracy drop in the Needle-in-a-Haystack test. Further comprehensive studies suggest SnapKV's potential for practical applications.",
+  "published": "2024-04-22T17:42:58Z",
+  "updated": "2024-06-17T03:01:58Z",
+  "authors": [
+   "Yuhong Li",
+   "Yingbing Huang",
+   "Bowen Yang",
+   "Bharat Venkitesh",
+   "Acyr Locatelli",
+   "Hanchen Ye",
+   "Tianle Cai",
+   "Patrick Lewis",
+   "Deming Chen"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"SnapKV\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2405.14366v2",
+  "title": "MiniCache: KV Cache Compression in Depth Dimension for Large Language Models",
+  "abstract": "A critical approach for efficiently deploying computationally demanding large language models (LLMs) is Key-Value (KV) caching. The KV cache stores key-value states of previously generated tokens, significantly reducing the need for repetitive computations and thereby lowering latency in autoregressive generation. However, the size of the KV cache grows linearly with sequence length, posing challenges for applications requiring long context input and extensive sequence generation. In this paper, we present a simple yet effective approach, called MiniCache, to compress the KV cache across layers from a novel depth perspective, significantly reducing the memory footprint for LLM inference. Our approach is based on the observation that KV cache states exhibit high similarity between the adjacent layers in the middle-to-deep portion of LLMs. To facilitate merging, we propose disentangling the states into the magnitude and direction components, interpolating the directions of the state vectors while preserving their lengths unchanged. Furthermore, we introduce a token retention strategy to keep highly distinct state pairs unmerged, thus preserving the information with minimal additional storage overhead. Our MiniCache is training-free and general, complementing existing KV cache compression strategies, such as quantization and sparsity. We conduct a comprehensive evaluation of MiniCache utilizing various models including LLaMA-2, LLaMA-3, Phi-3, Mistral, and Mixtral across multiple benchmarks, demonstrating its exceptional performance in achieving superior compression ratios and high throughput. On the ShareGPT dataset, LLaMA-2-7B with 4-bit MiniCache achieves a remarkable compression ratio of up to 5.02x, enhances inference throughput by approximately 5x, and reduces the memory footprint by 41% compared to the FP16 full cache baseline, all while maintaining near-lossless performance.",
+  "published": "2024-05-23T09:43:52Z",
+  "updated": "2024-09-07T02:52:29Z",
+  "authors": [
+   "Akide Liu",
+   "Jing Liu",
+   "Zizheng Pan",
+   "Yefei He",
+   "Gholamreza Haffari",
+   "Bohan Zhuang"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "Project is available at https://minicache.vmv.re",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"MiniCache\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2211.12850v2",
+  "title": "OOD-DiskANN: Efficient and Scalable Graph ANNS for Out-of-Distribution Queries",
+  "abstract": "State-of-the-art algorithms for Approximate Nearest Neighbor Search (ANNS) such as DiskANN, FAISS-IVF, and HNSW build data dependent indices that offer substantially better accuracy and search efficiency over data-agnostic indices by overfitting to the index data distribution. When the query data is drawn from a different distribution - e.g., when index represents image embeddings and query represents textual embeddings - such algorithms lose much of this performance advantage. On a variety of datasets, for a fixed recall target, latency is worse by an order of magnitude or more for Out-Of-Distribution (OOD) queries as compared to In-Distribution (ID) queries. The question we address in this work is whether ANNS algorithms can be made efficient for OOD queries if the index construction is given access to a small sample set of these queries. We answer positively by presenting OOD-DiskANN, which uses a sparing sample (1% of index set size) of OOD queries, and provides up to 40% improvement in mean query latency over SoTA algorithms of a similar memory footprint. OOD-DiskANN is scalable and has the efficiency of graph-based ANNS indices. Some of our contributions can improve query efficiency for ID queries as well.",
+  "published": "2022-10-22T21:22:50Z",
+  "updated": "2022-11-30T11:14:07Z",
+  "authors": [
+   "Shikhar Jaiswal",
+   "Ravishankar Krishnaswamy",
+   "Ankit Garg",
+   "Harsha Vardhan Simhadri",
+   "Sheshansh Agrawal"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.IR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"DiskANN\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2503.07891v1",
+  "title": "Gemini Embedding: Generalizable Embeddings from Gemini",
+  "abstract": "In this report, we introduce Gemini Embedding, a state-of-the-art embedding model leveraging the power of Gemini, Google's most capable large language model. Capitalizing on Gemini's inherent multilingual and code understanding capabilities, Gemini Embedding produces highly generalizable embeddings for text spanning numerous languages and textual modalities. The representations generated by Gemini Embedding can be precomputed and applied to a variety of downstream tasks including classification, similarity, clustering, ranking, and retrieval. Evaluated on the Massive Multilingual Text Embedding Benchmark (MMTEB), which includes over one hundred tasks across 250+ languages, Gemini Embedding substantially outperforms prior state-of-the-art models, demonstrating considerable improvements in embedding quality. Achieving state-of-the-art performance across MMTEB's multilingual, English, and code benchmarks, our unified model demonstrates strong capabilities across a broad selection of tasks and surpasses specialized domain-specific models.",
+  "published": "2025-03-10T22:16:45Z",
+  "updated": "2025-03-10T22:16:45Z",
+  "authors": [
+   "Jinhyuk Lee",
+   "Feiyang Chen",
+   "Sahil Dua",
+   "Daniel Cer",
+   "Madhuri Shanbhogue",
+   "Iftekhar Naim",
+   "Gustavo Hernández Ábrego",
+   "Zhe Li",
+   "Kaifeng Chen",
+   "Henrique Schechter Vera",
+   "Xiaoqi Ren",
+   "Shanfeng Zhang",
+   "Daniel Salz",
+   "Michael Boratko",
+   "Jay Han",
+   "Blair Chen",
+   "Shuo Huang",
+   "Vikram Rao",
+   "Paul Suganthan",
+   "Feng Han",
+   "Andreas Doumanoglou",
+   "Nithi Gupta",
+   "Fedor Moiseev",
+   "Cathy Yip",
+   "Aashi Jain",
+   "Simon Baumgartner",
+   "Shahrokh Shahi",
+   "Frank Palma Gomez",
+   "Sandeep Mariserla",
+   "Min Choi",
+   "Parashar Shah",
+   "Sonam Goenka",
+   "Ke Chen",
+   "Ye Xia",
+   "Koert Chen",
+   "Sai Meher Karthik Duddu",
+   "Yichang Chen",
+   "Trevor Walker",
+   "Wenlei Zhou",
+   "Rakesh Ghiya",
+   "Zach Gleicher",
+   "Karan Gill",
+   "Zhe Dong",
+   "Mojtaba Seyedhosseini",
+   "Yunhsuan Sung",
+   "Raphael Hoffmann",
+   "Tom Duerig"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "19 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"Gemini\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2407.20143v4",
+  "title": "ByteCheckpoint: A Unified Checkpointing System for Large Foundation Model Development",
+  "abstract": "Checkpointing to preserve training states is crucial during the development of Large Foundation Models (LFMs), for training resumption upon various failures or changes in GPU resources and parallelism configurations. In addition, saved checkpoints are dispatched to evaluation tasks or transferred across different training stages (e.g., from pre-training to post-training). All these scenarios require resharding distributed checkpoints from one parallelism to another. In production environments, different LFMs are trained with various frameworks and storage backends, depending on model sizes and training scales. A high-performance checkpointing system is needed to enable efficient checkpoint management at scale throughout the lifecycle of LFM development. We introduce ByteCheckpoint, an industrial-grade checkpointing system for large-scale LFM training. ByteCheckpoint features: a parallelism-agnostic checkpoint representation that enables efficient load-time checkpoint resharding; a generic checkpoint saving/loading workflow to accommodate multiple training frameworks and support different storage backends; full-stack optimizations to ensure high I/O efficiency and scalability; a suite of monitoring tools to streamline large-scale performance analysis and bottleneck detection. Compared to existing open-source checkpointing systems [52, 58], ByteCheckpoint significantly reduces runtime checkpoint stalls, achieving an average reduction of 54.20x. For saving and loading times, ByteCheckpoint achieves improvements of up to 9.96x and 8.80x, respectively.",
+  "published": "2024-07-29T16:18:20Z",
+  "updated": "2025-04-02T06:05:23Z",
+  "authors": [
+   "Borui Wan",
+   "Mingji Han",
+   "Yiyao Sheng",
+   "Yanghua Peng",
+   "Haibin Lin",
+   "Mofan Zhang",
+   "Zhichao Lai",
+   "Menghan Yu",
+   "Junda Zhang",
+   "Zuquan Song",
+   "Xin Liu",
+   "Chuan Wu"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"ByteCheckpoint\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "0708.2322v2",
+  "title": "Zero",
+  "abstract": "You shall not find any new physics, because all physical events are interpreted well-known particles (leptons, quarks, photons, gluons, W-bosons, Z-boson) and forces which have long known (electroweak, gravity, strong interactions). Contents: 1. Pointlike events and probability. 2. Leptons' moving equations and masses. 3. Fermion-antifermion asommetry. 4. Electroweak equations. 5. Chromatic states and gluons. 6. Asimptotic freedom, confinement, Newton's gravity. 7. Dark energy and dark matter. 8. Events and particles. 9. Conclusion.",
+  "published": "2007-08-17T07:16:45Z",
+  "updated": "2011-06-12T02:53:16Z",
+  "authors": [
+   "G. Quznetsov"
+  ],
+  "categories": [
+   "physics.gen-ph"
+  ],
+  "comment": "23 pages, 4 png pictures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"ZeRO\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "math/0310433v3",
+  "title": "Zero-infinity laws in Diophantine approximation",
+  "abstract": "It is shown that for any translation invariant outer measure M, the M-measure of the intersection of any subset of R^n that is invariant under rational translations and which does not have full Lebesgue measure with an the closure of an open set of positive measure cannot be positive and finite. Analogues for $p$-adic fields and fields of formal power series over a finite field are established. The results are applied to some problems in metric Diophantine approximation.",
+  "published": "2003-10-28T11:42:51Z",
+  "updated": "2004-05-12T09:31:28Z",
+  "authors": [
+   "Y. Bugeaud",
+   "M. M. Dodson",
+   "S. Kristensen"
+  ],
+  "categories": [
+   "math.NT"
+  ],
+  "comment": "Revised version",
+  "journal_ref": "Q. J. Math. 56 (2005), no. 3, 311--320.",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"ZeRO-Infinity\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2211.05102v1",
+  "title": "Efficiently Scaling Transformer Inference",
+  "abstract": "We study the problem of efficient generative inference for Transformer models, in one of its most challenging settings: large deep models, with tight latency targets and long sequence lengths. Better understanding of the engineering tradeoffs for inference for large Transformer-based models is important as use cases of these models are growing rapidly throughout application areas. We develop a simple analytical model for inference efficiency to select the best multi-dimensional partitioning techniques optimized for TPU v4 slices based on the application requirements. We combine these with a suite of low-level optimizations to achieve a new Pareto frontier on the latency and model FLOPS utilization (MFU) tradeoffs on 500B+ parameter models that outperforms the FasterTransformer suite of benchmarks. We further show that with appropriate partitioning, the lower memory requirements of multiquery attention (i.e. multiple query heads share single key/value head) enables scaling up to 32x larger context lengths. Finally, we achieve a low-batch-size latency of 29ms per token during generation (using int8 weight quantization) and a 76% MFU during large-batch-size processing of input tokens, while supporting a long 2048-token context length on the PaLM 540B parameter model.",
+  "published": "2022-11-09T18:50:38Z",
+  "updated": "2022-11-09T18:50:38Z",
+  "authors": [
+   "Reiner Pope",
+   "Sholto Douglas",
+   "Aakanksha Chowdhery",
+   "Jacob Devlin",
+   "James Bradbury",
+   "Anselm Levskaya",
+   "Jonathan Heek",
+   "Kefan Xiao",
+   "Shivani Agrawal",
+   "Jeff Dean"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"Efficiently Scaling Transformer Inference\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2404.09526v2",
+  "title": "LoongServe: Efficiently Serving Long-Context Large Language Models with Elastic Sequence Parallelism",
+  "abstract": "The context window of large language models (LLMs) is rapidly increasing, leading to a huge variance in resource usage between different requests as well as between different phases of the same request. Restricted by static parallelism strategies, existing LLM serving systems cannot efficiently utilize the underlying resources to serve variable-length requests in different phases. To address this problem, we propose a new parallelism paradigm, elastic sequence parallelism (ESP), to elastically adapt to the variance between different requests and phases. Based on ESP, we design and build LoongServe, an LLM serving system that (1) improves computation efficiency by elastically adjusting the degree of parallelism in real-time, (2) improves communication efficiency by reducing key-value cache migration overhead and overlapping partial decoding communication with computation, and (3) improves GPU memory efficiency by reducing key-value cache fragmentation across instances. Our evaluation under diverse real-world datasets shows that LoongServe improves the maximum throughput by up to 3.85$\\times$ compared to the chunked prefill and 5.81$\\times$ compared to the prefill-decoding disaggregation.",
+  "published": "2024-04-15T07:45:04Z",
+  "updated": "2024-10-29T13:04:42Z",
+  "authors": [
+   "Bingyang Wu",
+   "Shengyu Liu",
+   "Yinmin Zhong",
+   "Peng Sun",
+   "Xuanzhe Liu",
+   "Xin Jin"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"LoongServe\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2312.05516v3",
+  "title": "Stateful Large Language Model Serving with Pensieve",
+  "abstract": "Large Language Models (LLMs) are wildly popular today and it is important to serve them efficiently. Existing LLM serving systems are stateless across requests. Consequently, when LLMs are used in the common setting of multi-turn conversations, a growing log of the conversation history must be processed alongside any request by the serving system at each turn, resulting in repeated processing. In this paper, we design $Pensieve$, a system optimized for multi-turn conversation LLM serving. $Pensieve$ maintains the conversation state across requests by caching previously processed history to avoid duplicate processing. $Pensieve$'s multi-tier caching strategy can utilize both GPU and CPU memory to efficiently store and retrieve cached data. $Pensieve$ also generalizes the recent PagedAttention kernel to support attention between multiple input tokens with a GPU cache spread over non-contiguous memory. Our evaluation shows that $Pensieve$ can achieve $1.14$-$3.0\\times$ the throughput of vLLM and TensorRT-LLM and significantly reduce latency.",
+  "published": "2023-12-09T09:55:07Z",
+  "updated": "2024-10-07T17:21:57Z",
+  "authors": [
+   "Lingfan Yu",
+   "Jinkun Lin",
+   "Jinyang Li"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"Pensieve\"",
+    "rank": 0
+   }
+  ]
+ },
+ {
+  "id": "2403.14123v1",
+  "title": "AI and Memory Wall",
+  "abstract": "The availability of unprecedented unsupervised training data, along with neural scaling laws, has resulted in an unprecedented surge in model size and compute requirements for serving/training LLMs. However, the main performance bottleneck is increasingly shifting to memory bandwidth. Over the past 20 years, peak server hardware FLOPS has been scaling at 3.0x/2yrs, outpacing the growth of DRAM and interconnect bandwidth, which have only scaled at 1.6 and 1.4 times every 2 years, respectively. This disparity has made memory, rather than compute, the primary bottleneck in AI applications, particularly in serving. Here, we analyze encoder and decoder Transformer models and show how memory bandwidth can become the dominant bottleneck for decoder models. We argue for a redesign in model architecture, training, and deployment strategies to overcome this memory limitation.",
+  "published": "2024-03-21T04:31:59Z",
+  "updated": "2024-03-21T04:31:59Z",
+  "authors": [
+   "Amir Gholami",
+   "Zhewei Yao",
+   "Sehoon Kim",
+   "Coleman Hooper",
+   "Michael W. Mahoney",
+   "Kurt Keutzer"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "Published in IEEE Micro Journal",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "classic-seed",
+    "query": "ti:\"The AI and Memory Wall\"",
+    "rank": 0
+   }
+  ]
+ }
+]

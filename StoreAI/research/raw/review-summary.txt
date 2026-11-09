@@ -1,0 +1,49 @@
+Traceback (most recent call last):
+  File "<string>", line 18, in <module>
+UnicodeEncodeError: 'gbk' codec can't encode character '\xb2' in position 137: illegal multibyte sequence
+total 62 confirmed 29
+Counter({'partially': 16, 'confirmed': 13, 'refuted': 1})
+--- 1 [confirmed/high] 03-优劣势总结报告.md §4.1 技术雷达表，第355行
+CLAIM: 「SSD KV 卸载 | 已量产 | LMCache [arXiv:2510.09665]、KVDrive [arXiv:2605.18071]」——KVDrive 被列为已量产。
+FIX: 将 03-优劣势总结报告.md 第355行整行替换为：
+
+| SSD KV 卸载 | 规模化（LMCache）/ 原型（KVDrive） | LMCache [arXiv:2510.09665]、KVDrive [arXiv:2605.18071] | 默认方案；下一道坎是寿命。KVDrive 论文仅报告原型，无生产部署证据 |
+
+（若希望判断栏保持原句不变，可改为：
+
+| SSD KV 卸载 | 规模化（LMCache）/ 原型（KVDrive） | LMCache [arXiv:2510.09665]（企业规模化采用）、KVDrive [arXiv:2605.18071]（论文自述为 fully functional prototype） | 默认方案；下一道坎是寿命 |
+
+同一错误还在两处，应同步替换以保持全文一致：
+- 02-科研成果调研.md 第2020行 → `| SSD KV
+--- 2 [confirmed/medium] 03-优劣势总结报告.md §4.1 技术雷达表，第358行
+CLAIM: 「CXL 内存池 | 试点 | Beluga [arXiv:2511.20172] | 需 512 GiB 级设备与 K8s 调度」——把 512 GiB 与 K8s 要求挂在 Beluga 名下。
+FIX: 替换 03-优劣势总结报告.md 第358行整行（保持原表格风格）：
+
+| CXL 内存池 | 试点 | Beluga [arXiv:2511.20172]、CXL-K8s [arXiv:2609.10790] | K8s 原生 DRA 调度；需 512 GiB 级共享池才划算 |
+
+可选：同步修正 §3.3（第181行），把无出处的阈值挂上来源：
+
+**成熟度**：实验 → 早期。**适用**：512 GiB 级以上共享池（[arXiv:2609.10790] 的两节点可行性验证口径）、Engram/稀疏表。**不适用**：高带宽 decode。
+
+若只做一处最小改动，仅在第358行代表工作列补 "、CXL-K8s [arXiv:2609.10790]" 即可完全消除张冠李戴，判断句无需改写。
+--- 3 [partially/medium] 03-优劣势总结报告.md §3.7 劣势，第234行（同述见 01-领域全景与技术图谱.md §4.4 第96、100行）
+CLAIM: 「PD 分离收益从 7× 收敛到 1.2–1.5×」。
+FIX: 03-优劣势总结报告.md 第234行，替换为：
+- 收益高度依赖 SLO、模型与负载，跨论文数字不可比（DistServe 的 7.4× 是 TTFT/TPOT 约束下的请求率，Splitwise 的 1.4× 是吞吐/成本口径）；
+
+01-领域全景与技术图谱.md 第96行标题，替换为：
+### 4.4 PD 解耦与调度：收益取决于 SLO，跨论文数字不可比
+
+01-领域全景与技术图谱.md 第100行，替换为：
+**现状**：PD 分离已是事实标准，但收益高度依赖 SLO、模型与负载：DistServe 在自身 TTFT/TPOT 约束下报告 7.4× 请求率 [arXiv:2401.09670]，Splitwise 以吞吐/成本口径报告 1.4× [arXiv:2311.18677]，两者不可拼成一条「收敛」曲线；下一波竞争在 **KV-aware routing** 与全局 KV
+--- 4 [confirmed/medium] 03-优劣势总结报告.md §2 发现3，第83行
+CLAIM: 「前缀感知去重能显著削减写量」。
+FIX: 替换 d:/xiaojun/work/test/StoreAI/research/03-优劣势总结报告.md 第83行末句（原句：「反过来，前缀感知去重能显著削减写量，但前提是页缓存仍然温热——一旦被逐出，同一路径在 683 ms 内发出约 1 GB 顺序读 [arXiv:2610.21249]。」）为：
+
+反过来，前缀感知去重的写量削减只对 exact-repeat（同上下文、同 prompt）负载显著，该组写入从 1.62 GB 降到 11.75 MB，其余三类负载写量仍在 2–5 GB；而「几乎不读 SSD」只是 legacy 栈在页缓存温热时的假象——一旦缓存被逐出，同一路径在 683 ms 内发出约 1 GB 顺序读 [arXiv:2610.21249]。
+
+同步替换（同一错误表述）：
+- d:/xiaojun/work/test/StoreAI/research/02-科研成果
+--- 5 [partially/medium] 01-领域全景与技术图谱.md §4.2 关键判断，第86行
+CLAIM: 「token 级驱逐的压缩率长期停在约 5×」。
+FIX: 

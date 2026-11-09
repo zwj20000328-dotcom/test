@@ -1,0 +1,1806 @@
+[
+ {
+  "id": "2604.26968v2",
+  "title": "Predictive Multi-Tier Memory Management for KV Cache in Large-Scale GPU Inference",
+  "abstract": "Key-value (KV) cache memory management is the primary bottleneck limiting throughput and cost-efficiency in large-scale GPU inference serving. Current systems suffer from three compounding inefficiencies: (1) the absence of unified KV cache sizing across all attention architectures--particularly multi-head latent attention (MLA), which is unsupported in general-purpose frameworks, resulting in up to 57x memory over-provisioning; (2) confinement of KV cache to a single memory tier (GPU HBM) despite the availability of a rich hierarchy spanning CPU DRAM, CXL-attached memory, NVMe via GPUDirect Storage, RDMA fabric, and parallel filesystems; and (3) reactive eviction policies that discard reusable state, forcing redundant recomputation. We present a unified system addressing all three. Our architecture-variant-aware sizing engine computes exact memory requirements per attention type; the resulting batch size gain reaches 7.4x for the one MLA model we evaluate (DeepSeek-V3), while the three GQA models see 1.0x, 1.0x, and 0.7x, so the GQA benefit is fleet-wide unified sizing rather than larger per-model batches. A six-tier memory hierarchy extends effective KV cache capacity from 40 GB to over 38 TB per node while maintaining sub-millisecond time-to-first-token (TTFT) for hot entries. A Bayesian reuse predictor with Beta conjugate priors over 16 (block-type, transition-type) pairs drives EMA-scored head-granular eviction and RoPE-aware prefetching. Component-level validation on trace replay using ShareGPT, LMSYS-Chat-1M, and agentic workloads demonstrates 70-84% cache hit rates. Analytical projections combining validated component behavior with published hardware specifications indicate TTFT reductions of 1.4x to 2.1x, throughput improvements of 1.7x to 2.9x, and 47% cost reduction relative to published baselines; these cluster-scale projections are analytical and carry no error bars.",
+  "published": "2026-04-19T21:34:09Z",
+  "updated": "2026-08-07T13:10:21Z",
+  "authors": [
+   "Sanjeev Rao Ganjihal"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC",
+   "cs.PF"
+  ],
+  "comment": "10 pages, 9 tables, 1 figure. v2: corrects seven bibliography entries, removes one unverifiable one; scopes the batch-size claim to the MLA model; labels cluster-scale projections analytical (no error bars); removes version pins from baseline comparisons; expands related work; adds B200-class hardware and 2026 model-family scaling notes (generation-parametric); companion manuscripts noted",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   }
+  ],
+  "score": 79
+ },
+ {
+  "id": "2404.02868v1",
+  "title": "UDON: A case for offloading to general purpose compute on CXL memory",
+  "abstract": "Upcoming CXL-based disaggregated memory devices feature special purpose units to offload compute to near-memory. In this paper, we explore opportunities for offloading compute to general purpose cores on CXL memory devices, thereby enabling a greater utility and diversity of offload. We study two classes of popular memory intensive applications: ML inference and vector database as candidates for computational offload. The study uses Arm AArch64-based dual-socket NUMA systems to emulate CXL type-2 devices. Our study shows promising results. With our ML inference model partitioning strategy for compute offload, we can place up to 90% data in remote memory with just 20% performance trade-off. Offloading Hierarchical Navigable Small World (HNSW) kernels in vector databases can provide upto 6.87$\\times$ performance improvement with under 10% offload overhead.",
+  "published": "2024-04-03T17:03:18Z",
+  "updated": "2024-04-03T17:03:18Z",
+  "authors": [
+   "Jon Hermes",
+   "Josh Minor",
+   "Minjun Wu",
+   "Adarsh Patil",
+   "Eric Van Hensbergen"
+  ],
+  "categories": [
+   "cs.ET"
+  ],
+  "comment": "Presented at the 3rd Workshop on Heterogeneous Composable and Disaggregated Systems (HCDS 2024)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 55
+ },
+ {
+  "id": "2609.35065v1",
+  "title": "TempoKV: Timely Staging of LLM KV Caches for Memory-Semantic Flash",
+  "abstract": "Reusable prefix key-value (KV) caches can outgrow GPU memory in large language model (LLM) serving. A memory-semantic flash hierarchy offers SSD-backed capacity with a limited fast tier, but a logical KV hit is not necessarily ready for GPU retrieval. Demand staging exposes SSD latency, whereas immediate staging can reserve fast-tier capacity long before retrieval begins. We present TempoKV, a timing-aware resource-commitment layer that separates early knowledge of reuse from the acquisition of staging resources. It records reusable-KV hits as metadata-only claims and requests commitment when the runtime-estimated time until retrieval falls to the storage-estimated time needed to make KV resident and protected against eviction. These estimates adapt to runtime progress and staging state, while commitment remains subject to available protected capacity. We implement TempoKV in vLLM and LMCache on an SSD-backed CXL memory device without changing request scheduling. Across two models and three prefix cache ratios, TempoKV reduces protected fast-tier byte-time per request by 63-91% versus immediate staging while retaining much of the serving benefit of advance staging. In a fast-tier capacity sweep, output throughput and p95 time to first token (TTFT) remain nearly unchanged as capacity decreases from 100 to 25 GiB. Compared with unmodified LMCache's Device-DAX L1 configuration, TempoKV reduces p95 TTFT by up to 48.0% and increases output throughput by up to 27.8%.",
+  "published": "2026-09-28T12:55:20Z",
+  "updated": "2026-09-28T12:55:20Z",
+  "authors": [
+   "Jay H. Park",
+   "Hyungjun Kim",
+   "Dong Kim"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 2
+   }
+  ],
+  "score": 54
+ },
+ {
+  "id": "2509.03377v3",
+  "title": "TRACE: Unlocking Effective CXL Bandwidth via Lossless Compression and Precision Scaling",
+  "abstract": "LLM inference is increasingly limited by memory bandwidth, and the bottleneck worsens at long context as the KV cache grows. CXL memory adds capacity to offload weights and KV, but its link and device-side DDR bandwidth are far below HBM, so decoding stalls once traffic shifts to the CXL tier. Many CXL controllers are starting to add generic \\emph{lossless} compression, yet applying commodity codecs directly to standard word-major LLM tensors is largely ineffective, especially for token-major KV streams. We propose TRACE (\\textbf{T}raffic-\\textbf{R}educed \\textbf{A}rchitecture for \\textbf{C}ompression and \\textbf{E}lasticity), which preserves the unmodified CXL.mem interface but changes the device-internal representation. It stores tensors in a channel-major, disaggregated bit-plane layout, and applies a KV-specific transform before compression, converting mixed-field words into low-entropy plane streams that commodity codecs can compress. The same substrate enables precision-proportional fetch by reading only the required bit-planes. Across public LLMs, TRACE reduces BF16 weight footprint by 25.2\\% and BF16 KV footprint by 46.9\\% losslessly, with per-layer KV ratios peaking at 2.69$\\times$. In trace-driven system modeling, once KV spills to CXL, GPT-OSS-120B-MXFP4 improves throughput at 128k tokens from 16.28 to 68.99 tok/s (4.24$\\times$). DRAMSim3 shows up to 40.3\\% lower DRAM access energy under plane-aligned fetch. A 7\\,nm SystemVerilog implementation sustains 256\\,GB/s device bandwidth. Relative to a CXL controller with generic inline lossless compression, TRACE only adds 7.2\\% area, 4.7\\% power, and 6.0\\% load-to-use latency at 2\\,GHz and 0.7\\,V.",
+  "published": "2025-09-03T14:53:45Z",
+  "updated": "2026-01-30T02:31:28Z",
+  "authors": [
+   "Rui Xie",
+   "Asad Ul Haq",
+   "Yunhua Fang",
+   "Linsen Ma",
+   "Zirak Burzin Engineer",
+   "Liu Liu",
+   "Tong Zhang"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 48
+ },
+ {
+  "id": "2111.01947v1",
+  "title": "An Evaluation of WebAssembly and eBPF as Offloading Mechanisms in the Context of Computational Storage",
+  "abstract": "As the volume of data that needs to be processed continues to increase, we also see renewed interests in near-data processing in the form of computational storage, with eBPF (extended Berkeley Packet Filter) being proposed as a vehicle for computation offloading. However, discussions in this regard have so far ignored viable alternatives, and no convincing analysis has been provided. As such, we qualitatively and quantitatively evaluated eBPF against WebAssembly, a seemingly similar technology, in the context of computation offloading. This report presents our findings.",
+  "published": "2021-10-22T11:05:34Z",
+  "updated": "2021-10-22T11:05:34Z",
+  "authors": [
+   "Wenjun Huang",
+   "Marcus Paradies"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DB",
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 48
+ },
+ {
+  "id": "2607.28633v2",
+  "title": "Topology-Aware Data Movement for Disaggregated GPU Inference",
+  "abstract": "Disaggregated LLM inference creates a datacenter networking problem that no existing system solves correctly. When prefill and decode run on separate GPU pools, the KV cache must be transferred between them. For a 70B model this is 1.3 GB per request, exceeding 100 GB/s aggregate at production scale. Yet DistServe, Splitwise, and Mooncake all use uniform RDMA, ignoring that bandwidth between two GPUs varies by 72x depending on their physical relationship: 900 GB/s via NVLink 4.0 within a domain (1.8 TB/s on NVLink 5, widening the gap to 144x), 50 GB/s via InfiniBand across nodes, 12.5 GB/s via TCP across data centers. We design a topology-aware transfer orchestrator that discovers interconnect hierarchy at startup and selects optimal transport per transfer. Three mechanisms work together: (1) pipelined layer-by-layer transfer that overlaps transmission with ongoing prefill, hiding 76 to 100 percent of transfer latency behind computation depending on transport, with NVLink and PCIe transfers hidden entirely; (2) NVLink domain-aware placement for Mixture-of-Experts models that co-optimizes expert dispatch with KV cache locality; and (3) CXL 3.0 memory expanders as a shared overflow tier providing 6x capacity at 86x lower latency than NVMe. Full evaluation requires multi-node clusters with heterogeneous interconnects and CXL 3.0 hardware that is beyond academic resources and not yet available in GPU clouds. We present analytical bandwidth models, component implementations, and projected analysis across three architectures showing 3 to 18x transfer latency reduction over uniform RDMA.",
+  "published": "2026-04-19T22:46:57Z",
+  "updated": "2026-08-07T12:49:40Z",
+  "authors": [
+   "Sanjeev Rao Ganjihal"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.PF"
+  ],
+  "comment": "8 pages, 4 tables, 1 algorithm. v2: corrects MLA compression to 57x (576 dims per DeepSeek); fixes a factor-of-two in GQA sizing rows and all dependent transfer numbers (Llama-70B 4K = 1.3 GB); pipelining band recomputed (76 to 100 percent); PCIe on Gen5; NIXL positioning added; NVLink 5 and 2026 model notes (bandwidth- and bytes-parametric); wording fixes",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   },
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 3
+   }
+  ],
+  "score": 45
+ },
+ {
+  "id": "2607.27187v1",
+  "title": "A Photonic-CXL Memory Appliance for Scalable KV Cache Management in LLM Inference",
+  "abstract": "LLM inference at scale faces a memory wall. The KV cache demands tens of terabytes at hundreds of gigabytes per second, yet no current memory tier delivers both at once. Characterization across multi-generation GPU systems with various LLaMA models shows host memory retrieval achieves up to 100x speedup over re-computation but supports only tens of concurrent long-context users. Electrical CXL pooling theoretically bridges this gap, but switch latency, cable reach limits, and power-scaling issues prevent practical TB-scale deployments. We present the Marvell Photonic Fabric Memory Appliance, a photonic-CXL hybrid architecture replacing electrical switches with a passive fiber shuffle to deliver 32 TB shared memory across 16 hosts via a switch-free full- crossbar topology. Emulation results demonstrate over 50 percent latency reduction versus electrical CXL pools. Simulation results show that the PF Memory Appliance eliminates cache eviction cliffs by improving time-to-first-token by 6.6x for multi-turn conversations workloads.",
+  "published": "2026-07-29T17:55:38Z",
+  "updated": "2026-07-29T17:55:38Z",
+  "authors": [
+   "Jing Ding",
+   "Yash Nishant",
+   "Chandrish Ambati",
+   "Jyothsna Kamati",
+   "Trung Diep"
+  ],
+  "categories": [
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 43
+ },
+ {
+  "id": "2603.10087v1",
+  "title": "Pooling Engram Conditional Memory in Large Language Models using CXL",
+  "abstract": "Engram conditional memory has emerged as a promising component for LLMs by decoupling static knowledge lookup from dynamic computation. Since Engram exhibits sparse access patterns and supports prefetching, its massive embedding tables are well-suited for offloading to lower-tier memory. In this paper, we propose using Compute Express Link (CXL) memory pool for Engram storage. Compared to RDMA, CXL provides fine-grained and low-latency access required by minimal and discrete retrieval patterns of Engram. We integrate the CXL-based Engram pool into SGLang, achieving near-DRAM end-to-end performance. This provides a scalable and cost-efficient storage solution for future Engram-integrated LLMs without compromising inference performance.",
+  "published": "2026-03-10T14:13:02Z",
+  "updated": "2026-03-10T14:13:02Z",
+  "authors": [
+   "Ruiyang Ma",
+   "Teng Ma",
+   "Zhiyuan Su",
+   "Hantian Zha",
+   "Xinpeng Zhao",
+   "Xuchun Shang",
+   "Xingrui Yi",
+   "Zheng Liu",
+   "Zhu Cao",
+   "An Wu",
+   "Zhichong Dou",
+   "Ziqian Liu",
+   "Daikang Kuang",
+   "Guojie Luo"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "Submitted to EuroMLSys'26",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   }
+  ],
+  "score": 43
+ },
+ {
+  "id": "2511.20172v2",
+  "title": "Beluga: A CXL-Based Memory Architecture for Scalable and Efficient LLM KVCache Management",
+  "abstract": "The rapid increase in LLM model sizes and the growing demand for long-context inference have made memory a critical bottleneck in GPU-accelerated serving systems. Although high-bandwidth memory (HBM) on GPUs offers fast access, its limited capacity necessitates reliance on host memory (CPU DRAM) to support larger working sets such as the KVCache. However, the maximum DRAM capacity is constrained by the limited number of memory channels per CPU socket. To overcome this limitation, current systems often adopt RDMA-based disaggregated memory pools, which introduce significant challenges including high access latency, complex communication protocols, and synchronization overhead. Fortunately, the emerging CXL technology introduces new opportunities in KVCache design. In this paper, we propose Beluga, a novel memory architecture that enables GPUs and CPUs to access a shared, large-scale memory pool through CXL switches. By supporting native load/store access semantics over the CXL fabric, our design delivers near-local memory latency, while reducing programming complexity and minimizing synchronization overhead. We conduct a systematic characterization of a commercial CXL switch-based memory pool and propose a set of design guidelines. Based on Beluga, we design and implement Beluga-KVCache, a system tailored for managing the large-scale KVCache in LLM inference. Beluga-KVCache achieves an 89.6% reduction in Time-To-First-Token (TTFT) and 7.35x throughput improvement in the vLLM inference engine compared to RDMA-based solutions. To the best of our knowledge, Beluga is the first system that enables GPUs to directly access large-scale memory pools through CXL switches, marking a significant step toward low-latency, shared access to vast memory resources by GPUs.",
+  "published": "2025-11-25T10:51:43Z",
+  "updated": "2025-11-27T06:20:27Z",
+  "authors": [
+   "Xinjun Yang",
+   "Qingda Hu",
+   "Junru Li",
+   "Feifei Li",
+   "Yicong Zhu",
+   "Yuqi Zhou",
+   "Qiuru Lin",
+   "Jian Dai",
+   "Yang Kong",
+   "Jiayu Zhang",
+   "Guoqiang Xu",
+   "Qiang Liu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "13 pages, accepted by SIGMOD'26",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   }
+  ],
+  "score": 41
+ },
+ {
+  "id": "2510.14580v1",
+  "title": "ScalePool: Hybrid XLink-CXL Fabric for Composable Resource Disaggregation in Unified Scale-up Domains",
+  "abstract": "This paper proposes ScalePool, a novel cluster architecture designed to interconnect numerous accelerators using unified hardware interconnects rather than traditional long-distance networking. ScalePool integrates Accelerator-Centric Links (XLink) and Compute Express Link (CXL) into a unified XLink-CXL hybrid fabric. Specifically, ScalePool employs XLink for intra-cluster, low-latency accelerator communication, while using hierarchical CXL-based switching fabrics for scalable and coherent inter-cluster memory sharing. By abstracting interfaces through CXL, ScalePool structurally resolves interoperability constraints, enabling heterogeneous cluster operation and composable resource disaggregation. In addition, ScalePool introduces explicit memory tiering: the latency-critical tier-1 combines accelerator-local memory with coherence-centric CXL and XLink, whereas the highcapacity tier-2 employs dedicated memory nodes interconnected by a CXL-based fabric, achieving scalable and efficient memory pooling. Evaluation results show that ScalePool accelerates LLM training by 1.22x on average and up to 1.84x compared to conventional RDMA-based environments. Furthermore, the proposed tier-2 memory disaggregation strategy reduces latency by up to 4.5x for memory-intensive workloads.",
+  "published": "2025-10-16T11:38:57Z",
+  "updated": "2025-10-16T11:38:57Z",
+  "authors": [
+   "Hyein Woo",
+   "Miryeong Kwon",
+   "Jiseon Kim",
+   "Eunjee Na",
+   "Hanjin Choi",
+   "Seonghyeon Jang",
+   "Myoungsoo Jung"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"memory disaggregation\" AND (abs:LLM OR abs:inference)",
+    "rank": 2
+   }
+  ],
+  "score": 41
+ },
+ {
+  "id": "2512.04476v1",
+  "title": "Context-Aware Mixture-of-Experts Inference on CXL-Enabled GPU-NDP Systems",
+  "abstract": "Mixture-of-Experts (MoE) models scale large language models through conditional computation, but inference becomes memory-bound once expert weights exceed the capacity of GPU memory. In this case, weights must be offloaded to external memory, and fetching them incurs costly and repeated transfers. We address this by adopting CXL-attached near-data processing (CXL-NDP) as the offloading tier to execute cold experts in place, converting expensive parameter movement into cheaper activation movement. Unlike prior GPU-NDP systems that are largely context-agnostic and reactive, we develop a context-aware MoE system that uses prefill-stage activation statistics to guide decoding-stage expert placement, dynamically pins hot experts in GPU-side HBM, and maps the remainder to CXL-NDP. To meet NDP's limited compute throughput, we introduce context-aware mixed-precision quantization that allocates per-expert bitwidths (1-4 bit) based on prefill stage. The resulting MoE inference system overlaps GPU and NDP execution while minimizing cross-device movement. The evaluation on the GPU-NDP system shows that our approach achieves up to an 8.7-fold decoding throughput improvement over the state-of-the-art method, while incurring only a 0.13% average accuracy drop.",
+  "published": "2025-12-04T05:30:53Z",
+  "updated": "2025-12-04T05:30:53Z",
+  "authors": [
+   "Zehao Fan",
+   "Zhenyu Liu",
+   "Yunzhen Liu",
+   "Yayue Hou",
+   "Hadjer Benmeziane",
+   "Kaoutar El Maghraoui",
+   "Liu Liu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2606.13708v1",
+  "title": "Tiara: A Programmable Line-Rate ISA for Remote Memory Access",
+  "abstract": "RDMA one-sided verbs are the natural primitive for memory disaggregation, but they require the client to supply the exact remote address. The 1-RTT performance breaks down when the target address depends on data that must first be read from remote memory, a pattern we call the Indirection Wall. Indirection is pervasive: graph traversals follow pointers hop by hop, address translation walks multi-level page tables, distributed coordination requires conditional multi-host logic, and disaggregated LLM inference must resolve paged KV caches through block-table lookups. Each level of indirection costs one sequentially dependent network round-trip, yet offloading to existing RDMA NICs either consumes remote CPU cycles or has limited throughput. We present Tiara, a compact, statically verifiable instruction set that executes on the memory-side NIC. Tiara operators are pre-registered programs, analogous to eBPF programs in the kernel, that resolve indirection locally, collapsing multi-RTT dependent chains into a single round-trip. On an FPGA-based prototype, Tiara reduces 10-hop graph-traversal latency by 2.85x over one-sided RDMA while sustaining 3.4x higher throughput, cuts page-table walk latency by 62%, reduces uncontended distributed-lock latency by 2.9x, achieves 2.8x throughput for disaggregated PagedAttention at 8 KB blocks, and 1.88x MoE expert-gather latency at 32 experts.",
+  "published": "2026-06-10T05:01:17Z",
+  "updated": "2026-06-10T05:01:17Z",
+  "authors": [
+   "Bojie Li"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"memory disaggregation\" AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 3
+   }
+  ],
+  "score": 37
+ },
+ {
+  "id": "2602.22457v3",
+  "title": "CCCL: Node-Spanning GPU Collectives with CXL Memory Pooling",
+  "abstract": "Large language models (LLMs) training or inference across multiple nodes introduces significant pressure on GPU memory and interconnect bandwidth. The Compute Express Link (CXL) shared memory pool offers a scalable solution by enabling memory sharing across nodes, reducing over-provisioning and improving resource utilization. We propose \\name, a collective communication library, leveraging the CXL shared memory pool to support cross-node GPU operations without relying on traditional RDMA-based networking. Our design addresses the challenges on synchronization, data interleaving, and communication parallelization faced by using the CXL shared memory pool for collective communications. Evaluating on multiple nodes with a TITAN-II CXL switch and six Micron CZ120 memory cards, we show that \\name achieves highly efficient collective operations across hosts, demonstrating CXL's potential for scalable, memory-centric GPU communication. Our evaluation demonstrates that \\name achieves average performance improvements of 1.34$\\times$ for AllGather, 1.84$\\times$ for Broadcast, 1.94$\\times$ for Gather, and 1.04$\\times$ for Scatter, compared to the original RDMA-based implementation over 200 Gbps InfiniBand. \\textcolor{dong}{In addition, the evaluation with a case of LLM training shows 1.11$\\times$ speedup compared with the InfiniBand while saving production cost by $2.75\\times$ in hardware.}",
+  "published": "2026-02-25T22:38:46Z",
+  "updated": "2026-05-06T19:02:10Z",
+  "authors": [
+   "Dong Xu",
+   "Han Meng",
+   "Xinyu Chen",
+   "Dengcheng Zhu",
+   "Wei Tang",
+   "Fei Liu",
+   "Liguang Xie",
+   "Wu Xiang",
+   "Rui Shi",
+   "Yue Li",
+   "Henry Hu",
+   "Hui Zhang",
+   "Jianping Jiang",
+   "Dong Li"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.ET"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2303.03483v2",
+  "title": "In-Storage Domain-Specific Acceleration for Serverless Computing",
+  "abstract": "While (1) serverless computing is emerging as a popular form of cloud execution, datacenters are going through major changes: (2) storage dissaggregation in the system infrastructure level and (3) integration of domain-specific accelerators in the hardware level. Each of these three trends individually provide significant benefits; however, when combined the benefits diminish. Specifically, the paper makes the key observation that for serverless functions, the overhead of accessing dissaggregated persistent storage overshadows the gains from accelerators. Therefore, to benefit from all these trends in conjunction, we propose Domain-Specific Computational Storage for Serverless (DSCS-Serverless). This idea contributes a serverless model that leverages a programmable accelerator within computational storage to conjugate the benefits of acceleration and storage disaggregation simultaneously. Our results with eight applications shows that integrating a comparatively small accelerator within the storage (DSCS-Serverless) that fits within its power constrains (15 Watts), significantly outperforms a traditional disaggregated system that utilizes the NVIDIA RTX 2080 Ti GPU (250 Watts). Further, the work highlights that disaggregation, serverless model, and the limited power budget for computation in storage require a different design than the conventional practices of integrating microprocessors and FPGAs. This insight is in contrast with current practices of designing computational storage that are yet to address the challenges associated with the shifts in datacenters. In comparison with two such conventional designs that either use quad-core ARM A57 or a Xilinx FPGA, DSCS-Serverless provides 3.7x and 1.7x end-to-end application speedup, 4.3x and 1.9x energy reduction, and 3.2x and 2.3x higher cost efficiency, respectively.",
+  "published": "2023-03-06T20:28:37Z",
+  "updated": "2024-03-23T21:53:18Z",
+  "authors": [
+   "Rohan Mahapatra",
+   "Soroush Ghodrati",
+   "Byung Hoon Ahn",
+   "Sean Kinzer",
+   "Shu-ting Wang",
+   "Hanyang Xu",
+   "Lavanya Karthikeyan",
+   "Hardik Sharma",
+   "Amir Yazdanbakhsh",
+   "Mohammad Alian",
+   "Hadi Esmaeilzadeh"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2606.23521v1",
+  "title": "Concordia: JIT-Compiled Persistent-Kernel Checkpointing for Fault-Tolerant LLM Inference",
+  "abstract": "Long-running LLM agents keep valuable state resident on GPUs: KV caches, request schedulers, communication state, and sometimes online adapters. Losing this state after a GPU or communicator failure can discard minutes to hours of work, yet existing recovery mechanisms either restart the whole serving stack or require application-specific checkpoint logic inside every attention and runtime component. This paper argues that fault tolerance for such workloads needs a GPU-resident execution context: checkpoint hooks must run at device synchronization points, observe binary kernels that frameworks and libraries actually execute, and recover without putting the host CPU on the critical path. We present Concordia, a runtime that uses a device-resident persistent kernel as the substrate for fault-tolerant LLM inference. Concordia interposes on GPU module loading and supports PTX- and SASS-level instrumentation, allowing checkpoint and pause hooks to be inserted below framework code and library boundaries. For each registered LLM state region, Concordia JIT-compiles a specialized delta-checkpoint handler -- for example, a KV-block scanner, adapter-page scanner, or recovery applier -- and hot-swaps it into the persistent kernel's operator table. The persistent kernel consumes a lock-free ring buffer of compute, checkpoint, append-log, and recovery tasks, so the same always-on executor triggers dirty-page detection, stages deltas, and appends committed records to a CPU-visible log in CXL memory or host DRAM.",
+  "published": "2026-06-22T16:06:11Z",
+  "updated": "2026-06-22T16:06:11Z",
+  "authors": [
+   "Yuhang Gan",
+   "Yiwei Yang",
+   "Yuyi Li",
+   "Xiangyu Gao",
+   "Yichen Wang",
+   "Rain Jiang",
+   "Xiaoning Ding",
+   "Andi Quinn",
+   "Chen Qian"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 34
+ },
+ {
+  "id": "2504.15293v1",
+  "title": "Revisiting Computational Storage for Data Integrity and Security",
+  "abstract": "The idea of computational storage device (CSD) has come a long way since at least 1990s [1], [2]. By embedding computing resources within storage devices, CSDs could potentially offload computational tasks from CPUs and enable near-data processing (NDP), reducing data movements and/or energy consumption significantly. While the initial hard-disk-based CSDs suffer from severe limitations in terms of on-drive resources, programmability, etc., the storage market has witnessed the commercialization of solid-state-drive (SSD) based CSDs (e.g., Samsung SmartSSD [3], ScaleFlux CSDs [4]) recently, which has enabled CSD-based optimizations for avariety of application scenarios (e.g., [5], [6], [7]).",
+  "published": "2025-04-12T14:39:30Z",
+  "updated": "2025-04-12T14:39:30Z",
+  "authors": [
+   "Chao Shi",
+   "Anthony Manschula",
+   "Tabassum Mahmud",
+   "Zeren Yang",
+   "Mai Zheng",
+   "Yong Chen",
+   "Jim Wayda",
+   "Matthew Wolf",
+   "Byungwoo Bang"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 32
+ },
+ {
+  "id": "2507.03305v2",
+  "title": "Analysis and Optimized CXL-Attached Memory Allocation for Long-Context LLM Fine-Tuning",
+  "abstract": "The substantial memory requirements of Large Language Models (LLMs), particularly for long-context fine-tuning, have renewed interest in CPU offloading to augment limited GPU memory. However, as context lengths grow, relying on CPU memory for intermediate states introduces a significant bottleneck that can exhaust the capacity of mainstream client platforms. To address this limitation, this work investigates the effectiveness of Compute Express Link (CXL) add-in card (AIC) memory as an extension to CPU memory, enabling larger model sizes and longer context lengths during fine-tuning. Extensive benchmarking reveals two critical challenges. First, current deep learning frameworks such as PyTorch lack fine-grained, per-tensor control over NUMA memory allocation, exposing only coarse, process-level policies. Second, due to this lack of control, when the memory footprint of fine-tuning is offloaded across local DRAM and CXL-attached memory, naively placing optimizer data in higher-latency CXL leads to substantial slowdowns in the optimizer step (e.g., 4x once data exceeds 20M elements). To overcome these challenges, this work introduces a PyTorch extension that enables tensor-level system memory control and a CXL-aware memory allocator that pins latency-critical tensors in local DRAM while maximizing bandwidth by striping latency-tolerant tensors across one or more CXL devices. Evaluated on a real hardware setup with 7B and 12B models, 4K-32K contexts, and a single GPU, our approach recovers throughput to 97-99% of DRAM-only with a single AIC and approximately 100% with two AICs, delivering up to 21% improvement over naive interleaving while preserving DRAM-like DMA bandwidth for GPU transfers. These results show that carefully managed CXL-attached memory is a practical path to scaling long-context fine-tuning beyond DRAM limits.",
+  "published": "2025-07-04T05:24:01Z",
+  "updated": "2025-10-30T16:45:30Z",
+  "authors": [
+   "Yong-Cheng Liaw",
+   "Shuo-Han Chen"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "13 pages, 15 figures, 2 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 31
+ },
+ {
+  "id": "2509.09525v2",
+  "title": "TrEnv-X: Transparently Share Serverless Execution Environments Across Different Functions and Nodes",
+  "abstract": "Serverless computing is renowned for its computation elasticity, yet its full potential is often constrained by the requirement for functions to operate within local and dedicated background environments, resulting in limited memory elasticity. To address this limitation, this paper introduces TrEnv-X, a co-designed integration of the serverless platform with the operating system and CXL/RDMA-based remote memory pools. TrEnv-X's core innovations are repurposable sandboxes, which can be shared across different functions to decrease the associated creation overhead, and OS-level memory templates, which enable rapid state restoration from CXL/RDMA-based remote memory pools. To further demonstrate TrEnv-X's versatility, we generalize its design from traditional containers for microVM-based agent workloads and introduce new optimizations, including browser sharing and a page cache bypassing mechanism. Our evaluation shows that TrEnv-X achieves up to 7x reduction in P99 latency and 48% memory savings for container-based functions. When applied to LLM agents, it reduces the P99 latency by up to 58% and memory usage by 61% compared to state-of-the-art systems like E2B.",
+  "published": "2025-09-11T15:06:03Z",
+  "updated": "2026-03-21T12:02:04Z",
+  "authors": [
+   "Jialiang Huang",
+   "Teng Ma",
+   "Zheng Liu",
+   "Sixing Lin",
+   "Kang Chen",
+   "Jinlei Jiang",
+   "Xia Liao",
+   "Yingdi Shan",
+   "Yongwei Wu",
+   "Ning Zhang",
+   "Mengting Lu",
+   "Tao Ma",
+   "Haifeng Gong",
+   "Mingxing Zhang"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.OS"
+  ],
+  "comment": "Accepted by ACM Transactions on Computer Systems (TOCS)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2605.27745v1",
+  "title": "CXL-ClusterSim: Modeling CXL-based Disaggregated Memory Cluster for Pooling and Sharing using gem5 and SST",
+  "abstract": "Large-scale AI training and inference require hundreds of gigabytes to terabytes of DRAM with high peak to average utilization ratios, resulting in overprovisioning. In cloud computing, DRAM constitutes a significant share of the cost. Yet, as shown by recent articles, DRAM is heavily under utilized. Memory disaggregation is a solution to both these problems. With the advent of the CXL protocol, there is renewed interest in designing and optimizing computing systems with disaggregated memory. However, at present, there are limited simulation tools available for exploring the design space and evaluating the performance tradeoffs in computer systems with disaggregated memory. In this paper, we propose CXL-ClusterSim, a full-system modeling and simulation framework by combining the gem5 simulator for fidelity, with the Structural Simulation Toolkit (SST) for parallel simulation. We outline the challenges in creating this simulation infrastructure and present a design that is scalable, flexible, and reasonably fast to help computer architects to explore the design space of CXL-based disaggregated memory and identify new opportunities for hardware/software codesign and performance optimization.",
+  "published": "2026-05-26T22:38:47Z",
+  "updated": "2026-05-26T22:38:47Z",
+  "authors": [
+   "Kaustav Goswami",
+   "Maryam Babaie",
+   "Hoa Nguyen",
+   "Venkatesh Akella",
+   "Jason Lowe-Power"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"memory disaggregation\" AND (abs:LLM OR abs:inference)",
+    "rank": 2
+   }
+  ],
+  "score": 29
+ },
+ {
+  "id": "2207.05241v1",
+  "title": "Accelerating Large-Scale Graph-based Nearest Neighbor Search on a Computational Storage Platform",
+  "abstract": "K-nearest neighbor search is one of the fundamental tasks in various applications and the hierarchical navigable small world (HNSW) has recently drawn attention in large-scale cloud services, as it easily scales up the database while offering fast search. On the other hand, a computational storage device (CSD) that combines programmable logic and storage modules on a single board becomes popular to address the data bandwidth bottleneck of modern computing systems. In this paper, we propose a computational storage platform that can accelerate a large-scale graph-based nearest neighbor search algorithm based on SmartSSD CSD. To this end, we modify the algorithm more amenable on the hardware and implement two types of accelerators using HLS- and RTL-based methodology with various optimization methods. In addition, we scale up the proposed platform to have 4 SmartSSDs and apply graph parallelism to boost the system performance further. As a result, the proposed computational storage platform achieves 75.59 query per second throughput for the SIFT1B dataset at 258.66W power dissipation, which is 12.83x and 17.91x faster and 10.43x and 24.33x more energy efficient than the conventional CPU-based and GPU-based server platform, respectively. With multi-terabyte storage and custom acceleration capability, we believe that the proposed computational storage platform is a promising solution for cost-sensitive cloud datacenters.",
+  "published": "2022-07-12T00:42:18Z",
+  "updated": "2022-07-12T00:42:18Z",
+  "authors": [
+   "Ji-Hoon Kim",
+   "Yeo-Reum Park",
+   "Jaeyoung Do",
+   "Soo-Young Ji",
+   "Joo-Young Kim"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "Extension of FCCM 20201 and Accepted in Transaction on Computers",
+  "journal_ref": "IEEE Transactions on Computers",
+  "doi": "10.1109/TC.2022.3155956",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2601.22001v1",
+  "title": "Heterogeneous Computing: The Key to Powering the Future of AI Agent Inference",
+  "abstract": "AI agent inference is driving an inference heavy datacenter future and exposes bottlenecks beyond compute - especially memory capacity, memory bandwidth and high-speed interconnect. We introduce two metrics - Operational Intensity (OI) and Capacity Footprint (CF) - that jointly explain regimes the classic roofline analysis misses, including the memory capacity wall. Across agentic workflows (chat, coding, web use, computer use) and base model choices (GQA/MLA, MoE, quantization), OI/CF can shift dramatically, with long context KV cache making decode highly memory bound. These observations motivate disaggregated serving and system level heterogeneity: specialized prefill and decode accelerators, broader scale up networking, and decoupled compute-memory enabled by optical I/O. We further hypothesize agent-hardware co design, multiple inference accelerators within one system, and high bandwidth, large capacity memory disaggregation as foundations for adaptation to evolving OI/CF. Together, these directions chart a path to sustain efficiency and capability for large scale agentic AI inference.",
+  "published": "2026-01-29T17:11:46Z",
+  "updated": "2026-01-29T17:11:46Z",
+  "authors": [
+   "Yiren Zhao",
+   "Junyi Liu"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"memory disaggregation\" AND (abs:LLM OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2508.15980v1",
+  "title": "CXLAimPod: CXL Memory is all you need in AI era",
+  "abstract": "The proliferation of data-intensive applications, ranging from large language models to key-value stores, increasingly stresses memory systems with mixed read-write access patterns. Traditional half-duplex architectures such as DDR5 are ill-suited for such workloads, suffering bus turnaround penalties that reduce their effective bandwidth under mixed read-write patterns. Compute Express Link (CXL) offers a breakthrough with its full-duplex channels, yet this architectural potential remains untapped as existing software stacks are oblivious to this capability. This paper introduces CXLAimPod, an adaptive scheduling framework designed to bridge this software-hardware gap through system support, including cgroup-based hints for application-aware optimization. Our characterization quantifies the opportunity, revealing that CXL systems achieve 55-61% bandwidth improvement at balanced read-write ratios compared to flat DDR5 performance, demonstrating the benefits of full-duplex architecture. To realize this potential, the CXLAimPod framework integrates multiple scheduling strategies with a cgroup-based hint mechanism to navigate the trade-offs between throughput, latency, and overhead. Implemented efficiently within the Linux kernel via eBPF, CXLAimPod delivers significant performance improvements over default CXL configurations. Evaluation on diverse workloads shows 7.4% average improvement for Redis (with up to 150% for specific sequential patterns), 71.6% improvement for LLM text generation, and 9.1% for vector databases, demon-strating that duplex-aware scheduling can effectively exploit CXL's architectural advantages.",
+  "published": "2025-08-21T21:47:50Z",
+  "updated": "2025-08-21T21:47:50Z",
+  "authors": [
+   "Yiwei Yang",
+   "Yusheng Zheng",
+   "Yiqi Chen",
+   "Zheng Liang",
+   "Kexin Chu",
+   "Zhe Zhou",
+   "Andi Quinn",
+   "Wei Zhang"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2502.07578v3",
+  "title": "PIM Is All You Need: A CXL-Enabled GPU-Free System for Large Language Model Inference",
+  "abstract": "Large Language Model (LLM) inference uses an autoregressive manner to generate one token at a time, which exhibits notably lower operational intensity compared to earlier Machine Learning (ML) models such as encoder-only transformers and Convolutional Neural Networks. At the same time, LLMs possess large parameter sizes and use key-value caches to store context information. Modern LLMs support context windows with up to 1 million tokens to generate versatile text, audio, and video content. A large key-value cache unique to each prompt requires a large memory capacity, limiting the inference batch size. Both low operational intensity and limited batch size necessitate a high memory bandwidth. However, contemporary hardware systems for ML model deployment, such as GPUs and TPUs, are primarily optimized for compute throughput. This mismatch challenges the efficient deployment of advanced LLMs and makes users pay for expensive compute resources that are poorly utilized for the memory-bound LLM inference tasks. We propose CENT, a CXL-ENabled GPU-Free sysTem for LLM inference, which harnesses CXL memory expansion capabilities to accommodate substantial LLM sizes, and utilizes near-bank processing units to deliver high memory bandwidth, eliminating the need for expensive GPUs. CENT exploits a scalable CXL network to support peer-to-peer and collective communication primitives across CXL devices. We implement various parallelism strategies to distribute LLMs across these devices. Compared to GPU baselines with maximum supported batch sizes and similar average power, CENT achieves 2.3$\\times$ higher throughput and consumes 2.9$\\times$ less energy. CENT enhances the Total Cost of Ownership (TCO), generating 5.2$\\times$ more tokens per dollar than GPUs.",
+  "published": "2025-02-11T14:25:20Z",
+  "updated": "2025-05-03T04:07:07Z",
+  "authors": [
+   "Yufeng Gu",
+   "Alireza Khadem",
+   "Sumanth Umesh",
+   "Ning Liang",
+   "Xavier Servot",
+   "Onur Mutlu",
+   "Ravi Iyer",
+   "Reetuparna Das"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "In Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2 (ASPLOS'25)",
+  "journal_ref": "",
+  "doi": "10.1145/3676641.3716267",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2411.19430v2",
+  "title": "Core Placement Optimization of Many-core Brain-Inspired Near-Storage Systems for Spiking Neural Network Training",
+  "abstract": "With the increasing application scope of spiking neural networks (SNN), the complexity of SNN models has surged, leading to an exponential growth in demand for AI computility. As the new generation computing architecture of the neural networks, the efficiency and power consumption of distributed storage and parallel computing in the many-core near-memory computing system have attracted much attention. Among them, the mapping problem from logical cores to physical cores is one of the research hotspots. In order to improve the computing parallelism and system throughput of the many-core near-memory computing system, and to reduce power consumption, we propose a SNN training many-core deployment optimization method based on Off-policy Deterministic Actor-Critic. We utilize deep reinforcement learning as a nonlinear optimizer, treating the many-core topology as network graph features and using graph convolution to input the many-core structure into the policy network. We update the parameters of the policy network through near-end policy optimization to achieve deployment optimization of SNN models in the many-core near-memory computing architecture to reduce chip power consumption. To handle large-dimensional action spaces, we use continuous values matching the number of cores as the output of the policy network and then discretize them again to obtain new deployment schemes. Furthermore, to further balance inter-core computation latency and improve system throughput, we propose a model partitioning method with a balanced storage and computation strategy. Our method overcomes the problems such as uneven computation and storage loads between cores, and the formation of local communication hotspots, significantly reducing model training time, communication costs, and average flow load between cores in the many-core near-memory computing architecture.",
+  "published": "2024-11-29T01:46:30Z",
+  "updated": "2025-05-20T09:53:52Z",
+  "authors": [
+   "Xueke Zhu",
+   "Wenjie Lin",
+   "Yanyu Lin",
+   "Yunhao Ma",
+   "Wenxiang Cheng",
+   "Zhengyu Ma",
+   "Yonghong Tian",
+   "Huihui Zhou"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.NE"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2605.01260v1",
+  "title": "Write-Read Decoupling in Modern Large-Scale Search Engines: Architectures, Techniques, and Emerging Approaches",
+  "abstract": "Large-scale search engines face a fundamental tension: the index must be updated frequently to maintain freshness, yet updates create resource contention that inflates query latency. In the dominant Lucene-based architecture, segment merges triggered by writes compete with concurrent queries for CPU cycles, disk I/O bandwidth, and operating-system page cache -- a problem we term \\emph{write-read contention}. This survey systematically examines the architectural solutions that industry and academia have developed to decouple write pressure from read latency. We identify five principal patterns: (i)~node-level read-write separation; (ii)~compute-storage separation; (iii)~full in-memory indexing; (iv)~log-structured write paths; and (v)~in-place partial updates. We survey representative systems including Elasticsearch, LinkedIn Galene, Uber Sia, Quickwit, Alibaba Havenask, Algolia, Milvus, and Vespa, and discuss an emerging synthesis -- the ScaleSearch architecture -- that combines compute-storage separation with full in-memory indexing and dedicated write nodes. A key contribution of ScaleSearch is \\emph{per-field update routing}: each field is assigned its own Kafka topic and update path, allowing scalar fields (price, stock, tags) to be updated in-place in $O(1)$ RAM with immediate visibility while full-text fields follow the segment-based compute-storage path. We conclude with open challenges in hybrid vector-and-full-text retrieval, serverless deployments, and AI-integrated search.",
+  "published": "2026-05-02T05:36:38Z",
+  "updated": "2026-05-02T05:36:38Z",
+  "authors": [
+   "Xin Liang",
+   "Qing Yang",
+   "Wenru Qiu",
+   "Wenjie Mao",
+   "Tianyu Ma",
+   "Minghui Zhu",
+   "Nan Wang"
+  ],
+  "categories": [
+   "cs.DB"
+  ],
+  "comment": "8 pages, 5 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2409.05404v2",
+  "title": "DFabric: Scaling Out Data Parallel Applications with CXL-Ethernet Hybrid Interconnects",
+  "abstract": "Emerging interconnects, such as CXL and NVLink, have been integrated into the intra-host topology to scale more accelerators and facilitate efficient communication between them, such as GPUs. To keep pace with the accelerator's growing computing throughput, the interconnect has seen substantial enhancement in link bandwidth, e.g., 256GBps for CXL 3.0 links, which surpasses Ethernet and InfiniBand network links by an order of magnitude or more. Consequently, when data-intensive jobs, such as LLM training, scale across multiple hosts beyond the reach limit of the interconnect, the performance is significantly hindered by the limiting bandwidth of the network infrastructure. We address the problem by proposing DFabric, a two-tier interconnect architecture. We address the problem by proposing DFabric, a two-tier interconnect architecture. First, DFabric disaggregates rack's computing units with an interconnect fabric, i.e., CXL fabric, which scales at rack-level, so that they can enjoy intra-rack efficient interconnecting. Second, DFabric disaggregates NICs from hosts, and consolidates them to form a NIC pool with CXL fabric. By providing sufficient aggregated capacity comparable to interconnect bandwidth, the NIC pool bridges efficient communication across racks or beyond the reach limit of interconnect fabric. However, the local memory accessing becomes the bottleneck when enabling each host to utilize the NIC pool efficiently. To the end, DFabric builds a memory pool with sufficient bandwidth by disaggregating host local memory and adding more memory devices. We have implemented a prototype of DFabric that can run applications transparently. We validated its performance gain by running various microbenchmarks and compute-intensive applications such as DNN and graph.",
+  "published": "2024-09-09T08:05:43Z",
+  "updated": "2024-10-30T10:01:06Z",
+  "authors": [
+   "Xu Zhang",
+   "Ke Liu",
+   "Yisong Chang",
+   "Ke Zhang",
+   "Mingyu Chen"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AR",
+   "cs.ET"
+  ],
+  "comment": "",
+  "journal_ref": "the 2025 USENIX Conference on Usenix Annual Technical Conference (USENIX ATC). USENIX Association,USA,Article 74,1261-1279",
+  "doi": "10.5555/3768039.3768113",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2106.15284v1",
+  "title": "NMPO: Near-Memory Computing Profiling and Offloading",
+  "abstract": "Real-world applications are now processing big-data sets, often bottlenecked by the data movement between the compute units and the main memory. Near-memory computing (NMC), a modern data-centric computational paradigm, can alleviate these bottlenecks, thereby improving the performance of applications. The lack of NMC system availability makes simulators the primary evaluation tool for performance estimation. However, simulators are usually time-consuming, and methods that can reduce this overhead would accelerate the early-stage design process of NMC systems. This work proposes Near-Memory computing Profiling and Offloading (NMPO), a high-level framework capable of predicting NMC offloading suitability employing an ensemble machine learning model. NMPO predicts NMC suitability with an accuracy of 85.6% and, compared to prior works, can reduce the prediction time by using hardware-dependent applications features by up to 3 order of magnitude.",
+  "published": "2021-06-29T11:55:05Z",
+  "updated": "2021-06-29T11:55:05Z",
+  "authors": [
+   "Stefano Corda",
+   "Madhurya Kumaraswamy",
+   "Ahsan Javed Awan",
+   "Roel Jordans",
+   "Akash Kumar",
+   "Henk Corporaal"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.PF"
+  ],
+  "comment": "Euromicro Conference on Digital System Design 2021",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2112.11030v1",
+  "title": "Maxwell: a hardware and software highly integrated compute-storage system",
+  "abstract": "The compute-storage framework is responsible for data storage and processing, and acts as the digital chassis of all upper-level businesses. The performance of the framework affects the business's processing throughput, latency, jitter, and etc., and also determines the theoretical performance upper bound that the business can achieve. In financial applications, the compute-storage framework must have high reliability and high throughput, but with low latency as well as low jitter characteristics. For some scenarios such as hot-spot account update, the performance of the compute-storage framework even surfaces to become a server performance bottleneck of the whole business system. In this paper, we study the hot-spot account issue faced by Alipay and present our exciting solution to this problem by developing a new compute-storage system, called Maxwell. Maxwell is a distributed compute-storage system with integrated hardware and software optimizations. Maxwell does not rely on any specific hardware (e.g. GPUs or FPGAs). Instead, it takes deep advantage of computer components' characteristics, such as disk, network, operating system and CPU, and aims to emit the ultimate performance of both hardware and software. In comparison with the existing hot-spot account updating solutions deployed online, Maxwell achieves three orders of magnitude performance improvement for end-to-end evaluation. Meanwhile, Maxwell also demonstrates remarkable performance gains in other related businesses of Ant Group.",
+  "published": "2021-12-21T08:08:20Z",
+  "updated": "2021-12-21T08:08:20Z",
+  "authors": [
+   "ing Ma",
+   "Wei Zhou",
+   "Sihai Yao",
+   "Hong Huang",
+   "Yinsong Xie",
+   "Haohao Liu",
+   "Changhua He"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.DB"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 23
+ },
+ {
+  "id": "2212.11459v2",
+  "title": "A Moveable Beast: Partitioning Data and Compute for Computational Storage",
+  "abstract": "Over the years, hardware trends have introduced various heterogeneous compute units while also bringing network and storage bandwidths within an order of magnitude of memory subsystems. In response, developers have used increasingly exotic solutions to extract more performance from hardware; typically relying on static, design-time partitioning of their programs which cannot keep pace with storage systems that are layering compute units throughout deepening hierarchies of storage devices. We argue that dynamic, just-in-time partitioning of computation offers a solution for emerging data-intensive systems to overcome ever-growing data sizes in the face of stalled CPU performance and memory bandwidth. In this paper, we describe our prototype computational storage system (CSS), Skytether, that adopts a database perspective to utilize computational storage drives (CSDs). We also present MSG Express, a data management system for single-cell gene expression data that sits on top of Skytether. We discuss four design principles that guide the design of our CSS: support scientific applications; maximize utilization of storage, network, and memory bandwidth; minimize data movement; and enable flexible program execution on autonomous CSDs. Skytether is designed for the extra layer of indirection that CSDs introduce to a storage system, using decomposable queries to take a new approach to computational storage that has been imagined but not yet explored. In this paper, we evaluate: partition strategies, the overhead of function execution, and the performance of selection and projection. We expected ~3-4x performance slowdown on the CSDs compared to a consumer-grade client CPU but we observe an unexpected slowdown of ~15x, however, our evaluation results help us set anchor points in the design space for developing a cost model for decomposable queries and partitioning data across many CSDs.",
+  "published": "2022-12-22T02:37:21Z",
+  "updated": "2023-01-18T20:18:33Z",
+  "authors": [
+   "Aldrin Montana",
+   "Yuanqing Xue",
+   "Jeff LeFevre",
+   "Carlos Maltzahn",
+   "Josh Stuart",
+   "Philip Kufeldt",
+   "Peter Alvaro"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "14 pages, 7 figures, submitted to SIGMOD 2023 updated acknowledgements",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 22
+ },
+ {
+  "id": "2601.14260v1",
+  "title": "End-to-End Transformer Acceleration Through Processing-in-Memory Architectures",
+  "abstract": "Transformers have become central to natural language processing and large language models, but their deployment at scale faces three major challenges. First, the attention mechanism requires massive matrix multiplications and frequent movement of intermediate results between memory and compute units, leading to high latency and energy costs. Second, in long-context inference, the key-value cache (KV cache) can grow unpredictably and even surpass the model's weight size, creating severe memory and bandwidth bottlenecks. Third, the quadratic complexity of attention with respect to sequence length amplifies both data movement and compute overhead, making large-scale inference inefficient. To address these issues, this work introduces processing-in-memory solutions that restructure attention and feed-forward computation to minimize off-chip data transfers, dynamically compress and prune the KV cache to manage memory growth, and reinterpret attention as an associative memory operation to reduce complexity and hardware footprint. Moreover, we evaluate our processing-in-memory design against state-of-the-art accelerators and general-purpose GPUs, demonstrating significant improvements in energy efficiency and latency. Together, these approaches address computation overhead, memory scalability, and attention complexity, further enabling efficient, end-to-end acceleration of Transformer models.",
+  "published": "2025-11-21T19:22:47Z",
+  "updated": "2025-11-21T19:22:47Z",
+  "authors": [
+   "Xiaoxuan Yang",
+   "Peilin Chen",
+   "Tergel Molom-Ochir",
+   "Yiran Chen"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.LG"
+  ],
+  "comment": "ICM 2025",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 2
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2603.29483v1",
+  "title": "CXLRAMSim v1.0: System-Level Exploration of CXL Memory Expander Cards",
+  "abstract": "The growing demands in the training and inference of Large Language Models (LLMs) are accelerating the adoption of scale-up systems that extend server shared memory through the use of Compute Express Link (CXL)-based load/store interconnects. Accurate full-system simulation of such architectures remains challenging, as existing tools (all very recent) rely on simplified or non-compliant architectural models, impacting accuracy and usability. We present CXLRAMSim, the first gem5-integrated, full-system simulator that models CXL devices at their correct position on the I/O bus, enabling the use of unmodified Linux kernels and software stack, realistic latency-bandwidth behavior and true interleaving with system DRAM. Our approach provides high-fidelity CXL.mem characterization and captures key challenges such as cache pollution when accessing CXL memory.",
+  "published": "2026-03-31T09:26:59Z",
+  "updated": "2026-03-31T09:26:59Z",
+  "authors": [
+   "Karan Pathak",
+   "David Atienza",
+   "Marina Zapater"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.ET"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 20
+ },
+ {
+  "id": "2507.07223v2",
+  "title": "Compute Can't Handle the Truth: Why Communication Tax Prioritizes Memory and Interconnects in Modern AI Infrastructure",
+  "abstract": "Modern AI workloads such as large language models (LLMs) and retrieval-augmented generation (RAG) impose severe demands on memory, communication bandwidth, and resource flexibility. Traditional GPU-centric architectures struggle to scale due to growing inter-GPU communication overheads. This report introduces key AI concepts and explains how Transformers revolutionized data representation in LLMs. We analyze large-scale AI hardware and data center designs, identifying scalability bottlenecks in hierarchical systems. To address these, we propose a modular data center architecture based on Compute Express Link (CXL) that enables disaggregated scaling of memory, compute, and accelerators. We further explore accelerator-optimized interconnects-collectively termed XLink (e.g., UALink, NVLink, NVLink Fusion)-and introduce a hybrid CXL-over-XLink design to reduce long-distance data transfers while preserving memory coherence. We also propose a hierarchical memory model that combines local and pooled memory, and evaluate lightweight CXL implementations, HBM, and silicon photonics for efficient scaling. Our evaluations demonstrate improved scalability, throughput, and flexibility in AI infrastructure.",
+  "published": "2025-07-09T18:57:04Z",
+  "updated": "2025-07-13T15:21:59Z",
+  "authors": [
+   "Myoungsoo Jung"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 20
+ },
+ {
+  "id": "2511.12286v1",
+  "title": "Sangam: Chiplet-Based DRAM-PIM Accelerator with CXL Integration for LLM Inferencing",
+  "abstract": "Large Language Models (LLMs) are becoming increasingly data-intensive due to growing model sizes, and they are becoming memory-bound as the context length and, consequently, the key-value (KV) cache size increase. Inference, particularly the decoding phase, is dominated by memory-bound GEMV or flat GEMM operations with low operational intensity (OI), making it well-suited for processing-in-memory (PIM) approaches. However, existing in/near-memory solutions face critical limitations such as reduced memory capacity due to the high area cost of integrating processing elements (PEs) within DRAM chips, and limited PE capability due to the constraints of DRAM fabrication technology. This work presents a chiplet-based memory module that addresses these limitations by decoupling logic and memory into chiplets fabricated in heterogeneous technology nodes and connected via an interposer. The logic chiplets sustain high bandwidth access to the DRAM chiplets, which house the memory banks, and enable the integration of advanced processing components such as systolic arrays and SRAM-based buffers to accelerate memory-bound GEMM kernels, capabilities that were not feasible in prior PIM architectures. We propose Sangam, a CXL-attached PIM-chiplet based memory module that can either act as a drop-in replacement for GPUs or co-executes along side the GPUs. Sangam achieves speedup of 3.93, 4.22, 2.82x speedup in end-to-end query latency, 10.3, 9.5, 6.36x greater decoding throughput, and order of magnitude energy savings compared to an H100 GPU for varying input size, output length, and batch size on LLaMA 2-7B, Mistral-7B, and LLaMA 3-70B, respectively.",
+  "published": "2025-11-15T16:39:51Z",
+  "updated": "2025-11-15T16:39:51Z",
+  "authors": [
+   "Khyati Kiyawat",
+   "Zhenxing Fan",
+   "Yasas Seneviratne",
+   "Morteza Baradaran",
+   "Akhil Shekar",
+   "Zihan Xia",
+   "Mingu Kang",
+   "Kevin Skadron"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 19
+ },
+ {
+  "id": "2503.22017v1",
+  "title": "Performance Characterizations and Usage Guidelines of Samsung CXL Memory Module Hybrid Prototype",
+  "abstract": "The growing prevalence of data-intensive workloads, such as artificial intelligence (AI), machine learning (ML), high-performance computing (HPC), in-memory databases, and real-time analytics, has exposed limitations in conventional memory technologies like DRAM. While DRAM offers low latency and high throughput, it is constrained by high costs, scalability challenges, and volatility, making it less viable for capacity-bound and persistent applications in modern datacenters. Recently, Compute Express Link (CXL) has emerged as a promising alternative, enabling high-speed, cacheline-granular communication between CPUs and external devices. By leveraging CXL technology, NAND flash can now be used as memory expansion, offering three-fold benefits: byte-addressability, scalable capacity, and persistence at a low cost. Samsung's CXL Memory Module Hybrid (CMM-H) is the first product to deliver these benefits through a hardware-only solution, i.e., it does not incur any OS and IO overheads like conventional block devices. In particular, CMM-H integrates a DRAM cache with NAND flash in a single device to deliver near-DRAM latency. This paper presents the first publicly available study for comprehensive characterizations of an FPGA-based CMM-H prototype. Through this study, we address users' concerns about whether a wide variety of applications can successfully run on a memory device backed by NAND flash medium. Additionally, based on these characterizations, we provide key insights into how to best take advantage of the CMM-H device.",
+  "published": "2025-03-27T22:16:57Z",
+  "updated": "2025-03-27T22:16:57Z",
+  "authors": [
+   "Jianping Zeng",
+   "Shuyi Pei",
+   "Da Zhang",
+   "Yuchen Zhou",
+   "Amir Beygi",
+   "Xuebin Yao",
+   "Ramdas Kachare",
+   "Tong Zhang",
+   "Zongwang Li",
+   "Marie Nguyen",
+   "Rekha Pitchumani",
+   "Yang Soek Ki",
+   "Changhee Jung"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 19
+ },
+ {
+  "id": "2412.15246v1",
+  "title": "Accelerating Retrieval-Augmented Generation",
+  "abstract": "An evolving solution to address hallucination and enhance accuracy in large language models (LLMs) is Retrieval-Augmented Generation (RAG), which involves augmenting LLMs with information retrieved from an external knowledge source, such as the web. This paper profiles several RAG execution pipelines and demystifies the complex interplay between their retrieval and generation phases. We demonstrate that while exact retrieval schemes are expensive, they can reduce inference time compared to approximate retrieval variants because an exact retrieval model can send a smaller but more accurate list of documents to the generative model while maintaining the same end-to-end accuracy. This observation motivates the acceleration of the exact nearest neighbor search for RAG. In this work, we design Intelligent Knowledge Store (IKS), a type-2 CXL device that implements a scale-out near-memory acceleration architecture with a novel cache-coherent interface between the host CPU and near-memory accelerators. IKS offers 13.4-27.9x faster exact nearest neighbor search over a 512GB vector database compared with executing the search on Intel Sapphire Rapids CPUs. This higher search performance translates to 1.7-26.3x lower end-to-end inference time for representative RAG applications. IKS is inherently a memory expander; its internal DRAM can be disaggregated and used for other applications running on the server to prevent DRAM, which is the most expensive component in today's servers, from being stranded.",
+  "published": "2024-12-14T06:47:56Z",
+  "updated": "2024-12-14T06:47:56Z",
+  "authors": [
+   "Derrick Quinn",
+   "Mohammad Nouri",
+   "Neel Patel",
+   "John Salihu",
+   "Alireza Salemi",
+   "Sukhan Lee",
+   "Hamed Zamani",
+   "Mohammad Alian"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.AR",
+   "cs.DC",
+   "cs.IR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 19
+ },
+ {
+  "id": "2203.00241v4",
+  "title": "Pond: CXL-Based Memory Pooling Systems for Cloud Platforms",
+  "abstract": "Public cloud providers seek to meet stringent performance requirements and low hardware cost. A key driver of performance and cost is main memory. Memory pooling promises to improve DRAM utilization and thereby reduce costs. However, pooling is challenging under cloud performance requirements. This paper proposes Pond, the first memory pooling system that both meets cloud performance goals and significantly reduces DRAM cost. Pond builds on the Compute Express Link (CXL) standard for load/store access to pool memory and two key insights. First, our analysis of cloud production traces shows that pooling across 8-16 sockets is enough to achieve most of the benefits. This enables a small-pool design with low access latency. Second, it is possible to create machine learning models that can accurately predict how much local and pool memory to allocate to a virtual machine (VM) to resemble same-NUMA-node memory performance. Our evaluation with 158 workloads shows that Pond reduces DRAM costs by 7% with performance within 1-5% of same-NUMA-node VM allocations.",
+  "published": "2022-03-01T05:32:52Z",
+  "updated": "2022-10-21T22:02:53Z",
+  "authors": [
+   "Huaicheng Li",
+   "Daniel S. Berger",
+   "Stanko Novakovic",
+   "Lisa Hsu",
+   "Dan Ernst",
+   "Pantea Zardoshti",
+   "Monish Shah",
+   "Samir Rajadnya",
+   "Scott Lee",
+   "Ishwar Agarwal",
+   "Mark D. Hill",
+   "Marcus Fontoura",
+   "Ricardo Bianchini"
+  ],
+  "categories": [
+   "cs.OS",
+   "cs.PF"
+  ],
+  "comment": "Update affiliations",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 19
+ },
+ {
+  "id": "2607.26335v1",
+  "title": "The Fabric Is the Cluster Driver: Cross-Layer eBPF Policies for GPU-CXL Fabrics",
+  "abstract": "We present fabric_ext, an eBPF middleware compiler and runtime for extensible OS policies over GPU--CXL fabrics. fabric_ext lets one policy program execute across GPU hooks, driver/runtime hooks, DPU/NIC hooks, and CXL switch or near-memory hooks. The key abstraction is a semantic movement graph: edges describe bytes, stride, reuse distance, read/write ratio, source and destination, ordering requirement, alias set, ownership, and transformations such as Move, Quantize, Compress, Checksum, Filter, Reduce, Scatter/Gather, Replicate, and Persist. The compiler lowers this graph into per-device eBPF programs, verifier obligations, consistency-classed BPF maps, and artifacts for bpftime and dputime. At the fabric edge, fabric_ext treats a near-Type-2 small core as a hardware-JIT and state manager: it specializes verified movement descriptors into local copy, placement, ordering, and transformation commands, while the surrounding Von Neumann island of memory, DMA, and compute engines performs the dataflow. Because this dataflow is data-driven, fabric_ext also places observation beside the island, where queues, DMA completions, memory placement, and ownership transitions are visible as they happen. The canonical stress case is LLM prefill: attention streams KV blocks and reductions while FFN streams activations, weights, and compressible intermediates, forcing one request to cross GPU tensor execution, DPU/NIC event execution, and CXL or switch-local dataflow islands.",
+  "published": "2026-07-28T23:14:45Z",
+  "updated": "2026-07-28T23:14:45Z",
+  "authors": [
+   "Yiwei Yang",
+   "Andi Quinn"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2002.07215v2",
+  "title": "STANNIS: Low-Power Acceleration of Deep Neural Network Training Using Computational Storage",
+  "abstract": "This paper proposes a framework for distributed, in-storage training of neural networks on clusters of computational storage devices. Such devices not only contain hardware accelerators but also eliminate data movement between the host and storage, resulting in both improved performance and power savings. More importantly, this in-storage processing style of training ensures that private data never leaves the storage while fully controlling the sharing of public data. Experimental results show up to 2.7x speedup and 69% reduction in energy consumption and no significant loss in accuracy.",
+  "published": "2020-02-17T19:22:35Z",
+  "updated": "2020-02-19T18:56:52Z",
+  "authors": [
+   "Ali HeydariGorji",
+   "Mahdi Torabzadehkashi",
+   "Siavash Rezaei",
+   "Hossein Bobarshad",
+   "Vladimir Alves",
+   "Pai H. Chou"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "10.1109/DAC18072.2020.9218687",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2607.26633v1",
+  "title": "NELSSA: A GPU-PNM Heterogeneous System for Mixed-Length LLM Serving via Length-based Request Placement",
+  "abstract": "Modern LLMs and their agentic applications are broadening the range of serving workloads, spanning context lengths from a few hundred tokens to hundreds of thousands. As these requests frequently interleave within the same serving window, LLM serving systems must handle highly heterogeneous mixed-length workloads. Such mixed-length workloads expose fundamental inefficiencies in GPU-centric serving architectures, whose throughput depends on large, memory-constrained batches. In this paper, we present NELSSA, an LLM serving system that integrates GPUs with real-world Processing-near-Memory (PNM) accelerator devices to efficiently support mixed-length workloads. NELSSA employs length-based request placement to route short-context requests to GPUs and long-context requests to the PNM tier, incorporating runtime migration to accommodate dynamic context growth without recomputation. We prototype NELSSA as an end-to-end system, implementing device-level sparse attention on PNM, GPU decode kernels, and a host-side runtime that orchestrates scheduling and cross-tier memory movement over a CXL-enabled infrastructure with RPC and RDMA support. Across mixed-length LLM workloads, NELSSA improves decode throughput by up to 5.5x in tokens/sec and reduces P99 latency by up to 15x compared to GPU-only baselines. Our end-to-end prototype and experimental results suggest that integrated GPU-PNM serving, enabled by CXL-based disaggregation, is a promising system paradigm for scalable and flexible LLM infrastructures that support evolving workloads.",
+  "published": "2026-07-29T08:58:04Z",
+  "updated": "2026-07-29T08:58:04Z",
+  "authors": [
+   "Sookyung Choi",
+   "Seungyong Lee",
+   "Kangkyu Park",
+   "Yunseo Chun",
+   "Junseok Lee",
+   "Hyeongseok Gwak",
+   "Myunghyun Rhee",
+   "Euiseok Kim",
+   "Donguk Moon",
+   "Kwangsik Shin",
+   "Guseul Heo",
+   "Youngpyo Joo",
+   "Hoshik Kim",
+   "Jongse Park"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "14 pages, 19 figures. Accepted to the 59th IEEE/ACM International Symposium on Microarchitecture (MICRO 2026)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2407.15866v2",
+  "title": "SmartQuant: CXL-based AI Model Store in Support of Runtime Configurable Weight Quantization",
+  "abstract": "Recent studies have revealed that, during the inference on generative AI models such as transformer, the importance of different weights exhibits substantial context-dependent variations. This naturally manifests a promising potential of adaptively configuring weight quantization to improve the generative AI inference efficiency. Although configurable weight quantization can readily leverage the hardware support of variable-precision arithmetics in modern GPU and AI accelerators, little prior research has studied how one could exploit variable weight quantization to proportionally improve the AI model memory access speed and energy efficiency. Motivated by the rapidly maturing CXL ecosystem, this work develops a CXL-based design solution to fill this gap. The key is to allow CXL memory controllers play an active role in supporting and exploiting runtime configurable weight quantization. Using transformer as a representative generative AI model, we carried out experiments that well demonstrate the effectiveness of the proposed design solution.",
+  "published": "2024-07-17T20:39:49Z",
+  "updated": "2024-08-17T19:44:41Z",
+  "authors": [
+   "Rui Xie",
+   "Asad Ul Haq",
+   "Linsen Ma",
+   "Krystal Sun",
+   "Sanchari Sen",
+   "Swagath Venkataramani",
+   "Liu Liu",
+   "Tong Zhang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2402.18592v1",
+  "title": "A$^3$PIM: An Automated, Analytic and Accurate Processing-in-Memory Offloader",
+  "abstract": "The performance gap between memory and processor has grown rapidly. Consequently, the energy and wall-clock time costs associated with moving data between the CPU and main memory predominate the overall computational cost. The Processing-in-Memory (PIM) paradigm emerges as a promising architecture that mitigates the need for extensive data movements by strategically positioning computing units proximate to the memory. Despite the abundant efforts devoted to building a robust and highly-available PIM system, identifying PIM-friendly segments of applications poses significant challenges due to the lack of a comprehensive tool to evaluate the intrinsic memory access pattern of the segment. To tackle this challenge, we propose A$^3$PIM: an Automated, Analytic and Accurate Processing-in-Memory offloader. We systematically consider the cross-segment data movement and the intrinsic memory access pattern of each code segment via static code analyzer. We evaluate A$^3$PIM across a wide range of real-world workloads including GAP and PrIM benchmarks and achieve an average speedup of 2.63x and 4.45x (up to 7.14x and 10.64x) when compared to CPU-only and PIM-only executions, respectively.",
+  "published": "2024-02-23T02:24:31Z",
+  "updated": "2024-02-23T02:24:31Z",
+  "authors": [
+   "Qingcai Jiang",
+   "Shaojie Tan",
+   "Junshi Chen",
+   "Hong An"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.PF"
+  ],
+  "comment": "6 pages, 4 figures, accepted for presentation at Design, Automation and Test in Europe Conference | The European Event for Electronic System Design & Test (DATE 2024), conference to be held in March 2024",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2608.28048v1",
+  "title": "AI Hardware Accelerators for Large Language Models: Architectures and the Memory Wall",
+  "abstract": "Large language models (LLMs) place unprecedented and still-growing demands on the hardware that trains and serves them. This review surveys the full landscape of AI hardware accelerators for LLMs, including general-purpose GPUs, custom ASICs such as TPUs, Trainium, Groq, and Cerebras, reconfigurable FPGAs, processing-in-memory and near-memory architectures, and emerging neuromorphic and photonic approaches across cloud and edge deployment. Using the transformer's computational structure and roofline analysis as a common framework, we show that the decisive constraint on LLM acceleration is not arithmetic but memory: the autoregressive decode phase is bandwidth-bound, the key-value cache can rival the model weights in size, and data movement dominates energy. Comparing platforms on compute, memory, energy, programmability, and scalability, we find that no single architecture is optimal across workloads: GPUs remain the flexible default and the workhorse of training; domain-specific ASICs win at scale for stable, high-volume workloads; processing-in-memory is the most promising near-term response to the memory wall, entering systems as a heterogeneous complement; and neuromorphic and photonic computing, while promising, are not yet production-ready at frontier scale. Future progress depends on hardware-algorithm co-design and heterogeneous, memory-centric systems: for large language models, the memory system has become the computer.",
+  "published": "2026-08-28T08:10:01Z",
+  "updated": "2026-08-28T08:10:01Z",
+  "authors": [
+   "Siddharth Patel",
+   "Rohit Singh"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "Review/survey article on AI hardware accelerators for large language models; compares GPUs, ASICs, FPGAs, processing-in-memory/near-memory, neuromorphic, and photonic architectures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 16
+ },
+ {
+  "id": "2405.14209v3",
+  "title": "Exploring and Evaluating Real-world CXL: Use Cases and System Adoption",
+  "abstract": "Compute eXpress Link (CXL) is emerging as a promising memory interface technology. However, its performance characteristics remain largely unclear due to the limited availability of production hardware. Key questions include: What are the use cases for the CXL memory? What are the impacts of the CXL memory on application performance? How to use the CXL memory in combination with existing memory components? In this work, we study the performance of three genuine CXL memory-expansion cards from different vendors. We characterize the basic performance of the CXL memory, study how HPC applications and large language models (LLM) can benefit from the CXL memory, and study the interplay between memory tiering and page interleaving. We also propose a novel data object-level interleaving policy to match the interleaving policy with memory access patterns. Our findings reveal the challenges and opportunities of using the CXL memory.",
+  "published": "2024-05-23T06:06:32Z",
+  "updated": "2025-02-16T05:12:51Z",
+  "authors": [
+   "Xi Wang",
+   "Jie Liu",
+   "Jianbo Wu",
+   "Shuangyan Yang",
+   "Jie Ren",
+   "Bhanu Shankar",
+   "Dong Li"
+  ],
+  "categories": [
+   "cs.PF",
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "In Proceedings of the 2025 IEEE International Parallel and Distributed Processing Symposium (IPDPS), pp. 1048-1061, IEEE, 2025",
+  "doi": "10.1109/IPDPS64566.2025.00097",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2512.23914v3",
+  "title": "Hardware Acceleration for Neural Networks: A Comprehensive Survey",
+  "abstract": "Neural networks have become dominant computational workloads across cloud and edge platforms, but their rapid growth in model size and deployment diversity has exposed hardware bottlenecks increasingly dominated by memory movement, communication, and irregular operators rather than peak arithmetic throughput. This survey reviews the current technology landscape for hardware acceleration of deep learning, spanning GPUs and tensor-core architectures, domain-specific accelerators (TPUs, NPUs), FPGA-based designs, ASIC inference engines, and emerging LLM-serving accelerators such as LPUs, alongside in-/near-memory computing and neuromorphic/analog approaches. We organize the survey using a unified taxonomy across (i) workloads (CNNs, RNNs, GNNs, Transformers/LLMs), (ii) execution settings (training vs.\\ inference; datacenter vs.\\ edge), and (iii) optimization levers (reduced precision, sparsity and pruning, operator fusion, compilation and scheduling, memory-system/interconnect design). We synthesize key architectural ideas such as systolic arrays, vector and SIMD engines, specialized attention and softmax kernels, quantization-aware datapaths, and high-bandwidth memory, and discuss how software stacks and compilers bridge model semantics to hardware. Finally, we highlight open challenges -- including efficient long-context LLM inference (KV-cache management), robust support for dynamic and sparse workloads, energy- and security-aware deployment, and fair benchmarking -- pointing to promising directions for the next generation of neural acceleration.",
+  "published": "2025-12-30T00:27:02Z",
+  "updated": "2026-01-15T06:37:21Z",
+  "authors": [
+   "Bin Xu",
+   "Ayan Banerjee",
+   "Sandeep Gupta"
+  ],
+  "categories": [
+   "eess.SY"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 14
+ },
+ {
+  "id": "2109.09687v1",
+  "title": "Making Memristive Processing-in-Memory Reliable",
+  "abstract": "Processing-in-memory (PIM) solutions vastly accelerate systems by reducing data transfer between computation and memory. Memristors possess a unique property that enables storage and logic within the same device, which is exploited in the memristive Memory Processing Unit (mMPU). The mMPU expands fundamental stateful logic techniques, such as IMPLY, MAGIC and FELIX, to high-throughput parallel logic and arithmetic operations within the memory. Unfortunately, memristive processing-in-memory is highly vulnerable to soft errors and this massive parallelism is not compatible with traditional reliability techniques, such as error-correcting-code (ECC). In this paper, we discuss reliability techniques that efficiently support the mMPU by utilizing the same principles as the mMPU computation. We detail ECC techniques that are based on the unique properties of the mMPU to efficiently utilize the massive parallelism. Furthermore, we present novel solutions for efficiently implementing triple modular redundancy (TMR). The short-term and long-term reliability of large-scale applications, such as neural-network acceleration, are evaluated. The analysis clearly demonstrates the importance of high-throughput reliability mechanisms for memristive processing-in-memory.",
+  "published": "2021-09-20T16:58:21Z",
+  "updated": "2021-09-20T16:58:21Z",
+  "authors": [
+   "Orian Leitersdorf",
+   "Ronny Ronen",
+   "Shahar Kvatinsky"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "Accepted to 28th International Conference on Electronics Circuits and Systems (ICECS) 2021",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 10
+ },
+ {
+  "id": "2505.08162v1",
+  "title": "GDNTT: an Area-Efficient Parallel NTT Accelerator Using Glitch-Driven Near-Memory Computing and Reconfigurable 10T SRAM",
+  "abstract": "With the rapid advancement of quantum computing technology, post-quantum cryptography (PQC) has emerged as a pivotal direction for next-generation encryption standards. Among these, lattice-based cryptographic schemes rely heavily on the fast Number Theoretic Transform (NTT) over polynomial rings, whose performance directly determines encryption/decryption throughput and energy efficiency. However, existing software-based NTT implementations struggle to meet the real-time performance and low-power requirements of IoT and edge devices. To address this challenge, this paper proposes an area-efficient highly parallel NTT accelerator with glitch-driven near-memory computing (GDNTT). The design integrates a 10T SRAM for data storage, enabling flexible row/column data access and streamlining circuit mapping strategies. Furthermore, a glitch generator is incorporated into the near-memory computing unit, significantly reducing the latency of butterfly operations. Evaluation results show that the proposed NTT accelerator achieves a 1.5~28* improvement in throughput-per-area compared to the state-of-the-art.",
+  "published": "2025-05-13T01:53:07Z",
+  "updated": "2025-05-13T01:53:07Z",
+  "authors": [
+   "Hengyu Ding",
+   "Houran Ji",
+   "Jia Li",
+   "Jinhang Chen",
+   "Chin-Wing Sham",
+   "Yao Wang"
+  ],
+  "categories": [
+   "cs.CR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2411.09159v1",
+  "title": "PIMCOMP: An End-to-End DNN Compiler for Processing-In-Memory Accelerators",
+  "abstract": "Various processing-in-memory (PIM) accelerators based on various devices, micro-architectures, and interfaces have been proposed to accelerate deep neural networks (DNNs). How to deploy DNNs onto PIM-based accelerators is the key to explore PIM's high performance and energy efficiency. The scale of DNN models, the diversity of PIM accelerators, and the complexity of deployment are far beyond the human deployment capability. Hence, an automatic deployment methodology is indispensable. In this work, we propose PIMCOMP, an end-to-end DNN compiler tailored for PIM accelerators, achieving efficient deployment of DNN models on PIM hardware. PIMCOMP can adapt to various PIM architectures by using an abstract configurable PIM accelerator template with a set of pseudo-instructions, which is a high-level abstraction of the hardware's fundamental functionalities. Through a generic multi-level optimization framework, PIMCOMP realizes an end-to-end conversion from a high-level DNN description to pseudo-instructions, which can be further converted to specific hardware intrinsics/primitives. The compilation addresses two critical issues in PIM-accelerated inference from a system perspective: resource utilization and dataflow scheduling. PIMCOMP adopts a flexible unfolding format to reshape and partition convolutional layers, adopts a weight-layout guided computation-storage-mapping approach to enhance resource utilization, and balances the system's computation, memory access, and communication characteristics. For dataflow scheduling, we design two scheduling algorithms with different inter-layer pipeline granularities to support varying application scenarios while ensuring high computational parallelism. Experiments demonstrate that PIMCOMP improves throughput, latency, and energy efficiency across various architectures. PIMCOMP is open-sourced at \\url{https://github.com/sunxt99/PIMCOMP-NN}.",
+  "published": "2024-11-14T03:27:43Z",
+  "updated": "2024-11-14T03:27:43Z",
+  "authors": [
+   "Xiaotian Sun",
+   "Xinyu Wang",
+   "Wanqian Li",
+   "Yinhe Han",
+   "Xiaoming Chen"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2408.07954v2",
+  "title": "A Complex Scaling Method for Efficient and Accurate Scattering Emulation in Nuclear Reactions",
+  "abstract": "We present a novel scattering emulator utilizing the complex scaling method to enhance nuclear reaction analysis. This approach leverages a single set of reduced bases, allowing for efficient and simultaneous emulation across multiple channels and potential parameters, significantly reducing computational storage and accelerating calculations. Demonstrated through \\(n\\)+\\(^{40}\\)Ca and \\(^{11}\\)Be+\\(^{64}\\)Zn elastic scattering, our method achieves high accuracy and efficiency. This emulator exhibits stable and reliable performance without anomalies inherent in other techniques, showcasing its robustness.",
+  "published": "2024-08-15T06:06:24Z",
+  "updated": "2024-10-23T05:16:15Z",
+  "authors": [
+   "Junzhe Liu",
+   "Jin Lei",
+   "Zhongzhou Ren"
+  ],
+  "categories": [
+   "nucl-th"
+  ],
+  "comment": "5 pages, 3 figures, published in Phys. Lett. B 858, 139070(2024)",
+  "journal_ref": "",
+  "doi": "10.1016/j.physletb.2024.139070",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2208.01243v2",
+  "title": "A Framework for High-throughput Sequence Alignment using Real Processing-in-Memory Systems",
+  "abstract": "Sequence alignment is a memory bound computation whose performance in modern systems is limited by the memory bandwidth bottleneck. Processing-in-memory architectures alleviate this bottleneck by providing the memory with computing competencies. We propose Alignment-in-Memory (AIM), a framework for high-throughput sequence alignment using processing-in-memory, and evaluate it on UPMEM, the first publicly-available general-purpose programmable processing-in-memory system. Our evaluation shows that a real processing-in-memory system can substantially outperform server-grade multi-threaded CPU systems running at full-scale when performing sequence alignment for a variety of algorithms, read lengths, and edit distance thresholds. We hope that our findings inspire more work on creating and accelerating bioinformatics algorithms for such real processing-in-memory systems. Our code is available at https://github.com/safaad/aim.",
+  "published": "2022-08-02T04:25:17Z",
+  "updated": "2023-03-27T07:57:22Z",
+  "authors": [
+   "Safaa Diab",
+   "Amir Nassereldine",
+   "Mohammed Alser",
+   "Juan Gómez-Luna",
+   "Onur Mutlu",
+   "Izzat El Hajj"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2206.04200v1",
+  "title": "PartitionPIM: Practical Memristive Partitions for Fast Processing-in-Memory",
+  "abstract": "Digital memristive processing-in-memory overcomes the memory wall through a fundamental storage device capable of stateful logic within crossbar arrays. Dynamically dividing the crossbar arrays by adding memristive partitions further increases parallelism, thereby overcoming an inherent trade-off in memristive processing-in-memory. The algorithmic topology of partitions is highly unique, and was recently exploited to accelerate multiplication (11x with 32 partitions) and sorting (14x with 16 partitions). Yet, the physical implementation of memristive partitions, such as the peripheral decoders and the control message, has never been considered and may lead to vast impracticality. This paper overcomes that challenge with several novel techniques, presenting efficient practical designs of memristive partitions. We begin by formalizing the algorithmic properties of memristive partitions into serial, parallel, and semi-parallel operations. Peripheral overhead is addressed via a novel technique of half-gates that enables efficient decoding with negligible overhead. Control overhead is addressed by carefully reducing the operation set of memristive partitions, while resulting in negligible performance impact, by utilizing techniques such as shared indices and pattern generators. Ultimately, these efficient practical solutions, combined with the vast algorithmic potential, may revolutionize digital memristive processing-in-memory.",
+  "published": "2022-06-09T00:15:08Z",
+  "updated": "2022-06-09T00:15:08Z",
+  "authors": [
+   "Orian Leitersdorf",
+   "Ronny Ronen",
+   "Shahar Kvatinsky"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2110.14819v1",
+  "title": "Characterizing and Taming Resolution in Convolutional Neural Networks",
+  "abstract": "Image resolution has a significant effect on the accuracy and computational, storage, and bandwidth costs of computer vision model inference. These costs are exacerbated when scaling out models to large inference serving systems and make image resolution an attractive target for optimization. However, the choice of resolution inherently introduces additional tightly coupled choices, such as image crop size, image detail, and compute kernel implementation that impact computational, storage, and bandwidth costs. Further complicating this setting, the optimal choices from the perspective of these metrics are highly dependent on the dataset and problem scenario. We characterize this tradeoff space, quantitatively studying the accuracy and efficiency tradeoff via systematic and automated tuning of image resolution, image quality and convolutional neural network operators. With the insights from this study, we propose a dynamic resolution mechanism that removes the need to statically choose a resolution ahead of time.",
+  "published": "2021-10-28T00:08:23Z",
+  "updated": "2021-10-28T00:08:23Z",
+  "authors": [
+   "Eddie Yan",
+   "Liang Luo",
+   "Luis Ceze"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "1708.09175v1",
+  "title": "Calibrating chemical multisensory devices for real world applications: An in-depth comparison of quantitative Machine Learning approaches",
+  "abstract": "Chemical multisensor devices need calibration algorithms to estimate gas concentrations. Their possible adoption as indicative air quality measurements devices poses new challenges due to the need to operate in continuous monitoring modes in uncontrolled environments. Several issues, including slow dynamics, continue to affect their real world performances. At the same time, the need for estimating pollutant concentrations on board the devices, espe- cially for wearables and IoT deployments, is becoming highly desirable. In this framework, several calibration approaches have been proposed and tested on a variety of proprietary devices and datasets; still, no thorough comparison is available to researchers. This work attempts a benchmarking of the most promising calibration algorithms according to recent literature with a focus on machine learning approaches. We test the techniques against absolute and dynamic performances, generalization capabilities and computational/storage needs using three different datasets sharing continuous monitoring operation methodology. Our results can guide researchers and engineers in the choice of optimal strategy. They show that non-linear multivariate techniques yield reproducible results, outperforming lin- ear approaches. Specifically, the Support Vector Regression method consistently shows good performances in all the considered scenarios. We highlight the enhanced suitability of shallow neural networks in a trade-off between performance and computational/storage needs. We confirm, on a much wider basis, the advantages of dynamic approaches with respect to static ones that only rely on instantaneous sensor array response. The latter have been shown to be best choice whenever prompt and precise response is needed.",
+  "published": "2017-08-30T08:53:15Z",
+  "updated": "2017-08-30T08:53:15Z",
+  "authors": [
+   "S. De Vito",
+   "E. Esposito",
+   "M. Salvato",
+   "O. Popoola",
+   "F. Formisano",
+   "R. Jones",
+   "G. Di Francia"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.NE"
+  ],
+  "comment": "",
+  "journal_ref": "Sensors and Actuators B: Chemical, Volume 255, Part 2, 2018, Pages 1191-1210, ISSN 0925-4005",
+  "doi": "10.1016/j.snb.2017.07.155",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2506.14716v1",
+  "title": "All-optical convolution utilizing processing in memory based on a cold atomic ensemble",
+  "abstract": "Processing in memory (PIM) has received significant attention due to its high efficiency, low latency, and parallelism. In optical computation, coherent memory is a crucial infrastructure for PIM frameworks. This study presents an all-optical convolution experiment conducted within computational storage based on a cold atomic ensemble. By exploiting the light-atom phase transfer facilitated by the electromagnetically induced transparency, we demonstrated spiral phase contrast processing of photon images in memory, resulting in the edge enhancement of retrieved images recorded using time-correlated photon imaging. In particular, adopting state-of-the-art atomic techniques provides a coherent memory lifetime exceeding 320 us for PIM operations. Our results highlight the significant potential of cold atomic ensembles as computational storage for developing all-optical PIM systems.",
+  "published": "2025-06-17T16:52:32Z",
+  "updated": "2025-06-17T16:52:32Z",
+  "authors": [
+   "Ying-Hao Ye",
+   "Jia-Qi Jiang",
+   "En-Ze Li",
+   "Wei Zhang",
+   "Da-Chuang Li",
+   "Zhi-Han Zhu",
+   "Dong-Sheng Ding",
+   "Bao-Sen Shi"
+  ],
+  "categories": [
+   "physics.app-ph",
+   "physics.atom-ph",
+   "physics.optics"
+  ],
+  "comment": "6 pages, 3 figures, supplmental material appended",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2106.06433v2",
+  "title": "FPGA-Based Near-Memory Acceleration of Modern Data-Intensive Applications",
+  "abstract": "Modern data-intensive applications demand high computation capabilities with strict power constraints. Unfortunately, such applications suffer from a significant waste of both execution cycles and energy in current computing systems due to the costly data movement between the computation units and the memory units. Genome analysis and weather prediction are two examples of such applications. Recent FPGAs couple a reconfigurable fabric with high-bandwidth memory (HBM) to enable more efficient data movement and improve overall performance and energy efficiency. This trend is an example of a paradigm shift to near-memory computing. We leverage such an FPGA with high-bandwidth memory (HBM) for improving the pre-alignment filtering step of genome analysis and representative kernels from a weather prediction model. Our evaluation demonstrates large speedups and energy savings over a high-end IBM POWER9 system and a conventional FPGA board with DDR4 memory. We conclude that FPGA-based near-memory computing has the potential to alleviate the data movement bottleneck for modern data-intensive applications.",
+  "published": "2021-06-11T14:43:04Z",
+  "updated": "2021-07-03T08:06:24Z",
+  "authors": [
+   "Gagandeep Singh",
+   "Mohammed Alser",
+   "Damla Senol Cali",
+   "Dionysios Diamantopoulos",
+   "Juan Gómez-Luna",
+   "Henk Corporaal",
+   "Onur Mutlu"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "This is an extended and updated version of a paper published in IEEE Micro, vol. 41, no. 4, pp. 39-48, 1 July-Aug. 2021",
+  "journal_ref": "",
+  "doi": "10.1109/MM.2021.3088396",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2103.11046v1",
+  "title": "Hierarchical Hybrid Error Correction for Time-Sensitive Devices at the Edge",
+  "abstract": "Computational storage, known as a solution to significantly reduce the latency by moving data-processing down to the data storage, has received wide attention because of its potential to accelerate data-driven devices at the edge. To meet the insatiable appetite for complicated functionalities tailored for intelligent devices such as autonomous vehicles, properties including heterogeneity, scalability, and flexibility are becoming increasingly important. Based on our prior work on hierarchical erasure coding that enables scalability and flexibility in cloud storage, we develop an efficient decoding algorithm that corrects a mixture of errors and erasures simultaneously. We first extract the basic component code, the so-called extended Cauchy (EC) codes, of the proposed coding solution. We prove that the class of EC codes is strictly larger than that of relevant codes with known explicit decoding algorithms. Motivated by this finding, we then develop an efficient decoding method for the general class of EC codes, based on which we propose the local and global decoding algorithms for the hierarchical codes. Our proposed hybrid error correction not only enables the usage of hierarchical codes in computational storage at the edge, but also applies to any Cauchy-like codes and allows potentially wider applications of the EC codes.",
+  "published": "2021-03-19T22:11:17Z",
+  "updated": "2021-03-19T22:11:17Z",
+  "authors": [
+   "Siyi Yang",
+   "Ahmed Hareedy",
+   "Robert Calderbank",
+   "Lara Dolecek"
+  ],
+  "categories": [
+   "cs.IT"
+  ],
+  "comment": "29 pages (single column), 0 figures, to be submitted to IEEE Transactions on Communications",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "1705.00713v3",
+  "title": "ΔBreakpad: Diversified Binary Crash Reporting",
+  "abstract": "This paper introduces ΔBreakpad. It extends the Breakpad crash reporting system to handle software diversity effectively and efficiently by replicating and patching the debug information of diversified software versions. Simple adaptations to existing open source compiler tools are presented that on the one hand introduce significant amounts of diversification in the code and stack layout of ARMv7 binaries to mitigate the widespread deployment of code injection and code reuse attacks, while on the other hand still supporting accurate crash reporting. An evaluation on SPEC2006 benchmarks demonstrates that the corresponding computational, storage, and communication overheads are small.",
+  "published": "2017-05-01T20:59:10Z",
+  "updated": "2018-03-27T10:20:03Z",
+  "authors": [
+   "Bert Abrath",
+   "Bart Coppens",
+   "Mohit Mishra",
+   "Jens Van den Broeck",
+   "Bjorn De Sutter"
+  ],
+  "categories": [
+   "cs.CR"
+  ],
+  "comment": "Newer version, accepted for publication",
+  "journal_ref": "",
+  "doi": "10.1109/TDSC.2018.2823751",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "1411.0972v1",
+  "title": "Convex Optimization for Big Data",
+  "abstract": "This article reviews recent advances in convex optimization algorithms for Big Data, which aim to reduce the computational, storage, and communications bottlenecks. We provide an overview of this emerging field, describe contemporary approximation techniques like first-order methods and randomization for scalability, and survey the important role of parallel and distributed computation. The new Big Data algorithms are based on surprisingly simple principles and attain staggering accelerations even on classical problems.",
+  "published": "2014-11-04T17:14:27Z",
+  "updated": "2014-11-04T17:14:27Z",
+  "authors": [
+   "Volkan Cevher",
+   "Stephen Becker",
+   "Mark Schmidt"
+  ],
+  "categories": [
+   "math.OC",
+   "cs.LG",
+   "stat.ML"
+  ],
+  "comment": "23 pages, 4 figurs, 8 algorithms",
+  "journal_ref": "IEEE Signal Processing Magazine, Vol. 31(5), pages 32--43, 2014",
+  "doi": "10.1109/MSP.2014.2329397",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "physics/0102066v3",
+  "title": "A simple iterative algorithm for generating selected eigenspaces of large matrices",
+  "abstract": "We propose a new iterative algorithm for generating a subset of eigenvalues and eigenvectors of large matrices which generalizes the method of optimal relaxations. We also give convergence criteria for the iterative process, investigate its efficiency by evaluating computer storage and time requirements and by a few numerical tests.",
+  "published": "2001-02-21T11:34:17Z",
+  "updated": "2002-02-27T16:02:23Z",
+  "authors": [
+   "F. Andreozzi",
+   "A. Porrino",
+   "N. Lo Iudice"
+  ],
+  "categories": [
+   "physics.gen-ph",
+   "physics.comp-ph"
+  ],
+  "comment": "7 pages, 1 figure",
+  "journal_ref": "J. Phys. A: Math. Gen. 35 (2002) L61-L66",
+  "doi": "10.1088/0305-4470/35/5/101",
+  "provenance": [
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ }
+]

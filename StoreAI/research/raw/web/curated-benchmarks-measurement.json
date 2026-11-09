@@ -1,0 +1,1762 @@
+[
+ {
+  "id": "2512.06699v2",
+  "title": "Predictive Modeling of I/O Performance for Machine Learning Training Pipelines: A Data-Driven Approach to Storage Optimization",
+  "abstract": "Modern machine learning training is increasingly bottlenecked by data I/O rather than compute. GPUs often sit idle at below 50% utilization waiting for data. This paper presents a machine learning approach to predict I/O performance and recommend optimal storage configurations for ML training pipelines. We collected 141 observations through systematic benchmarking across different storage backends (NVMe SSD, network-attached storage, in-memory filesystems), data formats, and access patterns, covering both low-level I/O operations and full training pipelines. After evaluating seven regression models and three classification approaches, XGBoost achieved the best performance with R-squared of 0.991, predicting I/O throughput within 11.8% error on average. Feature importance analysis revealed that throughput metrics and batch size are the primary performance drivers. This data-driven approach can reduce configuration time from days of trial-and-error to minutes of predictive recommendation. The methodology is reproducible and extensible to other resource management problems in ML systems. Code and data are available at https://github.com/knkarthik01/gpu_storage_ml_project",
+  "published": "2025-12-07T07:25:08Z",
+  "updated": "2025-12-19T06:10:50Z",
+  "authors": [
+   "Karthik Prabhakar",
+   "Durgamadhab Mishra"
+  ],
+  "categories": [
+   "cs.PF",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "20 pages, 10 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2602.17610v1",
+  "title": "Exploring Novel Data Storage Approaches for Large-Scale Numerical Weather Prediction",
+  "abstract": "Driven by scientific and industry ambition, HPC and AI applications such as operational Numerical Weather Prediction (NWP) require processing and storing ever-increasing data volumes as fast as possible. Whilst POSIX distributed file systems and NVMe SSDs are currently a common HPC storage configuration providing I/O to applications, new storage solutions have proliferated or gained traction over the last decade with potential to address performance limitations POSIX file systems manifest at scale for certain I/O workloads. This work has primarily aimed to assess the suitability and performance of two object storage systems -namely DAOS and Ceph- for the ECMWF's operational NWP as well as for HPC and AI applications in general. New software-level adapters have been developed which enable the ECMWF's NWP to leverage these systems, and extensive I/O benchmarking has been conducted on a few computer systems, comparing the performance delivered by the evaluated object stores to that of equivalent Lustre file system deployments on the same hardware. Challenges of porting to object storage and its benefits with respect to the traditional POSIX I/O approach have been discussed and, where possible, domain-agnostic performance analysis has been conducted, leading to insight also of relevance to I/O practitioners and the broader HPC community. DAOS and Ceph have both demonstrated excellent performance, but DAOS stood out relative to Ceph and Lustre, providing superior scalability and flexibility for applications to perform I/O at scale as desired. This sets a promising outlook for DAOS and object storage, which might see greater adoption at HPC centres in the years to come, although not necessarily implying a shift away from POSIX-like I/O.",
+  "published": "2026-02-19T18:35:41Z",
+  "updated": "2026-02-19T18:35:41Z",
+  "authors": [
+   "Nicolau Manubens Gil"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.DB"
+  ],
+  "comment": "PhD. thesis successfully defended at The University of Edinburgh on the 16th October 2025",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 37
+ },
+ {
+  "id": "2607.21746v2",
+  "title": "PRISM: Evaluating POSIX Storage Systems for AI Research Workflows",
+  "abstract": "Large GPU clusters for AI research rely on POSIX-based storage spanning code authoring, data preparation, and model checkpointing. The metric that matters is researcher iteration speed, not just peak throughput - but current benchmarks target the latter: synthetic tools stress peak bandwidth and IOPS, emulators replay captured training I/O, and neither execute real framework operations or captures the bursty, heterogeneous, metadata-heavy patterns of research. We present PRISM, an extensible benchmark suite that executes real workloads across key stages of AI research including version control, environment setup, data preparation, data loading, model checkpointing, and synthetic data generation. PRISM exercises what researchers actually run and thereby serves not only as a benchmark but also as a qualification gate for new storage systems before they are consumed by researchers. We share our experience using PRISM for over 18 months in AI research clusters with thousands of Nvidia hopper class GPUs consuming petabyte scale Lustre and NFS based storage systems in characterizing research workloads, identifying the appropriate system for different cluster environments and detecting performance regressions. As an example, PRISM surfaced an openat lock contention pathology that caused an 8x slowdown under Fully Sharded Data Parallel (FSDP) checkpointing which went uncaught in emulated benchmarks. We plan to open source PRISM as a practical tool for selecting and validating storage for AI research infrastructure.",
+  "published": "2026-07-23T18:56:27Z",
+  "updated": "2026-10-02T22:48:49Z",
+  "authors": [
+   "Adithya Kumar",
+   "Abhinandan Prativadi",
+   "Aditya Basu",
+   "Jacob Kahn",
+   "Parth Malani",
+   "Leo Huang",
+   "Kalyan Saladi"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 34
+ },
+ {
+  "id": "2603.21354v2",
+  "title": "The Workload-Router-Pool Architecture for LLM Inference Optimization: A Vision Paper from the vLLM Semantic Router Project",
+  "abstract": "Over the past year, the vLLM Semantic Router project has released a series of work spanning: (1) core routing mechanisms -- signal-driven routing, context-length pool routing, router performance engineering, policy conflict detection, low-latency embedding models, category-aware semantic caching, user-feedback-driven routing adaptation, hallucination detection, and hierarchical content-safety classification for privacy and jailbreak protection; (2) fleet optimization -- fleet provisioning and energy-efficiency analysis; (3) agentic and multimodal routing -- multimodal agent routing, tool selection, CUA security, and multi-turn context memory and safety; (4) governance and standards -- inference routing protocols and multi-provider API extensions. Each paper tackled a specific problem in LLM inference, but the problems are not independent; for example, fleet provisioning depends on the routing policy, which depends on the workload mix, shifting as organizations adopt agentic and multimodal workloads. This paper distills those results into the Workload-Router-Pool (WRP) architecture, a three-dimensional framework for LLM inference optimization. Workload characterizes what the fleet serves (chat vs. agent, single-turn vs. multi-turn, warm vs. cold, prefill-heavy vs. decode-heavy). Router determines how each request is dispatched (static semantic rules, online bandit adaptation, RL-based model selection, quality-aware cascading). Pool defines where inference runs (homogeneous vs. heterogeneous GPU, disaggregated prefill/decode, KV-cache topology). We map our prior work onto a 3x3 WRP interaction matrix, identify which cells we have covered and which remain open, and propose twenty-one concrete research directions at the intersections, each grounded in our prior measurements, tiered by maturity from engineering-ready to open research.",
+  "published": "2026-03-22T18:30:11Z",
+  "updated": "2026-04-08T22:31:39Z",
+  "authors": [
+   "Huamin Chen",
+   "Xunzhuo Liu",
+   "Bowei He",
+   "Fuyuan Lyu",
+   "Yankai Chen",
+   "Xue Liu",
+   "Yuhan Liu",
+   "Junchen Jiang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "Vision Paper",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2504.09775v6",
+  "title": "MIST: A Co-Design Framework for Heterogeneous, Multi-Stage LLM Inference",
+  "abstract": "Modern LLM serving now spans multi-stage pipelines including RAG retrieval and KV cache reuse, each with distinct compute, memory, and latency demands. Inference engines expose a large configuration space with no systematic navigation methodology, and exhaustively benchmarking configurations can exceed 40K in cloud costs. Simultaneously, the hardware landscape is rapidly diversifying across AMD GPUs, TPUs, and custom ASICs, while cross-vendor prefill-decode (PD) disaggregated configurations lack unified software stacks for end-to-end evaluation today. To address this gap, we present MIST, a Heterogeneous Multi-stage LLM inference Execution Simulator. MIST models diverse request stages; including RAG, KV retrieval, reasoning, prefill, and decode across complex hardware hierarchies. MIST supports heterogeneous clients executing multiple models concurrently unlike prior frameworks while incorporating advanced batching strategies and multi-level memory hierarchies. By integrating real hardware traces with analytical modeling, MIST captures critical trade-offs such as memory bandwidth contention, inter-cluster communication latency, and batching efficiency in hybrid CPU-accelerator deployments. Through case studies, we explore the impact of reasoning stages on end-to-end latency, optimal batching strategies for hybrid pipelines, and the architectural implications of remote KV cache retrieval. MIST empowers system designers to navigate the evolving landscape of LLM inference, providing actionable insights into optimizing hardware-software co-design for next-generation AI workloads.",
+  "published": "2025-04-14T00:29:49Z",
+  "updated": "2026-04-20T20:54:05Z",
+  "authors": [
+   "Abhimanyu Rajeshkumar Bambhaniya",
+   "Hanjiang Wu",
+   "Suvinay Subramanian",
+   "Sudarshan Srinivasan",
+   "Souvik Kundu",
+   "Amir Yazdanbakhsh",
+   "Midhilesh Elavazhagan",
+   "Madhu Kumar",
+   "Minlan Yu",
+   "Arijit Raychowdhury",
+   "Tushar Krishna"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "Inference System Design for Multi-Stage AI Inference Pipelines. 11 Pages, 10 Figues, 5 Tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2307.02073v2",
+  "title": "Performance Modeling of Data Storage Systems using Generative Models",
+  "abstract": "High-precision modeling of systems is one of the main areas of industrial data analysis. Models of systems, their digital twins, are used to predict their behavior under various conditions. We have developed several models of a storage system using machine learning-based generative models. The system consists of several components: hard disk drive (HDD) and solid-state drive (SSD) storage pools with different RAID schemes and cache. Each storage component is represented by a probabilistic model that describes the probability distribution of the component performance in terms of IOPS and latency, depending on their configuration and external data load parameters. The results of the experiments demonstrate the errors of 4-10 % for IOPS and 3-16 % for latency predictions depending on the components and models of the system. The predictions show up to 0.99 Pearson correlation with Little's law, which can be used for unsupervised reliability checks of the models. In addition, we present novel data sets that can be used for benchmarking regression algorithms, conditional generative models, and uncertainty estimation methods in machine learning.",
+  "published": "2023-07-05T07:30:53Z",
+  "updated": "2025-04-04T15:30:20Z",
+  "authors": [
+   "Abdalaziz Rashid Al-Maeeni",
+   "Aziz Temirkhanov",
+   "Artem Ryzhikov",
+   "Mikhail Hushchyn"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "IEEE Access 2025 ( Volume: 13) 49643 - 49658",
+  "doi": "10.1109/ACCESS.2025.3552409",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2312.06131v2",
+  "title": "ML-based Modeling to Predict I/O Performance on Different Storage Sub-systems",
+  "abstract": "Parallel applications can spend a significant amount of time performing I/O on large-scale supercomputers. Fast near-compute storage accelerators called burst buffers can reduce the time a processor spends performing I/O and mitigate I/O bottlenecks. However, determining if a given application could be accelerated using burst buffers is not straightforward even for storage experts. The relationship between an application's I/O characteristics (such as I/O volume, processes involved, etc.) and the best storage sub-system for it can be complicated. As a result, adapting parallel applications to use burst buffers efficiently is a trial-and-error process. In this work, we present a Python-based tool called PrismIO that enables programmatic analysis of I/O traces. Using PrismIO, we identify bottlenecks on burst buffers and parallel file systems and explain why certain I/O patterns perform poorly. Further, we use machine learning to model the relationship between I/O characteristics and burst buffer selections. We run IOR (an I/O benchmark) with various I/O characteristics on different storage systems and collect performance data. We use the data as the input for training the model. Our model can predict if a file of an application should be placed on BBs for unseen IOR scenarios with an accuracy of 94.47% and for four real applications with an accuracy of 95.86%.",
+  "published": "2023-12-11T05:33:00Z",
+  "updated": "2024-01-12T03:32:49Z",
+  "authors": [
+   "Yiheng Xu",
+   "Pranav Sivaraman",
+   "Hariharan Devarajan",
+   "Kathryn Mohror",
+   "Abhinav Bhatele"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 29
+ },
+ {
+  "id": "2607.28880v1",
+  "title": "LayoutBench: Performance Benchmarking of Cloud Storage Layouts for Multimedia Data",
+  "abstract": "Modern multimedia machine learning workloads increasingly store large-scale datasets in cloud object storage services such as AWS S3. How these samples are physically organized in storage (i.e.,storage layout) directly affects how quickly and cheaply they can be retrieved. Yet the benchmarks used to guide storage decisions today focus on database engines and query processing, and none systematically evaluates how different storage layouts perform for multimedia data retrieval. We present LayoutBench, the first benchmark designed to fill this gap. It evaluates three representative layout strategies: storing each sample as an individual object (L1), sequentially packing samples into tar archives (L2), and organizing samples as columns in Parquet files (L3). We measure retrieval time, data transferred, and monetary cost using 11 queries of varying result-set sizes on ImageNet across six AWS EC2 instance configurations that span different network bandwidth and memory tiers. Our experiments reveal that L2 achieves lower latency than L1 and L3 through connection reuse, but loses this advantage as retrieval sizes become very large. L3 is the fastest for very large retrievals but transfers substantially more data across all query sizes due to row-group granularity, and requires significantly more memory. Across all layouts, data transfer cost dominates total expenditure, with L3 costing an order of magnitude more than L1 or L2.",
+  "published": "2026-07-30T22:49:54Z",
+  "updated": "2026-07-30T22:49:54Z",
+  "authors": [
+   "Debopam Sanyal",
+   "Hongjie Chen",
+   "Alexey Tumanov",
+   "Joshua Kimball"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.DB",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "10.1145/3805621.3807610",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2606.02982v2",
+  "title": "DriftSched: Adaptive QoS-Aware Scheduling under Runtime Token Drift for Multi-Tenant GPU Inference",
+  "abstract": "The rapid growth of large language model (LLM) inference services has increased the demand for efficient multi-tenant GPU scheduling. While modern inference runtimes such as vLLM improve throughput through continuous batching and optimized memory management, accurately estimating the runtime cost of heterogeneous inference requests remains challenging. In practice, admission-time workload estimates may deviate from observed execution behavior, leading to workload misclassification, queue imbalance, increased tail latency, and degraded Quality-of-Service (QoS). This paper presents DriftSched, a QoS-aware scheduling framework for multi-tenant LLM inference serving on NVIDIA L4 GPUs. DriftSched combines workload classification, token-budget estimation, tenant-aware queue management, and an online feedback mechanism to refine workload estimates using runtime observations. The framework evaluates FIFO, Priority, Weighted, Shortest-Job-First (SJF), and Aging Priority scheduling policies under heterogeneous multi-tenant workloads. Experimental results show that adaptive calibration reduces workload estimation error by an average of 38.8% (MAE) and 40.5% (RMSE), improving workload classification stability. Among all evaluated schedulers, SJF achieves the best overall performance, reducing median end-to-end latency by approximately 42% and P99 latency by approximately 16% relative to FIFO under sustained GPU contention. The results further indicate that scheduler selection has a greater impact on latency behavior than runtime calibration alone, while accurate workload characterization largely eliminates systematic estimation drift. This work contributes a reproducible framework for studying workload-estimation fidelity and QoS-aware scheduling in multi-tenant GPU inference systems.",
+  "published": "2026-06-02T00:39:31Z",
+  "updated": "2026-06-19T15:23:40Z",
+  "authors": [
+   "Kathiravan Palaniappan"
+  ],
+  "categories": [
+   "cs.PF",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "19 pages, 34 figures, 11 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2605.11202v1",
+  "title": "Continuous Discovery of Vulnerabilities in LLM Serving Systems with Fuzzing",
+  "abstract": "LLM inference and serving systems have become security-critical infrastructure; however, many of their most concerning failures arise from the serving layer rather than from model behavior alone. Modern inference engines combine KV cache, batching, prefix sharing, speculative decoding, adapters, and multi-tenant scheduling, creating shared-state behavior that only emerges under realistic concurrent workloads and is missed by standard model, safety, and API tests. We present GRIEF, a greybox fuzzer for LLM inference engines that treats timed multi-request traces as first-class inputs, uses lightweight oracles to detect crashes, hangs, performance pathologies, and silent output corruption, and applies controlled replay with log-probability checks to confirm reproducible serving-layer failures. Across early campaigns on vLLM and SGLang, GRIEF discovers 15 vulnerabilities, 10 confirmed by engine developers, including 2 CVEs, spanning KV-cache isolation failures, cross-request performance interference, and crash or liveness bugs. These results show that concurrency, caching, and state reuse can induce silent cross-request contamination, noisy-neighbor denial of service, and delayed crashes without malformed inputs or explicit server errors, making concurrent serving behavior a first-class security and reliability boundary for LLM infrastructure.",
+  "published": "2026-05-11T20:10:08Z",
+  "updated": "2026-05-11T20:10:08Z",
+  "authors": [
+   "Yunze Zhao",
+   "Yibo Zhao",
+   "Yuchen Zhang",
+   "Zaoxing Liu",
+   "Michelle L. Mazurek"
+  ],
+  "categories": [
+   "cs.CR",
+   "cs.AI",
+   "cs.LG",
+   "cs.SE"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2506.04678v2",
+  "title": "BVLSM: Write-Efficient LSM-Tree Storage via WAL-Time Key-Value Separation",
+  "abstract": "Modern data-intensive applications increasingly store and process big-value items, such as multimedia objects and machine learning embeddings, which exacerbate storage inefficiencies in Log-Structured Merge-Tree (LSM)-based key-value stores. This paper presents BVLSM, a Write-Ahead Log (WAL)-time key-value separation mechanism designed to address three key challenges in LSM-Tree storage systems: write amplification, poor memory utilization, and I/O jitter under big-value workloads. Unlike state-of-the-art approaches that delay key-value separation until the flush stage, leading to redundant data in MemTables and repeated writes. BVLSM proactively decouples keys and values during the WAL phase. The MemTable stores only lightweight metadata, allowing multi-queue parallel store for big value. The benchmark results show that BVLSM significantly outperforms both RocksDB and BlobDB under 64KB random write workloads. In asynchronous WAL mode, it achieves throughput improvements of 7.6x over RocksDB and 1.9x over BlobDB.",
+  "published": "2025-06-05T06:54:25Z",
+  "updated": "2025-06-09T01:41:08Z",
+  "authors": [
+   "Ming Li",
+   "Wendi Cheng",
+   "Jiahe Wei",
+   "Xueqiang Shan",
+   "Weikai Liu",
+   "Xiaonan Zhao",
+   "Xiao Zhang"
+  ],
+  "categories": [
+   "cs.DB"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 23
+ },
+ {
+  "id": "2304.05028v3",
+  "title": "An Empirical Evaluation of Columnar Storage Formats",
+  "abstract": "Columnar storage is a core component of a modern data analytics system. Although many database management systems (DBMSs) have proprietary storage formats, most provide extensive support to open-source storage formats such as Parquet and ORC to facilitate cross-platform data sharing. But these formats were developed over a decade ago, in the early 2010s, for the Hadoop ecosystem. Since then, both the hardware and workload landscapes have changed. In this paper, we revisit the most widely adopted open-source columnar storage formats (Parquet and ORC) with a deep dive into their internals. We designed a benchmark to stress-test the formats' performance and space efficiency under different workload configurations. From our comprehensive evaluation of Parquet and ORC, we identify design decisions advantageous with modern hardware and real-world data distributions. These include using dictionary encoding by default, favoring decoding speed over compression ratio for integer encoding algorithms, making block compression optional, and embedding finer-grained auxiliary data structures. We also point out the inefficiencies in the format designs when handling common machine learning workloads and using GPUs for decoding. Our analysis identified important considerations that may guide future formats to better fit modern technology trends.",
+  "published": "2023-04-11T07:34:25Z",
+  "updated": "2023-11-07T12:14:59Z",
+  "authors": [
+   "Xinyu Zeng",
+   "Yulong Hui",
+   "Jiahong Shen",
+   "Andrew Pavlo",
+   "Wes McKinney",
+   "Huanchen Zhang"
+  ],
+  "categories": [
+   "cs.DB"
+  ],
+  "comment": "15 pages; typos corrected, missing figure legend added",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 22
+ },
+ {
+  "id": "2512.14151v1",
+  "title": "Adaptive Cache Pollution Control for Large Language Model Inference Workloads Using Temporal CNN-Based Prediction and Priority-Aware Replacement",
+  "abstract": "Large Language Models (LLMs), such as GPT and LLaMA, introduce unique memory access characteristics during inference due to frequent token sequence lookups and embedding vector retrievals. These workloads generate highly irregular and bursty access patterns, causing traditional prefetching and replacement policies to mispredict and trigger severe cache pollution, thereby degrading system performance. To address this challenge, this paper proposes an Adaptive Cache Pollution Control (ACPC) mechanism tailored for LLM inference workloads, integrating Temporal Convolutional Network (TCN)-based access prediction with a priority-aware replacement strategy. The TCN module learns temporal dependencies in token access sequences to identify potential high-reuse cache lines, while the replacement policy dynamically adjusts eviction priorities based on predicted reuse likelihood and cache occupancy. The proposed framework is implemented and evaluated on representative transformer-based inference traces, including GPT-style autoregressive decoding and embedding retrieval workloads. Experimental results demonstrate that ACPC reduces cache pollution by 41.7 percent, improves cache hit rate by 8.9 percent, and achieves a 60.0 percent reduction in L2 miss penalty, compared with state-of-the-art machine-learning-based replacement baselines. Additionally, the proposed Temporal CNN-based ACPC framework increases token generation throughput by 15.9 percent and achieves the lowest final loss of 0.21, confirming its superior efficiency and stability under complex LLM inference workloads. These results highlight ACPC's effectiveness in recognizing useful cache lines and mitigating redundant prefetches under dynamic LLM access behaviors. The proposed approach provides a scalable, learning-driven solution for optimizing memory efficiency and latency in large-scale LLM serving and inference systems.",
+  "published": "2025-12-16T07:16:10Z",
+  "updated": "2025-12-16T07:16:10Z",
+  "authors": [
+   "Songze Liu",
+   "Hongkun Du",
+   "Shaowen Wang"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 20
+ },
+ {
+  "id": "2508.00904v1",
+  "title": "Forecasting LLM Inference Performance via Hardware-Agnostic Analytical Modeling",
+  "abstract": "Large language models (LLMs) have been increasingly deployed as local agents on personal devices with CPUs, NPUs and integrated GPUs. However, forecasting inference performance on devices with such heterogeneity remains challenging due to the dynamic compute and memory demands. Existing approaches rely on GPU benchmarking or machine learning-based latency predictors, which are often hardware-specific and lack generalizability. To this end, we introduce LIFE, a lightweight and modular analytical framework that is comprised of modular analytical model of operators, configurable to characterize LLM inference workloads in a hardware and dataset-agnostic manner. LIFE characterizes the influence of software and model optimizations, such as quantization, KV cache compression, LoRA adapters, chunked prefill, different attentions, and operator fusion, on performance metrics such as time-to-first-token (TTFT), time-per-output-token (TPOT) and tokens-per-second (TPS). LIFE enables performance forecasting using only hardware specifications, such as TOPS and memory bandwidth, without requiring extensive dataset benchmarking. We validate LIFE's forecasting with inference on AMD Ryzen CPUs, NPUs, iGPUs and NVIDIA V100 GPUs, with Llama2-7B variants, demonstrating the utility of LIFE in forecasting LLM performance through lens of system efficiency to enable efficient LLM deployment across different hardware platforms.",
+  "published": "2025-07-29T03:08:31Z",
+  "updated": "2025-07-29T03:08:31Z",
+  "authors": [
+   "Rajeev Patwari",
+   "Ashish Sirasao",
+   "Devleena Das"
+  ],
+  "categories": [
+   "cs.PF",
+   "cs.AI",
+   "cs.AR",
+   "cs.LG"
+  ],
+  "comment": "10 pages, 9 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 19
+ },
+ {
+  "id": "2510.10799v1",
+  "title": "Rethinking deep learning: linear regression remains a key benchmark in predicting terrestrial water storage",
+  "abstract": "Recent advances in machine learning such as Long Short-Term Memory (LSTM) models and Transformers have been widely adopted in hydrological applications, demonstrating impressive performance amongst deep learning models and outperforming physical models in various tasks. However, their superiority in predicting land surface states such as terrestrial water storage (TWS) that are dominated by many factors such as natural variability and human driven modifications remains unclear. Here, using the open-access, globally representative HydroGlobe dataset - comprising a baseline version derived solely from a land surface model simulation and an advanced version incorporating multi-source remote sensing data assimilation - we show that linear regression is a robust benchmark, outperforming the more complex LSTM and Temporal Fusion Transformer for TWS prediction. Our findings highlight the importance of including traditional statistical models as benchmarks when developing and evaluating deep learning models. Additionally, we emphasize the critical need to establish globally representative benchmark datasets that capture the combined impact of natural variability and human interventions.",
+  "published": "2025-10-12T20:34:45Z",
+  "updated": "2025-10-12T20:34:45Z",
+  "authors": [
+   "Wanshu Nie",
+   "Sujay V. Kumar",
+   "Junyu Chen",
+   "Long Zhao",
+   "Olya Skulovich",
+   "Jinwoong Yoo",
+   "Justin Pflug",
+   "Shahryar Khalique Ahmad",
+   "Goutam Konapala"
+  ],
+  "categories": [
+   "cs.LG",
+   "physics.ao-ph",
+   "physics.geo-ph"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2406.17085v2",
+  "title": "Perturbed Decision-Focused Learning for Modeling Strategic Energy Storage",
+  "abstract": "This paper presents a novel decision-focused framework integrating the physical energy storage model into machine learning pipelines. Motivated by the model predictive control for energy storage, our end-to-end method incorporates the prior knowledge of the storage model and infers the hidden reward that incentivizes energy storage decisions. This is achieved through a dual-layer framework, combining a prediction layer with an optimization layer. We introduce the perturbation idea into the designed decision-focused loss function to ensure the differentiability over linear storage models, supported by a theoretical analysis of the perturbed loss function. We also develop a hybrid loss function for effective model training. We provide two challenging applications for our proposed framework: energy storage arbitrage, and energy storage behavior prediction. The numerical experiments on real price data demonstrate that our arbitrage approach achieves the highest profit against existing methods. The numerical experiments on synthetic and real-world energy storage data show that our approach achieves the best behavior prediction performance against existing benchmark methods, which shows the effectiveness of our method.",
+  "published": "2024-06-24T19:16:21Z",
+  "updated": "2024-12-05T05:31:57Z",
+  "authors": [
+   "Ming Yi",
+   "Saud Alghumayjan",
+   "Bolun Xu"
+  ],
+  "categories": [
+   "eess.SY"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2503.05096v2",
+  "title": "AdaSpec: Adaptive Speculative Decoding for Fast, SLO-Aware Large Language Model Serving",
+  "abstract": "Cloud-based Large Language Model (LLM) services often face challenges in achieving low inference latency and meeting Service Level Objectives (SLOs) under dynamic request patterns. Speculative decoding, which exploits lightweight models for drafting and LLMs for verification, has emerged as a compelling technique to accelerate LLM inference. However, existing speculative decoding solutions often fail to adapt to fluctuating workloads and dynamic system environments, resulting in impaired performance and SLO violations. In this paper, we introduce AdaSpec, an efficient LLM inference system that dynamically adjusts speculative strategies according to real-time request loads and system configurations. AdaSpec proposes a theoretical model to analyze and predict the efficiency of speculative strategies across diverse scenarios. Additionally, it implements intelligent drafting and verification algorithms to maximize performance while ensuring high SLO attainment. Experimental results on real-world LLM service traces demonstrate that AdaSpec consistently meets SLOs and achieves substantial performance improvements, delivering up to 66% speedup compared to state-of-the-art speculative inference systems. The source code is publicly available at https://github.com/cerebellumking/AdaSpec",
+  "published": "2025-03-07T02:27:51Z",
+  "updated": "2026-01-12T08:18:53Z",
+  "authors": [
+   "Kaiyu Huang",
+   "Hao Wu",
+   "Zhubo Shi",
+   "Han Zou",
+   "Minchen Yu",
+   "Qingjiang Shi"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "This paper is accepted by ACM SoCC 2025",
+  "journal_ref": "In ACM Symposium on Cloud Computing (SoCC '25), November 19-21, 2025, Online, USA",
+  "doi": "10.1145/3772052.3772239",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 16
+ },
+ {
+  "id": "2506.06326v1",
+  "title": "Memory OS of AI Agent",
+  "abstract": "Large Language Models (LLMs) face a crucial challenge from fixed context windows and inadequate memory management, leading to a severe shortage of long-term memory capabilities and limited personalization in the interactive experience with AI agents. To overcome this challenge, we innovatively propose a Memory Operating System, i.e., MemoryOS, to achieve comprehensive and efficient memory management for AI agents. Inspired by the memory management principles in operating systems, MemoryOS designs a hierarchical storage architecture and consists of four key modules: Memory Storage, Updating, Retrieval, and Generation. Specifically, the architecture comprises three levels of storage units: short-term memory, mid-term memory, and long-term personal memory. Key operations within MemoryOS include dynamic updates between storage units: short-term to mid-term updates follow a dialogue-chain-based FIFO principle, while mid-term to long-term updates use a segmented page organization strategy. Our pioneering MemoryOS enables hierarchical memory integration and dynamic updating. Extensive experiments on the LoCoMo benchmark show an average improvement of 49.11% on F1 and 46.18% on BLEU-1 over the baselines on GPT-4o-mini, showing contextual coherence and personalized memory retention in long conversations. The implementation code is open-sourced at https://github.com/BAI-LAB/MemoryOS.",
+  "published": "2025-05-30T15:36:51Z",
+  "updated": "2025-05-30T15:36:51Z",
+  "authors": [
+   "Jiazheng Kang",
+   "Mingming Ji",
+   "Zhe Zhao",
+   "Ting Bai"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 13
+ },
+ {
+  "id": "2609.12551v2",
+  "title": "RoofLang: Enabling AI-Driven Architecting of LLM Inference Systems",
+  "abstract": "AI is beginning to make substantive contributions to LLM inference optimization. Existing AI optimizations are predominantly profiling-based. Profiling-bound feedback confines the search to the capabilities and performance of an existing software stack, preventing a fundamentally better architecture of LLM inference systems from being identified. To enable the AI-driven LLM inference system architecting loop, we argue that a general workload representation, a verifiable mutation space, and an implementation-independent evaluator are required. We present the RoofLang domain-specific language (DSL) that provides these features. In our evaluation, RoofLang reveals that DeepSeek V4-series models could achieve 3.5-39.5$\\times$ higher peak decode throughput than other representative models. This gap is disproportionate to their total parameter counts and arises largely from compact KV-cache designs that support larger batches and reduce memory traffic. A persistent optimizer agent further discovered several new architectures that improved both throughput and interactivity of DeepSeek V4 Pro on NVIDIA B300 by 6.23-50.1%.",
+  "published": "2026-09-11T07:57:28Z",
+  "updated": "2026-09-20T01:09:07Z",
+  "authors": [
+   "Ziyue Yang",
+   "Yuting Jiang",
+   "Lei Qu",
+   "Peng Cheng"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "v2: updated author affiliations and added a missing statement in Section 5's \"Modeling fidelity\" paragraph",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2603.03808v1",
+  "title": "Vector-Quantized Soft Label Compression for Dataset Distillation",
+  "abstract": "Dataset distillation is an emerging technique for reducing the computational and storage costs of training machine learning models by synthesizing a small, informative subset of data that captures the essential characteristics of a much larger dataset. Recent methods pair synthetic samples and their augmentations with soft labels from a teacher model, enabling student models to generalize effectively despite the small size of the distilled dataset. While soft labels are critical for effective distillation, the storage and communication overhead they incur, especially when accounting for augmentations, is often overlooked. In practice, each distilled sample is associated with multiple soft labels, making them the dominant contributor to storage costs, particularly in large-class settings such as ImageNet-1K. In this paper, we present a rigorous analysis of bit requirements across dataset distillation frameworks, quantifying the storage demands of both distilled samples and their soft labels. To address the overhead, we introduce a vector-quantized autoencoder (VQAE) for compressing soft labels, achieving substantial compression while preserving the effectiveness of the distilled data. We validate our method on both vision and language distillation benchmarks. On ImageNet-1K, our proposed VQAE achieves 30--40x additional compression over RDED, LPLD, SRE2L, and CDA baselines while retaining over $90\\%$ of their original performance.",
+  "published": "2026-03-04T07:41:10Z",
+  "updated": "2026-03-04T07:41:10Z",
+  "authors": [
+   "Ali Abbasi",
+   "Ashkan Shahbazi",
+   "Hamed Pirsiavash",
+   "Soheil Kolouri"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2510.12617v2",
+  "title": "Same model, better performance: the impact of shuffling on DNA Language Models benchmarking",
+  "abstract": "Large Language Models are increasingly popular in genomics due to their potential to decode complex biological sequences. Hence, researchers require a standardized benchmark to evaluate DNA Language Models (DNA LMs) capabilities. However, evaluating DNA LMs is a complex task that intersects genomic's domain-specific challenges and machine learning methodologies, where seemingly minor implementation details can significantly compromise benchmark validity. We demonstrate this through BEND (Benchmarking DNA Language Models), where hardware-dependent hyperparameters -- number of data loading workers and buffer sizes -- create spurious performance variations of up to 4% for identical models. The problem stems from inadequate data shuffling interacting with domain specific data characteristics. Experiments with three DNA language models (HyenaDNA, DNABERT-2, ResNet-LM) show these artifacts affect both absolute performance and relative model rankings. We propose a simple solution: pre-shuffling data before storage eliminates hardware dependencies while maintaining efficiency. This work highlights how standard ML practices can interact unexpectedly with domain-specific data characteristics, with broader implications for benchmark design in specialized domains.",
+  "published": "2025-10-14T15:16:56Z",
+  "updated": "2025-12-10T22:00:37Z",
+  "authors": [
+   "Davide Greco",
+   "Konrad Rawlik"
+  ],
+  "categories": [
+   "q-bio.GN",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2410.08659v1",
+  "title": "Carefully Structured Compression: Efficiently Managing StarCraft II Data",
+  "abstract": "Creation and storage of datasets are often overlooked input costs in machine learning, as many datasets are simple image label pairs or plain text. However, datasets with more complex structures, such as those from the real time strategy game StarCraft II, require more deliberate thought and strategy to reduce cost of ownership. We introduce a serialization framework for StarCraft II that reduces the cost of dataset creation and storage, as well as improving usage ergonomics. We benchmark against the most comparable existing dataset from \\textit{AlphaStar-Unplugged} and highlight the benefit of our framework in terms of both the cost of creation and storage. We use our dataset to train deep learning models that exceed the performance of comparable models trained on other datasets. The dataset conversion and usage framework introduced is open source and can be used as a framework for datasets with similar characteristics such as digital twin simulations. Pre-converted StarCraft II tournament data is also available online.",
+  "published": "2024-10-11T09:33:04Z",
+  "updated": "2024-10-11T09:33:04Z",
+  "authors": [
+   "Bryce Ferenczi",
+   "Rhys Newbury",
+   "Michael Burke",
+   "Tom Drummond"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "14 pages, 7 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2407.04457v1",
+  "title": "Kalman filter enhanced Adversarial Bayesian optimization for active sampling in inelastic neutron scattering",
+  "abstract": "Spin waves, or magnons, are fundamental excitations in magnetic materials that provide insights into their dynamic properties and interactions. Magnons are the building blocks of magnonics, which offer promising perspectives for data storage, quantum computing, and communication technologies. These excitations are typically measured through inelastic neutron or x-ray scattering techniques, which involve heavy and time-consuming measurements, data processing, and analysis based on various theoretical models. Here, we introduce a machine learning algorithm that integrates adaptive noise reduction and active learning sampling, which enables the restoration from minimal inelastic neutron scattering point data of spin wave information and the accurate extraction of magnetic parameters, including hidden interactions. Our findings, benchmarked against the magnon spectra of CrSBr, significantly enhance the efficiency and accuracy in addressing complex and noisy experimental measurements. This advancement offers a powerful machine learning tool for research in magnonics and spintronics, which can also be extended to other characterization techniques at large facilities.",
+  "published": "2024-07-05T12:08:14Z",
+  "updated": "2024-07-05T12:08:14Z",
+  "authors": [
+   "Nihad Abuawwad",
+   "Yixuan Zhang",
+   "Samir Lounis",
+   "Hongbin Zhang"
+  ],
+  "categories": [
+   "cond-mat.mtrl-sci"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2404.10386v3",
+  "title": "I/O in Machine Learning Applications on HPC Systems: A 360-degree Survey",
+  "abstract": "Growing interest in Artificial Intelligence (AI) has resulted in a surge in demand for faster methods of Machine Learning (ML) model training and inference. This demand for speed has prompted the use of high performance computing (HPC) systems that excel in managing distributed workloads. Because data is the main fuel for AI applications, the performance of the storage and I/O subsystem of HPC systems is critical. In the past, HPC applications accessed large portions of data written by simulations or experiments or ingested data for visualizations or analysis tasks. ML workloads perform small reads spread across a large number of random files. This shift of I/O access patterns poses several challenges to modern parallel storage systems. In this paper, we survey I/O in ML applications on HPC systems, and target literature within a 6-year time window from 2019 to 2024. We define the scope of the survey, provide an overview of the common phases of ML, review available profilers and benchmarks, examine the I/O patterns encountered during offline data preparation, training, and inference, and explore I/O optimizations utilized in modern ML frameworks and proposed in recent literature. Lastly, we seek to expose research gaps that could spawn further R&D",
+  "published": "2024-04-16T08:37:36Z",
+  "updated": "2025-08-22T22:49:41Z",
+  "authors": [
+   "Noah Lewis",
+   "Jean Luca Bez",
+   "Surendra Byna"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "ACM Computing Surveys (CSUR), Vol. 1, No. 1, Article 1, January 2025",
+  "doi": "10.1145/3722215",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2110.11466v2",
+  "title": "MLPerf HPC: A Holistic Benchmark Suite for Scientific Machine Learning on HPC Systems",
+  "abstract": "Scientific communities are increasingly adopting machine learning and deep learning models in their applications to accelerate scientific insights. High performance computing systems are pushing the frontiers of performance with a rich diversity of hardware resources and massive scale-out capabilities. There is a critical need to understand fair and effective benchmarking of machine learning applications that are representative of real-world scientific use cases. MLPerf is a community-driven standard to benchmark machine learning workloads, focusing on end-to-end performance metrics. In this paper, we introduce MLPerf HPC, a benchmark suite of large-scale scientific machine learning training applications driven by the MLCommons Association. We present the results from the first submission round, including a diverse set of some of the world's largest HPC systems. We develop a systematic framework for their joint analysis and compare them in terms of data staging, algorithmic convergence, and compute performance. As a result, we gain a quantitative understanding of optimizations on different subsystems such as staging and on-node loading of data, compute-unit utilization, and communication scheduling, enabling overall $>10 \\times$ (end-to-end) performance improvements through system scaling. Notably, our analysis shows a scale-dependent interplay between the dataset size, a system's memory hierarchy, and training convergence that underlines the importance of near-compute storage. To overcome the data-parallel scalability challenge at large batch sizes, we discuss specific learning techniques and hybrid data-and-model parallelism that are effective on large systems. We conclude by characterizing each benchmark with respect to low-level memory, I/O, and network behavior to parameterize extended roofline performance models in future rounds.",
+  "published": "2021-10-21T20:30:12Z",
+  "updated": "2021-10-26T20:56:01Z",
+  "authors": [
+   "Steven Farrell",
+   "Murali Emani",
+   "Jacob Balma",
+   "Lukas Drescher",
+   "Aleksandr Drozd",
+   "Andreas Fink",
+   "Geoffrey Fox",
+   "David Kanter",
+   "Thorsten Kurth",
+   "Peter Mattson",
+   "Dawei Mu",
+   "Amit Ruhela",
+   "Kento Sato",
+   "Koichi Shirahata",
+   "Tsuguchika Tabaru",
+   "Aristeidis Tsaris",
+   "Jan Balewski",
+   "Ben Cumming",
+   "Takumi Danjo",
+   "Jens Domke",
+   "Takaaki Fukai",
+   "Naoto Fukumoto",
+   "Tatsuya Fukushi",
+   "Balazs Gerofi",
+   "Takumi Honda",
+   "Toshiyuki Imamura",
+   "Akihiko Kasagi",
+   "Kentaro Kawakami",
+   "Shuhei Kudo",
+   "Akiyoshi Kuroda",
+   "Maxime Martinasso",
+   "Satoshi Matsuoka",
+   "Henrique Mendonça",
+   "Kazuki Minami",
+   "Prabhat Ram",
+   "Takashi Sawada",
+   "Mallikarjun Shankar",
+   "Tom St. John",
+   "Akihiro Tabuchi",
+   "Venkatram Vishwanath",
+   "Mohamed Wahib",
+   "Masafumi Yamazaki",
+   "Junqi Yin"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2608.00101v1",
+  "title": "Agentic Coding in the Wild: Characterizing GitHub Copilot Traces at Production Scale",
+  "abstract": "AI coding agents like GitHub Copilot, Claude Code, and Codex interleave multi-step LLM inference with tool execution, creating a workload different from chatbots. We present the first production-scale characterization of this workload using sampled GitHub Copilot traces from June 2026, comprising 3.2M users, 13M sessions, 761M LLM calls, and 95T tokens. Our analysis reveals distinctive workload properties with important systems implications. For example, agentic coding sessions consist of sparse user-initiated turns, each unfolding into an autonomous agent loop of LLM calls almost always coupled with tool execution. This structure yields KV cache hit rates averaging 90% within a turn, but falling to 55\\% across turn boundaries and drastically invalidated after events like model switches or context compaction. Diverse workflows and user behaviors are observed with variable and long-tailed token consumption, time span, and tool calls. We highlight the difference between quick agentic turnaround times and the minutes-long user idle periods at turn boundaries, and design a lightweight idle-time predictor that captures 86-90\\% of total idle time, enabling proactive decisions for efficient resource orchestration. These findings challenge assumptions underlying current LLM-serving systems and provide an empirical foundation for agent-native infrastructure.",
+  "published": "2026-07-30T20:51:51Z",
+  "updated": "2026-07-30T20:51:51Z",
+  "authors": [
+   "Banruo Liu",
+   "Haoran Qiu",
+   "Íñigo Goiri",
+   "Rodrigo Fonseca",
+   "Ricardo Bianchini",
+   "Esha Choukse"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2604.07472v2",
+  "title": "Scalable Joint Resource Allocation for SLO-Constrained LLM Inference in Heterogeneous GPU Clouds",
+  "abstract": "Serving large language model (LLM) inference in cloud environments requires jointly optimizing model selection, GPU provisioning, parallelism configuration, and workload routing under latency, accuracy, memory, and budget constraints. While mixed-integer linear programming (MILP) can model this problem, its computational cost limits frequent re-optimization under demand variability. Existing heuristics often optimize individual components separately and may become infeasible when system-wide constraints are enforced. This paper presents a scalable framework for SLO-constrained LLM inference. We formulate the problem as an MILP with a two-phase delay model capturing both prefill and autoregressive decoding under tensor and pipeline parallelism. To solve it efficiently, we develop two constraint-aware heuristics: a Greedy Heuristic (GH) and an Adaptive Greedy Heuristic (AGH). AGH extends GH through multi-start construction, local search, and GPU consolidation. Both methods maintain feasibility through parallelism-aware filtering, cost-based ranking, and adaptive parallelism scaling. Experiments based on the Azure LLM Inference Trace show that GH generates feasible solutions within one second, while AGH achieves near-optimal performance within three seconds and scales to large instances where exact solvers fail to converge. Under out-of-sample stress with up to 1.5x delay and accuracy inflation, AGH degrades gracefully through provisioned headroom, yielding substantially lower cost and SLO violations than cost-minimal MILP solutions. Across synthetic and real Azure workloads, AGH maintains SLO compliance at significantly lower cost than exact MILP solutions. These results demonstrate that high-quality allocations provide substantial robustness to demand variability while enabling rapid adaptation to workload changes.",
+  "published": "2026-04-08T18:11:09Z",
+  "updated": "2026-06-05T07:23:00Z",
+  "authors": [
+   "Jiaming Cheng",
+   "Duong Tung Nguyen"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2301.00652v1",
+  "title": "Efficient Speech Representation Learning with Low-Bit Quantization",
+  "abstract": "With the development of hardware for machine learning, newer models often come at the cost of both increased sizes and computational complexity. In effort to improve the efficiency for these models, we apply and investigate recent quantization techniques on speech representation learning models. The quantization techniques were evaluated on the SUPERB benchmark. On the ASR task, with aggressive quantization to 1 bit, we achieved 86.32% storage reduction (184.42 -> 25.23), 88% estimated runtime reduction (1.00 -> 0.12) with increased word error rate (7.06 -> 15.96). In comparison with DistillHuBERT which also aims for model compression, the 2-bit configuration yielded slightly smaller storage (35.84 vs. 46.98), better word error rate (12.68 vs. 13.37) and more efficient estimated runtime (0.15 vs. 0.73).",
+  "published": "2022-12-14T06:09:08Z",
+  "updated": "2022-12-14T06:09:08Z",
+  "authors": [
+   "Ching-Feng Yeh",
+   "Wei-Ning Hsu",
+   "Paden Tomasello",
+   "Abdelrahman Mohamed"
+  ],
+  "categories": [
+   "eess.AS",
+   "cs.CL"
+  ],
+  "comment": "7 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2610.37989v1",
+  "title": "GAUSS: A Workload-Aware Analytical and Monte-Carlo Simulator for LLM Inference Serving",
+  "abstract": "Large language model (LLM) inference has become an operational workload that fleets must provision, monitor, and bill against latency service-level objectives (SLOs). A single throughput number cannot answer the questions operators actually face, because generative serving couples two phases with very different service characteristics, continuous batching reshapes the effective service process, and user-visible tail latency can degrade long before aggregate throughput saturates. We present GAUSS, a workload-aware analytical and Monte-Carlo simulator that predicts the full distributions of time-to-first-token (TTFT) and time-between-tokens (TBT), together with the sustainable request rate, for a given workload, engine, and accelerator. GAUSS pairs calibrated, phase-specific latency surfaces for prefill and decode with a Lindley-recurrence model of queueing under stochastic arrivals and estimates performance by ensemble Monte-Carlo sampling rather than by replaying a single trace. This lets GAUSS reason about workloads, routing policies, and hardware that have never been deployed, and to capture the latency tails that trace-driven simulators systematically under-sample. We describe the model and show how it supports operating-point selection, traffic segmentation, and shortest-remaining-processing-time scheduling capacity questions that trace-driven simulators cannot address.",
+  "published": "2026-10-27T21:36:03Z",
+  "updated": "2026-10-27T21:36:03Z",
+  "authors": [
+   "Srikant Bharadwaj",
+   "Ankur Mallick",
+   "Spyridon Mastorakis",
+   "Anjaly Parayil",
+   "Dhruv Deshmukh",
+   "Victor Ruehle"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 2
+   }
+  ],
+  "score": 10
+ },
+ {
+  "id": "2608.25053v1",
+  "title": "Hydra: Phase-Aware Workload Characterization of LLM Inference across Edge SoC Generations, Backends, and Quantization Levels",
+  "abstract": "Edge LLM deployment is shaped by more than model size and precision: inference backend, hardware platform, memory traffic, and power management all affect latency and efficiency. We present Hydra, a common-schema, phase-aware workload characterization framework for LLM inference on edge SoCs. Hydra instruments HuggingFace Transformers and llama.cpp with a shared per-prompt timing schema and fuses those records with hardware telemetry, enabling a multi-dimensional characterization of performance, system-resource utilization, and efficiency across prefill and decode phases. Using Hydra, we evaluate three consecutive edge System-on-Chip (SoC) generations (AGX Xavier, AGX Orin, and AGX Thor), 13 instruction-tuned LLMs from seven families, five execution formats, and consider input/output-length sensitivity. The resulting artifact contains roughly 107K per-prompt records and is publicly released with Hydra. Our analysis shows that aggregate latency alone hides key deployment effects: backend structure changes where latency is introduced, quantization reduces memory traffic and energy but does not predict power monotonically, and SoC generation changes how utilization and efficiency should be interpreted. By connecting phase-level timing with system-resource utilization and efficiency metrics, Hydra enables reproducible, phase-aware characterization of edge LLM inference. Hydra's source code and the collected per-prompt trace corpus are available open-source at: https://github.com/amirtaherin/hydra",
+  "published": "2026-08-25T18:43:43Z",
+  "updated": "2026-08-25T18:43:43Z",
+  "authors": [
+   "Amir Taherin",
+   "Sana Taghipour Anvari",
+   "Charles Amante",
+   "Yixiao Chen",
+   "Ruben Noroian",
+   "Zlatan Feric",
+   "Nicolas Bohm Agostini",
+   "Pu Zhao",
+   "José Cano",
+   "Bin Ren",
+   "Yanzhi Wang",
+   "David Kaeli"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC",
+   "cs.PF"
+  ],
+  "comment": "Accepted at the IEEE International Symposium on Workload Characterization (IISWC 2026)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 10
+ },
+ {
+  "id": "2511.12979v1",
+  "title": "RAGPulse: An Open-Source RAG Workload Trace to Optimize RAG Serving Systems",
+  "abstract": "Retrieval-Augmented Generation (RAG) is a critical paradigm for building reliable, knowledge-intensive Large Language Model (LLM) applications. However, the multi-stage pipeline (retrieve, generate) and unique workload characteristics (e.g., knowledge dependency) of RAG systems pose significant challenges for serving performance optimization. Existing generic LLM inference traces fail to capture these RAG-specific dynamics, creating a significant performance gap between academic research and real-world deployment. To bridge this gap, this paper introduces RAGPulse, an open-source RAG workload trace dataset. This dataset was collected from an university-wide Q&A system serving that has served more than 40,000 students and faculties since April 2024. We detail RAGPulse's system architecture, its privacy-preserving hash-based data format, and provide an in-depth statistical analysis. Our analysis reveals that real-world RAG workloads exhibit significant temporal locality and a highly skewed hot document access pattern. RAGPulse provides a high-fidelity foundation for researchers to develop and validate novel optimization strategies for RAG systems, such as content-aware batching and retrieval caching, ultimately enhancing the efficiency and reliability of RAG services. The code is available at https://github.com/flashserve/RAGPulse.",
+  "published": "2025-11-17T05:06:47Z",
+  "updated": "2025-11-17T05:06:47Z",
+  "authors": [
+   "Zhengchao Wang",
+   "Yitao Hu",
+   "Jianing Ye",
+   "Zhuxuan Chang",
+   "Jiazheng Yu",
+   "Youpeng Deng",
+   "Keqiu Li"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DB"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2505.09999v3",
+  "title": "ServeGen: Workload Characterization and Generation of Large Language Model Serving in Production",
+  "abstract": "With the widespread adoption of Large Language Models (LLMs), serving LLM inference requests has become an increasingly important task, attracting active research advancements. Practical workloads play an essential role in this process: they are critical for motivating and benchmarking serving techniques and systems. However, the existing understanding of real-world LLM serving workloads is limited due to the lack of a comprehensive workload characterization. Prior analyses remain insufficient in scale and scope, thus failing to fully capture intricate workload characteristics. In this paper, we fill the gap with an in-depth characterization of LLM serving workloads collected from our worldwide cloud inference serving service, covering not only language models but also emerging multimodal and reasoning models, and unveiling important new findings in each case. Moreover, based on our findings, we propose ServeGen, a principled framework for generating realistic LLM serving workloads by composing them on a per-client basis. A practical use case in production validates that ServeGen avoids 50% under-provisioning compared to naive workload generation, demonstrating ServeGen's advantage in performance benchmarking. ServeGen is available at https://github.com/alibaba/ServeGen.",
+  "published": "2025-05-15T06:24:08Z",
+  "updated": "2026-05-11T03:41:00Z",
+  "authors": [
+   "Yuxing Xiang",
+   "Xue Li",
+   "Kun Qian",
+   "Wenyuan Yu",
+   "Ennan Zhai",
+   "Xin Jin"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "15 pages, NSDI'26",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   },
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Alibaba\" AND abs:inference AND abs:system",
+    "rank": 2
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2408.13510v2",
+  "title": "Intelligent Router for LLM Workloads: Improving Performance Through Workload-Aware Load Balancing",
+  "abstract": "Large Language Model (LLM) workloads have distinct prefill and decode phases with different compute and memory requirements which should ideally be accounted for when scheduling input queries across different LLM instances in a cluster. However existing scheduling algorithms treat LLM workloads as monolithic jobs without considering the distinct characteristics of the two phases in each workload. This leads to sub-optimal scheduling and increased response latency. In this work, we start by characterizing factors affecting the response latency during LLM inference serving. We establish that better load balancing of inference requests across the available LLM instances can improve the end-to-end latency to a larger extent than merely focusing on optimizing the instance-level scheduler. Motivated by our findings, we propose a heuristic-guided reinforcement learning-based intelligent router for data-driven and workload-aware scheduling. Our router schedules queries across LLM instances by leveraging a trainable response-length predictor, and a novel formulation for estimating the impact of mixing different workloads and achieves over 11% lower end-to-end latency than existing approaches on a mix of public datasets and 7.8% lower end-to-end latency on real workload data with diverse input and output trends from Cloud Provider X. Additionally, the proposed framework can also serve as a standard for benchmarking different LLM inference schedulers since it provides the best latency for a given model, hardware, and instance-level scheduler combination.",
+  "published": "2024-08-24T08:12:22Z",
+  "updated": "2025-01-07T18:16:17Z",
+  "authors": [
+   "Kunal Jain",
+   "Anjaly Parayil",
+   "Ankur Mallick",
+   "Esha Choukse",
+   "Xiaoting Qin",
+   "Jue Zhang",
+   "Íñigo Goiri",
+   "Rujia Wang",
+   "Chetan Bansal",
+   "Victor Rühle",
+   "Anoop Kulkarni",
+   "Steve Kofsky",
+   "Saravan Rajmohan"
+  ],
+  "categories": [
+   "cs.DC",
+   "eess.SY"
+  ],
+  "comment": "16 pages, 10 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2610.05305v1",
+  "title": "Characterizing Parallelism Strategies in LLM Inference: Fundamental Compute-Communication Trade-offs",
+  "abstract": "Large Language Model (LLM) inference has become the dominant workload in modern AI systems, requiring serving infrastructures to maximize throughput while meeting strict latency Service-Level Objectives (SLOs). Since state-of-the-art LLMs exceed the compute and memory capacity of a single GPU, inference is commonly distributed across multiple GPUs using tensor parallelism (TP), pipeline parallelism (PP), or hybrid parallelism (HB). However, selecting the most effective parallelism strategy remains challenging due to complex interactions among computation, communication, pipeline utilization, sequence length, batch size, and model architecture. Existing approaches largely rely on empirical evaluation and provide limited analytical insight into the trade-offs among these strategies, particularly across the distinct prefill and decoding phases of inference. In this paper, we present a unified analytical framework for modeling distributed LLM inference under TP, PP, and HB. The framework decomposes end-to-end latency into computation, inter-GPU communication, and pipeline bubble overhead, and derives analytical models that capture TP collective communication, PP point-to-point communication, and pipeline utilization as functions of hardware, model, and workload characteristics. The model further characterizes the differing execution behavior of prefill and decoding, explaining why PP-oriented configurations favor compute-intensive prefill while TP-oriented configurations reduce decoding latency by eliminating pipeline bubbles. Experiments with modern LLMs on multi-GPU platforms validate the model and confirm the fundamental compute-communication trade-off across parallelism strategies. The framework provides practical guidance for parallelism selection, capacity planning, and optimization of future LLM serving systems.",
+  "published": "2026-10-04T15:28:50Z",
+  "updated": "2026-10-04T15:28:50Z",
+  "authors": [
+   "Javad Mirzaei",
+   "Jeebak Mitra"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG",
+   "cs.PF"
+  ],
+  "comment": "17 Pages, 9 Figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2606.17180v1",
+  "title": "Towards Fast GNN Surrogates for CO2 Migration in Complex Geological Formations",
+  "abstract": "This chapter discusses how a data-driven machine learning approach can reproduce key aspects of the physical behavior of multiphase flows in complex geological formations. We propose an end-to-end graph neural surrogate tailored to CO$_2$ plume migration forecasting in geological storage. The method is evaluated on the SPE11A benchmark, a well-known industry test case designed to assess CO$_2$ storage scenarios and characterized by sharp gas-water interfaces, strong advective transport, and rapid convective mixing with fingering development. The benchmark is reformulated as a graph in which nodes represent computational cells and edges encode transmissibility-based interactions enriched with geometric attributes. Directional transport arising from grid geometry, permeability contrasts, and geological heterogeneity is captured through an anisotropic message-passing mechanism, where interaction weights are computed via geometry-conditioned edge embeddings, biasing message aggregation toward physically relevant transport directions. Temporal evolution is modeled in latent space using an autoregressive residual formulation trained with multi-step supervision. The proposed model produces competitive forecasts of gas saturation and liquid-phase density, which are key indicators for CO$_2$ storage monitoring, with cumulative errors that remain moderate over extended forecasting horizons.",
+  "published": "2026-06-15T18:19:17Z",
+  "updated": "2026-06-15T18:19:17Z",
+  "authors": [
+   "Rodrigo S. Luna",
+   "Thiago H. N. Coelho",
+   "Luiz S. L. Neto",
+   "Roberto M. Velho",
+   "Adriano M. A. Cortes",
+   "Renato N. Elias",
+   "Alexandre G. Evsukoff",
+   "Fernando A. Rochinha",
+   "Mauricio Araya-Polo",
+   "Herve Gross",
+   "Alvaro L. G. A. Coutinho"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2606.09094v2",
+  "title": "Artificial Intelligence for Subsurface Imaging Understanding: A Decade Review of Challenges, Methods, Benchmarks, and Outlook",
+  "abstract": "Subsurface imaging interpretation bridges observed geophysical data and quantitative geological models, supporting hydrocarbon exploration, CO2 storage assessment, and geohazard monitoring. Over the past decade, machine learning and deep learning have substantially reshaped interpretation workflows. This review synthesizes the 2015-2025 literature across four tasks: structural interpretation, geobody identification, seismic facies analysis, and property estimation, tracing the field's evolution from classical machine learning through deep learning to emerging domain foundation models, and how these tasks couple within a single interpretation system. The task remains fundamentally different from other AI applications, facing ambiguous signals, interpretive non-uniqueness, sparse semantics, unfixed target locations, and scarce reliable annotations. We synthesize three defining challenges: interpretation under complex geological conditions, cross-survey semantic generalization under low information density, and the absence of reliable benchmarks. Addressing them will hinge on integrating human expertise, physical constraints, and geological priors into training and inference, and on treating uncertainty quantification as an intrinsic model output. We outline a forward-looking agenda: unified, jointly modelled interpretation systems with cross-task consistency; priors evolving from physics toward language and multimodal supervision; end-to-end uncertainty propagation; human-AI collaboration and agent-orchestrated workflows; and a more rigorous evaluation science supported by an AI-ready data ecosystem. The review is accompanied by an open benchmark resource (CIG-Bench), covering fault segmentation, relative geologic time estimation, geobody segmentation, and property modeling, with synthetic datasets, pretrained baselines, and quantitative evaluation: https://douyimin.github.io/CIG-bench",
+  "published": "2026-06-08T06:43:00Z",
+  "updated": "2026-07-11T03:16:18Z",
+  "authors": [
+   "Yimin Dou",
+   "Xinming Wu",
+   "Hui Gao",
+   "Mingliang Liu",
+   "Tao Zhao",
+   "Zhi Zhong",
+   "Haibin Di",
+   "Min Jun Park",
+   "Robert G. Clapp",
+   "Zhixiang Guo",
+   "Long Han",
+   "Sergey Fomel"
+  ],
+  "categories": [
+   "physics.geo-ph"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2603.25093v3",
+  "title": "Process-Aware AI for Rainfall-Runoff Modeling: A Mass-Conserving Neural Framework with Hydrological Process Constraints",
+  "abstract": "Machine learning models can achieve high predictive accuracy in hydrological applications but often lack physical interpretability. The Mass-Conserving Perceptron (MCP) provides a physics-aware artificial intelligence (AI) framework that enforces conservation principles while allowing hydrological process relationships to be learned from data. In this study, we investigate how progressively embedding physically meaningful representations of hydrological processes within a single MCP storage unit improves predictive skill and interpretability in rainfall-runoff modeling. Starting from a minimal MCP formulation, we sequentially introduce bounded soil storage, state-dependent conductivity, variable porosity, infiltration capacity, surface ponding, vertical drainage, and nonlinear water-table dynamics. The resulting hierarchy of process-aware MCP models is evaluated across 15 catchments spanning five hydroclimatic regions of the continental United States using daily streamflow prediction as the target. Results show that progressively augmenting the internal physical structure of the MCP unit generally improves predictive performance. The influence of these process representations is strongly hydroclimate dependent: vertical drainage substantially improves model skill in arid and snow-dominated basins but reduces performance in rainfall-dominated regions, while surface ponding has comparatively small effects. The best-performing MCP configurations approach the predictive skill of a Long Short-Term Memory benchmark while maintaining explicit physical interpretability. These results demonstrate that embedding hydrological process constraints within AI architectures provides a promising pathway toward interpretable and process-aware rainfall-runoff modeling.",
+  "published": "2026-03-26T06:58:31Z",
+  "updated": "2026-10-06T16:21:32Z",
+  "authors": [
+   "Mohammad A. Farmani",
+   "Hoshin V. Gupta",
+   "Ali Behrangi",
+   "Muhammad Jawad",
+   "Sadaf Moghisi",
+   "Guo-Yue Niu"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2603.13976v1",
+  "title": "SAGE: Synthetic Aging for a Grid Environment",
+  "abstract": "Grid-scale battery degradation unfolds over multi-year timescales under coupled electrochemical, thermal, and operational feedbacks difficult to capture using laboratory data or proprietary field datasets. This scarcity limits the development of degradation-aware algorithms and digital twins that require long-horizon, physically consistent ground truth. Here we present SAGE (Synthetic Aging for a Grid Environment), an open-source, physics-informed simulation framework that generates hour-resolved, multi-decade operating histories and degradation trajectories for heterogeneous battery energy storage system (BESS) fleets. The framework couples stochastic environmental drivers, market-based dispatch, electro-thermal behavior, aging kinetics, and asset-level heterogeneity within a transparent, externally parameterized architecture. We validate physical consistency through hierarchical tests, including Arrhenius temperature acceleration, thermal stratification, and emergent wear-out statistics. Simulations demonstrate how intrinsic heterogeneity in thermal environments and manufacturing naturally produces dispersion in state-of-health trajectories without imposed statistical failure assumptions. SAGE serves as a benchmarking platform for optimization, state estimation, and machine learning, enabling reproducible research in grid-scale energy storage modeling.",
+  "published": "2026-03-14T15:13:07Z",
+  "updated": "2026-03-14T15:13:07Z",
+  "authors": [
+   "Paolo Esquivel",
+   "Mark A. Harris",
+   "Stephen J. Harris"
+  ],
+  "categories": [
+   "physics.app-ph"
+  ],
+  "comment": "Small version of figures embedded in the text. Full-size figures and captions at the end",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2307.01091v2",
+  "title": "UW-ProCCaps: UnderWater Progressive Colourisation with Capsules",
+  "abstract": "Underwater images are fundamental for studying and understanding the status of marine life. We focus on reducing the memory space required for image storage while the memory space consumption in the collecting phase limits the time lasting of this phase leading to the need for more image collection campaigns. We present a novel machine-learning model that reconstructs the colours of underwater images from their luminescence channel, thus saving 2/3 of the available storage space. Our model specialises in underwater colour reconstruction and consists of an encoder-decoder architecture. The encoder is composed of a convolutional encoder and a parallel specialised classifier trained with webly-supervised data. The encoder and the decoder use layers of capsules to capture the features of the entities in the image. The colour reconstruction process recalls the progressive and the generative adversarial training procedures. The progressive training gives the ground for a generative adversarial routine focused on the refining of colours giving the image bright and saturated colours which bring the image back to life. We validate the model both qualitatively and quantitatively on four benchmark datasets. This is the first attempt at colour reconstruction in greyscale underwater images. Extensive results on four benchmark datasets demonstrate that our solution outperforms state-of-the-art (SOTA) solutions. We also demonstrate that the generated colourisation enhances the quality of images compared to enhancement models at the SOTA.",
+  "published": "2023-07-03T15:09:32Z",
+  "updated": "2023-07-20T09:40:13Z",
+  "authors": [
+   "Rita Pucci",
+   "Niki Martinel"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2205.07525v2",
+  "title": "A model aggregation approach for high-dimensional large-scale optimization",
+  "abstract": "Bayesian optimization (BO) has been widely used in machine learning and simulation optimization. With the increase in computational resources and storage capacities in these fields, high-dimensional and large-scale problems are becoming increasingly common. In this study, we propose a model aggregation method in the Bayesian optimization (MamBO) algorithm for efficiently solving high-dimensional large-scale optimization problems. MamBO uses a combination of subsampling and subspace embeddings to collectively address high dimensionality and large-scale issues; in addition, a model aggregation method is employed to address the surrogate model uncertainty issue that arises when embedding is applied. This surrogate model uncertainty issue is largely ignored in the embedding literature and practice, and it is exacerbated when the problem is high-dimensional and data are limited. Our proposed model aggregation method reduces these lower-dimensional surrogate model risks and improves the robustness of the BO algorithm. We derive an asymptotic bound for the proposed aggregated surrogate model and prove the convergence of MamBO. Benchmark numerical experiments indicate that our algorithm achieves superior or comparable performance to other commonly used high-dimensional BO algorithms. Moreover, we apply MamBO to a cascade classifier of a machine learning algorithm for face detection, and the results reveal that MamBO finds settings that achieve higher classification accuracy than the benchmark settings and is computationally faster than other high-dimensional BO algorithms.",
+  "published": "2022-05-16T08:58:42Z",
+  "updated": "2022-06-01T06:22:38Z",
+  "authors": [
+   "Haowei Wang",
+   "Ercong Zhang",
+   "Szu Hui Ng",
+   "Giulia Pedrielli"
+  ],
+  "categories": [
+   "cs.LG",
+   "math.OC",
+   "stat.ML"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2603.16054v1",
+  "title": "inference-fleet-sim: A Queueing-Theory-Grounded Fleet Capacity Planner for LLM Inference",
+  "abstract": "Sizing a GPU fleet for LLM inference is harder than it looks. The obvious questions -- how many GPUs, which type, where to split a two-pool fleet -- have no closed-form answers. They depend on the full token-length distribution, the routing policy, and queueing dynamics that turn ugly under heavy-tailed workloads. Existing tools optimize per-engine configuration for a fixed GPU count; none of them address the upstream question of how many GPUs to buy and how to arrange them. inference-fleet-sim fills that gap. It combines analytical M/G/c queueing with discrete-event simulation (DES) to find the minimum-cost fleet configuration that empirically meets a P99 TTFT SLO. It includes a physics-informed GPU performance model covering A10G, A100, and H100 across monolithic, two-pool-routed, and disaggregated topologies, all without requiring access to real hardware. We run the tool on seven fleet-planning scenarios drawn from two public workload traces (LMSYS, Azure) and one synthetic agent-heavy trace. Each one surfaces a result that simple analysis gets wrong -- the right split threshold, the cheapest GPU type, whether an apparently idle fleet is actually broken -- and shows why joint simulation of queueing, routing, and hardware is necessary to find it.",
+  "published": "2026-03-17T01:44:04Z",
+  "updated": "2026-03-17T01:44:04Z",
+  "authors": [
+   "Huamin Chen",
+   "Xunzhuo Liu",
+   "Yuhan Liu",
+   "Junchen Jiang",
+   "Bowei He",
+   "Xue Liu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "Work in progress",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2602.05145v2",
+  "title": "TIDE: Temporal Incremental Draft Engine for Self-Improving LLM Inference",
+  "abstract": "Speculative decoding can substantially accelerate LLM inference, but realizing its benefits in practice is challenging due to evolving workloads. We present TIDE (Temporal Incremental Draft Engine), a serving-engine-native framework that integrates online draft adaptation directly into high-performance LLM inference systems. TIDE reuses target model's intermediate hidden states generated during inference as training signals for draft adaptation, thereby avoiding additional target model computation and serving-time overhead. It employs adaptive runtime control to activate speculation and draft model training only when beneficial. TIDE exploits heterogeneous clusters by mapping inference and training to appropriate GPU classes. Across diverse real-world workloads, TIDE achieves up to 1.66$\\times$ throughput over no-speculation baselines while recovering performance on misaligned workloads where static draft models degrade throughput. TIDE also reduces training time by up to 3.02$\\times$ and storage requirements by 24$\\times$ compared to existing draft training approaches, and improves system throughput by up to 1.22$\\times$ on heterogeneous GPU clusters.",
+  "published": "2026-02-05T00:06:12Z",
+  "updated": "2026-09-24T11:00:06Z",
+  "authors": [
+   "Jiyoung Park",
+   "Hankyu Jang",
+   "Changseok Song",
+   "Wookeun Jung"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "Accepted to the International Conference for High Performance Computing, Networking, Storage, and Analysis (SC'26)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2606.13380v1",
+  "title": "An LLM System for Autonomous Variational Quantum Circuit Design",
+  "abstract": "The design of high performing quantum circuits remains largely dependent on human expertise. We introduce an autonomous agentic framework that employs large language models (LLMs) to conduct iterative quantum circuit designs under explicit design constraints. Our system integrates seven components: Exploration, Generation, Discussion, Validation, Storage, Evaluation, and Review. These components form a closed-loop workflow that combines web-based knowledge acquisition, literature-grounded critique, executable code generation, and experimental feedback. We evaluate the framework on two tasks: quantum feature map construction for quantum machine learning and ansatz generation for variational quantum eigensolver applications in quantum chemistry. In image classification benchmarks, the best generated feature map outperforms representative quantum feature maps and, when scaled to larger qubit counts, surpasses the classical radial basis function kernel. In molecular ground state estimation across seven molecules, the generated ansatz attains competitive accuracy with widely used chemically inspired and hardware-efficient constructions while satisfying the imposed scaling constraints. These results establish LLM driven agentic system as a viable paradigm for automated quantum circuit design and illustrate how AI systems can participate in iterative scientific optimization workflows across scientific domains.",
+  "published": "2026-06-11T14:08:00Z",
+  "updated": "2026-06-11T14:08:00Z",
+  "authors": [
+   "Kenya Sakka",
+   "Wataru Mizukami",
+   "Kosuke Mitarai"
+  ],
+  "categories": [
+   "quant-ph",
+   "cs.AI"
+  ],
+  "comment": "63 pages, 19 figures, 3 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2605.21172v1",
+  "title": "Lumina: An AI-Augmented Multiscale Material Informatics Framework for Extreme Aero-Chemo-Thermo-Mechanical Regimes",
+  "abstract": "Predictive simulations and experimental design involving extreme aero-chemo-thermo-mechanical regimes require high-fidelity material representation across diverse physical states. However, data for metals, polymers, and propellants, explosives, and pyrotechnics (PEP) remain fragmented, obstructing traceability for formulators, experimentalists, and simulation engineers. This work introduces Lumina, a modular Python-based informatics framework that centralizes multiscale material data from atomistic simulation datasets to macro-scale experimental records, within a unified repository. Lumina employs a hierarchical XML-based schema and a dynamic runtime parsing mechanism to enable schema-independent parameter extraction. Beyond storage, the platform provides computational modules to visualize model fits, allowing experimentalists to optimize design of experiments (DoE) and formulators to validate chemical behaviors against benchmarks. This structured architecture serves as a high-fidelity pipeline for training machine learning models and enhancing the accuracy of predictive simulations. To streamline multi-disciplinary workflows, Lumina integrates a conversational AI assistant for intelligent material retrieval and natural language querying. By consolidating multiscale data into an extensible ecosystem, Lumina provides a scalable foundation for data-driven discovery and predictive modeling in advanced defense and aerospace engineering.",
+  "published": "2026-05-20T13:43:03Z",
+  "updated": "2026-05-20T13:43:03Z",
+  "authors": [
+   "Pradeep Kumar Seshadri",
+   "Vigneshwaran N",
+   "Sudaroli Dhananjeyan",
+   "Karthikeyan S",
+   "Navbila K",
+   "Sridhar S",
+   "Subhadevi K",
+   "Hari Sree Charan H",
+   "Abdul Azeez A",
+   "Jeswin Mickle",
+   "Harsha C"
+  ],
+  "categories": [
+   "physics.comp-ph",
+   "physics.data-an"
+  ],
+  "comment": "This work was presented in High Energy Materials Conference & Exhibition 2026 and subsequently published in its proceedings",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2605.17347v1",
+  "title": "Position: Age Estimation Models Do Not Process Biometric Data",
+  "abstract": "When a neural network estimates someone's age from a photograph, does it process biometric data? The answer depends on whether identity-discriminative representations arise within the network during inference, a question that may seem trivial to ML researchers but triggers consent requirements under GDPR, statutory damages under BIPA, or high-risk AI classification under the EU AI Act. Yet no regulatory guidance addresses it. This position paper provides empirical evidence: 14 models evaluated across 3 face verification benchmarks show age estimators fall orders of magnitude short of identification thresholds. Age estimation models cannot identify individuals. We call on researchers to provide transparency about what systems store and can do, and on regulators to distinguish transient processing from template storage.",
+  "published": "2026-05-17T09:37:28Z",
+  "updated": "2026-05-17T09:37:28Z",
+  "authors": [
+   "Nikita Marshalkin"
+  ],
+  "categories": [
+   "cs.CY",
+   "cs.CV",
+   "cs.LG"
+  ],
+  "comment": "11 pages, 3 figures, 3 tables. Accepted as a position paper at the 43rd International Conference on Machine Learning (ICML 2026)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2603.18383v1",
+  "title": "From Servers to Sites: Compositional Power Trace Generation of LLM Inference for Infrastructure Planning",
+  "abstract": "Datacenter operators and electrical utilities rely on power traces at different spatiotemporal scales. Operators use fine-grained traces for provisioning, facility management, and scheduling, while utilities use site-level load profiles for capacity and interconnection planning. Existing datacenter power models do not capture LLM inference workloads, in which GPUs shift rapidly among compute-intensive prefill, lower-power decode, and idle states, and facility demand depends on how these states evolve and synchronize across many devices. We show that LLM inference power can be represented compositionally through two components: workload-driven transitions among operating states and configuration-specific power distributions within those states. Building on this observation, we develop a trace-generation framework that learns from measured traces and synthesizes power profiles for new traffic conditions and serving configurations. These traces aggregate from GPU servers to rack-, row-, and facility-scale load profiles at the temporal granularity required by the study. Across multiple LLMs, tensor-parallel settings, and GPU generations, our framework achieves median absolute energy error below 5% for most configurations while preserving temporal autocorrelation structure. The resulting traces support downstream analyses including oversubscription, power modulation, and utility-facing load characterization, enabling infrastructure evaluations that flat nameplate assumptions and static trace replay cannot support.",
+  "published": "2026-03-19T01:01:41Z",
+  "updated": "2026-03-19T01:01:41Z",
+  "authors": [
+   "Grant Wilkins",
+   "Fiodar Kazhamiaka",
+   "Ram Rajagopal"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2603.14907v2",
+  "title": "Machine learning cannot decarbonise the subsurface until it can be audited",
+  "abstract": "Geological CO2 storage, geothermal energy and underground hydrogen storage depend on irreversible or high-cost decisions made with sparse data and incomplete physical understanding. Machine learning (ML) increasingly informs these decisions, yet methods are usually judged on predictive accuracy rather than on whether their outputs can be trusted, traced and acted upon. We argue that subsurface ML should be designed as decision infrastructure with shared systems that carry calibrated uncertainty and provenance from observation to operating decision. We propose a decision-readiness checklist, an audit-trail workflow for monitoring updates, and benchmark designs that score models by the decisions they support. We identify validation needs shared across the three technologies, and the data-access and governance steps needed for ML to support regulatory and investment decisions.",
+  "published": "2026-03-16T07:08:45Z",
+  "updated": "2026-10-27T09:10:45Z",
+  "authors": [
+   "Hannah P. Menke",
+   "Ahmed H. Elsheikh",
+   "Lingli Wei",
+   "Nanzhe Wang",
+   "Andreas Busch"
+  ],
+  "categories": [
+   "cond-mat.dis-nn",
+   "cs.LG"
+  ],
+  "comment": "17 pages, 2 figures, 4 tables, 2 boxes. Substantially revised Perspective with a new title and abstract, revised argument, vector figures and updated references",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2507.09019v1",
+  "title": "On Evaluating Performance of LLM Inference Serving Systems",
+  "abstract": "The rapid evolution of Large Language Model (LLM) inference systems has yielded significant efficiency improvements. However, our systematic analysis reveals that current evaluation methodologies frequently exhibit fundamental flaws, often manifesting as common evaluation anti-patterns that obscure true performance characteristics and impede scientific progress. Through a comprehensive examination of recent systems, we identify recurring anti-patterns across three key dimensions: Baseline Fairness, Evaluation Setup, and Metric Design. These anti-patterns are uniquely problematic for LLM inference due to its dual-phase nature combining distinct prefill and decode operations, its handling of highly heterogeneous workloads, and its strict temporal requirements for interactive use. We demonstrate how common anti-patterns -- such as inadequate baseline comparisons that conflate engineering effort with algorithmic novelty, workload selections that fail to represent production scenarios, and metric normalizations that hide substantial performance variability like generation stalls-lead to misleading conclusions. To address these challenges, we provide a comprehensive checklist derived from our analysis, establishing a framework for recognizing and avoiding these anti-patterns in favor of robust LLM inference evaluation. To demonstrate the practical application of our framework, we present a case study analyzing speculative decoding, a technique whose bursty, non-uniform token generation is easily misinterpreted when evaluated using approaches characteristic of these anti-patterns. Our work establishes a rigorous foundation for evaluation methodology, enabling meaningful comparisons, ensuring reproducible results, and ultimately accelerating genuine progress in LLM inference systems by moving beyond common anti-patterns to align evaluation with real-world requirements.",
+  "published": "2025-07-11T20:58:21Z",
+  "updated": "2025-07-11T20:58:21Z",
+  "authors": [
+   "Amey Agrawal",
+   "Nitin Kedia",
+   "Anmol Agarwal",
+   "Jayashree Mohan",
+   "Nipun Kwatra",
+   "Souvik Kundu",
+   "Ramachandran Ramjee",
+   "Alexey Tumanov"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2504.08364v2",
+  "title": "DRIP: DRop unImportant data Points -- Enhancing Machine Learning Efficiency with Grad-CAM-Based Real-Time Data Prioritization for On-Device Training",
+  "abstract": "Selecting data points for model training is critical in machine learning. Effective selection methods can reduce the labeling effort, optimize on-device training for embedded systems with limited data storage, and enhance the model performance. This paper introduces a novel algorithm that uses Grad-CAM to make online decisions about retaining or discarding data points. Optimized for embedded devices, the algorithm computes a unique DRIP Score to quantify the importance of each data point. This enables dynamic decision-making on whether a data point should be stored for potential retraining or discarded without compromising model performance. Experimental evaluations on four benchmark datasets demonstrate that our approach can match or even surpass the accuracy of models trained on the entire dataset, all while achieving storage savings of up to 39\\%. To our knowledge, this is the first algorithm that makes online decisions about data point retention without requiring access to the entire dataset.",
+  "published": "2025-04-11T09:00:49Z",
+  "updated": "2025-05-22T11:03:08Z",
+  "authors": [
+   "Marcus Rüb",
+   "Daniel Konegen",
+   "Patrick Selle",
+   "Axel Sikora",
+   "Daniel Mueller-Gritschneder"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2503.17592v3",
+  "title": "A Benchmark Dataset for Machine Learning Surrogates of Pore-Scale CO2-Water Interaction",
+  "abstract": "Accurately capturing the complex interaction between CO2 and water in porous media at the pore scale is essential for various geoscience applications, including carbon capture and storage (CCS). We introduce a comprehensive dataset generated from high-fidelity numerical simulations to capture the intricate interaction between CO2 and water at the pore scale. The dataset consists of 624 2D samples, each of size 512x512 with a resolution of 35 μm, covering 100 time steps under a constant CO2 injection rate. It includes various levels of heterogeneity, represented by different grain sizes with random variation in spacing, offering a robust testbed for developing predictive models. This dataset provides high-resolution temporal and spatial information crucial for benchmarking machine learning models.",
+  "published": "2025-03-22T00:42:42Z",
+  "updated": "2026-02-27T20:54:09Z",
+  "authors": [
+   "Alhasan Abdellatif",
+   "Hannah P. Menke",
+   "Julien Maes",
+   "Ahmed H. Elsheikh",
+   "Florian Doster"
+  ],
+  "categories": [
+   "physics.chem-ph",
+   "cs.LG",
+   "physics.comp-ph"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2412.02735v1",
+  "title": "CPP-UT-Bench: Can LLMs Write Complex Unit Tests in C++?",
+  "abstract": "We introduce CPP-UT-Bench, a benchmark dataset to measure C++ unit test generation capability of a large language model (LLM). CPP-UT-Bench aims to reflect a broad and diverse set of C++ codebases found in the real world. The dataset includes 2,653 {code, unit test} pairs drawn from 14 different opensource C++ codebases spanned across nine diverse domains including machine learning, software testing, parsing, standard input-output, data engineering, logging, complete expression evaluation, key value storage, and server protocols. We demonstrated the effectiveness of CPP-UT-Bench as a benchmark dataset through extensive experiments in in-context learning, parameter-efficient fine-tuning (PEFT), and full-parameter fine-tuning. We also discussed the challenges of the dataset compilation and insights we learned from in-context learning and fine-tuning experiments. Besides the CPP-UT-Bench dataset and data compilation code, we are also offering the fine-tuned model weights for further research. For nine out of ten experiments, our fine-tuned LLMs outperformed the corresponding base models by an average of more than 70%.",
+  "published": "2024-12-03T18:35:24Z",
+  "updated": "2024-12-03T18:35:24Z",
+  "authors": [
+   "Vaishnavi Bhargava",
+   "Rajat Ghosh",
+   "Debojyoti Dutta"
+  ],
+  "categories": [
+   "cs.SE",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2310.14714v5",
+  "title": "BatteryML:An Open-source platform for Machine Learning on Battery Degradation",
+  "abstract": "Battery degradation remains a pivotal concern in the energy storage domain, with machine learning emerging as a potent tool to drive forward insights and solutions. However, this intersection of electrochemical science and machine learning poses complex challenges. Machine learning experts often grapple with the intricacies of battery science, while battery researchers face hurdles in adapting intricate models tailored to specific datasets. Beyond this, a cohesive standard for battery degradation modeling, inclusive of data formats and evaluative benchmarks, is conspicuously absent. Recognizing these impediments, we present BatteryML - a one-step, all-encompass, and open-source platform designed to unify data preprocessing, feature extraction, and the implementation of both traditional and state-of-the-art models. This streamlined approach promises to enhance the practicality and efficiency of research applications. BatteryML seeks to fill this void, fostering an environment where experts from diverse specializations can collaboratively contribute, thus elevating the collective understanding and advancement of battery research.The code for our project is publicly available on GitHub at https://github.com/microsoft/BatteryML.",
+  "published": "2023-10-23T08:51:05Z",
+  "updated": "2024-04-03T06:05:11Z",
+  "authors": [
+   "Han Zhang",
+   "Xiaofan Gui",
+   "Shun Zheng",
+   "Ziheng Lu",
+   "Yuqi Li",
+   "Jiang Bian"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "International Conference on Learning Representations (ICLR) 2024",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2207.09639v2",
+  "title": "DC-BENCH: Dataset Condensation Benchmark",
+  "abstract": "Dataset Condensation is a newly emerging technique aiming at learning a tiny dataset that captures the rich information encoded in the original dataset. As the size of datasets contemporary machine learning models rely on becomes increasingly large, condensation methods become a prominent direction for accelerating network training and reducing data storage. Despite numerous methods have been proposed in this rapidly growing field, evaluating and comparing different condensation methods is non-trivial and still remains an open issue. The quality of condensed dataset are often shadowed by many critical contributing factors to the end performance, such as data augmentation and model architectures. The lack of a systematic way to evaluate and compare condensation methods not only hinders our understanding of existing techniques, but also discourages practical usage of the synthesized datasets. This work provides the first large-scale standardized benchmark on Dataset Condensation. It consists of a suite of evaluations to comprehensively reflect the generability and effectiveness of condensation methods through the lens of their generated dataset. Leveraging this benchmark, we conduct a large-scale study of current condensation methods, and report many insightful findings that open up new possibilities for future development. The benchmark library, including evaluators, baseline methods, and generated datasets, is open-sourced to facilitate future research and application.",
+  "published": "2022-07-20T03:54:05Z",
+  "updated": "2022-10-17T07:47:01Z",
+  "authors": [
+   "Justin Cui",
+   "Ruochen Wang",
+   "Si Si",
+   "Cho-Jui Hsieh"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CV"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2204.08516v2",
+  "title": "LwHBench: A low-level hardware component benchmark and dataset for Single Board Computers",
+  "abstract": "In today's computing environment, where Artificial Intelligence (AI) and data processing are moving toward the Internet of Things (IoT) and Edge computing paradigms, benchmarking resource-constrained devices is a critical task to evaluate their suitability and performance. Between the employed devices, Single-Board Computers arise as multi-purpose and affordable systems. The literature has explored Single-Board Computers performance when running high-level benchmarks specialized in particular application scenarios, such as AI or medical applications. However, lower-level benchmarking applications and datasets are needed to enable new Edge-based AI solutions for network, system and service management based on device and component performance, such as individual device identification. Thus, this paper presents LwHBench, a low-level hardware benchmarking application for Single-Board Computers that measures the performance of CPU, GPU, Memory and Storage taking into account the component constraints in these types of devices. LwHBench has been implemented for Raspberry Pi devices and run for 100 days on a set of 45 devices to generate an extensive dataset that allows the usage of AI techniques in scenarios where performance data can help in the device management process. Besides, to demonstrate the inter-scenario capability of the dataset, a series of AI-enabled use cases about device identification and context impact on performance are presented as exploration of the published data. Finally, the benchmark application has been adapted and applied to an agriculture-focused scenario where three RockPro64 devices are present.",
+  "published": "2022-04-18T18:58:38Z",
+  "updated": "2022-10-24T12:02:35Z",
+  "authors": [
+   "Pedro Miguel Sánchez Sánchez",
+   "José María Jorquera Valero",
+   "Alberto Huertas Celdrán",
+   "Gérôme Bovet",
+   "Manuel Gil Pérez",
+   "Gregorio Martínez Pérez"
+  ],
+  "categories": [
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "10.1016/j.iot.2023.100764",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2201.08878v2",
+  "title": "Classical Simulation of Variational Quantum Classifiers using Tensor Rings",
+  "abstract": "In recent times, Variational Quantum Circuits (VQC) have been widely adopted to different tasks in machine learning such as Combinatorial Optimization and Supervised Learning. With the growing interest, it is pertinent to study the boundaries of the classical simulation of VQCs to effectively benchmark the algorithms. Classically simulating VQCs can also provide the quantum algorithms with a better initialization reducing the amount of quantum resources needed to train the algorithm. This manuscript proposes an algorithm that compresses the quantum state within a circuit using a tensor ring representation which allows for the implementation of VQC based algorithms on a classical simulator at a fraction of the usual storage and computational complexity. Using the tensor ring approximation of the input quantum state, we propose a method that applies the parametrized unitary operations while retaining the low-rank structure of the tensor ring corresponding to the transformed quantum state, providing an exponential improvement of storage and computational time in the number of qubits and layers. This approximation is used to implement the tensor ring VQC for the task of supervised learning on Iris and MNIST datasets to demonstrate the comparable performance as that of the implementations from classical simulator using Matrix Product States.",
+  "published": "2022-01-21T19:54:57Z",
+  "updated": "2022-12-10T23:14:13Z",
+  "authors": [
+   "Dheeraj Peddireddy",
+   "Vipul Bansal",
+   "Vaneet Aggarwal"
+  ],
+  "categories": [
+   "quant-ph",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2109.05276v1",
+  "title": "Benchmarking Processor Performance by Multi-Threaded Machine Learning Algorithms",
+  "abstract": "Machine learning algorithms have enabled computers to predict things by learning from previous data. The data storage and processing power are increasing rapidly, thus increasing machine learning and Artificial intelligence applications. Much of the work is done to improve the accuracy of the models built in the past, with little research done to determine the computational costs of machine learning acquisitions. In this paper, I will proceed with this later research work and will make a performance comparison of multi-threaded machine learning clustering algorithms. I will be working on Linear Regression, Random Forest, and K-Nearest Neighbors to determine the performance characteristics of the algorithms as well as the computation costs to the obtained results. I will be benchmarking system hardware performance by running these multi-threaded algorithms to train and test the models on a dataset to note the differences in performance matrices of the algorithms. In the end, I will state the best performing algorithms concerning the performance efficiency of these algorithms on my system.",
+  "published": "2021-09-11T13:26:58Z",
+  "updated": "2021-09-11T13:26:58Z",
+  "authors": [
+   "Muhammad Fahad Saleem"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.AR",
+   "cs.LG"
+  ],
+  "comment": "The research paper consists of seven pages and contains twenty nine figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2109.03934v1",
+  "title": "Resistive Neural Hardware Accelerators",
+  "abstract": "Deep Neural Networks (DNNs), as a subset of Machine Learning (ML) techniques, entail that real-world data can be learned and that decisions can be made in real-time. However, their wide adoption is hindered by a number of software and hardware limitations. The existing general-purpose hardware platforms used to accelerate DNNs are facing new challenges associated with the growing amount of data and are exponentially increasing the complexity of computations. An emerging non-volatile memory (NVM) devices and processing-in-memory (PIM) paradigm is creating a new hardware architecture generation with increased computing and storage capabilities. In particular, the shift towards ReRAM-based in-memory computing has great potential in the implementation of area and power efficient inference and in training large-scale neural network architectures. These can accelerate the process of the IoT-enabled AI technologies entering our daily life. In this survey, we review the state-of-the-art ReRAM-based DNN many-core accelerators, and their superiority compared to CMOS counterparts was shown. The review covers different aspects of hardware and software realization of DNN accelerators, their present limitations, and future prospectives. In particular, comparison of the accelerators shows the need for the introduction of new performance metrics and benchmarking standards. In addition, the major concerns regarding the efficient design of accelerators include a lack of accuracy in simulation tools for software and hardware co-design.",
+  "published": "2021-09-08T21:11:48Z",
+  "updated": "2021-09-08T21:11:48Z",
+  "authors": [
+   "Kamilya Smagulova",
+   "Mohammed E. Fouda",
+   "Fadi Kurdahi",
+   "Khaled Salama",
+   "Ahmed Eltawil"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.NE"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "1911.13071v2",
+  "title": "Increasing Generality in Machine Learning through Procedural Content Generation",
+  "abstract": "Procedural Content Generation (PCG) refers to the practice, in videogames and other games, of generating content such as levels, quests, or characters algorithmically. Motivated by the need to make games replayable, as well as to reduce authoring burden, limit storage space requirements, and enable particular aesthetics, a large number of PCG methods have been devised by game developers. Additionally, researchers have explored adapting methods from machine learning, optimization, and constraint solving to PCG problems. Games have been widely used in AI research since the inception of the field, and in recent years have been used to develop and benchmark new machine learning algorithms. Through this practice, it has become more apparent that these algorithms are susceptible to overfitting. Often, an algorithm will not learn a general policy, but instead a policy that will only work for a particular version of a particular task with particular initial parameters. In response, researchers have begun exploring randomization of problem parameters to counteract such overfitting and to allow trained policies to more easily transfer from one environment to another, such as from a simulated robot to a robot in the real world. Here we review the large amount of existing work on PCG, which we believe has an important role to play in increasing the generality of machine learning methods. The main goal here is to present RL/AI with new tools from the PCG toolbox, and its secondary goal is to explain to game developers and researchers a way in which their work is relevant to AI research.",
+  "published": "2019-11-29T11:55:10Z",
+  "updated": "2020-03-16T22:00:52Z",
+  "authors": [
+   "Sebastian Risi",
+   "Julian Togelius"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "1908.09183v1",
+  "title": "Deriving a Quantitative Relationship Between Resolution and Human Classification Error",
+  "abstract": "For machine learning perception problems, human-level classification performance is used as an estimate of top algorithm performance. Thus, it is important to understand as precisely as possible the factors that impact human-level performance. Knowing this 1) provides a benchmark for model performance, 2) tells a project manager what type of data to obtain for human labelers in order to get accurate labels, and 3) enables ground-truth analysis--largely conducted by humans--to be carried out smoothly. In this empirical study, we explored the relationship between resolution and human classification performance using the MNIST data set down-sampled to various resolutions. The quantitative heuristic we derived could prove useful for predicting machine model performance, predicting data storage requirements, and saving valuable resources in the deployment of machine learning projects. It also has the potential to be used in a wide variety of fields such as remote sensing, medical imaging, scientific imaging, and astronomy.",
+  "published": "2019-08-24T18:34:13Z",
+  "updated": "2019-08-24T18:34:13Z",
+  "authors": [
+   "Josiah I. Clark",
+   "Caroline A. Clark"
+  ],
+  "categories": [
+   "cs.LG",
+   "stat.ML"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"storage\" AND abs:\"benchmark\" AND (abs:AI OR abs:\"machine learning\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ }
+]

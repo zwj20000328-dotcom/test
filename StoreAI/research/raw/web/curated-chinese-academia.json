@@ -1,0 +1,382 @@
+[
+ {
+  "id": "2508.15881v2",
+  "title": "TPLA: Tensor Parallel Latent Attention for Efficient Disaggregated Prefill and Decode Inference",
+  "abstract": "Multi-Head Latent Attention (MLA), introduced in DeepSeek-V2, compresses key-value states into a low-rank latent vector, caching only this vector to reduce memory. In tensor parallelism (TP), however, attention heads are computed across multiple devices, and each device must load the full cache, eroding the advantage of MLA over Grouped Query Attention (GQA). We propose Tensor-Parallel Latent Attention (TPLA): a scheme that partitions both the latent representation and each head's input dimension across devices, performs attention independently per shard, and then combines results with an all-reduce. TPLA preserves the benefits of a compressed KV cache while unlocking TP efficiency. Unlike Grouped Latent Attention (GLA), every head in TPLA still leverages the full latent representation, maintaining stronger representational capacity. TPLA is drop-in compatible with models pre-trained using MLA: it supports MLA-style prefilling and enables efficient tensor-parallel decoding without retraining. Applying simple orthogonal transforms -- e.g., the Hadamard transform or PCA -- before TP slicing further mitigates cross-shard interference, yielding minimal accuracy degradation. By reducing the per-device KV cache for DeepSeek-V3 and Kimi-K2, we achieve 1.79x and 1.93x speedups, respectively, at a 32K-token context length while maintaining performance on commonsense and LongBench benchmarks. TPLA can be implemented with FlashAttention-3, enabling practical end-to-end acceleration.",
+  "published": "2025-08-21T15:25:40Z",
+  "updated": "2025-08-25T02:24:20Z",
+  "authors": [
+   "Xiaojuan Tang",
+   "Fanxu Meng",
+   "Pingzhi Tang",
+   "Yuxuan Wang",
+   "Di Yin",
+   "Xing Sun",
+   "Muhan Zhang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Kimi\" OR abs:\"DeepSeek\" OR abs:\"ByteDance\" AND abs:storage",
+    "rank": 1
+   }
+  ],
+  "score": 47
+ },
+ {
+  "id": "2605.05696v1",
+  "title": "Irminsul: MLA-Native Position-Independent Caching for Agentic LLM Serving",
+  "abstract": "Agentic LLM workloads put bit-identical tokens at shifted positions every turn, voiding prefix caches at the first byte of divergence. Operators report cache-hit regressions ranging from moderate slowdowns to severe TTFT spikes of 10-16s on unchanged content. Prior position-independent caching systems correct RoPE on the full $d_K$-dimensional key, an architectural cost imposed by GQA, not by caching itself. Multi-Head Latent Attention, deployed at scale in DeepSeek-V2/V3/R1, Kimi-K2/Moonlight, GLM-5, and Mistral Large 3, factors each KV row into a position-free $c_{KV}$ and a 64-dim $k_r$ correctable in closed form; this structure motivates content-addressed caching as a natural fit rather than a GQA workaround. We present Irminsul, which extends SGLang's radix cache with content-hash keying over CDC-chunked segments and a $δ$-rotation rule for $k_r$. We evaluate three native MLA-MoE deployments - DeepSeek-V2-Lite (16B/2.4B), Kimi Moonlight-16B-A3B, and JoyAI-Flash (48B/3B) - with output-consistency on all three and recovery measured on the two endpoints; Irminsul recovers up to ~83% of prompt tokens above exact-prefix on agentic traffic while delivering 63% prefill energy savings per cache hit. We argue that content-addressed caching belongs in the serving stack as a first-class primitive, not a retrofit over prefix matching.",
+  "published": "2026-05-07T05:36:03Z",
+  "updated": "2026-05-07T05:36:03Z",
+  "authors": [
+   "Bole Ma",
+   "Jan Eitzinger",
+   "Harald Köstler"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Kimi\" OR abs:\"DeepSeek\" OR abs:\"ByteDance\" AND abs:storage",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2104.12425v3",
+  "title": "Separating Data via Block Invalidation Time Inference for Write Amplification Reduction in Log-Structured Storage",
+  "abstract": "Log-structured storage has been widely deployed in various domains of storage systems, yet its garbage collection incurs write amplification (WA) due to the rewrites of live data. We show that there exists an optimal data placement scheme that minimizes WA using the future knowledge of block invalidation time (BIT) of each written block, yet it is infeasible to realize in practice. We propose a novel data placement algorithm for reducing WA, SepBIT, that aims to infer the BITs of written blocks from storage workloads and separately place the blocks into groups with similar estimated BITs. We show via both mathematical and production trace analyses that SepBIT effectively infers the BITs by leveraging the write skewness property in practical storage workloads. Trace analysis and prototype experiments show that SepBIT reduces WA and improves I/O throughput, respectively, compared with state-of-the-art data placement schemes. SepBIT is currently deployed to support the log-structured block storage management at Alibaba Cloud.",
+  "published": "2021-04-26T09:36:24Z",
+  "updated": "2022-02-10T11:07:27Z",
+  "authors": [
+   "Qiuping Wang",
+   "Jinhong Li",
+   "Patrick P. C. Lee",
+   "Tao Ouyang",
+   "Chao Shi",
+   "Lilong Huang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "19 pages. Accepted by the 20th USENIX Conference on File and Storage Technologies (FAST '22)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Alibaba\" AND abs:inference AND abs:system",
+    "rank": 1
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2404.12759v1",
+  "title": "decoupleQ: Towards 2-bit Post-Training Uniform Quantization via decoupling Parameters into Integer and Floating Points",
+  "abstract": "Quantization emerges as one of the most promising compression technologies for deploying efficient large models for various real time application in recent years. Considering that the storage and IO of weights take up the vast majority of the overhead inside a large model, weight only quantization can lead to large gains. However, existing quantization schemes suffer from significant accuracy degradation at very low bits, or require some additional computational overhead when deployed, making it difficult to be applied to large-scale applications in industry. In this paper, we propose decoupleQ, achieving a substantial increase in model accuracy, especially at very low bits. decoupleQ abandons the traditional heuristic quantization paradigm and decouples the model parameters into integer and floating-point parts, thus transforming the quantization problem into a traditional mathematical optimization problem with constraints, which is then solved alternatively by off-the-shelf optimization methods. Quantization via decoupleQ is linear and uniform, making it hardware-friendlier than non-uniform counterpart, and enabling the idea to be migrated to high-bit quantization to enhance its robustness. Our method has achieved well on-line accuracy near fp16/bf16 on the 2-bit quantization of large speech models in ByteDance. The code is available at https://github.com/bytedance/decoupleQ",
+  "published": "2024-04-19T10:02:53Z",
+  "updated": "2024-04-19T10:02:53Z",
+  "authors": [
+   "Yi Guo",
+   "Fanliu Kong",
+   "Xiaoyang Li",
+   "Hui Li",
+   "Wei Chen",
+   "Xiaogang Tian",
+   "Jinping Cai",
+   "Yang Zhang",
+   "Shouda Liu"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "quantization for deep models",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Kimi\" OR abs:\"DeepSeek\" OR abs:\"ByteDance\" AND abs:storage",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2603.02615v1",
+  "title": "Think, But Don't Overthink: Reproducing Recursive Language Models",
+  "abstract": "This project reproduces and extends the recently proposed ``Recursive Language Models'' (RLMs) framework by Zhang et al. (2026). This framework enables Large Language Models (LLMs) to process near-infinite contexts by offloading the prompt into an external REPL environment. While the original paper relies on a default recursion depth of 1 and suggests deeper recursion as a future direction, this study specifically investigates the impact of scaling the recursion depth. Using state-of-the-art open-source agentic models (DeepSeek v3.2 and Kimi K2), I evaluated pure LLM, RLM (depth=1), and RLM (depth=2) on the S-NIAH and OOLONG benchmarks. The findings reveal a compelling phenomenon: Deeper recursion causes models to ``overthink''. While depth-1 RLMs effectively boost accuracy on complex reasoning tasks, applying deeper recursion (depth=2) or using RLMs on simple retrieval tasks paradoxically degrades performance and exponentially inflates execution time (e.g., from 3.6s to 344.5s) and token costs. Code and data are available at: https://github.com/drbillwang/rlm-reproduction",
+  "published": "2026-03-03T05:36:44Z",
+  "updated": "2026-03-03T05:36:44Z",
+  "authors": [
+   "Daren Wang"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Kimi\" OR abs:\"DeepSeek\" OR abs:\"ByteDance\" AND abs:storage",
+    "rank": 1
+   }
+  ],
+  "score": 10
+ },
+ {
+  "id": "2605.22064v2",
+  "title": "Hy-MT2: A Family of Fast, Efficient and Powerful Multilingual Translation Models in the Wild",
+  "abstract": "Hy-MT2 is a family of fast-thinking multilingual translation models designed for complex real-world scenarios. It includes three model sizes: 1.8B, 7B, and 30B-A3B (MoE), all of which support translation among 33 languages and effectively follow translation instructions in multiple languages. Multi-dimensional evaluations show that Hy-MT2 delivers outstanding performance across general, real-world business, domain-specific, and instruction-following translation tasks. The 7B and 30B models outperform open-source models such as DeepSeek-V4-Pro and Kimi K2.6 in fast-thinking mode, while the lightweight 1.8B model also surpasses mainstream commercial APIs from providers such as Microsoft and Doubao overall. Moreover, when paired with AngelSlim's 1.25-bit extreme quantization for on-device deployment, the lightweight 1.8B model requires only 440 MB of storage and achieves a 1.5x inference speedup.",
+  "published": "2026-05-21T07:00:06Z",
+  "updated": "2026-05-25T03:05:16Z",
+  "authors": [
+   "Mao Zheng",
+   "Zheng Li",
+   "Tao Chen",
+   "Bo Lv",
+   "Mingrui Sun",
+   "Mingyang Song",
+   "Jinlong Song",
+   "Hong Huang",
+   "Decheng Wu",
+   "Hai Wang",
+   "Yifan Song",
+   "Yanfeng Chen",
+   "Guanwei Zhang"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Kimi\" OR abs:\"DeepSeek\" OR abs:\"ByteDance\" AND abs:storage",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2602.07336v1",
+  "title": "Learned Query Optimizer in Alibaba MaxCompute: Challenges, Analysis, and Solutions",
+  "abstract": "Existing learned query optimizers remain ill-suited to modern distributed, multi-tenant data warehouses due to idealized modeling assumptions and design choices. Using Alibaba's MaxCompute as a representative, we surface four fundamental, system-agnostic challenges for any deployable learned query optimizer: 1) highly dynamic execution environments that induce large variance in plan costs; 2) potential absence of input statistics needed for cost estimation; 3) infeasibility of conventional model refinement; and 4) uncertain benefits across different workloads. These challenges expose a deep mismatch between theoretical advances and production realities and demand a principled, deployment-first redesign of learned optimizers. To bridge this gap, we present LOAM, a one-stop learned query optimization framework for MaxCompute. Its design principles and techniques generalize and are readily adaptable to similar systems. Architecturally, LOAM introduces a statistics-free plan encoding that leverages operator semantics and historical executions to infer details about data distributions and explicitly encodes the execution environments of training queries to learn their impacts on plan costs. For online queries with unknown environments at prediction time, LOAM provides a theoretical bound on the achievable performance and a practical strategy to smooth the environmental impacts on cost estimations. For system operating, LOAM integrates domain adaptation techniques into training to generalize effectively to online query plans without requiring conventional refinement. Additionally, LOAM includes a lightweight project selector to prioritize high-benefit deployment projects. LOAM has seen up to 30% CPU cost savings over MaxCompute's native query optimizer on production workloads, which could translate to substantial real-world resource savings.",
+  "published": "2026-02-07T03:35:55Z",
+  "updated": "2026-02-07T03:35:55Z",
+  "authors": [
+   "Lianggui Weng",
+   "Dandan Liu",
+   "Wenzhuang Zhu",
+   "Rong Zhu",
+   "Junzheng Zheng",
+   "Bolin Ding",
+   "Zhiguo Zhang",
+   "Jingren Zhou"
+  ],
+  "categories": [
+   "cs.DB"
+  ],
+  "comment": "17 pages, 16 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Alibaba\" AND abs:inference AND abs:system",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2508.05257v1",
+  "title": "MoBE: Mixture-of-Basis-Experts for Compressing MoE-based LLMs",
+  "abstract": "The Mixture-of-Experts (MoE) architecture has become a predominant paradigm for scaling large language models (LLMs). Despite offering strong performance and computational efficiency, large MoE-based LLMs like DeepSeek-V3-0324 and Kimi-K2-Instruct present serious challenges due to substantial memory requirements in deployment. While recent works have explored MoE compression to address this issue, existing methods often suffer from considerable accuracy drops (e.g., 7-14% relatively) even at modest compression rates. This paper introduces a novel Mixture-of-Basis-Experts (MoBE) method that achieves model compression while incurring minimal accuracy drops. Specifically, each up/gate matrix in an expert is decomposed via a rank decomposition as W = AB, where matrix A is unique to each expert. The relatively larger matrix B is further re-parameterized as a linear combination of basis matrices {Bi} shared across all experts within a given MoE layer. The factorization is learned by minimizing the reconstruction error relative to the original weight matrices. Experiments demonstrate that MoBE achieves notably lower accuracy drops compared to prior works. For instance, MoBE can reduce the parameter counts of Qwen3-235B-A22B-2507, DeepSeek-V3-0324 (671B) and Kimi-K2-Instruct (1T) by 24%-30% with only 1%-2% accuracy drop (about 2% drops when measured relatively).",
+  "published": "2025-08-07T10:48:24Z",
+  "updated": "2025-08-07T10:48:24Z",
+  "authors": [
+   "Xiaodong Chen",
+   "Mingming Ha",
+   "Zhenzhong Lan",
+   "Jing Zhang",
+   "Jianguo Li"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Kimi\" OR abs:\"DeepSeek\" OR abs:\"ByteDance\" AND abs:storage",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2508.05206v2",
+  "title": "Bidding-Aware Retrieval for Multi-Stage Consistency in Online Advertising",
+  "abstract": "Online advertising systems typically use a cascaded architecture to manage massive requests and candidate volumes, where the ranking stages allocate traffic based on eCPM (predicted CTR $\\times$ Bid). With the increasing popularity of auto-bidding strategies, the inconsistency between the computationally sensitive retrieval stage and the ranking stages becomes more pronounced, as the former cannot access precise, real-time bids for the vast ad corpus. This discrepancy leads to sub-optimal platform revenue and advertiser outcomes. To tackle this problem, we propose Bidding-Aware Retrieval (BAR), a model-based retrieval framework that addresses multi-stage inconsistency by incorporating ad bid value into the retrieval scoring function. The core innovation is Bidding-Aware Modeling, incorporating bid signals through monotonicity-constrained learning and multi-task distillation to ensure economically coherent representations, while Asynchronous Near-Line Inference enables real-time updates to the embedding for market responsiveness. Furthermore, the Task-Attentive Refinement module selectively enhances feature interactions to disentangle user interest and commercial value signals. Extensive offline experiments and full-scale deployment across Alibaba's display advertising platform validated BAR's efficacy: 4.32% platform revenue increase with 22.2% impression lift for positively-operated advertisements.",
+  "published": "2025-08-07T09:43:34Z",
+  "updated": "2026-08-22T07:25:09Z",
+  "authors": [
+   "Bin Liu",
+   "Yunfei Liu",
+   "Ziru Xu",
+   "Zhi Kou",
+   "Yeqiu Yang",
+   "Han Zhu",
+   "Jian Xu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.IR"
+  ],
+  "comment": "Accepted by CIKM 2026",
+  "journal_ref": "",
+  "doi": "10.1145/3799682.3840091",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Alibaba\" AND abs:inference AND abs:system",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2607.23099v3",
+  "title": "Decoding the Skew: Distribution-Aware MoE Inference with Adaptive Kernel Dispatch",
+  "abstract": "Mixture-of-Experts (MoE) inference consists of sparse expert GEMMs whose shapes vary with the runtime routing distribution. Existing serving systems typically select fused-MoE kernels using static token-count buckets, ignoring the per-expert routing distribution that determines tile padding, memory reuse, and kernel efficiency. We introduce a distribution-aware framework for modeling and benchmarking MoE inference. The framework combines the compact Effective Experts metric with a Dirichlet-based reverse-modeling procedure that generates controllable routing distributions for systematic hardware studies. Using it, we show that the best fused-MoE kernel changes with routing skew and token count. We further present DA-MoE, a GPU-resident kernel-dispatch runtime for NVIDIA GPUs that matches the live routing histogram to offline-tuned distributions and selects a near-optimal fused-MoE kernel without CPU--GPU synchronization. On HumanEval-X serving traces, DA-MoE improves geomean fused-MoE latency by 1.16X on DeepSeek-V3 and 1.29X on Kimi K2, with peak speedups of 1.40X and 1.56X.",
+  "published": "2026-07-25T08:20:47Z",
+  "updated": "2026-08-21T13:04:18Z",
+  "authors": [
+   "En-Ming Huang",
+   "An-Cheng Chang",
+   "Bai-Cheng Jeng",
+   "Shih-Hao Hung",
+   "H. T. Kung"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "13 pages, 15 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Kimi\" OR abs:\"DeepSeek\" OR abs:\"ByteDance\" AND abs:storage",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2604.26422v1",
+  "title": "STLGT: A Scalable Trace-Based Linear Graph Transformer for Tail Latency Prediction in Microservices",
+  "abstract": "Accurate end-to-end tail-latency forecasting is critical for proactive SLO management in microservice systems. However, modeling long-range dependency propagation and non-stationary, bursty workloads while maintaining inference efficiency at scale remains challenging. We present STLGT (Scalable Trace-based Linear Graph Transformer), a per-API predictor that encodes traces as span graphs for multi-step p95 tail-latency forecasting. STLGT uses a structure-aware linear graph Transformer to propagate cross-service dependencies with inference time linear in span graph size, and a decoupled temporal module to capture workload dynamics. Across a personalized education microservice application, DeathStarBench, and Alibaba traces, STLGT improves forecasting accuracy over PERT-GNN by 8.5% MAPE on average and achieves up to 12x faster CPU inference at N=32, matching the maximum span graph size after preprocessing the Alibaba traces. Ablation studies further demonstrate the effectiveness of each component, especially under bursty traffic.",
+  "published": "2026-04-29T08:32:14Z",
+  "updated": "2026-04-29T08:32:14Z",
+  "authors": [
+   "Yongliang Ding",
+   "Qigong Bi",
+   "Peng Pu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "12 pages, 5 figures, 4 tables, conference",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Alibaba\" AND abs:inference AND abs:system",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "1905.09248v3",
+  "title": "Practice on Long Sequential User Behavior Modeling for Click-Through Rate Prediction",
+  "abstract": "Click-through rate (CTR) prediction is critical for industrial applications such as recommender system and online advertising. Practically, it plays an important role for CTR modeling in these applications by mining user interest from rich historical behavior data. Driven by the development of deep learning, deep CTR models with ingeniously designed architecture for user interest modeling have been proposed, bringing remarkable improvement of model performance over offline metric.However, great efforts are needed to deploy these complex models to online serving system for realtime inference, facing massive traffic request. Things turn to be more difficult when it comes to long sequential user behavior data, as the system latency and storage cost increase approximately linearly with the length of user behavior sequence. In this paper, we face directly the challenge of long sequential user behavior modeling and introduce our hands-on practice with the co-design of machine learning algorithm and online serving system for CTR prediction task. Theoretically, the co-design solution of UIC and MIMN enables us to handle the user interest modeling with unlimited length of sequential behavior data. Comparison between model performance and system efficiency proves the effectiveness of proposed solution. To our knowledge, this is one of the first industrial solutions that are capable of handling long sequential user behavior data with length scaling up to thousands. It now has been deployed in the display advertising system in Alibaba.",
+  "published": "2019-05-22T17:12:03Z",
+  "updated": "2019-05-24T03:00:13Z",
+  "authors": [
+   "Qi Pi",
+   "Weijie Bian",
+   "Guorui Zhou",
+   "Xiaoqiang Zhu",
+   "Kun Gai"
+  ],
+  "categories": [
+   "cs.IR"
+  ],
+  "comment": "9 pages. Accepted by KDD 2019",
+  "journal_ref": "",
+  "doi": "10.1145/3292500.3330666",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Alibaba\" AND abs:inference AND abs:system",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2011.11983v1",
+  "title": "WeiPS: a symmetric fusion model framework for large-scale online learning",
+  "abstract": "The recommendation system is an important commercial application of machine learning, where billions of feed views in the information flow every day. In reality, the interaction between user and item usually makes user's interest changing over time, thus many companies (e.g. ByteDance, Baidu, Alibaba, and Weibo) employ online learning as an effective way to quickly capture user interests. However, hundreds of billions of model parameters present online learning with challenges for real-time model deployment. Besides, model stability is another key point for online learning. To this end, we design and implement a symmetric fusion online learning system framework called WeiPS, which integrates model training and model inference. Specifically, WeiPS carries out second level model deployment by streaming update mechanism to satisfy the consistency requirement. Moreover, it uses multi-level fault tolerance and real-time domino degradation to achieve high availability requirement.",
+  "published": "2020-11-24T09:25:39Z",
+  "updated": "2020-11-24T09:25:39Z",
+  "authors": [
+   "Xiang Yu",
+   "Fuping Chu",
+   "Junqi Wu",
+   "Bo Huang"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "chinese-academia",
+    "query": "abs:\"Alibaba\" AND abs:inference AND abs:system",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ }
+]

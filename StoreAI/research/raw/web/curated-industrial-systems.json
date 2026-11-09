@@ -1,0 +1,315 @@
+[
+ {
+  "id": "2609.16215v1",
+  "title": "Where Should the KV Cache Live? Placement Policies Across GPU, CPU, and SSD for Long-Lived Sessions",
+  "abstract": "GPU high bandwidth memory is scarce and expensive, and KV caches consume much of it as chats, agent loops, and document question answering accumulate state. Systems such as Mooncake, LMCache, FlexGen, InfiniGen, and AttentionStore extend GPU memory with CPU DRAM and SSD. The harder question is which blocks belong in each tier, when to move or evict them, and whether prefetching helps. We study these choices in a discrete event simulator spanning GPU HBM, CPU DRAM, and SSD, calibrated against a random forest execution time predictor. We compare recency, reuse frequency, predicted reuse, and an EWMA predictor with prefetch lookahead across chat, agent, and document question answering workloads. Tiering supports 73.02 times more concurrent sessions per GPU and lowers cost per session by 62.04 times. These gains come from tier capacities of 1 plus 8 plus 64, not placement policy. Decode is compute bound at batch size one in our setup, so placement barely affects throughput. It mainly changes PCIe migration traffic and time to first token. Recency produces 2.30 times less migration traffic than reuse frequency for chat. Reuse frequency performs best for agents and document question answering. The existing predicted reuse policy is byte identical to recency, making its agent recommendation effectively recency. A genuine EWMA predictor changes behavior but still ranks behind reuse frequency on the workloads prediction was expected to help. Prefetching does not justify its bandwidth cost. Across the policy and cache size grid, even an oracle with knowledge of future requests never beats no prefetch on migration traffic. Workload specific placement can reduce data movement, but the predicted reuse and prefetch recommendations are not supported as implemented.",
+  "published": "2026-09-14T18:49:07Z",
+  "updated": "2026-09-14T18:49:07Z",
+  "authors": [
+   "Srikanta Datta Tumkur",
+   "Jay Iyer",
+   "Mehar Simhadri",
+   "Sai Pavan Kumar",
+   "Sai Kapil Kumar",
+   "Ramesh Nampelly"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 57
+ },
+ {
+  "id": "2610.28637v1",
+  "title": "To Keep or Not to Keep: Learning KV Cache Retention in Disaggregated LLM Serving Systems",
+  "abstract": "Disaggregated \\textsc{LLM} serving separates prefill and decode across node pools, placing a network fabric between \\textsc{KV}-cache computation and consumption. This breaks a key assumption of classical cache policies: a miss no longer incurs only local recomputation, but also network transfer to the decode node. Likewise, admitting a block to the global cache requires an additional transfer, so poor retention decisions waste both memory and bandwidth. We present \\textbf{KVLearn}, a learning-based framework for cost-aware \\textsc{KV}-cache retention in disaggregated serving. KVLearn includes: (i) a lightweight Prefix Reuse Predictor (\\textsc{PRP}) that estimates reuse probability from structural and temporal prefix features without modifying model weights; (ii) a Cost-Aware Retention Score (\\textsc{CARS}) that converts reuse probability into keep/admit decisions using recomputation, transfer, and storage costs; and (iii) an Adaptive Threshold Controller (\\textsc{ATC}) that adjusts admission thresholds online from observed hit rates and memory pressure. We integrate KVLearn into a globally disaggregated serving topology and evaluate it on text and multimodal workloads, including large image/video-derived \\textsc{KV} blocks with heterogeneous reuse patterns. KVLearn reduces end-to-end time-to-first-token by up to 56% versus No-Cache, 38% versus LRU-Pool, and 33% versus Mooncake-style baselines, while cutting inter-node \\textsc{KV} transfer volume by up to 53% versus LRU-Pool. On MM-Session, throughput remains within ${\\sim}5%$ of oracle. Code is available at https://github.com/FastLM/KVLearn.",
+  "published": "2026-08-10T10:46:26Z",
+  "updated": "2026-08-10T10:46:26Z",
+  "authors": [
+   "Dong Liu",
+   "Yanxuan Yu",
+   "Eric Jiang",
+   "Shu Wang",
+   "Ying Nian Wu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "Accepted to ACM SYSTOR 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 57
+ },
+ {
+  "id": "2407.00079v5",
+  "title": "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving",
+  "abstract": "Mooncake is the serving platform for Kimi, a leading LLM service provided by Moonshot AI. It features a KVCache-centric disaggregated architecture that separates the prefill and decoding clusters. It also leverages the underutilized CPU, DRAM, and SSD resources of the GPU cluster to implement a disaggregated cache of KVCache. The core of Mooncake is its KVCache-centric scheduler, which balances maximizing overall effective throughput while meeting latency-related Service Level Objectives (SLOs). Unlike traditional studies that assume all requests will be processed, Mooncake faces challenges due to highly overloaded scenarios. To mitigate these, we developed a prediction-based early rejection policy. Experiments show that Mooncake excels in long-context scenarios. Compared to the baseline method, Mooncake can achieve up to a 525% increase in throughput in certain simulated scenarios while adhering to SLOs. Under real workloads, Mooncake's innovative architecture enables Kimi to handle 75% more requests.",
+  "published": "2024-06-24T02:05:32Z",
+  "updated": "2026-10-08T10:55:46Z",
+  "authors": [
+   "Ruoyu Qin",
+   "Zheming Li",
+   "Weiran He",
+   "Mingxing Zhang",
+   "Yongwei Wu",
+   "Weimin Zheng",
+   "Xinran Xu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.AR"
+  ],
+  "comment": "23 pages, 13 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2606.03910v1",
+  "title": "NetKV: Network-Aware Decode Instance Selection for Disaggregated LLM Inference",
+  "abstract": "Disaggregated LLM inference forces the KV cache to traverse the datacenter network before decoding begins, so transfer time enters directly into the Time to First Token (TTFT) budget. Current schedulers route on compute load and prefix-cache locality alone, ignoring the topological distance and dynamic congestion between prefill and decode instances. We close this gap with a thin operator-to-scheduler interface, the network cost oracle, and we prove that ignoring the network term renders cache-aware-only scheduling arbitrarily suboptimal as context length grows. NetKV, the O(|D|) per-request greedy that consumes this oracle, has tier rankings that are provably robust to stale telemetry. On a 64-GPU four-tier fat-tree simulator driven by Mooncake traces, NetKV reduces mean TTFT by up to 21.2% over round-robin and 17.6% over a tuned cache+load-aware scheduler, lifts SLO attainment by up to 20.1 percentage points, and keeps the Time Between Tokens overhead below 0.5 ms in every condition tested, with no changes to the transport, inference engine, or hardware.",
+  "published": "2026-06-02T17:06:57Z",
+  "updated": "2026-06-02T17:06:57Z",
+  "authors": [
+   "Mubarak Adetunji Ojewale"
+  ],
+  "categories": [
+   "cs.PF",
+   "cs.AI",
+   "cs.DC",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 36
+ },
+ {
+  "id": "2608.11668v4",
+  "title": "HBF Sucks? A Full-Stack Characterization of High-Bandwidth Flash for KV-Centric LLM Serving",
+  "abstract": "A faster storage device should make serving faster. We find the opposite. High-Bandwidth Flash (HBF) stacks NAND behind a wide, package-local interface, promising flash-scale capacity with far lower read latency and higher bandwidth than an SSD. The obvious move is to keep an SSD-style Mooncake KV-offloading stack and swap in HBF underneath. We built that system and measured it: an extended TokenSim, four complete two-hour Qwen-Bailian production traces, five dense and mixture-of-experts models, and H100/B200 profiles. The upgrade backfires. Average end-to-end latency rises 2--5.5$\\times$ and maximum SLO goodput falls 1.1--2.7$\\times$ across H100 and B200, so the faster device yields a slower system. A cost-benefit model explains the paradox: a faster far tier pays off only when read I/O is the bottleneck, reads outweigh writes, and delivered bandwidth is sustainable. Transient KV violates all three at once. Buying flash through the package costs GPU near-tier capacity and bandwidth, while HBF's own read/write latency barely matters: scaling it 3.75$\\times$ moves latency less than 1\\%. Worse, the two-tier hierarchy keeps reuse in the near tier and hands HBF a relentless write-heavy stream. Writes outnumber reads on every trace, so a 3D-ICE model shows the stack hits its thermal limit well below peak bandwidth, and a TLC tier wears out sooner than the SSD pool it replaced. The device is fine; the drop-in deployment is not. HBF sucks as an SSD replacement for transient KV, but earns its place in LLM serving when used selectively with reuse-aware placement, write budgeting, and thermal coordination.",
+  "published": "2026-08-12T05:25:38Z",
+  "updated": "2026-09-14T16:05:41Z",
+  "authors": [
+   "Zhuoran Li",
+   "Zhuohang Bian",
+   "Xin Huang",
+   "Yibo Zhao",
+   "Guangyu Sun",
+   "Youwei Zhuo"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2606.17081v1",
+  "title": "The Price of Anarchy in Disaggregated Inference",
+  "abstract": "Disaggregated inference architectures physically separate prefill and decode phases onto distinct GPU pools, creating competing \"agents\" that share a fixed hardware budget. We provide, to our knowledge, the first formal game-theoretic analysis of this architecture, using NVIDIA Dynamo as a concrete case study. We model disaggregated serving as three coupled games: a two-player resource game between prefill and decode pools, a selfish caching game over the hierarchical KV cache, and a congestion game with positive externalities for request routing. We empirically validate the latter two; the P/D resource game is treated analytically (Section 9.2). We characterize how GPU saturation induces regime transitions that shift the game's payoff structure: below saturation, selfish behavior has bounded Price of Anarchy (PoA); at saturation, superlinear latency and cache externalities drive our empirical estimator PoA-hat (defined in Section 6.4) upward. Based on this analysis, we design an adaptive controller that detects saturation transitions in real time and adjusts routing parameters accordingly, shifting from cache-affinity exploitation to load-balanced congestion avoidance. We instantiate our framework on a 3-node NVIDIA B200 cluster running Dynamo with two models, Nemotron-4-340B (TP=8, full-node workers with cross-InfiniBand KV transfers) and Llama-3.1-70B (TP=4), and find the same three-regime PoA-hat structure with the same first post-knee grid point (C=128) on both models. Adaptive routing shifts each model to a better operating point. Our strongest result is on the 70B 1P/5D topology, where PoA-hat drops 3.1x (66.4 to 21.5) in the saturated phase at a 13% throughput cost. On the 70B 1P/2D, PoA-hat drops 2.2x and TTFT P99 drops 7.6x (see Section 8.5).",
+  "published": "2026-06-11T21:03:04Z",
+  "updated": "2026-06-11T21:03:04Z",
+  "authors": [
+   "Athos Georgiou"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC",
+   "cs.GT",
+   "cs.PF"
+  ],
+  "comment": "38 pages, 7 figures, 8 tables. Measurements on a 3-node NVIDIA B200 cluster running NVIDIA Dynamo v0.9.0",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "abs:Dynamo AND abs:inference AND abs:NVIDIA",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2604.00368v2",
+  "title": "TENT: A Declarative Slice Spraying Engine for Performant and Resilient Data Movement in Disaggregated LLM Serving",
+  "abstract": "Modern GPU clusters rely on complex, heterogeneous interconnects. As large language model (LLM) serving shifts toward agentic reasoning, KVCache becomes a first-class mobile asset, driving frequent migrations and massive elephant flows that dominate the execution critical path. Operating Mooncake Transfer Engine (TE) on thousands of GPUs exposed a fundamental flaw in existing frameworks: imperative, early-binding path selection. This rigidity results in state-blind striping that ignores congestion and grey failures, leading to bandwidth stranding. This also produces operational fragility where routine faults require manual intervention. We present TENT, a declarative orchestration engine that decouples transfer intent from physical execution. By abstracting interconnects into a unified resource pool, TENT shifts path resolution from initialization to slice-time late binding. Applications simply declare transfer intents, while TENT dynamically \"sprays\" fine-grained slices across rails based on real-time telemetry and predictive cost modeling. This orchestration eliminates head-of-line (HoL) blocking and enables transparent, sub-50 ms self-healing by rerouting slices around failures or degradations without application-level intervention. TENT serves as the production data plane for LLM inference and reinforcement learning (RL) pipelines at multiple industrial clusters. Our evaluation shows that TE+ outperforms state-of-the-art baselines, including Mooncake TE, NIXL, and UCCL. In LLM inference with SGLang HiCache, TE+ achieves up to 1.36x higher throughput and 26% lower P90 time-to-first-token (TTFT) than Mooncake TE. In RL pipelines, TENT accelerates parameter updates in Moonshot Checkpoint Engine by 20-26%.",
+  "published": "2026-04-01T01:29:03Z",
+  "updated": "2026-07-24T03:02:29Z",
+  "authors": [
+   "Feng Ren",
+   "Ruoyu Qin",
+   "Teng Ma",
+   "Shangming Cai",
+   "Zheng Liu",
+   "Chao Lei",
+   "Dejiang Zhu",
+   "Ke Yang",
+   "Zheming Li",
+   "Jialei Cui",
+   "Weixiao Huang",
+   "Yikai Zhao",
+   "Yineng Zhang",
+   "Hao Wu",
+   "Xiang Gao",
+   "Yuhao Fu",
+   "Jinlei Jiang",
+   "Yongwei Wu",
+   "Mingxing Zhang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2610.02766v1",
+  "title": "Exact Memory-Time Optimization for Prefix-Cached Language Model Serving",
+  "abstract": "Retaining language-model prefix states trades recomputation against storage time. Optimizing each cached block independently can overcount savings: a resident block is usable only when the required preceding prefix is also available. We introduce Prefix-Certificate Retention (PCR), an exact finite-trace formulation for static, grouped, reset-on-access timeouts. Usable-prefix rewards become nodes whose prerequisites are timeout thresholds and preceding hit certificates. The resulting maximum-weight closure reduces to one minimum cut, with graph size linear in the number of block lookups and timeout choices. A breakpoint theorem extends the construction to all nonnegative timeouts without discretization error. We also derive a linear-time-in-grid-size dynamic program for ordered timeouts and bounds that certify the cost of this restriction. Exhaustive small-instance checks and chronological replay of 39,632 public Mooncake requests validate the formulation. On the fixed grid, ordered timeouts attain the unrestricted training optimum in 118 of 120 trace-grouping-price cases. Heterogeneous retention improves several held-out memory-time tradeoffs, but finer training optimization does not uniformly improve transfer. The contribution is a tractable optimization model and an auditable benchmark for retention policies; the experiments measure usable prefix blocks and storage time, not GPU latency.",
+  "published": "2026-10-02T03:47:10Z",
+  "updated": "2026-10-02T03:47:10Z",
+  "authors": [
+   "Shivam Gupta"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "16 pages, 5 figures. Code and reproducibility artifacts: https://github.com/shi1720/prefix-certificate-retention",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 25
+ },
+ {
+  "id": "2608.00423v1",
+  "title": "Diagnose Before You Compress: Prediction-Independent Bottleneck Witness Refinement for LLM Serving Traces",
+  "abstract": "Production LLM serving generates millions of diverse requests, making full-trace replay across serving configurations increasingly expensive. Existing trace reduction methods mainly preserve workload distributions or representative requests, but bottleneck-revealing workloads may be rare and non-representative. Moreover, evidence for one component cannot compensate for missing evidence in another, while using predicted bottlenecks as target truth creates circular evaluation. These limitations make it necessary to preserve evidence for every bottleneck component rather than rely on workload representativeness alone. We propose Bottleneck-Preserving Witnessing (BPW), a quality-constrained framework for compact and diagnostically reliable LLM serving replay suites. BPW first performs Workload Candidate Nomination using response-blind workload features and closed source-side measurements. This stage identifies workloads that may expose scheduler, prefill, decode, or KV-cache bottlenecks. Coverage-Priority Sequence Construction then organizes multi-component proposals as reusable hyperedges and prioritizes weak and uncovered dimensions. Finally, Bottleneck Truth Verification derives prediction-independent labels solely from direct target-system measurements. The verified results determine the earliest prefix satisfying the direct two-witness requirement for every component. Experiments on BurstGPT, ServeGen, and Mooncake show that BPW reaches the verified gate with a compact workload set and outperforms 16 policies, achieving relative improvements of 2.3% and 16.3% in Mean prefix Macro-F1 and WBRC-AUC, respectively. Stage-resolved and sensitivity analyses confirm the distinct contributions and local stability of its three stages. Our code is publicly available at https://github.com/llmllmllm/BPW",
+  "published": "2026-08-01T03:43:55Z",
+  "updated": "2026-08-01T03:43:55Z",
+  "authors": [
+   "Liming Liu",
+   "Chao Hu",
+   "Mingfei Lu",
+   "Cong Tan",
+   "Yiwei Ge",
+   "Chijin Zhou",
+   "Yongjun Xie",
+   "Runzhe Wang",
+   "Xiaohai Shi",
+   "Heyuan Shi"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2610.06597v1",
+  "title": "Can Agent Harnesses and Inference Engines Hear Each Other? The HEAR Protocol for Agentic LLM Serving",
+  "abstract": "LLM agents increasingly execute complex workflows involving multi-turn reasoning, tool use, and parallel agents. Efficient serving requires decisions that span two layers with complementary information: the agent harness understands workflow dependencies, context lifecycles, and execution objectives, whereas the inference engine observes request queues, KV-cache state, resource pressure, and execution capabilities. Existing interfaces do not systematically connect these views, limiting workflow-aware execution. HEAR, a bidirectional Harness--Engine Pairing protocol for agentic LLM serving. HEAR standardizes how the harness communicates workflow intent and execution requirements and how the engine returns runtime state, capabilities, and outcomes. By separating protocol semantics from optimization policies, HEAR supports diverse coordination strategies without changing workflow or model semantics. We instantiate HEAR for online cache-aware runtime coordination and workload-aware execution-mode selection for agent roles. Across four conversational and research-agent benchmarks under memory-constrained, concurrent serving, HEAR achieves a $1.61\\times$ batch speedup and reduces median time-to-first-token by $2.23\\times$ on SCBench. Mooncake shows that workflow intent and live engine state provide complementary benefits across load regimes. On BrowseComp-Plus and DeepResearchBench, workload-specific configurations yield $1.23\\times$ and $2.45\\times$ end-to-end speedups, respectively, without observed task-quality degradation. These results establish HEAR as a reusable coordination substrate for efficient agentic LLM serving.",
+  "published": "2026-10-05T16:07:33Z",
+  "updated": "2026-10-05T16:07:33Z",
+  "authors": [
+   "Jiaqi Zhao",
+   "Haodong Chen",
+   "Jitai Hao",
+   "Wei Zhao",
+   "Jinghao Pang",
+   "Qiang Huang",
+   "Jun Yu"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "Jiaqi Zhao, Haodong Chen, and Jitai Hao contributed equally",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ }
+]

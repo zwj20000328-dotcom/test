@@ -1,0 +1,29 @@
+dropped false positives: 17
+   - ('1402.1022v1', 'The ORCA Option for KM3NeT', 0.4)
+   - ('2401.09670v3', 'DistServe: Disaggregating Prefill and Decoding for Goodput-optimized L', 0.59)
+   - ('2505.03763v1', 'Splitwiser: Efficient LM inference with constrained resources', 0.55)
+   - ('2407.00023v2', 'Preble: Efficient Distributed Prompt Scheduling for LLM Serving', 0.56)
+   - ('2312.07104v2', 'SGLang: Efficient Execution of Structured Language Model Programs', 0.53)
+   - ('2410.10745v1', 'FlexGen: Flexible Multi-View Generation from Text and Image Inputs', 0.39)
+   - ('2312.11514v3', 'LLM in a flash: Efficient Large Language Model Inference with Limited ', 0.57)
+   - ('astro-ph/0109419v1', 'Extragalactic H2O Masers', 0.29)
+   - ('2404.14469v2', 'SnapKV: LLM Knows What You are Looking for Before Generation', 0.42)
+   - ('2211.12850v2', 'OOD-DiskANN: Efficient and Scalable Graph ANNS for Out-of-Distribution', 0.42)
+   - ('2503.07891v1', 'Gemini Embedding: Generalizable Embeddings from Gemini', 0.38)
+   - ('2407.20143v4', 'ByteCheckpoint: A Unified Checkpointing System for Large Foundation Mo', 0.48)
+   - ('0708.2322v2', 'Zero', 0.15)
+   - ('math/0310433v3', 'Zero-infinity laws in Diophantine approximation', 0.4)
+   - ('2211.05102v1', 'Efficiently Scaling Transformer Inference', 0.46)
+   - ('2404.09526v2', 'LoongServe: Efficiently Serving Long-Context Large Language Models wit', 0.57)
+   - ('2403.14123v1', 'AI and Memory Wall', 0.33)
+still missing: ['Orca', 'H2O', 'DiskANN', 'CheckFreq', 'Gemini-ckpt', 'ZeRO', 'ZeRO-Infinity', 'AttentionStore', '3FS']
+  ! Orca: no confident match
+  ! H2O: no confident match
+  ! DiskANN: no confident match
+  ! CheckFreq: no confident match
+  ! Gemini-ckpt: no confident match
+  + ZeRO: 1910.02054v3 ZeRO: Memory Optimizations Toward Training Trillion Parameter Models (sim=1.00)
+  + ZeRO-Infinity: 2104.07857v1 ZeRO-Infinity: Breaking the GPU Memory Wall for Extreme Scale Deep Learning (sim=1.00)
+  ! AttentionStore: no confident match
+  ! 3FS: no confident match
+added 2; total 1866

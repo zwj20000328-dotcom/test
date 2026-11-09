@@ -1,0 +1,998 @@
+[
+ {
+  "id": "2605.02905v1",
+  "title": "eOptShrinkQ: Near-Lossless KV Cache Compression Through Optimal Spectral Denoising and Quantization",
+  "abstract": "We show that the key-value (KV) cache in transformer attention heads admits a natural decomposition into a low-rank \\emph{shared context} component and a full-rank \\emph{per-token} residual, well described by the spiked random matrix model. This observation leads to eOptShrinkQ, a two-stage compression pipeline: optimal singular value shrinkage (eOptShrink) automatically extracts the shared structure, and the residual -- which satisfies the \\emph{thin shell property} with delocalized coordinates -- is quantized by TurboQuant~\\citep{zandieh2025turboquant}, a recently proposed per-vector scalar quantizer with near-optimal distortion guarantees. By restoring the isotropy that scalar quantization assumes, spectral denoising eliminates the need for both outlier handling and dedicated inner product bias correction, freeing those bits for improved reconstruction. The theoretical grounding in random matrix theory provides three guarantees: automatic rank selection via the BBP phase transition, provably near-zero inner product bias on the residual, and coordinate delocalization ensuring near-optimal quantization distortion. Experimentally, we validate eOptShrinkQ on Llama-3.1-8B and Ministral-8B across three levels: per-head MSE and inner product fidelity, where eOptShrinkQ saves nearly one bit per entry over TurboQuant at equivalent quality; end-to-end on LongBench (16 tasks), where eOptShrinkQ at $\\sim$2.2 bits per entry outperforms TurboQuant at 3.0 bits; and multi-needle retrieval, where eOptShrinkQ at 2.2 bits closely matches or exceeds uncompressed FP16, suggesting that spectral denoising can act as a beneficial regularizer for retrieval-intensive tasks.",
+  "published": "2026-04-06T02:05:52Z",
+  "updated": "2026-04-06T02:05:52Z",
+  "authors": [
+   "Pei-Chun Su"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.IT"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 36
+ },
+ {
+  "id": "2608.14191v1",
+  "title": "KV Cache Compression Through the Lens of Transform Coding",
+  "abstract": "The key-value (KV) cache stores information from past tokens and is a major memory bottleneck in long-context inference. Existing quantization methods address this bottleneck by representing the KV cache uniformly with lower-precision data types and designing quantization schemes to minimize reconstruction error in the cache itself, without accounting for how that error propagates through attention mechanisms. We prove that, under a white-noise quantization model, the expected attention-aware distortion decomposes into additive key and value contributions that factor across tokens and channels. Building on transform coding and reverse water-filling, which are classical tools from signal processing and rate-distortion theory, we introduce Attention-Aware Transform Coding (AATC), which allocates bits over a calibration set to minimize attention-aware distortion. On Llama-3.1-8B-Instruct and Qwen-2.5-7B-Instruct, evaluated across LongBench, RULER, GSM8K, MMLU-Pro, and MATH-500, our method achieves near-lossless accuracy at approximately $5.8\\times$ compression, whereas each baseline degrades in at least some settings.",
+  "published": "2026-08-14T11:08:01Z",
+  "updated": "2026-08-14T11:08:01Z",
+  "authors": [
+   "Hannah Laus",
+   "Claudio Mayrink Verdun",
+   "Hao Wang",
+   "Flavio du Pin Calmon",
+   "Felix Krahmer"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.CL",
+   "eess.SP"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 34
+ },
+ {
+  "id": "2605.06675v2",
+  "title": "RateQuant: Optimal Mixed-Precision KV Cache Quantization via Rate-Distortion Theory",
+  "abstract": "Large language models cache all previously computed key-value (KV) pairs during generation, and this KV cache grows linearly with sequence length, making it a primary memory bottleneck for serving. Quantizing the KV cache to fewer bits reduces this cost, yet all current quantizers assign the same bit-width to every attention head, ignoring the large variation in head importance. A natural idea is to allocate more bits to important heads and fewer to the rest. We show, however, that such mixed-precision allocation has a hidden pitfall: each quantizer follows a different distortion curve D(b)=alpha*beta^{-b}, and the decay rate beta varies from 3.6 to 5.3 across quantizer designs. Applying one quantizer's distortion model to another inverts the allocation order and makes performance worse than uniform quantization. We call this failure mode distortion model mismatch and propose RateQuant to resolve it. RateQuant fits a per-quantizer distortion model from a small calibration set, then solves the resulting bit-allocation problem in closed form via reverse waterfilling from rate-distortion theory. On Qwen3-8B at 2.5 average bits, calibrated RateQuant reduces KIVI's perplexity from 49.3 to 14.9 (70% reduction) and improves QuaRot by 6.6 PPL. The entire calibration takes 1.6 s on a single GPU and adds zero overhead at inference time.",
+  "published": "2026-04-22T02:31:58Z",
+  "updated": "2026-06-26T01:41:50Z",
+  "authors": [
+   "Fei Zuo",
+   "Zikang Zhou",
+   "Hao Cong",
+   "Xiaoyan Xi",
+   "Ho Fai Leung"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.CL",
+   "cs.IT"
+  ],
+  "comment": "18 pages, 7 figures, 5 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 32
+ },
+ {
+  "id": "2505.16950v4",
+  "title": "Bottlenecked Transformers: Periodic KV Cache Consolidation for Generalised Reasoning",
+  "abstract": "Transformer LLMs have been shown to exhibit strong reasoning ability that scales with inference-time compute, most prominently through token-space \"thinking\" chains of thought. A growing line of work pushes extra computation into the model's latent space, which we term Auxiliary Latent-Space Computation (ALSC). Existing ALSC methods largely fall into three buckets: (i) token-mediated latent rollouts, (ii) residual/activation steering, and (iii) memory (KV) compression. An underexplored alternative is memory consolidation/reconsolidation, two processes in the brain that are responsible for stabilising newly formed memory traces, and, upon recall, transiently rendering established traces plastic such they can integrate new contextual information before restabilising. In Transformer LLMs, this can be seen as analogous to performing in-place rewrites of new KV segments, and rewrites of recalled past segments. In this work, we give a theoretical justification as to why memory (re)consolidation via KV cache rewrites is beneficial for improved reasoning. We do this through the lens of Information Bottleneck (IB) theory, which posits that model generalisation emerges from an optimal balance between input information compression and retention of predictive information in latent representations. We then introduce the Bottlenecked Transformer, which augments a backbone LLM with a Cache Processor, an auxiliary Transformer that performs periodic, non-causal, in-place KV rewrites at newline-delimited reasoning step boundaries. The Processor consolidates recently written KV entries and reconsolidates a small, top-k attention-selected set of prior entries. We evaluate our Bottlenecked Transformer architecture on math reasoning benchmarks. Our model sees consistent performance gains over vanilla Transformers and pause-token augmented baselines, with gains of up to +6.6pp for selected tasks/backbones.",
+  "published": "2025-05-22T17:33:49Z",
+  "updated": "2026-03-25T15:42:36Z",
+  "authors": [
+   "Adnan Oomerjee",
+   "Zafeirios Fountas",
+   "Haitham Bou-Ammar",
+   "Jun Wang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.IT"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 29
+ },
+ {
+  "id": "2601.21896v3",
+  "title": "Past- and Future-Informed KV Cache Policy with Salience Estimation in Autoregressive Video Diffusion",
+  "abstract": "Video generation is pivotal to digital media creation, and recent advances in autoregressive video generation have markedly enhanced the efficiency of real-time video synthesis. However, existing approaches generally rely on heuristic KV Cache policies, which ignore differences in token importance in long-term video generation. This leads to the loss of critical spatiotemporal information and the accumulation of redundant, invalid cache, thereby degrading video generation quality and efficiency. To address this limitation, we first observe that token contributions to video generation are highly time-heterogeneous and accordingly propose a novel Past- and Future-Informed KV Cache Policy (PaFu-KV). Specifically, PaFu-KV introduces a lightweight Salience Estimation Head distilled from a bidirectional teacher to estimate salience scores, allowing the KV cache to retain informative tokens while discarding less relevant ones. This policy yields a better quality-efficiency trade-off by shrinking KV cache capacity and reducing memory footprint at inference time. Extensive experiments on benchmarks demonstrate that our method preserves high-fidelity video generation quality while enables accelerated inference, thereby enabling more efficient long-horizon video generation. Our code will be released upon paper acceptance.",
+  "published": "2026-01-29T15:55:29Z",
+  "updated": "2026-02-04T13:26:51Z",
+  "authors": [
+   "Hanmo Chen",
+   "Chenghao Xu",
+   "Xu Yang",
+   "Xuan Chen",
+   "Cheng Deng"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2512.00722v1",
+  "title": "SpeContext: Enabling Efficient Long-context Reasoning with Speculative Context Sparsity in LLMs",
+  "abstract": "In this paper, we point out that the objective of the retrieval algorithms is to align with the LLM, which is similar to the objective of knowledge distillation in LLMs. We analyze the similarity in information focus between the distilled language model(DLM) and the original LLM from the perspective of information theory, and thus propose a novel paradigm that leverages a DLM as the retrieval algorithm. Based on the insight, we present SpeContext, an algorithm and system co-design for long-context reasoning. (1) At the algorithm level, SpeContext proposes lightweight retrieval head based on the head-level attention weights of DLM, achieving > 90% parameters reduction by pruning the redundancy. (2) At the system level, SpeContext designs an asynchronous prefetch dataflow via the elastic loading strategy, effectively overlapping KV cache retrieval with the LLM computation. (3) At the compilation level, SpeContext constructs the theoretical memory model and implements an adaptive memory management system to achieve acceleration by maximizing GPU memory utilization. We deploy and evaluate SpeContext in two resourceconstrained environments, cloud and edge. Extensive experiments show that, compared with the Huggingface framework, SpeContext achieves up to 24.89x throughput improvement in cloud and 10.06x speedup in edge with negligible accuracy loss, pushing the Pareto frontier of accuracy and throughput.",
+  "published": "2025-11-30T04:32:43Z",
+  "updated": "2025-11-30T04:32:43Z",
+  "authors": [
+   "Jiaming Xu",
+   "Jiayi Pan",
+   "Hanzhen Wang",
+   "Yongkang Zhou",
+   "Jiancai Ye",
+   "Yu Wang",
+   "Guohao Dai"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "Accepted by ASPLOS 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2603.18091v2",
+  "title": "TokenPB: Enabling VLA Action Self-Verification via VLM Token Probability Bucketing",
+  "abstract": "Test-time sampling can improve Vision-Language-Action (VLA) policies, but only if the model can efficiently select a good action from multiple candidates. Prior work often relies on separately trained external verifiers, adding extra models and inference overhead. We propose \\textbf{Token Probability Bucketing (TokenPB)}, a self-verification approach that discretizes continuous action chunks into bucket tokens and co-trains a single VLA checkpoint with a joint objective: a flow-matching loss for action generation and an auxiliary bucket loss $\\mathcal{L}_{\\text{bucket}}$ that teaches the VLM backbone to model observation-conditioned distributions over bucket-token sequences. At inference, TokenPB samples $M$ candidates, scores each via teacher-forced evaluation under the learned distribution, and selects the best---enabling efficient batched scoring with observation-prefix KV-cache reuse. We provide theory connecting the training objective to a monotonic ranking property and bounds on expected selection regret that separate candidate-set effects from calibration. Across multiple backbones and benchmarks, TokenPB yields consistent success-rate improvements over single-sample inference from the same checkpoint (+2.7 in simulation, +17.1 in real-world, +16.4 under out-of-distribution shifts), and further improves over external-verifier baselines under the same sampling budget. The code is publicly available at https://github.com/RUCKBReasoning/TokenPB.",
+  "published": "2026-03-18T09:16:20Z",
+  "updated": "2026-10-12T08:24:00Z",
+  "authors": [
+   "Chen Zhao",
+   "Zhuoran Wang",
+   "Haoyang Li",
+   "Shifeng Bao",
+   "Guanlin Li",
+   "Youhe Feng",
+   "Yang Li",
+   "Jie Tang",
+   "Jing Zhang"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.RO"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 19
+ },
+ {
+  "id": "2508.17032v2",
+  "title": "Learned Structure in Cartridges: Keys as Shareable Routers in Self-Studied Representations",
+  "abstract": "A bottleneck for long-context LLM inference is the linearly growing KV cache. Recent work has proposed Cartridges, an approach which leverages offline compute to train a much smaller KV cache than is typically required for a full document (up to 40x less memory usage at inference time). In this paper, we present the first mechanistic exploration of the learned Cartridge key-value cache structure. In particular, we propose that (1) Cartridge keys act as stable, shareable retrieval routers for the compressed corpora and (2) most of the learned compression occurs within the Cartridge value vectors. We present empirical evidence of our routing theory across tasks, model families, and model sizes; for example, we can ablate the learned Cartridge key vectors between tasks with little performance loss. Finally, we propose a slight improvement in initialization called Sampled Chunk Initialization (SCI). We suggest that SCI can lead to faster Cartridge convergence than previously demonstrated in the literature. Our findings lay the groundwork for broader empirical study of Cartridge training optimization which may be crucial for further scaling.",
+  "published": "2025-08-23T14:20:06Z",
+  "updated": "2025-11-07T21:01:10Z",
+  "authors": [
+   "Maurizio Diaz"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 19
+ },
+ {
+  "id": "2610.19257v1",
+  "title": "Long-horizon Video Generation with Slot Memory Addressed By Region Tokens",
+  "abstract": "Memory for long-horizon video generation must satisfy two competing requirements: it must remain bounded so generation can continue indefinitely, while still recovering what was observed at a place when the camera returns, regardless of how long ago it was seen. Reconstruction-based memories provide spatial recall by caching and reprojecting explicit geometry, but require growing storage and depend on estimated 3D structure. Recurrent memories keep a constant-size state, but retention is governed by temporal recurrence, causing old observations to fade with time. We introduce SMART, a slot memory addressed by region tokens, which combines bounded storage with spatially addressed recall. SMART stores content in a constant-size slot recurrence whose writes are addressed by the observing camera and whose reads are queried by the rendering camera, without constructing an explicit 3D representation or maintaining a growing cache. Consequently, recall is conditioned on inter-view geometry rather than on recency. Each read additionally provides a confidence estimate that conditions a chunk-causal diffusion transformer, allowing it to selectively trust retrieved content while relying on its generative prior elsewhere. On long trajectories in Memory Maze and Minecraft, SMART maintains high-fidelity recall far beyond its training horizon while using constant memory and per-step cost.",
+  "published": "2026-10-13T22:28:34Z",
+  "updated": "2026-10-13T22:28:34Z",
+  "authors": [
+   "Eren Cetin",
+   "Julius Erbach",
+   "Vukasin Bozic",
+   "Hyojun Go",
+   "Zixiang Zhao",
+   "Nikolai Kalischek",
+   "Federico Tombari",
+   "Konrad Schindler",
+   "Dominik Narnhofer"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "23 pages, 13 figures, 6 tables. Project page: https://eren-cetin.github.io/SMART/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2610.02521v2",
+  "title": "Spatial Memory Intelligence: Endowing World Models with Understanding-Driven Long-Term Memory",
+  "abstract": "Long-video generation and world models have shown strong potential for interactive entertainment and embodied simulation by predicting future observations conditioned on user actions and historical memory. However, as memory sequences grow longer and their structures become increasingly complex, managing long-range spatial context becomes increasingly challenging, calling for a more intelligent and systematic memory-management strategy. Building on the advancing spatial reasoning capabilities of multimodal large language models (MLLMs) and the broader vision of unified models, we propose Spatial Memory Intelligence (SMI), the first framework to systematically employ an understanding model for spatial-memory management in long-video world models. SMI introduces four coordinated atomic operations: spatial clustering, within-cluster sparsification, action-aware retrieval, and reliability-aware filtering. Extensive experiments across multiple baselines, benchmarks, and world-model backbones demonstrate the effectiveness and generalizability of SMI, achieving comprehensive improvements in memory sparsity, generation stability, and spatial consistency.",
+  "published": "2026-10-01T21:50:57Z",
+  "updated": "2026-10-08T18:02:44Z",
+  "authors": [
+   "Ying Yang",
+   "Guiyu Zhang",
+   "Lianghua Huang",
+   "Chang Nie",
+   "Chenyang Si",
+   "Haofan Wang",
+   "Shaoshuai Shi",
+   "Li Jiang"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "32 pages. Project page: https://spatial-memory-intelligence.github.io/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"world model\" AND abs:memory",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2512.18741v2",
+  "title": "Memorize-and-Generate: Towards Long-Term Consistency in Real-Time Video Generation",
+  "abstract": "Frame-level autoregressive (frame-AR) models have achieved significant progress, enabling real-time video generation comparable to bidirectional diffusion models and serving as a foundation for interactive world models and game engines. However, current approaches in long video generation typically rely on window attention, which naively discards historical context outside the window, leading to catastrophic forgetting and scene inconsistency; conversely, retaining full history incurs prohibitive memory costs. To address this trade-off, we propose Memorize-and-Generate (MAG), a framework that decouples memory compression and frame generation into distinct tasks. Specifically, we train a memory model to compress historical information into a compact KV cache, and a separate generator model to synthesize subsequent frames utilizing this compressed representation. Furthermore, we introduce MAG-Bench to strictly evaluate historical memory retention. Extensive experiments demonstrate that MAG achieves superior historical scene consistency while maintaining competitive performance on standard video generation benchmarks.",
+  "published": "2025-12-21T14:02:53Z",
+  "updated": "2025-12-23T16:47:46Z",
+  "authors": [
+   "Tianrui Zhu",
+   "Shiyi Zhang",
+   "Zhirui Sun",
+   "Jingqi Tian",
+   "Yansong Tang"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "Code will be released at https://github.com/Xilluill/MAG",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2608.03228v4",
+  "title": "SAKI-RoPE: Score-Aware Low-Rank Key Indexing with RoPE-Aware Covariance and Random-Matrix Noise Analysis",
+  "abstract": "Existing low-rank KV-cache indexes preserve model weights or key variance, not the attention scores that determine retrieval. We derive the expected score distortion of key-side rank-r compression, a two-sided covariance-weighted low-rank problem that uses both query and key statistics, and solve it exactly: the optimum is an optimal rank-r linear score map, computed in closed form from two d x d covariances per head, and its predicted per-head score-MSE reduction matches measurement (Pearson r = 0.997). The resulting training-free index, SAKI, beats key-PCA at every rank on LLaMA-3.1-8B, Qwen2.5-7B, Mistral-7B and Llama-3.2-3B, at every context length from 4K to 64K, and in every calibration-domain pair (0.748 -> 0.799 recall@64 at r = 32 on LLaMA-3.1-8B). Because RoPE rotates keys by their distance from the query, we make the closed form RoPE-aware by averaging the query covariance over rotations; this SAKI-RoPE, our main method, raises recall to 0.861, beats PCA on every head of all four models, and needs only 28-39% of PCA's rank to match it at r = 32 across the four models. Random-matrix theory of the covariance estimation noise shows that 512 calibration tokens suffice and that clipping the Marchenko-Pastur noise bulk helps SAKI when calibration is short. We make no perplexity claim: with the attention sink pinned, perplexity differences between indexes are small and depend on model and text, and we show that any low-rank index calibrated on a long prefix drops the attention-sink token, which collapses 32K perplexity unless the sink is pinned.",
+  "published": "2026-08-04T06:59:29Z",
+  "updated": "2026-10-25T20:18:52Z",
+  "authors": [
+   "Lin Zhang"
+  ],
+  "categories": [
+   "cs.LG",
+   "stat.AP"
+  ],
+  "comment": "22 pages, 5 figures 10 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 16
+ },
+ {
+  "id": "2610.26262v1",
+  "title": "Dynamics-Aware Sparse Attention for Efficient Autoregressive Video Diffusion",
+  "abstract": "Autoregressive Diffusion Transformers have emerged as a powerful paradigm for long video generation. However, they are often constrained by prohibitive computational overhead and substantial memory footprints. This inefficiency arises from dense computation mechanisms that allocate uniform processing resources across all spatiotemporal regions, failing to leverage the inherent temporal redundancy of video where motion is typically confined to sparse areas. In this paper, we propose Dynamics-Aware Sparse Attention (DASA), a unified framework that shifts from dense computation to sparse, motion-driven generation to eliminate both storage and computational redundancies. Inspired by video codec principles, our approach explicitly decouples video content into dynamic and static regions. To mitigate memory bottlenecks, we selectively compress the historical KV cache by retaining only dynamic features within the generated chunk. Furthermore, to reduce computational overhead, we employ a region-level computation allocation strategy based on localized dynamics. Additionally, a dynamics-guided distillation method is introduced to enhance performance via a lightweight distillation training process. Experiments on VBench demonstrate that our approach accelerates autoregressive video generation by 2.16x, while preserving high visual fidelity.",
+  "published": "2026-10-19T12:19:05Z",
+  "updated": "2026-10-19T12:19:05Z",
+  "authors": [
+   "Yuanyu He",
+   "Zhuokun Chen",
+   "Yefei He",
+   "Zhiwei Tang",
+   "Jiasheng Tang",
+   "Yinghao Yu",
+   "Jianfei Cai",
+   "Bohan Zhuang"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "NeurIPS 2026, Project page: https://yuanyu0.github.io/DASA/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2606.13035v1",
+  "title": "TetherCache: Stabilizing Autoregressive Long-Form Video Generation with Gated Recall and Trusted Alignment",
+  "abstract": "Autoregressive video diffusion models provide a natural formulation for streaming and variable-length video generation by conditioning newly generated frames on previously generated content. However, extending these models to minute-level generation remains challenging: the limited KV-cache budget prevents the model from retaining the full history, while repeatedly conditioning on self-generated frames induces a context distribution shift that accumulates over time, leading to visual artifacts, quality degradation, and temporal drift. In this paper, we propose TetherCache, a training-free and plug-and-play cache management strategy for drift-resistant long video generation. TetherCache organizes the cache into sink, memory, and recent regions, and introduces two complementary mechanisms. First, GRAB (Gated Recall with Attention-Diversity Balancing) selects long-range memory frames using a gated score that combines attention-based relevance with temporal diversity, preserving informative yet diverse historical context under a fixed cache budget. Second, TAME (Trusted Alignment via Memory Editing) lightly edits newly recalled memory tokens by aligning their statistics to a trusted context distribution, reducing the pollution caused by drifted historical features. Built on Self-Forcing, TetherCache consistently improves long-video generation quality on VBench-Long across 30s, 60s, and 240s settings. In particular, for 240s generation, it substantially improves overall and semantic scores while reducing quality drift from 7.84 to 1.33, demonstrating its effectiveness for stable long-horizon autoregressive video diffusion.",
+  "published": "2026-06-11T08:16:08Z",
+  "updated": "2026-06-11T08:16:08Z",
+  "authors": [
+   "Yu Meng",
+   "Xiangyang Luo",
+   "Letian Li",
+   "Wenyuan Jiang",
+   "Chen Gao",
+   "Xinlei Chen",
+   "Yong Li",
+   "Xiao-Ping Zhang"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI"
+  ],
+  "comment": "17 pages, 8 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2504.19874v1",
+  "title": "TurboQuant: Online Vector Quantization with Near-optimal Distortion Rate",
+  "abstract": "Vector quantization, a problem rooted in Shannon's source coding theory, aims to quantize high-dimensional Euclidean vectors while minimizing distortion in their geometric structure. We propose TurboQuant to address both mean-squared error (MSE) and inner product distortion, overcoming limitations of existing methods that fail to achieve optimal distortion rates. Our data-oblivious algorithms, suitable for online applications, achieve near-optimal distortion rates (within a small constant factor) across all bit-widths and dimensions. TurboQuant achieves this by randomly rotating input vectors, inducing a concentrated Beta distribution on coordinates, and leveraging the near-independence property of distinct coordinates in high dimensions to simply apply optimal scalar quantizers per each coordinate. Recognizing that MSE-optimal quantizers introduce bias in inner product estimation, we propose a two-stage approach: applying an MSE quantizer followed by a 1-bit Quantized JL (QJL) transform on the residual, resulting in an unbiased inner product quantizer. We also provide a formal proof of the information-theoretic lower bounds on best achievable distortion rate by any vector quantizer, demonstrating that TurboQuant closely matches these bounds, differing only by a small constant ($\\approx 2.7$) factor. Experimental results validate our theoretical findings, showing that for KV cache quantization, we achieve absolute quality neutrality with 3.5 bits per channel and marginal quality degradation with 2.5 bits per channel. Furthermore, in nearest neighbor search tasks, our method outperforms existing product quantization techniques in recall while reducing indexing time to virtually zero.",
+  "published": "2025-04-28T15:05:35Z",
+  "updated": "2025-04-28T15:05:35Z",
+  "authors": [
+   "Amir Zandieh",
+   "Majid Daliri",
+   "Majid Hadian",
+   "Vahab Mirrokni"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.DB",
+   "cs.DS"
+  ],
+  "comment": "25 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2410.23277v2",
+  "title": "SlowFast-VGen: Slow-Fast Learning for Action-Driven Long Video Generation",
+  "abstract": "Human beings are endowed with a complementary learning system, which bridges the slow learning of general world dynamics with fast storage of episodic memory from a new experience. Previous video generation models, however, primarily focus on slow learning by pre-training on vast amounts of data, overlooking the fast learning phase crucial for episodic memory storage. This oversight leads to inconsistencies across temporally distant frames when generating longer videos, as these frames fall beyond the model's context window. To this end, we introduce SlowFast-VGen, a novel dual-speed learning system for action-driven long video generation. Our approach incorporates a masked conditional video diffusion model for the slow learning of world dynamics, alongside an inference-time fast learning strategy based on a temporal LoRA module. Specifically, the fast learning process updates its temporal LoRA parameters based on local inputs and outputs, thereby efficiently storing episodic memory in its parameters. We further propose a slow-fast learning loop algorithm that seamlessly integrates the inner fast learning loop into the outer slow learning loop, enabling the recall of prior multi-episode experiences for context-aware skill learning. To facilitate the slow learning of an approximate world model, we collect a large-scale dataset of 200k videos with language action annotations, covering a wide range of scenarios. Extensive experiments show that SlowFast-VGen outperforms baselines across various metrics for action-driven video generation, achieving an FVD score of 514 compared to 782, and maintaining consistency in longer videos, with an average of 0.37 scene cuts versus 0.89. The slow-fast learning loop algorithm significantly enhances performances on long-horizon planning tasks as well. Project Website: https://slowfast-vgen.github.io",
+  "published": "2024-10-30T17:55:52Z",
+  "updated": "2024-10-31T18:03:51Z",
+  "authors": [
+   "Yining Hong",
+   "Beide Liu",
+   "Maxine Wu",
+   "Yuanhao Zhai",
+   "Kai-Wei Chang",
+   "Linjie Li",
+   "Kevin Lin",
+   "Chung-Ching Lin",
+   "Jianfeng Wang",
+   "Zhengyuan Yang",
+   "Yingnian Wu",
+   "Lijuan Wang"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI",
+   "cs.CL",
+   "cs.LG",
+   "cs.RO"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 14
+ },
+ {
+  "id": "2606.07205v1",
+  "title": "Towards Tight Bounds for Streaming Attention",
+  "abstract": "The attention mechanism is a cornerstone of modern transformer architectures. However, its expressive power comes at the cost of quadratic runtime and linear space usage. In particular, the classical transformer architecture explicitly stores all previously seen input elements (tokens) in order to generate the next one. The problem of implementing a transformer in limited space, known as KV cache compression, has received much interest over the past few years, spurring the development of powerful heuristics. Recent works of Haris et al, COLT'25 and Kochetkova et al, NeurIPS'25, formalized KV cache compression as the streaming attention approximation problem, providing both upper bounds (based on discrepancy theory) and information theoretic lower bounds. However, those papers left open a significant gap between the upper and lower bounds. For example, the space usage of their algorithms increases with the precision parameter, but the lower bound does not get stronger. In this work, we revisit the streaming attention approximation problem and provide nearly tight bounds on its space complexity. On the algorithmic side, we achieve the result through a surprisingly tight interplay between three distinct methods for kernel density estimation: discrepancy-based coreset constructions (e.g., Charikar-Kapralov-Waingarten'24), the polynomial method (e.g., Greengard-Rokhlin'87, Alman-Song'23), and space partitioning (e.g., Andoni-Laarhoven-Razenshteyn-Waingarten'17, Charikar-Kapralov-Nouri-Siminelakis'20). On the lower bound side, our main technical contribution is a new technique for using the INDEX problem with a large amount of side information that we hope will prove useful in other high dimensional geometric estimation problems.",
+  "published": "2026-06-05T12:15:33Z",
+  "updated": "2026-06-05T12:15:33Z",
+  "authors": [
+   "Justin Y. Chen",
+   "Ying Feng",
+   "Piotr Indyk",
+   "Michael Kapralov",
+   "Ekaterina Kochetkova",
+   "Boris Prokhorov"
+  ],
+  "categories": [
+   "cs.DS",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2509.24695v2",
+  "title": "SANA-Video: Efficient Video Generation with Block Linear Diffusion Transformer",
+  "abstract": "We introduce SANA-Video, a small diffusion model that can efficiently generate videos up to 720x1280 resolution and minute-length duration. SANA-Video synthesizes high-resolution, high-quality and long videos with strong text-video alignment at a remarkably fast speed, deployable on RTX 5090 GPU. Two core designs ensure our efficient, effective and long video generation: (1) Linear DiT: We leverage linear attention as the core operation, which is more efficient than vanilla attention given the large number of tokens processed in video generation. (2) Constant-Memory KV cache for Block Linear Attention: we design block-wise autoregressive approach for long video generation by employing a constant-memory state, derived from the cumulative properties of linear attention. This KV cache provides the Linear DiT with global context at a fixed memory cost, eliminating the need for a traditional KV cache and enabling efficient, minute-long video generation. In addition, we explore effective data filters and model training strategies, narrowing the training cost to 12 days on 64 H100 GPUs, which is only 1% of the cost of MovieGen. Given its low cost, SANA-Video achieves competitive performance compared to modern state-of-the-art small diffusion models (e.g., Wan 2.1-1.3B and SkyReel-V2-1.3B) while being 16x faster in measured latency. Moreover, SANA-Video can be deployed on RTX 5090 GPUs with NVFP4 precision, accelerating the inference speed of generating a 5-second 720p video from 71s to 29s (2.4x speedup). In summary, SANA-Video enables low-cost, high-quality video generation.",
+  "published": "2025-09-29T12:28:09Z",
+  "updated": "2025-10-13T09:12:27Z",
+  "authors": [
+   "Junsong Chen",
+   "Yuyang Zhao",
+   "Jincheng Yu",
+   "Ruihang Chu",
+   "Junyu Chen",
+   "Shuai Yang",
+   "Xianbang Wang",
+   "Yicheng Pan",
+   "Daquan Zhou",
+   "Huan Ling",
+   "Haozhe Liu",
+   "Hongwei Yi",
+   "Hao Zhang",
+   "Muyang Li",
+   "Yukang Chen",
+   "Han Cai",
+   "Sanja Fidler",
+   "Ping Luo",
+   "Song Han",
+   "Enze Xie"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI"
+  ],
+  "comment": "21 pages, 15 figures, 7 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2606.09862v1",
+  "title": "Blurry Window Attention",
+  "abstract": "The Softmax Attention operation in Transformer language models has a quadratic complexity in the sequence length and a growing state size in the form of KV cache, which becomes a bottleneck in long context scenarios. To overcome this limitation, alternative architectures with linear complexity and finite state size have been introduced, such as State-Space Models (SSMs), Linear Attention (LA), and Attention with Bounded-memory Control (ABC). Though linear models achieve similar language perplexity as Transformers, they are still behind in tasks which require retrieval or recall of specific information. In this work, we introduce Blurry Window Attention (BLA) a novel ABC method inspired by SSMs. BLA stores a frequency window from which a blurry KV history is reconstructed via interpolation using Dirichlet kernels. BLA can be understood as a generalization of Sliding Window Attention (SWA) depending on the Dirichlet kernels resolution or as a special case of the Gated Slot Attention (GSA), where the decay factor is implemented with Dirichlet kernels. We describe in details the theory and efficient implementation of BLA. On the Multi-Query Associate Recall (MQAR) synthetic task, we show that the state efficiency of BLA is 8$\\times$ better than SWA and is competitive with popular linear attention models, and in the RegBench synthetic task, only BLA and SWA improve their performance as the state size grows among the linear models we tested.",
+  "published": "2026-05-31T17:43:06Z",
+  "updated": "2026-05-31T17:43:06Z",
+  "authors": [
+   "Axel Laborieux",
+   "Christos Sourmpis",
+   "Juan Gabriel Kostelec",
+   "Qinghai Guo"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2605.30519v1",
+  "title": "OmniMem: Scalable and Adaptive Memory Retrieval for Long Video Generation",
+  "abstract": "Autoregressive (AR) video generation extends videos by producing latent chunks sequentially, but scaling to long videos requires repeated access to a growing historical KV cache. Existing methods reduce this cost by truncating the KV cache or compressing it into implicit memory, but both lose explicit access to query-relevant historical details. We propose OmniMem, an explicit full-range memory retrieval framework that performs sparse KV retrieval over the historical cache. To make this practical for chunk-based AR video generation, OmniMem addresses two issues: (i) local bias in sparse KV selection and (ii) Union Explosion in memory access. Adaptive Window Exclusion removes local-window blocks from the selection candidates when sufficient long-range history is available, preserving the sparse budget for informative long-range retrieval. Query-Shared KV Selection reduces cross-query diversity, while Per-Head Scattered KV Access avoids expanding head-specific selections into a large selected KV buffer. This allows each attention head to retrieve non-contiguous KV blocks according to its own selection pattern. Experiments on long-video generation show that OmniMem improves Dynamic Degree by 52.3% and preserves strong consistency over strong baselines, while maintaining comparable memory usage.",
+  "published": "2026-05-28T19:56:00Z",
+  "updated": "2026-05-28T19:56:00Z",
+  "authors": [
+   "Lin Zhao",
+   "Yushu Wu",
+   "Yifan Gong",
+   "Yanzhi Wang",
+   "Pu Zhao"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "22 pages, 14 figures; project page: https://wuyushuwys.github.io/OmniMem/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2512.14699v1",
+  "title": "MemFlow: Flowing Adaptive Memory for Consistent and Efficient Long Video Narratives",
+  "abstract": "The core challenge for streaming video generation is maintaining the content consistency in long context, which poses high requirement for the memory design. Most existing solutions maintain the memory by compressing historical frames with predefined strategies. However, different to-generate video chunks should refer to different historical cues, which is hard to satisfy with fixed strategies. In this work, we propose MemFlow to address this problem. Specifically, before generating the coming chunk, we dynamically update the memory bank by retrieving the most relevant historical frames with the text prompt of this chunk. This design enables narrative coherence even if new event happens or scenario switches in future frames. In addition, during generation, we only activate the most relevant tokens in the memory bank for each query in the attention layers, which effectively guarantees the generation efficiency. In this way, MemFlow achieves outstanding long-context consistency with negligible computation burden (7.9% speed reduction compared with the memory-free baseline) and keeps the compatibility with any streaming video generation model with KV cache.",
+  "published": "2025-12-16T18:59:59Z",
+  "updated": "2025-12-16T18:59:59Z",
+  "authors": [
+   "Sihui Ji",
+   "Xi Chen",
+   "Shuai Yang",
+   "Xin Tao",
+   "Pengfei Wan",
+   "Hengshuang Zhao"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "Project Page: https://sihuiji.github.io/MemFlow.github.io/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2505.21996v4",
+  "title": "VRAG: Learning World Models for Interactive Video Generation",
+  "abstract": "Foundational world models must be both interactive and preserve spatiotemporal coherence for effective future planning with action choices. However, present models for long video generation have limited inherent world modeling capabilities due to two main challenges: compounding errors and insufficient memory mechanisms. We enhance image-to-video models with interactive capabilities through additional action conditioning and autoregressive framework, and reveal that compounding error is inherently irreducible in autoregressive video generation, while insufficient memory mechanism leads to incoherence of world models. We propose video retrieval augmented generation (VRAG) with explicit global state conditioning, which significantly reduces long-term compounding errors and increases spatiotemporal consistency of world models. In contrast, naive autoregressive generation with extended context windows and retrieval-augmented generation prove less effective for video generation, primarily due to the limited in-context learning capabilities of current video models. Our work illuminates the fundamental challenges in video world models and establishes a comprehensive benchmark for improving video generation models with internal world modeling capabilities.",
+  "published": "2025-05-28T05:55:44Z",
+  "updated": "2026-05-28T06:02:27Z",
+  "authors": [
+   "Taiye Chen",
+   "Xun Hu",
+   "Zihan Ding",
+   "Chi Jin"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI"
+  ],
+  "comment": "Published at NeurIPS 2025. Project page: https://sites.google.com/view/vrag",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   },
+   {
+    "dim": "frontier",
+    "query": "abs:\"world model\" AND abs:memory",
+    "rank": 2
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2504.04514v2",
+  "title": "Saliency-driven Dynamic Token Pruning for Large Language Models",
+  "abstract": "Despite the recent success of large language models (LLMs), LLMs are particularly challenging in long-sequence inference scenarios due to the quadratic computational complexity of the attention mechanism. Inspired by the interpretability theory of feature attribution in neural network models, we observe that not all tokens have the same contribution. Based on this observation, we propose a novel token pruning framework, namely Saliency-driven Dynamic Token Pruning (SDTP), to gradually and dynamically prune redundant tokens based on the input context. Specifically, a lightweight saliency-driven prediction module is designed to estimate the importance score of each token with its hidden state, which is added to different layers of the LLM to hierarchically prune redundant tokens. Furthermore, a ranking-based optimization strategy is proposed to minimize the ranking divergence of the saliency score and the predicted importance score. Extensive experiments have shown that our framework is generalizable to various models and datasets. By hierarchically pruning 65\\% of the input tokens, our method greatly reduces 33\\% $\\sim$ 47\\% FLOPs and achieves speedup up to 1.75$\\times$ during inference, while maintaining comparable performance. We further demonstrate that SDTP can be combined with KV cache compression method for further compression.",
+  "published": "2025-04-06T15:15:07Z",
+  "updated": "2025-04-09T14:36:19Z",
+  "authors": [
+   "Yao Tao",
+   "Yehui Tang",
+   "Yun Wang",
+   "Mingjian Zhu",
+   "Hailin Hu",
+   "Yunhe Wang"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"KV cache\" AND (abs:information OR abs:rate OR abs:compression) AND abs:theory",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2610.42031v1",
+  "title": "Any Forcing: Any-Step Generality and One-Step Stability for Autoregressive Video Generation",
+  "abstract": "Autoregressive video generation enables efficient inference through streaming prediction. However, existing methods are typically restricted to fixed sampling steps, limiting the flexibility to balance generation quality and efficiency, while one-step generation suffers from degraded visual quality and error accumulation over long sequences, leading to content drift and generation collapse. To address these issues, we propose Any Forcing, a unified framework for achieving Any-Step Generality and One-Step Stability. Specifically, we introduce a unified adversarial discriminator that jointly performs real-distribution alignment, inter-step consistency alignment, and first-frame quality enhancement, enabling flexible sampling while preserving one-step generation quality. Furthermore, we propose a training-free adaptive long-term memory selection mechanism that selects historical states based on global semantic relevance and local value contribution, while remapping their temporal positions to preserve temporal relationships within the memory cache, thereby enabling stable one-step long-video generation. Experiments demonstrate that Any Forcing achieves high-quality and stable one-step autoregressive video generation, achieving 20.9 FPS and 24.7 FPS for short and long video generation on a single H100 GPU, respectively.",
+  "published": "2026-10-30T16:56:42Z",
+  "updated": "2026-10-30T16:56:42Z",
+  "authors": [
+   "Jiahua Xu",
+   "Yijie Fang",
+   "Nannan Wang",
+   "Xunhao Lin",
+   "Li Cao",
+   "Lei Hao",
+   "Mingrui Zhu",
+   "Fei Gao",
+   "Xinbo Gao"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "Autoregressive video generation",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2605.23610v1",
+  "title": "EM-Vid: Training-Free Entity-Centric Memory for Efficient and Consistent Multi-Shot Video Generation",
+  "abstract": "Multi-shot video generation requires maintaining a consistent appearance of recurring entities across shots while remaining faithful to shot-specific text prompts. Recent autoregressive methods reuse previously generated frames as memory. However, full-frame storage entangles persistent entity information with transient scene context, leading to irrelevant information leakage and high computational cost. We propose an entity-centric memory in the form of an entity-indexed bank of latent patches. We introduce sparse token conditioning compatible with pretrained models, restricting self-attention to entity-relevant tokens and reducing computational cost. To support this, we introduce a structured multi-shot script format. We additionally propose a budgeted memory update strategy to maintain a compact, evolving memory. Finally, we equip the entity representation with a noise-injection mechanism that enables fine-grained appearance control, preventing leakage of irrelevant information. Our method improves prompt adherence and efficiency while preserving subject consistency.",
+  "published": "2026-05-22T13:20:29Z",
+  "updated": "2026-05-22T13:20:29Z",
+  "authors": [
+   "Jente Vandersanden",
+   "Matheus Gadelha",
+   "Chun-Hao P. Huang",
+   "Hyeonho Jeong",
+   "Yulia Gryaditskaya"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2609.37690v2",
+  "title": "Honeycomb: Constant-Size Scene Memory Representation for Video World Models",
+  "abstract": "Video world models require persistent scene memory to maintain consistency during long-horizon video generation. Existing spatial memories accumulate RGB observations or latent features, increasing storage requirements as generation proceeds. We introduce Honeycomb, a video world model built on HexMemory, our proposed low-rank representation for storing scene features in a fixed-size memory with a total of six spatial and spatiotemporal planes. A feed-forward writer maps each generated chunk into new plane features. As the spatial coverage or temporal range expands, we warp the previous planes while preserving their dimensions, then fuse them with the new features through confidence-weighted pooling and a learned residual correction. A reader retrieves latents from HexMemory to condition subsequent video generation. The writer processes only observations from the new chunk, avoiding per-scene optimization and repeated processing of the full history. Experiments on WorldScore and RealEstate10K demonstrate strong video generation quality and robust revisit consistency while keeping HexMemory feature storage constant throughout generation. Code and additional visualizations are available on our project page at https://jackswl.github.io/honeycomb/.",
+  "published": "2026-09-29T14:33:39Z",
+  "updated": "2026-09-30T23:30:43Z",
+  "authors": [
+   "Jack Wei Lun Shi",
+   "Kaichen Zhou",
+   "Haoyu Chen",
+   "Yufeng Weng",
+   "Keane Ong",
+   "Ruojin Cai",
+   "Hang Hua",
+   "Justin K. W. Yeoh",
+   "Mengyu Wang"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "Project Page: https://jackswl.github.io/honeycomb Code: https://github.com/kaichen-z/honeycomb",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2607.15772v2",
+  "title": "SlotMem: Character-Addressable Internal Memory for Narrative Long Video Generation",
+  "abstract": "Maintaining recurring character identities across scene transitions and long temporal gaps is a central challenge in narrative long video generation. Methods targeting global consistency often retrieve memory using cues that are not aligned with character identity preservation, while recent character-centric variants still rely on coarse frame-level kv memory that entangles identity with incidental visual factors and lacks a continuous update mechanism under limited memory capacity. To address these limitations, we propose SlotMem, a character-addressable internal memory framework for multi-character narrative long video generation. Specifically, SlotMem uses a Character-Semantic Probe to localize character-relevant visual tokens from cross-attention responses, and a Memory Encoder to compress DiT tokens into compact role-wise slot memory. As generation proceeds, a Memory Writer conservatively updates each character's memory with new observations, while Character-Wise Cross-Attention retrieves the role memory and injects it only into localized tokens of the same character. Experiments on multiple narrative long video generation benchmarks show that SlotMem improves long-range character consistency over existing baselines, while maintaining comparable video quality. Our code is available at https://github.com/YilaiLiu-HKU/SlotMem.",
+  "published": "2026-07-17T09:03:37Z",
+  "updated": "2026-08-22T06:41:21Z",
+  "authors": [
+   "Yilai Liu",
+   "Xin Zhang",
+   "Shiyuan Zhang",
+   "Hongyang Du"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2606.02436v1",
+  "title": "Geometry-Aware Implicit Memory for Video World Models",
+  "abstract": "Video world models aim to simulate controllable visual environments, but long-horizon rollouts depend on what the model remembers after observations leave its native context window. Explicit memories retain frames or online 3D reconstructions, which can suffer from heuristic retrieval errors, redundant appearance storage, or reconstruction artifacts. Implicit memories compress history into a compact state, but existing designs are not explicitly constrained to encode cross-view scene geometry. We propose GIM-World, a geometry-aware implicit memory framework for video world models. A lightweight transformer encoder compresses variable-length history into fixed-size memory tokens, a camera-queryable geometry head distills 3D scene structure from a frozen foundation model into the memory during training, and an information-guided pruning rule keeps encoding cost bounded as history grows. The geometry teacher is discarded at inference, leaving a lightweight memory module. Experiments on MIND show that GIM-World better preserves long-horizon geometric and visual consistency than both explicit- and implicit-memory baselines.",
+  "published": "2026-06-01T16:08:43Z",
+  "updated": "2026-06-01T16:08:43Z",
+  "authors": [
+   "Zhengxuan Wei",
+   "Xu Guo",
+   "Xinghui Li",
+   "Xunzhi Xiang",
+   "Min Wei",
+   "Yiran Zhu",
+   "Qiulin Wang",
+   "Xintao Wang",
+   "Pengfei Wan",
+   "Xiangwang Hou",
+   "Qi Fan"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "Project page: https://gim-world.github.io/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"world model\" AND abs:memory",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2609.28466v1",
+  "title": "The Past Frames the Future: Memory for Autoregressive Video Generation",
+  "abstract": "Advances in generative models have improved video fidelity, enabling long-horizon generation, interactive world modeling, and evolving visual environments. Autoregressive (AR) video generation extends visual sequences through causal rollouts. However, a fundamental bottleneck emerges: as the generated sequence expands, practical models must operate under strictly bounded context windows, storage, and computational limits. Consequently, critical historical information, e.g., entity identities, dynamic states, and intervention-induced causal changes, often leaves the active context long before its relevance diminishes. Overcoming this limitation and maintaining temporal persistence constitutes a fundamental memory problem. We present a systematic and comprehensive review of memory mechanisms in AR video generation. We formulate memory operationally as persistent historical information maintained across outer AR steps, capable of influencing future generation even after the originating evidence is no longer locally accessible. Building upon this unified framework, we organize the literature through five complementary perspectives: (I) Forms, the representational carriers of history; (II) Functions, the specific semantic and physical information requiring preservation; (III) Operations, the lifecycle of writing, reading, updating, managing, and integrating memory; (IV) Learning, the optimization of memory behaviors under closed-loop rollouts; and (V) Evaluation, the paradigms for diagnosing genuine memory capabilities. We conclude by synthesizing open challenges, including composable and resource-aware memory architectures, trustworthy state updating, self-rollout learning, and standardized evaluation. By bridging representations, mechanisms, and learning paradigms, this paper establishes a structured foundation for developing reliable, memory-conditioned video generation systems.",
+  "published": "2026-09-23T17:54:52Z",
+  "updated": "2026-09-23T17:54:52Z",
+  "authors": [
+   "Harold Haodong Chen",
+   "Rongjin Guo",
+   "Disen Lan",
+   "Wen-Jie Shu",
+   "Hongfei Zhang",
+   "Hanzhe Hu",
+   "Shengtao Yao",
+   "Zixin Zhang",
+   "Guibin Zhang",
+   "Zhefan Rao",
+   "Jinxiu Liu",
+   "Yexin Liu",
+   "Rui Peng",
+   "Yuhao Liu",
+   "Bin Ren",
+   "Shuai Yang",
+   "Yukang Chen",
+   "Salman Khan",
+   "Ying-Cong Chen",
+   "Ser-Nam Lim",
+   "Rynson W. H. Lau",
+   "Nicu Sebe",
+   "Yu Cheng",
+   "Ming-Hsuan Yang",
+   "Qifeng Chen"
+  ],
+  "categories": [
+   "cs.CV"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2606.20679v1",
+  "title": "MemoryVAM: Integrating Memory into Video Action Model for Robot Manipulation",
+  "abstract": "Video-world-model policies learn action-relevant representations by predicting future observations. However, they condition on only a short observation window, which renders long-horizon manipulation non-Markovian when the correct action depends on earlier events that are no longer visible. We present MemoryVAM, an episodic memory mechanism for video-world-model policies. We employ a Recap-Cue (RC) module, in which a Perceiver-based Recap Compressor maps per-frame CLIP embeddings into compact memory tokens, and a lightweight Cue Gate estimates task completion from memory and language. These tokens are injected into both the video backbone and the action decoder, aligning policy imagination with episode progress and conditioning actions on history. Our model trains the memory module with video prediction, a delta-reconstruction auxiliary loss, and episode-boundary supervision, requiring no per-frame progress labels. The same mechanism applies to UNet and Diffusion Transformer (DiT) backbones by changing only the cross-attention injection interface. On LIBERO-Mem, our model improves average success from 5% to 42.5%. On real robots, it achieves 78.3% success on counting tasks, 80.0% on spatial recall, and 75.0% on sequential tracking. Project page: https://MemoryVAM.github.io/",
+  "published": "2026-06-13T08:54:52Z",
+  "updated": "2026-06-13T08:54:52Z",
+  "authors": [
+   "Yuxin Jiang",
+   "Chang Yu",
+   "Yunuo Chen",
+   "Xiang Feng",
+   "Yin Yang",
+   "Nishank Gite",
+   "Chenfanfu Jiang"
+  ],
+  "categories": [
+   "cs.RO",
+   "cs.AI",
+   "cs.CV"
+  ],
+  "comment": "Project page: https://MemoryVAM.github.io/",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"world model\" AND abs:memory",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2603.26193v1",
+  "title": "MemCam: Memory-Augmented Camera Control for Consistent Video Generation",
+  "abstract": "Interactive video generation has significant potential for scene simulation and video creation. However, existing methods often struggle with maintaining scene consistency during long video generation under dynamic camera control due to limited contextual information. To address this challenge, we propose MemCam, a memory-augmented interactive video generation approach that treats previously generated frames as external memory and leverages them as contextual conditioning to achieve controllable camera viewpoints with high scene consistency. To enable longer and more relevant context, we design a context compression module that encodes memory frames into compact representations and employs co-visibility-based selection to dynamically retrieve the most relevant historical frames, thereby reducing computational overhead while enriching contextual information. Experiments on interactive video generation tasks show that MemCam significantly outperforms existing baseline methods as well as open-source state-of-the-art approaches in terms of scene consistency, particularly in long video scenarios with large camera rotations.",
+  "published": "2026-03-27T09:11:31Z",
+  "updated": "2026-03-27T09:11:31Z",
+  "authors": [
+   "Xinhang Gao",
+   "Junlin Guan",
+   "Shuhan Luo",
+   "Wenzhuo Li",
+   "Guanghuan Tan",
+   "Jiacheng Wang"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI"
+  ],
+  "comment": "6 pages, 3 figures, 3 tables, accepted by IJCNN 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"video generation\" AND (abs:storage OR abs:memory)",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2510.08553v2",
+  "title": "Dream to Recall: Imagination-Guided Experience Retrieval for Memory-Persistent Vision-and-Language Navigation",
+  "abstract": "Vision-and-Language Navigation (VLN) requires agents to follow natural language instructions through environments, with memory-persistent variants demanding progressive improvement through accumulated experience. Existing approaches for memory-persistent VLN face critical limitations: they lack effective memory access mechanisms, instead relying on entire memory incorporation or fixed-horizon lookup, and predominantly store only environmental observations while neglecting navigation behavioral patterns that encode valuable decision-making strategies. We present Memoir, which employs imagination as a retrieval mechanism grounded by explicit memory: a world model imagines future navigation states as queries to selectively retrieve relevant environmental observations and behavioral histories. The approach comprises: 1) a language-conditioned world model that imagines future states serving dual purposes: encoding experiences for storage and generating retrieval queries; 2) Hybrid Viewpoint-Level Memory that anchors both observations and behavioral patterns to viewpoints, enabling hybrid retrieval; and 3) an experience-augmented navigation model that integrates retrieved knowledge through specialized encoders. Extensive evaluation across diverse memory-persistent VLN benchmarks with 10 distinct testing scenarios demonstrates Memoir's effectiveness: significant improvements across all scenarios, with 5.4% SPL gains on IR2R over the best memory-persistent baseline, accompanied by 8.3x training speedup and 74% inference memory reduction. The results validate that predictive retrieval of both environmental and behavioral memories enables more effective navigation, with analysis indicating substantial headroom (73.3% vs 93.4% upper bound) for this imagination-guided paradigm.",
+  "published": "2025-10-09T17:58:01Z",
+  "updated": "2026-03-30T09:03:04Z",
+  "authors": [
+   "Yunzhe Xu",
+   "Yiyuan Pan",
+   "Zhe Liu"
+  ],
+  "categories": [
+   "cs.CV",
+   "cs.AI",
+   "cs.RO"
+  ],
+  "comment": "Accepted by IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "frontier",
+    "query": "abs:\"world model\" AND abs:memory",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ }
+]

@@ -1,0 +1,1197 @@
+[
+ {
+  "id": "2509.13997v1",
+  "title": "An RDMA-First Object Storage System with SmartNIC Offload",
+  "abstract": "AI training and inference impose sustained, fine-grain I/O that stresses host-mediated, TCP-based storage paths. Motivated by kernel-bypass networking and user-space storage stacks, we revisit POSIX-compatible object storage for GPU-centric pipelines. We present ROS2, an RDMA-first object storage system design that offloads the DAOS client to an NVIDIA BlueField-3 SmartNIC while leaving the DAOS I/O engine unchanged on the storage server. ROS2 separates a lightweight control plane (gRPC for namespace and capability exchange) from a high-throughput data plane (UCX/libfabric over RDMA or TCP) and removes host mediation from the data path. Using FIO/DFS across local and remote configurations, we find that on server-grade CPUs RDMA consistently outperforms TCP for both large sequential and small random I/O. When the RDMA-driven DAOS client is offloaded to BlueField-3, end-to-end performance is comparable to the host, demonstrating that SmartNIC offload preserves RDMA efficiency while enabling DPU-resident features such as multi-tenant isolation and inline services (e.g., encryption/decryption) close to the NIC. In contrast, TCP on the SmartNIC lags host performance, underscoring the importance of RDMA for offloaded deployments. Overall, our results indicate that an RDMA-first, SmartNIC-offloaded object-storage stack is a practical foundation for scaling data delivery in modern LLM training environments; integrating optional GPU-direct placement for LLM tasks is left for future work.",
+  "published": "2025-09-17T14:10:44Z",
+  "updated": "2025-09-17T14:10:44Z",
+  "authors": [
+   "Yu Zhu",
+   "Aditya Dhakal",
+   "Pedro Bruel",
+   "Gourav Rattihalli",
+   "Yunming Xiao",
+   "Johann Lombardi",
+   "Dejan Milojicic"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 66
+ },
+ {
+  "id": "2610.41160v1",
+  "title": "ARK: Avoiding Routing Collisions for KV Cache Transfer in Disaggregated LLM Inference",
+  "abstract": "Disaggregated LLM inference separates the prefill and decode phases across GPU pools, generating massive KV-cache transfers. Because these transfers last hundreds of milliseconds to seconds, they behave as mega elephant flows that dominate link bandwidth utilization. In this regime, stateless ECMP can perform poorly: hash collisions may overload one spine link while leaving others idle, stretching transfer times by seconds. Yet this same persistence makes coordination practical. Since these flows are long-lived, even lightweight one-to-all coordination can be amortized over their lifetime. We present ARK, a distributed elephant-flow path reservation mechanism. ARK coordinates senders to choose source ports whose hashes map concurrent flows onto distinct spines, without requiring switch changes or receiver-side packet reordering. Packet-level RDMA simulations show that ARK reduces mean and P95 FCT by up to 27.3% and 34.0% under moderate load, and further reduces mean TTFT by up to 12.9%.",
+  "published": "2026-10-30T02:35:39Z",
+  "updated": "2026-10-30T02:35:39Z",
+  "authors": [
+   "Hung-Chun Lin",
+   "Ting-Wei Hsu",
+   "Chung-En Ho",
+   "Ahmed Saeed"
+  ],
+  "categories": [
+   "cs.NI",
+   "cs.AI",
+   "cs.DC"
+  ],
+  "comment": "7 pages. Published in the Proceedings of the ACM SIGCOMM 2026 Conference (SIGCOMM '26)",
+  "journal_ref": "In Proceedings of the ACM SIGCOMM 2026 Conference (SIGCOMM '26), pp. 2067-2073, 2026",
+  "doi": "10.1145/3789240.3828750",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 4
+   }
+  ],
+  "score": 60
+ },
+ {
+  "id": "2609.13161v1",
+  "title": "PDD: Unleashing Economical and Flexible Heterogeneous LLM Inference via Cross-Datacenter Prefill-Decode Disaggregation",
+  "abstract": "Interconnecting geographically dispersed clusters over wide-area Ethernet provides a scalable and cost-effective alternative to dedicated intra-datacenter heterogeneous clusters for Large Language Model (LLM) inference. However, this cross-datacenter disaggregation imposes heavy KV-cache transfers between clusters, causing substantial Time-to-First-Token (TTFT) latency, which is especially detrimental for agentic workloads characterized by long contexts, high cache hit rates, and short outputs. We propose PDD, a three-tier disaggregation architecture built upon prefill-decode (PD) disaggregation, consisting of Prefill, RelayDecode (RLD), and MainDecode (MD) instances. On Cluster A, Prefill instances perform the prefill computation, while RLD instances immediately receive the KV cache via high-speed RDMA and begin decoding, thereby overlapping the KV transfer to Cluster B over TCP-based Ethernet. MD instances on Cluster B receive the KV cache along with the tokens produced by RLD, and decoding is then seamlessly handed off from RLD to MD for completion. To maximize overall efficiency, PDD employs three core mechanisms: Decode-side RadixCache to alleviate bandwidth bottlenecks, an Extend-Decode Handoff mechanism for smooth control migration between RLD and MD, and multi-stage pipeline orchestration to manage complex inter-tier dependencies under high concurrency and long-term serving. We further design a low-cost, fine-grained heterogeneous deployment scheme that maximizes latency-masking efficiency at marginal cost. Compared to the intra-DC homogeneous PD baseline, PDD's cross-datacenter mapping of compute-intensive H100s and memory-bandwidth-optimized H200s achieves a Benefit-Cost Ratio (BCR) up to 37.5% higher in SLA-compliant goodput.",
+  "published": "2026-07-18T08:45:15Z",
+  "updated": "2026-07-18T08:45:15Z",
+  "authors": [
+   "Yida Wang",
+   "Xiuhong Li",
+   "Jianping Ma",
+   "Gan Sun",
+   "Yunshen Xu",
+   "Buhe Han",
+   "Jingxu Ng",
+   "Yuhao Luo",
+   "Ke Hong",
+   "Guohao Dai",
+   "Boxun Li",
+   "Yu Wang"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 60
+ },
+ {
+  "id": "2610.29873v2",
+  "title": "HAWK: Heterogeneity-Aware KV Cache Transfer for Efficient GPU-NPU Phase-Disaggregated LLM Inference",
+  "abstract": "Large language model (LLM) inference exhibits distinct computational characteristics across its two phases: prefill is compute-intensive, whereas decode is more memory-bound. As a result, AI accelerators achieve varying levels of efficiency across the two phases. GPUs are well suited to prefill, but are often underutilized during decode. By contrast, NPUs can utilize their compute resources more effectively during decode. Motivated by this observation, we explore a heterogeneous architecture that integrates GPUs and NPUs, mapping prefill to GPUs and decode to NPUs to achieve high performance and efficiency. However, realizing such heterogeneous integration is challenging because LLM phase disaggregation requires KV cache transfer from prefill to decode (that is, from GPUs to NPUs), which is complicated by differences in inter-device communication mechanisms and KV cache tensor layouts. To address this, we propose HAWK, a transfer mechanism that enables rapid KV cache transfer across heterogeneous devices. HAWK establishes a remote direct memory access (RDMA) path for direct cross-device transfers while handling inter-device tensor layout discrepancies as part of the transfer process. In particular, HAWK allocates tensor-layout-aware RDMA buffers on the NPU side to match the target tensor layout. Leveraging these buffers, HAWK orchestrates data transfer from a conventional contiguous GPU RDMA buffer to the corresponding NPU buffers, allowing transferred tensors to be consumed directly without additional data rearrangement while maintaining transfer efficiency. We implement and evaluate HAWK on a system built with commercially available GPUs and NPUs, demonstrating performance within 7.88% of a GPU-only system under the same SLO constraints while achieving up to 1.26$\\times$ higher power efficiency and 1.72$\\times$ higher cost efficiency.",
+  "published": "2026-10-21T15:25:35Z",
+  "updated": "2026-10-23T05:45:42Z",
+  "authors": [
+   "Junhyeok Park",
+   "Jungeun Yoon",
+   "Kyungmin Kim",
+   "Hunsoon Lee",
+   "Shinyoung Ahn",
+   "Kangho Kim"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "14 pages, 13 figures, 9 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 4
+   },
+   {
+    "dim": "recent",
+    "query": "abs:memory AND (abs:LLM OR abs:transformer) AND abs:system",
+    "rank": 5
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 6
+   }
+  ],
+  "score": 59
+ },
+ {
+  "id": "2603.13591v1",
+  "title": "d-HNSW: A High-performance Vector Search Engine on Disaggregated Memory",
+  "abstract": "Efficient vector search is essential for powering large-scale AI applications, such as LLMs. Existing solutions are designed for monolithic architectures where compute and memory are tightly coupled. Recently, disaggregated architecture breaks this coupling by separating compution and memory resources into independently scalable pools to improve utilization. However, applying vector database on disaggregated memory system brings unique challenges to system design due to its graph-based index. We present d-HNSW, the first RDMA-based vector search engine optimized for disaggregated memory systems. d-HNSW preserves HNSW's high accuracy while addressing the new system-level challenges introduced by disaggregation: 1) network inefficiency from pointer-chasing traversals, 2) non-contiguous remote memory layout induced by dynamic insertions, 3) redundant data transfers in batch workloads, and 4) resource underutilization due to sequential execution. d-HNSW tackles these challenges through a set of hardware-algorithm co-designed techniques, including 1) balanced clustering with a lightweight representative index to reduce network round-trips and ensure predictable latency, 2) an RDMA-friendly graph layout that preserves data contiguity under dynamic insertions, 3) query-aware data loading to eliminate redundant fetches across batch queries, and 4) a pipelined execution model that overlaps RDMA transfers with computation to hide network latency and improve throughput. Our evaluation results in a public cloud show that d-HNSW achieves up to < 10-2x query latency and > 100x query throughput compared to other baselines, while maintaining a high recall of 94%.",
+  "published": "2026-03-13T21:06:13Z",
+  "updated": "2026-03-13T21:06:13Z",
+  "authors": [
+   "Fei Fang",
+   "Yi Liu",
+   "Chen Qian"
+  ],
+  "categories": [
+   "cs.DB"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 58
+ },
+ {
+  "id": "2203.08906v2",
+  "title": "ORCA: A Network and Architecture Co-design for Offloading us-scale Datacenter Applications",
+  "abstract": "Responding to the \"datacenter tax\" and \"killer microseconds\" problems for datacenter applications, diverse solutions including Smart NIC-based ones have been proposed. Nonetheless, they often suffer from high overhead of communications over network and/or PCIe links. To tackle the limitations of the current solutions, this paper proposes ORCA, a holistic network and architecture co-design solution that leverages current RDMA and emerging cache-coherent off-chip interconnect technologies. Specifically, ORCA consists of four hardware and software components: (1) unified abstraction of inter- and intra-machine communications managed by one-sided RDMA write and cache-coherent memory write; (2) efficient notification of requests to accelerators assisted by cache coherence; (3) cache-coherent accelerator architecture directly processing requests received by NIC; and (4) adaptive device-to-host data transfer for modern server memory systems consisting of both DRAM and NVM exploiting state-of-the-art features in CPUs and PCIe. We prototype ORCA with a commercial system and evaluate three popular datacenter applications: in-memory key-value store, chain replication-based distributed transaction system, and deep learning recommendation model inference. The evaluation shows that ORCA provides 30.1~69.1% lower latency, up to 2.5x higher throughput, and 3x higher power efficiency than the current state-of-the-art solutions.",
+  "published": "2022-03-16T19:43:24Z",
+  "updated": "2022-10-17T23:10:33Z",
+  "authors": [
+   "Yifan Yuan",
+   "Jinghan Huang",
+   "Yan Sun",
+   "Tianchen Wang",
+   "Jacob Nelson",
+   "Dan R. K. Ports",
+   "Yipeng Wang",
+   "Ren Wang",
+   "Charlie Tai",
+   "Nam Sung Kim"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC",
+   "cs.NI"
+  ],
+  "comment": "This paper has been accepted by HPCA'23. This arxiv paper is not the final camera-ready version",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 47
+ },
+ {
+  "id": "2507.11273v1",
+  "title": "KV-Latent: Dimensional-level KV Cache Reduction with Frequency-aware Rotary Positional Embedding",
+  "abstract": "Large language models (LLMs) based on Transformer Decoders have become the preferred choice for conversational generative AI. Despite the overall superiority of the Decoder architecture, the gradually increasing Key-Value (KV) cache during inference has emerged as a primary efficiency bottleneck, both in aspects of memory consumption and data transfer bandwidth limitations. To address these challenges, we propose a paradigm called KV-Latent. By down-sampling the Key-Value vector dimensions into a latent space, we can significantly reduce the KV Cache footprint and improve inference speed, only with a small amount of extra training, less than 1\\% of pre-training takes. Besides, we enhanced the stability of Rotary Positional Embedding applied on lower-dimensional vectors by modifying its frequency sampling mechanism, avoiding noise introduced by higher frequencies while retaining position attenuation. Our experiments, including both models with Grouped Query Attention and those without, have yielded satisfactory results. Finally, we conducted comparative experiments to study the impact of separately reducing Key and Value components on model's performance. Our approach allows for the construction of more efficient language model systems, and opens the new possibility on KV Cache saving and efficient LLMs. Our code is available at https://github.com/ShiLuohe/KV-Latent.",
+  "published": "2025-07-15T12:52:12Z",
+  "updated": "2025-07-15T12:52:12Z",
+  "authors": [
+   "Luohe Shi",
+   "Zuchao Li",
+   "Lefei Zhang",
+   "Guoming Liu",
+   "Baoyuan Qi",
+   "Hai Zhao"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "To be published in The 63rd Annual Meeting of the Association for Computational Linguistics (ACL 2025)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 40
+ },
+ {
+  "id": "2509.18344v2",
+  "title": "Speculate Deep and Accurate: Lossless and Training-Free Acceleration for Offloaded LLMs via Substitute Speculative Decoding",
+  "abstract": "The immense model sizes of large language models (LLMs) challenge deployment on memory-limited consumer GPUs. Although model compression and parameter offloading are common strategies to address memory limitations, compression can degrade quality, and offloading maintains quality but suffers from slow inference. Speculative decoding presents a promising avenue to accelerate parameter offloading, utilizing a fast draft model to propose multiple draft tokens, which are then verified by the target LLM in parallel with a single forward pass. This method reduces the time-consuming data transfers in forward passes that involve offloaded weight transfers. Existing methods often rely on pretrained weights of the same family, but require additional training to align with custom-trained models. Moreover, approaches that involve draft model training usually yield only modest speedups. This limitation arises from insufficient alignment with the target model, preventing higher token acceptance lengths. To address these challenges and achieve greater speedups, we propose SubSpec, a plug-and-play method to accelerate parameter offloading that is lossless and training-free. SubSpec constructs a highly aligned draft model by generating low-bit quantized substitute layers from offloaded target LLM portions. Additionally, our method shares the remaining GPU-resident layers and the KV-Cache, further reducing memory overhead and enhance alignment. SubSpec achieves a high average acceptance length, delivering 9.1x speedup for Qwen2.5 7B on MT-Bench (8GB VRAM limit) and an average of 12.5x speedup for Qwen2.5 32B on popular generation benchmarks (24GB VRAM limit).",
+  "published": "2025-09-22T19:08:57Z",
+  "updated": "2025-10-08T18:16:04Z",
+  "authors": [
+   "Pei-Shuo Wang",
+   "Jian-Jia Chen",
+   "Chun-Che Yang",
+   "Chi-Chih Chang",
+   "Ning-Chi Huang",
+   "Mohamed S. Abdelfattah",
+   "Kai-Chiang Wu"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "Accepted by NeurIPS 2025",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2505.13109v5",
+  "title": "FreeKV: Boosting KV Cache Retrieval for Efficient LLM Inference",
+  "abstract": "Large language models (LLMs) are widely deployed with rapidly expanding context windows to support increasingly demanding applications. However, long contexts pose significant deployment challenges, primarily due to the KV cache whose size grows proportionally with context length. While KV cache compression methods have been proposed to address this issue, KV dropping methods incur considerable accuracy loss, and KV retrieval methods suffer from significant efficiency bottlenecks. We propose FreeKV, a training-free algorithm-system co-optimization framework to enhance KV retrieval efficiency while preserving accuracy. On the algorithm side, FreeKV introduces speculative retrieval to shift the KV selection and recall processes out of the critical path, combined with fine-grained correction to ensure accuracy. On the system side, FreeKV employs hybrid KV layouts across CPU and GPU memory to eliminate fragmented data transfers, and leverages double-buffered streamed recall to further improve efficiency, enabling effective overlap with computation, full latency hiding, and practical speedups from speculative recall. Experiments demonstrate that FreeKV achieves near-lossless accuracy across various scenarios and models, delivering up to a 13$\\times$ speedup compared to SOTA KV retrieval methods. Code is available at https://github.com/sjtu-zhao-lab/FreeKV.",
+  "published": "2025-05-19T13:36:45Z",
+  "updated": "2026-03-09T08:08:41Z",
+  "authors": [
+   "Guangda Liu",
+   "Chengwei Li",
+   "Zhenyu Ning",
+   "Jing Lin",
+   "Yiwu Yao",
+   "Danning Ke",
+   "Minyi Guo",
+   "Jieru Zhao"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2512.12284v3",
+  "title": "V-Rex: Real-Time Streaming Video LLM Acceleration via Dynamic KV Cache Retrieval",
+  "abstract": "Streaming video large language models (LLMs) are increasingly used for real-time multimodal tasks such as video captioning, question answering, conversational agents, and augmented reality. However, these models face fundamental memory and computational challenges because their key-value (KV) caches grow substantially with continuous streaming video input. This process requires an iterative prefill stage, which is a unique feature of streaming video LLMs. Due to its iterative prefill stage, it suffers from significant limitations, including extensive computation, substantial data transfer, and degradation in accuracy. Crucially, this issue is exacerbated for edge deployment, which is the primary target for these models. In this work, we propose V-Rex, the first software-hardware co-designed accelerator that comprehensively addresses both algorithmic and hardware bottlenecks in streaming video LLM inference. At its core, V-Rex introduces ReSV, a training-free dynamic KV cache retrieval algorithm. ReSV exploits temporal and spatial similarity-based token clustering to reduce excessive KV cache memory across video frames. To fully realize these algorithmic benefits, V-Rex offers a compact, low-latency hardware accelerator with a dynamic KV cache retrieval engine (DRE), featuring bit-level and early-exit based computing units. V-Rex achieves unprecedented real-time of 3.9-8.3 FPS and energy-efficient streaming video LLM inference on edge deployment with negligible accuracy loss. While DRE only accounts for 2.2% power and 2.0% area, the system delivers 1.9-19.7x speedup and 3.1-18.5x energy efficiency improvements over AGX Orin GPU. This work is the first to comprehensively tackle KV cache retrieval across algorithms and hardware, enabling real-time streaming video LLM inference on resource-constrained edge devices.",
+  "published": "2025-12-13T11:02:04Z",
+  "updated": "2025-12-24T07:46:59Z",
+  "authors": [
+   "Donghyuk Kim",
+   "Sejeong Yang",
+   "Wonjin Shin",
+   "Joo-Young Kim"
+  ],
+  "categories": [
+   "eess.IV",
+   "cs.AI",
+   "cs.AR",
+   "cs.CV",
+   "cs.MM"
+  ],
+  "comment": "14 pages, 20 figures, conference, accepted by HPCA 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2510.11292v1",
+  "title": "LouisKV: Efficient KV Cache Retrieval for Long Input-Output Sequences",
+  "abstract": "While Key-Value (KV) cache succeeds in reducing redundant computations in auto-regressive models, it introduces significant memory overhead, limiting its practical deployment in long-sequence scenarios. Existing KV retrieval methods mitigate this by dynamically retaining only a subset of KV entries on the GPU. However, they still suffer from notable efficiency and accuracy bottlenecks due to per-token retrieval and coarse-grained page-level KV management, especially in long-output reasoning scenarios. With the emergence of large reasoning models, efficiently handling such scenarios has become increasingly important. To address this issue, we present two key observations: (1) critical KVs exhibit strong temporal locality during decoding, and (2) these KVs exhibit distinct distribution patterns across the input prompt and generated output. Building on these observations, we propose LouisKV, an efficient KV cache retrieval framework designed for various long-sequence scenarios. Specifically, LouisKV introduces a semantic-aware retrieval strategy leveraging temporal locality to trigger retrieval only at semantic boundaries, drastically reducing computation and data transfer overhead. LouisKV also designs a decoupled, fine-grained management scheme that tailors differentiated strategies for input and output sequences to create retrieval units that better match the model's attention patterns, enabling precise identification of critical KVs. Furthermore, to boost efficiency, LouisKV incorporates several kernel-level optimizations, including custom Triton and CUDA kernels to accelerate the KV clustering and retrieval. Evaluations show that LouisKV achieves up to 4.7$\\times$ speedup over state-of-the-art KV retrieval methods while maintaining near-lossless accuracy across diverse long-sequence tasks, including long-input short-output, short-input long-output, and long-input long-output scenarios.",
+  "published": "2025-10-13T11:28:30Z",
+  "updated": "2025-10-13T11:28:30Z",
+  "authors": [
+   "Wenbo Wu",
+   "Qingyi Si",
+   "Xiurui Pan",
+   "Ye Wang",
+   "Jie Zhang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 32
+ },
+ {
+  "id": "2604.22881v1",
+  "title": "MTServe: Efficient Serving for Generative Recommendation Models with Hierarchical Caches",
+  "abstract": "Generative recommendation (GR) offers superior modeling capabilities but suffers from prohibitive inference costs due to the repeated encoding of long user histories. While cross-request Key-Value (KV) cache reuse presents a significant optimization opportunity, the massive scale of individual user states creates a storage explosion that far exceeds physical GPU limits. We propose MTServe, a hierarchical cache management system that virtualizes GPU memory by leveraging host RAM as a scalable backup store. To bridge the I/O gap between tiers, MTServe introduces a suite of system-level optimizations, including a hybrid storage layout, an asynchronous data transfer pipeline, and a locality-driven replacement policy. On both public and production datasets, MTServe delivers up to 3.1* speedup while maintaining near-perfect hit ratios (>98.5%).",
+  "published": "2026-04-24T03:44:35Z",
+  "updated": "2026-04-24T03:44:35Z",
+  "authors": [
+   "Xin Wang",
+   "Chi Ma",
+   "Shaobin Chen",
+   "Pu Wang",
+   "Menglei Zhou",
+   "Junyi Qiu",
+   "Qiaorui Chen",
+   "Jiayu Sun",
+   "Shijie Liu",
+   "Zehuan Wang",
+   "Lei Yu",
+   "Chuan Liu",
+   "Fei Jiang",
+   "Wei Lin",
+   "Hao Wang",
+   "Jiawei Jiang",
+   "Xiao Yan"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2606.01502v1",
+  "title": "Move the Query, Not the Cache: Characterizing Cross-Instance Latent Attention Redistribution Across GPU Fabrics",
+  "abstract": "Frontier LLMs increasingly decide what a query attends to with a sparse-attention indexer that picks a few KV-cache blocks per query: attention's unit is now a small, reusable chunk. Agentic workloads hammer it: many sub-agents query one large codebase, reusing the same blocks. When that corpus outgrows one GPU it is partitioned across instances, so a query and the blocks it selects often sit on different GPUs: answering it means attention across instances. The reflex of prior cross-instance KV systems is to move the cache: pull the selected blocks to the requester. Multi-head Latent Attention inverts the arithmetic, compressing each token's key and value into one narrow vector, so a routed query row is only ~1 KB, smaller than the chunk it attends; routing the query is then often cheaper than moving the cache. Which primitive wins, over which fabric and request shape, is uncharted, least of all on device-initiated RDMA that makes per-request cross-node transfers cheap. We characterize cross-instance MLA attention on a real multi-node H100 cluster, distilling two reusable artifacts: a topology-aware cost model (probe / transfer / compute / return / merge) and a closed-form route/fetch/local predicate, whose constants we measure on real IBGDA, where the model tracks batched round-trips to within ~7%. At decode it routes the query, trading the cost of moving the cache (a ~3 ms re-adaptation splice for a contiguous chunk, or a scattered gather under selection) for a tens-of-microsecond round trip, and picks the fabric by probe latency, not peak bandwidth. We instantiate the cost model and predicate for MLA, but neither is MLA-specific: they apply wherever compression or sparse selection shrinks attention to small chunks (DeepSeek-V3.2, V4, and GLM-5.1 today). Extending them to a new architecture requires measuring just two coefficients: the routed payload and fetch's move-the-cache cost.",
+  "published": "2026-05-31T23:53:24Z",
+  "updated": "2026-05-31T23:53:24Z",
+  "authors": [
+   "Bole Ma",
+   "Jan Eitzinger",
+   "Harald Köstler",
+   "Gerhard Wellein"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2607.13095v1",
+  "title": "Full-Pipeline Inference Optimization for MiMo-V2.5 Series: Pushing Hybrid SWA Efficiency to the Limit",
+  "abstract": "We present a full-pipeline inference optimization for the MiMo-V2.5 model family, which combines Hybrid Sliding Window Attention (Hybrid SWA), sparse Mixture-of-Experts (MoE), and multimodal encoders. While Hybrid SWA can ideally reduce both attention compute and KVCache storage significantly compared to Full Attention, realizing these gains in production requires substantial engineering effort. We systematically optimize the KVCache system with layerwise prefetch, SWA-aware prefix cache trees, and specialized placement strategies, achieving strict $O(W)$ SWA storage and high cache hit rates. We further build GCache, a high-performance distributed cache infrastructure with RDMA-optimized networking, and develop a KVCache-affinity router to reduce computation while preserving load balancing. We also optimize for multimodal inputs, including GPU image preprocessing, parallel video decoding, and multimodal cache sharing. Together, these optimizations constitute the first large-scale LLM serving system in production that efficiently covers the Hybrid SWA + MoE + multimodal composite architecture.",
+  "published": "2026-07-14T03:38:06Z",
+  "updated": "2026-07-14T03:38:06Z",
+  "authors": [
+   " Xiaomi MiMo Team",
+   "Anqi Liu",
+   "Aoxin Ma",
+   "Bo Chen",
+   "Bo Yang",
+   "Chen Wang",
+   "Chen Zhang",
+   "Chengda Tang",
+   "Chengwei Wang",
+   "Chiheng Lou",
+   "Depeng Yan",
+   "Fuli Luo",
+   "Gang Wang",
+   "Hailin Zhang",
+   "Jiale Sun",
+   "Kang Zhou",
+   "Rui Huang",
+   "Shaohui Liu",
+   "Shen Huang",
+   "Shijie Cao",
+   "Shuaishuai Fan",
+   "Tianling Zhou",
+   "Xiangwei Deng",
+   "Xueyang Xie",
+   "Xuli Wang",
+   "Yingchun Lai",
+   "Yu Yang",
+   "Yuan Zhang",
+   "Zhen Tang",
+   "Zhonghua Deng",
+   "Zihan Jiang"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI"
+  ],
+  "comment": "technical report",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2604.09107v2",
+  "title": "TensorHub: Scalable and Elastic Weight Transfer for LLM RL Training",
+  "abstract": "Modern LLM reinforcement learning (RL) workloads require a high-performance weight transfer system to scale training across heterogeneous compute resources. However, efficiently transferring terabyte-scale model weights across thousands of GPUs remains challenging because the system must accommodate clusters that dynamically scale up and down while keeping coordination, data movement, and storage overhead low. We introduce Reference-Oriented Storage (ROS), a new storage abstraction for RL weight transfer that exploits highly replicated model weights in place. ROS presents the illusion that certain versions of the model weights are stored and can be fetched on demand. Underneath, ROS does not physically store any copies of the weights; instead, it tracks the workers that hold these weights on GPUs for inference. Upon request, ROS directly uses them to serve reads. We build TensorHub, a production-quality system that instantiates the ROS idea with topology-aware transfer, model-parallel consistency, and fault tolerance. Evaluation shows that TensorHub saturates RDMA bandwidth and adapts to three distinct rollout workloads with minimal engineering effort. Specifically, TensorHub reduces total GPU stall time by up to 6.7x for standalone rollouts, accelerates weight updates for elastic rollouts by up to 4.8x, and cuts cross-datacenter rollout stall time by up to 19x. TensorHub has been deployed in ByteDance production to support cutting-edge RL training.",
+  "published": "2026-04-10T08:40:56Z",
+  "updated": "2026-09-29T19:29:43Z",
+  "authors": [
+   "Chenhao Ye",
+   "Huaizheng Zhang",
+   "Mingcong Han",
+   "Baoquan Zhong",
+   "Xiang Li",
+   "Qixiang Chen",
+   "Xinyi Zhang",
+   "Weidong Zhang",
+   "Kaihua Jiang",
+   "Wang Zhang",
+   "He Sun",
+   "Wencong Xiao",
+   "Andrea C. Arpaci-Dusseau",
+   "Remzi H. Arpaci-Dusseau"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "Proceedings of the ACM SIGOPS 32nd Symposium on Operating Systems Principles (SOSP '26), pp. 882-897, 2026",
+  "doi": "10.1145/3830418.3843859",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2604.07609v1",
+  "title": "Blink: CPU-Free LLM Inference by Delegating the Serving Stack to GPU and SmartNIC",
+  "abstract": "Large Language Model (LLM) inference is rapidly becoming a core datacenter service, yet current serving stacks keep the host CPU on the critical path for orchestration and token-level control. This makes LLM performance sensitive to CPU interference, undermining application colocation and forcing operators to reserve CPU headroom, leaving substantial capacity unutilized. We introduce Blink, an end-to-end serving architecture that removes the host CPU from the steady-state inference path by redistributing responsibilities across a SmartNIC and a GPU. Blink offloads request handling to the SmartNIC, which delivers inputs directly into GPU memory via RDMA, and replaces host-driven scheduling with a persistent GPU kernel that performs batching, scheduling, and KV-cache management without CPU involvement. Evaluated against TensorRT-LLM, vLLM, and SGLang, Blink outperforms all baselines even in isolation, reducing pre-saturation P99 TTFT by up to 8.47$\\times$ and P99 TPOT by up to 3.40$\\times$, improving decode throughput by up to 2.1$\\times$, and reducing energy per token by up to 48.6$\\%$. Under CPU interference, Blink maintains stable performance, while existing systems degrade by up to two orders of magnitude.",
+  "published": "2026-04-08T21:27:47Z",
+  "updated": "2026-04-08T21:27:47Z",
+  "authors": [
+   "Mohammad Siavashi",
+   "Mariano Scazzariello",
+   "Gerald Q. Maguire",
+   "Dejan Kostić",
+   "Marco Chiesa"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG",
+   "cs.OS",
+   "cs.PF",
+   "cs.SE"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2510.15882v1",
+  "title": "FlexLink: Boosting your NVLink Bandwidth by 27% without accuracy concern",
+  "abstract": "As large language models (LLMs) continue to scale, multi-node deployment has become a necessity. Consequently, communication has become a critical performance bottleneck. Current intra-node communication libraries, like NCCL, typically make use of a single interconnect such as NVLink. This approach creates performance ceilings, especially on hardware like the H800 GPU where the primary interconnect's bandwidth can become a bottleneck, and leaves other hardware resources like PCIe and Remote Direct Memory Access (RDMA)-capable Network Interface Cards (NICs) largely idle during intensive workloads. We propose FlexLink, the first collective communication framework to the best of our knowledge designed to systematically address this by aggregating these heterogeneous links-NVLink, PCIe, and RDMA NICs-into a single, high-performance communication fabric. FlexLink employs an effective two-stage adaptive load balancing strategy that dynamically partitions communication traffic across all available links, ensuring that faster interconnects are not throttled by slower ones. On an 8-GPU H800 server, our design improves the bandwidth of collective operators such as AllReduce and AllGather by up to 26% and 27% over the NCCL baseline, respectively. This gain is achieved by offloading 2-22% of the total communication traffic to the previously underutilized PCIe and RDMA NICs. FlexLink provides these improvements as a lossless, drop-in replacement compatible with the NCCL API, ensuring easy adoption.",
+  "published": "2025-08-30T01:28:47Z",
+  "updated": "2025-08-30T01:28:47Z",
+  "authors": [
+   "Ao Shen",
+   "Rui Zhang",
+   "Junping Zhao"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 22
+ },
+ {
+  "id": "2609.16161v1",
+  "title": "LLM Inference in a Flash!",
+  "abstract": "Large Language Models (LLMs) have shown impressive capabilities across a range of natural language processing tasks, and LLM inference has emerged as a critical workload for enabling downstream applications. The demands of serving LLM inference are becoming increasingly challenging as requests shift toward longer sequences and heavier inference, driven by retrieval-augmented generation, inference-time compute scaling, and long-context applications. Additionally, these challenges are compounded by hardware trends, as memory capacity and communication bandwidth are not scaling as fast as increases in workload complexity. Compute-in-Flash is a promising solution to address memory bandwidth limitations by moving computation close to memory, and to exploit the large capacity of SSD technologies. However, it is challenging to deploy LLMs on these systems as they lack support for high-precision floating point operations and have limited write endurance. In our work, we aim to address these challenges by designing inference algorithms to enable LLM inference on Flash compute-in-memory devices. We present an end-to-end integer-only quantization approach to eliminate expensive floating-point computations. To address the limited write endurance, we design a dictionary-based KV cache compression strategy based on sparse dictionary coding that represents each KV vector as a linear combination of static dictionary vectors. These algorithmic improvements enable us to exploit the benefits of Compute-in-Flash for both model weights and KV cache, and to minimize expensive data transfer operations. Across Llama-3.1-8B and Qwen-2.5-7B, our combined method exhibits limited accuracy degradation while reducing dynamic KV cache traffic by 15$\\times$.",
+  "published": "2026-09-14T18:04:30Z",
+  "updated": "2026-09-14T18:04:30Z",
+  "authors": [
+   "Sebastian Zhao",
+   "Minseo Kim",
+   "Coleman Hooper",
+   "Luca Manolache",
+   "Michael W. Mahoney",
+   "Yakun Sophia Shao",
+   "Kurt Keutzer",
+   "Amir Gholami"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2606.13740v1",
+  "title": "Efficient On-Device Diffusion LLM Inference with Mobile NPU",
+  "abstract": "Diffusion large language models (dLLMs) accelerate generation by denoising multiple tokens in parallel, making them attractive for latency-sensitive mobile inference. However, repeated denoising introduces substantial computation on smartphones. Mobile neural processing units (NPUs) offer high-throughput dense matrix computation, but efficiently exploiting them remains challenging: token commitment shrinks per-block effective workloads, token revision complicates KV cache reuse, and limited NPU-visible address space incurs costly remapping and data transfer overheads. In this paper, we propose llada.cpp, the first NPU-aware inference framework for accelerating dLLMs on smartphones. llada.cpp aligns block-wise dLLM inference with the execution characteristics of mobile NPUs through three techniques. (1) Multi-Block Speculative Decoding fills the shrinking workload in late-stage current-block decoding with speculative future-block tokens. (2) Dual-Path Progressive Revision keeps committed tokens revisable until stable and refreshes unstable tokens through a CPU-side path without stalling dense NPU execution. (3) Swap-Optimized Memory Runtime compacts NPU-visible address layouts and overlaps data staging with NPU computation to reduce remapping and transfer overheads. We implement llada.cpp as an end-to-end framework and evaluate it across diverse hardware platforms and dLLM workloads. llada.cpp reduces LLaDA-8B generation latency by 17x-42x over the CPU baseline with prefix KV cache reuse, while preserving generation quality.",
+  "published": "2026-06-11T12:44:57Z",
+  "updated": "2026-06-11T12:44:57Z",
+  "authors": [
+   "Tuowei Wang",
+   "Yanfan Sun",
+   "Ju Ren"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2603.10030v2",
+  "title": "The DMA Streaming Framework: Kernel-Level Buffer Orchestration for High-Performance AI Data Paths",
+  "abstract": "AI transport libraries move bytes efficiently, but they commonly assume that buffers are already correctly allocated, placed, shared, registered, and safe under completion and teardown pressure. This paper presents dmaplane, a Linux kernel module that makes this missing layer explicit as buffer orchestration. dmaplane exposes a stable kernel UAPI via /dev/dmaplane and composes ring-based command channels, DMA buffer lifecycle management, dma-buf export for cross-device sharing, a kernel-space RDMA engine, NUMA-aware allocation and verification, credit-based flow control, low-overhead observability, and GPU memory integration via PCIe BAR pinning. We evaluate orchestration sensitivity with measurements of NUMA cross-node penalties at DRAM scale, completion-safe flow control under sustained RDMA load, and GPU BAR mapping tiers versus cudaMemcpy. We also demonstrate end-to-end disaggregated inference by transferring KV-cache chunks between two machines using RDMA WRITE WITH IMMEDIATE and reconstructing tensor views on the receiver. RDMA measurements use Soft-RoCE; we distinguish measured results from provider-independent properties by construction.",
+  "published": "2026-02-26T23:44:02Z",
+  "updated": "2026-03-25T18:56:49Z",
+  "authors": [
+   "Marco Graziano"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.DC"
+  ],
+  "comment": "corrected table numbering, fixed Section 1.3 contribution list numbering, minor formatting fixes",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2601.14549v1",
+  "title": "QMC: Efficient SLM Edge Inference via Outlier-Aware Quantization and Emergent Memories Co-Design",
+  "abstract": "Deploying Small Language Models (SLMs) on edge platforms is critical for real-time, privacy-sensitive generative AI, yet constrained by memory, latency, and energy budgets. Quantization reduces model size and cost but suffers from device noise in emerging non-volatile memories, while conventional memory hierarchies further limit efficiency. SRAM provides fast access but has low density, DRAM must simultaneously accommodate static weights and dynamic KV caches, which creates bandwidth contention, and Flash, although dense, is primarily used for initialization and remains inactive during inference. These limitations highlight the need for hybrid memory organizations tailored to LLM inference. We propose Outlier-aware Quantization with Memory Co-design (QMC), a retraining-free quantization with a novel heterogeneous memory architecture. QMC identifies inlier and outlier weights in SLMs, storing inlier weights in compact multi-level Resistive-RAM (ReRAM) while preserving critical outliers in high-precision on-chip Magnetoresistive-RAM (MRAM), mitigating noise-induced degradation. On language modeling and reasoning benchmarks, QMC outperforms and matches state-of-the-art quantization methods using advanced algorithms and hybrid data formats, while achieving greater compression under both algorithm-only evaluation and realistic deployment settings. Specifically, compared against SoTA quantization methods on the latest edge AI platform, QMC reduces memory usage by 6.3x-7.3x, external data transfers by 7.6x, energy by 11.7x, and latency by 12.5x when compared to FP16, establishing QMC as a scalable, deployment-ready co-design for efficient on-device inference.",
+  "published": "2026-01-21T00:11:34Z",
+  "updated": "2026-01-21T00:11:34Z",
+  "authors": [
+   "Nilesh Prasad Pandey",
+   "Jangseon Park",
+   "Onat Gungor",
+   "Flavio Ponzina",
+   "Tajana Rosing"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 20
+ },
+ {
+  "id": "2610.12815v2",
+  "title": "Deploying RDMA for Distributed Inference and Training At Scale",
+  "abstract": "RDMA can reduce communication overhead in distributed machine learning systems, but realizing these benefits in production requires more than replacing TCP. Variable-size messages, concurrent connections, bursty incasts, and service failures introduce challenges that hardware offload alone cannot address. This paper reports our experience deploying ByteExpress, a software communication layer over hardware RDMA, in ByteDance's parameter-server-based inference and training systems. We present three lessons from the deployment: efficient RDMA requires buffer management across application and transport layers; scalable communication requires coordinated management of connections, receive capacity, and outstanding data; and service availability requires recovery above the transport layer. ByteExpress combines an RDMA-aware allocator, zero-copy transfers, QP multiplexing, receive-credit flow control, a software send window, and RPC-assisted recovery. In production inference, ByteExpress reduces mean and P99 model parameter fetch latency by 35.7% and 43.7%, respectively, and total CPU usage by 10.69% compared with kernel TCP. In training, ByteExpress reduces P99 model parameter push latency by up to 74.0% compared with TCP, with no PFC pauses observed at runtime.",
+  "published": "2026-10-08T23:57:00Z",
+  "updated": "2026-10-12T14:44:37Z",
+  "authors": [
+   "Yibo Huang",
+   "Yi Cui",
+   "Yukai Huang",
+   "Huaping Zhou",
+   "Jiancong Tong",
+   "Zhaoyu Wu",
+   "Gen Miao",
+   "Haoran Wei",
+   "Boyan Ding",
+   "Zhuo Jiang",
+   "Jianxi Ye",
+   "Yibo Zhu",
+   "Chuanxiong Guo",
+   "Yang Xu",
+   "Jie Wu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC",
+   "cs.NI",
+   "eess.SY"
+  ],
+  "comment": "14 pages, 16 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2602.11456v2",
+  "title": "AuroraRL: Fast, Fault-Tolerant, and Cost-Efficient Reinforcement Learning over Decentralized Network",
+  "abstract": "LLM reinforcement learning (RL) requires frequent synchronization of large model parameters between the trainer and distributed rollout actors. High-throughput RL post-training therefore relies on dedicated RDMA HPC/cloud clusters, an infrastructure cost most organizations cannot absorb. A natural alternative is to aggregate loosely-coupled GPUs over standard Ethernet and WAN links, but this commodity connectivity cannot sustain full-weight broadcasts: synchronizing an 8B model can take over 100~seconds on bandwidth-limited links, while rollout generation typically takes tens of seconds. Toward making RL practical in this regime, we observe that RL fine-tuning yields highly sparse per-step updates, with only around 1\\% of parameter elements changing. On top of this insight, we present AuroraRL, a novel high-performance RL training system that preserves bit-exact updates without dropping or quantizing information, designed for commodity-networked, loosely-coupled GPU resources. AuroraRL represents each step as a sparse delta checkpoint, pipelines delta extraction with multi-stream transmission, overlaps transfer with rollout generation, and coordinates heterogeneous workers with throughput- and bandwidth-aware scheduling plus lease-based fault tolerance. Across Qwen3 4B--14B models deployed in up to four geographic regions, AuroraRL shrinks per-step weight transfer by 79$\\times$ on Qwen3-8B, delivers 1.3--9.5$\\times$ higher throughput than dense-broadcast baselines (PrimeRL-Full, async-tolerant, multi-stream variants), and brings end-to-end training within 8.91\\% of an ideal RDMA single-datacenter baseline, while transparently tolerating common failures and preserving training accuracy. By leveraging on-demand, cross-cloud GPUs over commodity links, AuroraRL delivers 1.21--1.59$\\times$ higher tokens per dollar than reserved RDMA clusters at comparable throughput.",
+  "published": "2026-02-12T00:26:53Z",
+  "updated": "2026-08-04T08:12:37Z",
+  "authors": [
+   "Chaoyi Ruan",
+   "Geng Luo",
+   "Xinyi Wan",
+   "Long Zhao",
+   "Qinghe Wang",
+   "Jiaan Zhu",
+   "Duling Xu",
+   "Guanbin Xu",
+   "Dehui Wei",
+   "Xiang Liu",
+   "Cheng Li",
+   "Haifeng Sun",
+   "Liang Luo",
+   "Congcong Miao",
+   "Jialin Li"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2601.20655v1",
+  "title": "OnePiece: A Large-Scale Distributed Inference System with RDMA for Complex AI-Generated Content (AIGC) Workflows",
+  "abstract": "The rapid growth of AI-generated content (AIGC) has enabled high-quality creative production across diverse domains, yet existing systems face critical inefficiencies in throughput, resource utilization, and scalability under concurrent workloads. This paper introduces OnePiece, a large-scale distributed inference system with RDMA optimized for multi-stage AIGC workflows. By decomposing pipelines into fine-grained microservices and leveraging one-sided RDMA communication, OnePiece significantly reduces inter-node latency and CPU overhead while improving GPU utilization. The system incorporates a novel double-ring buffer design to resolve deadlocks in RDMA-aware memory access without CPU involvement. Additionally, a dynamic Node Manager allocates resources elastically across workflow stages in response to real-time load. Experimental results demonstrate that OnePiece reduces GPU resource consumption by 16x in Wan2.1 image-to-video generation compared to monolithic inference pipelines, offering a scalable, fault-tolerant, and efficient solution for production AIGC environments.",
+  "published": "2026-01-28T14:38:16Z",
+  "updated": "2026-01-28T14:38:16Z",
+  "authors": [
+   "June Chen",
+   "Neal Xu",
+   "Gragas Huang",
+   "Bok Zhou",
+   "Stephen Liu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "12 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2510.12064v1",
+  "title": "GeoPipe: a Geo-distributed LLM Training Framework with enhanced Pipeline Parallelism in a Lossless RDMA-enabled Datacenter Optical Transport Network",
+  "abstract": "The proliferation of Large Language Models (LLMs) with exponentially growing parameters is making cross-data center (DC) training an inevitable trend. However, viable strategies for extending single-DC training frameworks to multi-DC environments remain underdeveloped. We experimentally demonstrate, for the first time, a high-performance geo-distributed LLMs training framework across multiple DCs interconnected by a lossless, remote direct memory access (RDMA) enabled Datacenter Optical Transport Network (DC-OTN). An enhanced pipeline parallelism scheme is implemented within the Ascend full-stack environment of Huawei, which effectively eliminates the impact of cross-DC communication overhead on training efficiency. The overlapped computation and cross-DC communication is achieved with constraint cross-DC bandwidth and High Bandwidth Memory (HBM), reducing computation bubble ratio by up to 78.91%.",
+  "published": "2025-10-14T02:05:33Z",
+  "updated": "2025-10-14T02:05:33Z",
+  "authors": [
+   "Jun Dai",
+   "Xiaorun Wang",
+   "Kexiong Fang",
+   "Zheng Yang",
+   "Yuefeng Ji",
+   "Jiawei Zhang"
+  ],
+  "categories": [
+   "cs.NI"
+  ],
+  "comment": "6 pages, 4 figures",
+  "journal_ref": "2025 Asia Communications and Photonics Conference (ACP), 2025",
+  "doi": "10.1109/ACP66871.2025.11350566",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2603.13606v3",
+  "title": "NCCL EP: Towards a Unified Expert Parallel Communication API for NCCL",
+  "abstract": "Mixture-of-Experts (MoE) architectures have become essential for scaling large language models, driving the development of specialized device-initiated communication libraries such as DeepEP, Hybrid-EP, and others. These libraries demonstrate the performance benefits of GPU-initiated RDMA for MoE dispatch and combine operations. This paper presents NCCL EP (Expert Parallelism), a ground-up MoE communication library built entirely on NCCL's Device API. NCCL EP provides unified ncclEpDispatch and ncclEpCombine primitives with both C and Python interfaces, supporting Low-Latency (LL) mode for inference decoding and High-Throughput (HT) mode for training and inference prefill. LL targets small batch sizes (1-128 tokens) using direct all-to-all RDMA+NVLink mesh connectivity with double-buffered communication for overlapping dispatch and combine phases. HT targets large batches (4096+ tokens) using hierarchical communication that aggregates tokens within NVLink domains before inter-node RDMA transmission. Both modes leverage Device API for both intra- and inter-node communications, taking advantage of its topology awareness and optimized GPU-initiated implementation. We evaluate NCCL EP on an H100-based cluster across multi-node configurations, demonstrating competitive LL kernel performance and presenting end-to-end results with vLLM integration. By building MoE communication natively within NCCL, NCCL EP provides a supported path for expert parallelism on current and emerging NVIDIA platforms.",
+  "published": "2026-03-13T21:28:22Z",
+  "updated": "2026-04-02T13:25:06Z",
+  "authors": [
+   "Amos Goldman",
+   "Nimrod Boker",
+   "Maayan Sheraizin",
+   "Nimrod Admoni",
+   "Artem Polyakov",
+   "Subhadeep Bhattacharya",
+   "Fan Yu",
+   "Kai Sun",
+   "Georgios Theodorakis",
+   "Hsin-Chun Yin",
+   "Peter-Jan Gootzen",
+   "Aamir Shafi",
+   "Assaf Ravid",
+   "Salvatore Di Girolamo",
+   "James Dinan",
+   "Xiaofan Li",
+   "Manjunath Gorentla Venkata",
+   "Gil Bloch"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.AR",
+   "cs.LG"
+  ],
+  "comment": "13 pages, 8 figures, 7 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 16
+ },
+ {
+  "id": "2506.15704v1",
+  "title": "Learn from the Past: Fast Sparse Indexing for Large Language Model Decoding",
+  "abstract": "As large language models (LLMs) continue to support increasingly longer contexts, the memory demand for key-value (KV) caches during decoding grows rapidly, becoming a critical bottleneck in both GPU memory capacity and PCIe bandwidth. Sparse attention mechanisms alleviate this issue by computing attention weights only for selected key-value pairs. However, their indexing computation typically requires traversing all key vectors, resulting in significant computational and data transfer overhead. To reduce the cost of index retrieval, existing methods often treat each decoding step as an independent process, failing to exploit the temporal correlations embedded in historical decoding information. To this end, we propose LFPS(Learn From the Past for Sparse Indexing), an acceleration method that dynamically constructs sparse indexing candidates based on historical attention patterns. LFPS captures two prevalent trends in decoder attention -vertical patterns (attending to fixed positions) and slash patterns (attending to relative positions) -and incorporates a positional expansion strategy to effectively predict the Top-k indices for the current step. We validate LFPS on challenging long-context benchmarks such as LongBench-RULER, using Llama-3.1-8B-Instruct as the base model. Experimental results show that LFPS achieves up to 22.8$\\times$ speedup over full attention and 9.6$\\times$ speedup over exact Top-k retrieval on an RTX 4090 GPU and a single CPU core of a Xeon Gold 6430, respectively, while preserving generation accuracy. These results demonstrate that LFPS offers a practical and efficient solution for decoding optimization in long-context LLM inference.",
+  "published": "2025-05-30T02:35:59Z",
+  "updated": "2025-05-30T02:35:59Z",
+  "authors": [
+   "Feiyu Yao",
+   "Qian Wang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 16
+ },
+ {
+  "id": "2610.24328v1",
+  "title": "SigmaTrace: Library-Agnostic Observability for CPU/GPU-Initiated RDMA Communication",
+  "abstract": "RDMA networking enables low-latency, high-bandwidth communication on large systems. Despite its adoption, however, observability is lacking. Existing tools target specific communication libraries or only report aggregated data, missing per-operation behavior. The gap is widest for GPU-initiated networking, whose in-kernel RDMA operations are invisible to the host. We present SigmaTrace, a library-agnostic RDMA profiling framework providing fine-grained, per-operation visibility for CPU and GPU-initiated networking. It traces operations at the libibverbs/mlx5dv layers, the common denominator beneath communication libraries on InfiniBand and RoCE, and employs a low-overhead memory interposition technique that, to our knowledge, gives the first observability into GPU-initiated RDMA without source patching or binary instrumentation. Host-side tracing adds 1.3% overhead on NCCL AllReduce at 128 GPUs and under 2% on RCCL at 1024 GPUs. On a persistent-kernel BFS and Mixture-of-Experts inference, SigmaTrace exposes an in-kernel barrier spread and 2.13x inter-node traffic skew invisible to existing profilers.",
+  "published": "2026-10-16T23:49:40Z",
+  "updated": "2026-10-16T23:49:40Z",
+  "authors": [
+   "Javid Baydamirli",
+   "Didem Unat"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "Accepted at SC26. Author's accepted manuscript. 13 pages, 10 figures, 1 table. Code: https://github.com/ParCoreLab/SigmaTrace",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2609.18066v3",
+  "title": "Towards Training Private LLMs: Exploring Fine-Tuning Language Models on Apple Silicon with RDMA over Thunderbolt",
+  "abstract": "Private large language model (LLM) fine-tuning is increasingly important for organizations that need to adapt models using sensitive data, but it often exceeds the memory capacity of commodity datacenter accelerators. Apple Silicon offers a different design point through large unified memory and lower complete-system cost, while recent Apple software support enables distributed execution over RDMA-over-Thunderbolt (TB). This paper studies whether Apple Silicon can serve as a practical platform for private LLM fine-tuning. We characterize RDMA-over-TB communication on Mac Studio nodes, showing that the measured bandwidth is far below nominal TB specifications. Next, we extend Apple's implementation with multi-trunk communication, persistent worker threads, and CPU-side gradient overlap to better exploit multiple direct TB links for LLM fine-tuning workloads. Finally, on a four-node Mac Studio cluster that fine-tunes a Qwen3-9B, our optimizations improve weak-scaling throughput by up to 1.6X over the single-trunk, non-overlapped baseline and reach 936 tokens/s for sequence length 17408. We further compare Apple Silicon with an NVIDIA H100 platform to quantify the trade-off between memory capacity, throughput, and acquisition cost, showing that Apple Silicon can provide a cost-effective solution for private LLM fine-tuning.",
+  "published": "2026-09-16T03:11:40Z",
+  "updated": "2026-10-04T04:23:15Z",
+  "authors": [
+   "En-Ming Huang",
+   "Yao-Ting Hsieh",
+   "Hsiang-Yu Tsou",
+   "Mu-Chi Chen",
+   "Shih-Hao Hung",
+   "H. T. Kung"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "8 pages, 13 figures, accepted by ACM RACS'26",
+  "journal_ref": "",
+  "doi": "10.1145/3848591.3856833",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2512.22743v1",
+  "title": "OptiNIC: A Resilient and Tail-Optimal RDMA NIC for Distributed ML Workloads",
+  "abstract": "As distributed machine learning (ML) workloads scale to thousands of GPUs connected by high-speed interconnects, tail latency in collective communication has become a major bottleneck. Existing RDMA transports, such as RoCE, IRN, SRNIC, and Falcon, enforce strict reliability and in-order delivery, relying on retransmissions and packet sequencing to ensure correctness. While these approaches work well for general-purpose workloads, they introduce complexity and latency that scale poorly in ML, where even rare packet delays can stall entire model pipelines. We present OptiNIC, a domain-specific RDMA transport that revisits traditional reliability guarantees based on ML's tolerance for partial or missing data. OptiNIC eliminates retransmissions and in-order delivery from the NIC, enabling a best-effort, out-of-order transport model for RDMA. Unlike traditional RDMA, which signals completion only after complete data delivery, OptiNIC introduces adaptive timeouts to trigger forward progress when data may be lost or delayed. OptiNIC retains standard congestion control mechanisms (e.g., DCQCN, EQDS, or Swift) while shifting loss recovery to the ML pipeline itself (e.g., via the Hadamard Transform and Erasure Coding). Our evaluation shows that OptiNIC improves time-to-accuracy (TTA) by 2x and increases throughput by 1.6x for training and inference, respectively, across two public clouds (i.e., Hyperstack and CloudLab). OptiNIC also lowers 99th-percentile latency by 3.5x, cuts BRAM usage by 2.7x, and nearly doubles NIC resilience to faults-delivering a resilient, tail-optimized RDMA transport purpose-built for distributed ML workloads.",
+  "published": "2025-12-28T02:24:26Z",
+  "updated": "2025-12-28T02:24:26Z",
+  "authors": [
+   "Ertza Warraich",
+   "Ali Imran",
+   "Annus Zulfiqar",
+   "Shay Vargaftik",
+   "Sonia Fahmy",
+   "Muhammad Shahbaz"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.NI"
+  ],
+  "comment": "15 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 14
+ },
+ {
+  "id": "2507.15867v2",
+  "title": "RDMA: Cost Effective Agent-Driven Rare Disease Mining from Electronic Health Records",
+  "abstract": "Rare diseases affect 1 in 10 Americans yet remain systematically underdocumented in clinical records. ICD-based systems cannot capture their breadth, over 50\\% of Orphanet codes lack a direct ICD mapping and only 2.2\\% of HPO codes have matching ICD codes, leaving patient populations invisible and delaying diagnosis. Mining unstructured clinical notes offers a direct path forward, but real notes are long, noisy, and abbreviation-dense, and limited annotations make fine-tuning infeasible, demanding approaches that generalize without task-specific training. We present Rare Disease Mining Agents (RDMA), an agentic framework equipping smaller quantized LLMs with tools for abbreviation resolution, implicit phenotype reasoning, and ontology grounding against Orphanet and HPO. RDMA substantially outperforms fine-tuned and RAG-based baselines across benchmarks with different data characteristics, without any task-specific training. A small quantized model achieves maximal performance, reducing inference costs by up to 10x and local hardware costs by up to 17x, enabling private deployment on standard hardware without cloud-based PHI exposure. RDMA's uncertainty-flagging mechanism further reduces expert annotation burden while preserving agreement quality, supporting scalable rare disease documentation in clinical practice. Available at https://github.com/jhnwu3/RDMA.",
+  "published": "2025-07-14T23:31:15Z",
+  "updated": "2026-05-13T04:36:42Z",
+  "authors": [
+   "John Wu",
+   "Adam Cross",
+   "Jimeng Sun"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL",
+   "cs.MA"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 14
+ },
+ {
+  "id": "2604.23932v1",
+  "title": "MatchRDMA: A Segmented and Rate-Matched Long-Haul RDMA Scheme for Geo-distributed LLM Training over OTN",
+  "abstract": "We propose MatchRDMA, a proactive, segmented, and rate-matched long-haul RDMA scheme for geo-distributed LLM training over OTN. By coordinating source and destination OTN rates, it improves inter-DC throughput by up to 20x compared with conventional RDMA, and reduces destination-OTN buffer occupancy by up to 62.7%.",
+  "published": "2026-04-27T01:16:21Z",
+  "updated": "2026-04-27T01:16:21Z",
+  "authors": [
+   "Jun Dai",
+   "Xiaorun Wang",
+   "Xingde Li",
+   "Zheng Yang",
+   "Kexiong Fang",
+   "Zhiqun Gu",
+   "Hongxiang Wang",
+   "Yuefeng Ji",
+   "Jiawei Zhang"
+  ],
+  "categories": [
+   "cs.NI"
+  ],
+  "comment": "4 pages, 3 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 13
+ },
+ {
+  "id": "2609.13585v1",
+  "title": "mKernel: Fast Multi-GPU, Multi-Node Fused Kernels",
+  "abstract": "Communication has become a bottleneck in distributed training and inference of large models. Overlapping communication with computation at the granularity of kernels, on separate streams, reduces only part of this communication cost. Fused kernels often have better performance by transmitting each output tile as soon as it is produced, but existing fused kernels are largely confined to a single NVLink domain. We present mKernel, a library of multi-GPU, multi-node fused kernels that overlap computation, intra-node NVLink communication, and inter-node RDMA at tile granularity. mKernel partitions the streaming multiprocessors (SMs) of a persistent kernel into compute and communication roles, and an on-GPU controller tunes the SM partition adaptively at run time, since the best SM partition varies with the kernel and the input shape. It structures data movement hierarchically so that data traversing the inter-node network is minimized. Finally, it drives the network from the GPU through a lightweight command queue and host proxy implemented directly on RDMA verbs, which allows the same kernels to run on any network backend (e.g. InfiniBand and on AWS EFA); we observe, surprisingly, that GPUDirect Async (IBGDA) yields little additional benefit over host-assisted GPU-initiated communication. We implement five kernels spanning tensor, sequence, and expert parallelism. On two 16-GPU H200 clusters, mKernel achieves speedups of up to 1.72x on GEMM+AllReduce and $1.88\\times$ on Ring Attention.",
+  "published": "2026-09-11T22:50:04Z",
+  "updated": "2026-09-11T22:50:04Z",
+  "authors": [
+   "Ziming Mao",
+   "Yihan Zhang",
+   "Shawn Wei Chew",
+   "Shuang Ma",
+   "Costin Raiciu",
+   "Yang Zhou",
+   "Scott Shenker",
+   "Ion Stoica"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2605.00686v1",
+  "title": "Eliminating Hidden Serialization in Multi-Node Megakernel Communication",
+  "abstract": "Recent megakernel designs for Mixture-of-Experts (MoE) inference fuse expert computation with fine-grained, GPU-initiated communication into a single persistent GPU kernel, and outperform collective-based MoE on a single node by overlapping data transfer with compute at tile granularity. This benefit does not carry over cleanly to multi-node inference, where experts span many nodes connected by an RDMA fabric. Communication-bound MoE models regress by up to $10\\times$ on 8 nodes, and the regression worsens with node count. We trace this regression to hidden serialization in proxy-based RDMA transports. The ordering requirement between each tile transfer and its completion signal forces a fence that drains the NIC pipeline, and its cost grows with the number of concurrent transfers. As a result, models whose per-expert compute is too small to absorb this inflated network latency expose communication on the critical path. We present \\emph{Perseus}, which eliminates this serialization through two techniques. \\emph{Decoupled signaling} batches fences at per-destination granularity, reducing fence count by $8\\times$. \\emph{NIC-side ordering} replaces proxy stalls with hardware fence flags, so the proxy never blocks. On proxy-based transports, Perseus achieves up to 10.3$\\times$ end-to-end speedup. Perseus on IBRC matches or exceeds IBGDA GPU-direct by up to 1.2$\\times$, which shows that serialization, rather than the choice between proxy-based and GPU-direct transport, is what bounds multi-node megakernel performance.",
+  "published": "2026-05-01T14:18:30Z",
+  "updated": "2026-05-01T14:18:30Z",
+  "authors": [
+   "Byungsoo Oh",
+   "Rachee Singh"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 10
+ },
+ {
+  "id": "2312.11742v1",
+  "title": "ACCL+: an FPGA-Based Collective Engine for Distributed Applications",
+  "abstract": "FPGAs are increasingly prevalent in cloud deployments, serving as Smart NICs or network-attached accelerators. Despite their potential, developing distributed FPGA-accelerated applications remains cumbersome due to the lack of appropriate infrastructure and communication abstractions. To facilitate the development of distributed applications with FPGAs, in this paper we propose ACCL+, an open-source versatile FPGA-based collective communication library. Portable across different platforms and supporting UDP, TCP, as well as RDMA, ACCL+ empowers FPGA applications to initiate direct FPGA-to-FPGA collective communication. Additionally, it can serve as a collective offload engine for CPU applications, freeing the CPU from networking tasks. It is user-extensible, allowing new collectives to be implemented and deployed without having to re-synthesize the FPGA circuit. We evaluated ACCL+ on an FPGA cluster with 100 Gb/s networking, comparing its performance against software MPI over RDMA. The results demonstrate ACCL+'s significant advantages for FPGA-based distributed applications and highly competitive performance for CPU applications. We showcase ACCL+'s dual role with two use cases: seamlessly integrating as a collective offload engine to distribute CPU-based vector-matrix multiplication, and serving as a crucial and efficient component in designing fully FPGA-based distributed deep-learning recommendation inference.",
+  "published": "2023-12-18T22:56:01Z",
+  "updated": "2023-12-18T22:56:01Z",
+  "authors": [
+   "Zhenhao He",
+   "Dario Korolija",
+   "Yu Zhu",
+   "Benjamin Ramhorst",
+   "Tristan Laan",
+   "Lucian Petrica",
+   "Michaela Blott",
+   "Gustavo Alonso"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AR",
+   "cs.LG",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2402.02320v2",
+  "title": "Spin: An Efficient Secure Computation Framework with GPU Acceleration",
+  "abstract": "Accuracy and efficiency remain challenges for multi-party computation (MPC) frameworks. Spin is a GPU-accelerated MPC framework that supports multiple computation parties and a dishonest majority adversarial setup. We propose optimized protocols for non-linear functions that are critical for machine learning, as well as several novel optimizations specific to attention that is the fundamental unit of Transformer models, allowing Spin to perform non-trivial CNNs training and Transformer inference without sacrificing security. At the backend level, Spin leverages GPU, CPU, and RDMA-enabled smart network cards for acceleration. Comprehensive evaluations demonstrate that Spin can be up to $2\\times$ faster than the state-of-the-art for deep neural network training. For inference on a Transformer model with 18.9 million parameters, our attention-specific optimizations enable Spin to achieve better efficiency, less communication, and better accuracy.",
+  "published": "2024-02-04T02:12:15Z",
+  "updated": "2024-02-24T04:49:28Z",
+  "authors": [
+   "Wuxuan Jiang",
+   "Xiangjun Song",
+   "Shenbai Hong",
+   "Haijun Zhang",
+   "Wenxin Liu",
+   "Bo Zhao",
+   "Wei Xu",
+   "Yi Li"
+  ],
+  "categories": [
+   "cs.CR",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ }
+]

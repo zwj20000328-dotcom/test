@@ -1,0 +1,2753 @@
+[
+ {
+  "id": "2604.26557v1",
+  "title": "DUAL-BLADE: Dual-Path NVMe-Direct KV-Cache Offloading for Edge LLM Inference",
+  "abstract": "The increasing deployment of Large Language Model (LLM) inference on edge AI systems demands efficient execution under tight memory budgets. A key challenge arises from Key-Value (KV) caches, which often exceed available device memory. Although NVMe-based offloading offers scalable capacity, existing file-based designs rely heavily on the kernel page cache, leading to cache thrashing, unpredictable latency, and high software overhead under memory pressure. We present DUAL-BLADE, a dual-path KV residency framework that dynamically assigns KV tensors to either a page-cache path or an NVMe-direct path based on runtime memory availability. The NVMe-direct path bypasses the filesystem by mapping KV tensors to contiguous logical block address (LBA) regions, enabling low-overhead direct storage access. DUAL-BLADE further incorporates adaptive pipeline parallelism to overlap storage I/O with GPU DMA, improving inference throughput. Our evaluation shows that DUAL-BLADE substantially mitigates I/O bottlenecks, reducing prefill and decode latency by up to 33.1% and 42.4%, respectively, while improving SSD utilization by 2.2x across diverse memory budgets.",
+  "published": "2026-04-29T11:44:35Z",
+  "updated": "2026-04-29T11:44:35Z",
+  "authors": [
+   "Bodon Jeong",
+   "Hongsu Byun",
+   "Youngjae Kim",
+   "Weikuan Yu",
+   "Kyungkeun Lee",
+   "Jihoon Yang",
+   "Sungyong Park"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.PF"
+  ],
+  "comment": "To appear in IEEE International Conference on Distributed Computing Systems (ICDCS) 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 94
+ },
+ {
+  "id": "2511.11907v2",
+  "title": "KVSwap: Disk-aware KV Cache Offloading for Long-Context On-device Inference",
+  "abstract": "Language models (LMs) underpin emerging mobile and embedded AI applications like meeting and video summarization and document analysis, which often require processing multiple long-context inputs. Running an LM locally on-device improves privacy, enables offline use, and reduces cost, but long-context inference quickly hits a \\emph{memory capacity wall} as the key-value (KV) cache grows linearly with context length and batch size. Existing KV-cache offloading schemes are designed to transfer cache data from GPU memory to CPU memory; however, they are not suitable for embedded and mobile systems, where the CPU and GPU (or NPU) typically share a unified memory and the non-volatile secondary storage (disk) offers limited I/O bandwidth. We present KVSwap, a software framework tailored for local devices that achieves high memory efficiency while effectively leveraging disk storage. KVSwap stores the full cache on disk, uses highly compact in-memory metadata to predict which entries to preload, overlaps computation with hardware-aware disk access, and orchestrates read patterns to match storage device characteristics. Our evaluation shows that across representative LMs and storage types, KVSwap delivers higher throughput under tight memory budgets while maintaining generation quality over existing KV cache offloading schemes.",
+  "published": "2025-11-14T22:37:57Z",
+  "updated": "2025-12-11T23:35:19Z",
+  "authors": [
+   "Huawei Zhang",
+   "Chunwei Xia",
+   "Zheng Wang"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 92
+ },
+ {
+  "id": "2610.30791v1",
+  "title": "Gandalf: Flash Shall Not Die! Increasing Flash Storage Lifetime for KV Cache Offloading in LLM Serving",
+  "abstract": "KV caching reduces the serving cost of large language models (LLMs), but the growing KV cache footprint is increasingly exceeds GPU and host-memory capacity. Therefore, people use SSD to expand the KV cache storage capacity with high I/O bandwidth. However, in production LLM workload, such as multi-round conversation and LLM agents, the total amount of KV cache writes significantly exceeds SSD capacity, shortening SSD lifetime from years to months. To improve SSD lifetime, a natural solution is to reduce the KV cache writes by gating the KV cache writes via historical access patterns. However, that significantly lowers the KV cache hit rate (and increase the LLM serving cost) since KV caches from different attention types might have identical historical access pattern but different future access patterns. Our insight is that, to reduce KV cache writes without hurting KV cache hit rate, one need to not only consider the access pattern, but also application-level information such as the attention type of KV cache. Leveraging this observation, we propose Gandalf , the first SSD KV cache offloading system with SSD life time awareness. Gandalf prioritize the admission of full-attention KV cache into SSD over the cache generated by other types of attention, which significantly increases SSD lifetime without sacrificing cache hit rate. Our evaluation shows that Gandalf extends the SSD lifetime by 7.3X on average, while having negligible impact on cache hit rate across multiple workload traces and wide range of hardware capacity. Gandalf design can be extended to other flash-based storage, such as High Bandwidth Flash (HBF).",
+  "published": "2026-10-22T06:10:08Z",
+  "updated": "2026-10-22T06:10:08Z",
+  "authors": [
+   "Maharani A. P. Irawan",
+   "Kuntai Du",
+   "Jiayi Yao",
+   "Dongjoo Seo",
+   "Yuyang Huang",
+   "Haryadi S. Gunawi",
+   "Junchen Jiang"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 4
+   },
+   {
+    "dim": "recent",
+    "query": "abs:memory AND (abs:LLM OR abs:transformer) AND abs:system",
+    "rank": 5
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"agent\" AND abs:memory AND abs:\"large language model\"",
+    "rank": 6
+   }
+  ],
+  "score": 86
+ },
+ {
+  "id": "2610.21249v1",
+  "title": "Characterizing Predictability-Latency Trade-offs of KV-Cache SSD Offloading in LMCache for LLM Serving Systems",
+  "abstract": "KV-cache offload is widely used to stretch GPU memory for LLM serving, but its storage behavior has not been characterized at the block-device level. In this paper, we study LMCache through realworld multi-session workloads that span same/different context x same/different prompt, using over 100 stateless requests per workload. Our comparison is observational rather than factorial: it contrasts two realizable deployment snapshots -- LMCache 0.3.0 with buffered I/O and the kernel page cache, and LMCache 0.3.16 with prefix-aware deduplication and O_DIRECT. Key findings define the paper. First, the legacy stack appears almost read-free at the SSD layer in all four workloads, but a flush_ram experiment shows that this is conditional on page-cache warmth: once the cache is evicted, the same path issues about 1 GB of sequential reads in 683 ms. Second, deduplication delivers a dramatic write reduction only for the exact-repeat workload: one set collapses from 1.62 GB to 11.75 MB of writes, while the other three sets remain in the 2-5 GB range. Third, O_DIRECT converts a hidden and bimodal read cost into an explicit and stable one: on one set, warm TTFT rises from 27 ms to 93 ms because each of the 99 warm requests re-reads the same ~12 MB partial chunk from SSD. The main conclusion is therefore not \"newer is better,\" but a system trade-off: predictability versus average-case latency.",
+  "published": "2026-10-15T04:44:12Z",
+  "updated": "2026-10-15T04:44:12Z",
+  "authors": [
+   "Ying He",
+   "Dingsen Shi",
+   "Yanbo Dai",
+   "Donger Chen",
+   "Harry Fu",
+   "Chris Tsu",
+   "Wang Feng",
+   "Song Fu"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "6 pages, 3 figures, 3 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 4
+   }
+  ],
+  "score": 83
+ },
+ {
+  "id": "2603.23049v1",
+  "title": "PCR: A Prefetch-Enhanced Cache Reuse System for Low-Latency RAG Serving",
+  "abstract": "Retrieval-Augmented Generation (RAG) systems enhance the performance of large language models (LLMs) by incorporating supplementary retrieved documents, enabling more accurate and context-aware responses. However, integrating these external documents often results in very long input sequences, which significantly increases computation costs during the prefill stage, where key-value (KV) representations for all input tokens are generated. This latency bottleneck becomes especially pronounced under high-throughput serving scenarios. KV-cache reuse offers a promising solution by storing previously computed KV states for shared input prefixes, thereby avoiding redundant computation across requests that contain overlapping context. Yet, the effectiveness of cache reuse is often limited by three practical challenges: low cache hit rates due to naive eviction policies, high CPU-GPU data transfer overhead, and slow SSD I/O when caches spill to storage. To address these issues, we propose PCR, a system designed to maximize KV-cache reuse efficiency through intelligent prefetching and pipelined data movement. Specifically, PCR introduces three key techniques: (1) a prefix-tree caching structure with a look-ahead LRU replacement policy that uses pending requests in the scheduler queue to improve cache hit ratios; (2) layer-wise overlapping that pipelines KV-cache loading and GPU computation across CUDA streams to hide communication latency; and (3) queue-based prefetching that proactively loads relevant KV caches from SSD into DRAM before they are needed. Extensive experiments show that PCR outperforms existing KV-cache reuse methods, achieving up to a 2.47x speedup in terms of average TTFT.",
+  "published": "2026-03-24T10:40:58Z",
+  "updated": "2026-03-24T10:40:58Z",
+  "authors": [
+   "Wenfeng Wang",
+   "Xiaofeng Hou",
+   "Peng Tang",
+   "Hengyi Zhou",
+   "Jing Wang",
+   "Xinkai Wang",
+   "Chao Li",
+   "Minyi Guo"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 2
+   },
+   {
+    "dim": "vector-rag-storage",
+    "query": "abs:\"retrieval augmented generation\" AND (abs:cache OR abs:storage)",
+    "rank": 3
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 4
+   }
+  ],
+  "score": 83
+ },
+ {
+  "id": "2603.08739v1",
+  "title": "Adaptive Multi-Objective Tiered Storage Configuration for KV Cache in LLM Service",
+  "abstract": "The memory-for-computation paradigm of KV caching is essential for accelerating large language model (LLM) inference service, but limited GPU high-bandwidth memory (HBM) capacity motivates offloading the KV cache to cheaper external storage tiers. While this expands capacity, it introduces the challenge of dynamically managing heterogeneous storage resources to balance cost, throughput, and latency under varying workloads. We formulate this as a multi-objective optimization problem: identifying the Pareto frontier across these metrics within the storage configuration space. Using a high-fidelity end-to-end simulator, we observe that the objective functions are non-analytic and exhibit complex variable coupling, making the Pareto frontier difficult to approximate analytically. To obtain the frontier, we introduce Kareto, a KV-cache Adaptive REsource managemenT Optimizer. Kareto leverages a diminishing-return-guided pruning method to efficiently navigate the large configuration space and approximate the Pareto frontier. Additionally, it incorporates a fine-grained adaptive tuner that uses eviction policies in tier storage and KV block access patterns for group-specific cache management, improving cache efficiency. Experiments on real-world traces show that Kareto adapts to workload and can identify configurations of better cost efficiency, covering static strategies. Compared to the fixed setup with 1024 GB DRAM, Kareto can improve throughput by up to 9.3%, or reduce latency by up to 58.3%, or lower cost by up to 20.2% under respective optimization objectives.",
+  "published": "2026-02-25T11:53:49Z",
+  "updated": "2026-02-25T11:53:49Z",
+  "authors": [
+   "Xianzhe Zheng",
+   "Zhengheng Wang",
+   "Ruiyan Ma",
+   "Rui Wang",
+   "Xiyu Wang",
+   "Rui Chen",
+   "Peng Zhang",
+   "Sicheng Pan",
+   "Zhangheng Huang",
+   "Chenxin Wu",
+   "Yi Zhang",
+   "Bo Cai",
+   "Kan Liu",
+   "Teng Ma",
+   "Yin Du",
+   "Dong Deng",
+   "Sai Wu",
+   "Guoyun Zhu",
+   "Wei Zhang",
+   "Feifei Li"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 83
+ },
+ {
+  "id": "2605.22850v1",
+  "title": "ObjectCache: Layerwise Object-Storage Retrieval for KV Cache Reuse",
+  "abstract": "Prefix KV caching has become a key mechanism in LLM serving: it reduces time to first token (TTFT) by avoiding redundant computation across requests that share a prefix (i.e., the system prompt). However, the accumulated KV cache is often larger than what GPU memory and local DRAM can hold. To preserve latency, current systems keep the KV cache in remote DRAM pools, increasing serving-cluster size and cost. In this paper, we explore a different approach: storing the KV cache in S3-compatible object storage so that capacity is no longer the constraint, while minimizing the impact on TTFT. We propose ObjectCache, which co-designs the storage protocol and transfer schedule so that the storage server delivers KV cache data in the order the GPU consumes it, overlapping data transfer with compute across concurrent requests. We prototype ObjectCache on a 100 Gbps RoCE cluster with NIXL (an inference library that abstracts storage and memory), Ceph RGW (an Object Gateway for clusters), and DAOS (an open source storage system). For 64K contexts, common in today's systems, ObjectCache adds only 5.6\\% latency over local DRAM; for 4K contexts, where less compute is available to mask transfer, ObjectCache adds 56--75\\,ms over the optimal local layerwise baseline. Under shared bandwidth caps, our scheduler reduces added TTFT by 1.2--1.8x compared with equal bandwidth sharing.",
+  "published": "2026-05-16T16:48:46Z",
+  "updated": "2026-05-16T16:48:46Z",
+  "authors": [
+   "Yu Zhu",
+   "Aditya Dhakal",
+   "Yunming Xiao",
+   "Dejan Milojicic",
+   "Gustavo Alonso"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "industrial-systems",
+    "query": "abs:\"KV cache\" AND abs:\"object storage\"",
+    "rank": 3
+   }
+  ],
+  "score": 76
+ },
+ {
+  "id": "2606.12556v2",
+  "title": "ITME: Inference Tiered Memory Expansion with Disaggregated CXL-Hybrid Memories",
+  "abstract": "The rapid shift toward agentic and long-context workloads in Large Language Models (LLMs) is pushing the industry beyond the capacity of individual servers toward disaggregated shared storage to handle TB-scale context states. This movement has led to the emergence of specialized shared context layers designed to externalize and share cumulative inference states across distributed clusters. While offloading to a data processing unit (DPU) within just-a-bunch-of-flash (JBOF) architectures accelerates NVMe-over-fabrics (NVMe-oF) target processing, the need for sophisticated software-level optimization and cost-efficiency burdens remain significant. Consequently, the ideal architecture for scaling this shared context infrastructure is still an active area of exploration. In this paper, we propose ITME (Inference Tiered Memory Expansion), which leverages a CXL-hybrid memory to present a massive, TB-scale byte-addressable remote memory expansion. This approach enables cost-efficient scaling and simplifies the software stack through direct byte-addressability, effectively addressing the challenges of shared context infrastructure. Our key insight is that the deterministic access patterns of voluminous model weights and prefix caches enable the system to proactively manage data movement across the memory-storage hierarchy. We validate ITME by evaluating its performance potential with production-grade SK Hynix CMM and PCIe Gen5 NVMe SSDs, while further demonstrating its functional feasibility through an FPGA-based hardware prototype. Overall, ITME enhances conventional CPU-offloading by providing additional remote memory expansion to accommodate large KV cache footprints beyond host memory limits, achieving up to a 35.7\\% throughput improvement.",
+  "published": "2026-06-10T18:06:30Z",
+  "updated": "2026-06-16T05:18:15Z",
+  "authors": [
+   "Hakbeom Jang",
+   "Younghoon Min",
+   "Sunwoong Kim",
+   "Taeyoung Ahn",
+   "Hanyee Kim",
+   "Youngpyo Joo",
+   "Hoshik Kim",
+   "Jongryool Kim"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "model-loading-serving",
+    "query": "abs:\"model weight\" AND (abs:offloading OR abs:streaming OR abs:cache)",
+    "rank": 2
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 4
+   }
+  ],
+  "score": 75
+ },
+ {
+  "id": "2605.24022v2",
+  "title": "Adaptive KV Cache Reuse for Fast Long-Context LLM Serving",
+  "abstract": "In long-context Large Language Model (LLM) inference, the Time-To-First-Token (TTFT) latency incurred by the prefill stage has become the foremost bottleneck limiting interactive performance and deployment cost. KV Cache reuse offers a direct path to reduce redundant prefill, yet traditional prefix caching applies only to strict-prefix scenarios; directly reusing KV Cache in non-prefix settings breaks the cross-chunk global attention relationships and causes significant degradation in generation quality. When reusable KV Cache is offloaded to GPU-external cache pools, I/O overheads across heterogeneous hardware tiers further emerge as a new TTFT bottleneck. Efficient non-prefix KV Cache reuse therefore requires both semantic-consistency recovery and compute-I/O co-optimization. This paper presents CacheTune, a frequency-guided and hardware-aware KV Cache reuse system for long-context LLM serving. CacheTune first identifies, offline, the KV pairs most critical to cross-attention recovery through frequency-domain analysis, and then selectively recomputes only these semantic-critical tokens online while reusing the remaining KVs. To turn this semantic selection into end-to-end latency reduction, CacheTune further combines sparse KV transfer, multi-stream asynchronous overlap, deferred positional-encoding recovery, and hardware-aware adaptive recomputation-ratio tuning to balance computation and data movement across heterogeneous cache pools. Evaluations on mainstream LLMs and long-context tasks show that CacheTune achieves 3.72x-4.86x TTFT speedup and 3.93x-6.21x higher throughput while maintaining generation quality close to full recompute. Even when caches are offloaded to I/O-bound SSD/HDD storage, CacheTune sustains 2.34x-2.36x TTFT speedup through adaptive recomputation.",
+  "published": "2026-05-20T08:59:48Z",
+  "updated": "2026-10-04T02:24:20Z",
+  "authors": [
+   "Fei li",
+   "Song Liu",
+   "Yan Liu",
+   "Jinhua Cui",
+   "Shiqiang Nie",
+   "Jinyu Wang",
+   "Weiguo Wu"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "14 pages, Machine Learning",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-compression",
+    "query": "abs:\"KV cache\" AND abs:\"long context\"",
+    "rank": 2
+   },
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 3
+   }
+  ],
+  "score": 75
+ },
+ {
+  "id": "2605.03375v1",
+  "title": "Tutti: Making SSD-Backed KV Cache Practical for Long-Context LLM Serving",
+  "abstract": "LLM serving relies on prefix caching to improve inference performance. As growing contexts push key-value (KV) cache footprint far beyond GPU HBM and CPU DRAM capacity, KV cache is increasingly offloaded to NVMe SSDs. Unfortunately, restoring KV cache from SSDs suffers from poor I/O performance and incurs significant GPU stalls. This is primarily because the fragmented GPU memory layout results in a massive number of tiny random I/Os, rendering the low-parallelism CPU a severe bottleneck even with GPU Direct Storage (GDS), which still relies on CPU intervention to initiate each I/O and thus remains CPU-centric. This paper presents Tutti, an efficient SSD-backed KV caching solution that eliminates CPU intervention from the critical data and I/O control paths between HBM and SSDs. At the core of Tutti is a GPU-centric KV cache object store, in which the CPU is only responsible for asynchronously loading I/O kernels once per layer to the GPU. Tutti saturates NVMe SSD bandwidth and reduces GPU stalls to near zero through the following designs: (i) we provide a GPU-native object abstraction that enables bulk KV cache transfers and management; (ii) we re-architect the GPU storage stack by introducing GPU io_uring to support asynchronous GPU direct object I/O; and (iii) we propose slack-aware I/O scheduling to avoid GPU resource contention. We have implemented Tutti and integrated it to vLLM. Extensive evaluation shows that compared to the state-of-the-art GDS-enabled, SSD-backed LMCache, Tutti reduces TTFT by 78.3% under strict SLO constraints and improves the achievable request rate by 2x. The serving cost is reduced by 27%. Tutti achieves nearly the same inference performance as DRAM-backed LMCache, while providing almost infinite capacity.",
+  "published": "2026-05-05T05:33:11Z",
+  "updated": "2026-05-05T05:33:11Z",
+  "authors": [
+   "Shi Qiu",
+   "Yifan Hu",
+   "Xintao Wang",
+   "Wenhao Zhu",
+   "Jianqin Yan",
+   "Hao Chen",
+   "Kaiqiang Xu",
+   "Kai Chen",
+   "Yiming Zhang"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 74
+ },
+ {
+  "id": "2510.09665v2",
+  "title": "LMCache: An Efficient KV Cache Layer for Enterprise-Scale LLM Inference",
+  "abstract": "KV cache has traditionally been stored in GPU memory to accelerate the decoding phase of large language model (LLM) inference. However, it is increasingly necessary to move KV caches outside GPU devices, to enable cache reuse across different queries and inference engines. Our real-world usage statistics confirm this trend: over time, the total KV cache stored by users has grown rapidly, far exceeding the capacity of GPU memory. Despite this need, there lacks an efficient solution for offloading and transferring KV caches. We present LMCACHE, the first and so far the most efficient open-source KV caching solution, which extracts and stores KV caches generated by modern LLM engines (vLLM and SGLang) out of the GPU memory and shares them across engines and queries. LMCACHE supports both cache offloading (prefix reuse across queries) and prefill-decode (PD) disaggregation (cross-engine/GPU cache transfer). LMCACHE's high performance and wide adoption stem from the following contributions: (1) highly optimized KV cache data movement powered by batched data movement operations, compute and I/O pipelining; (2) a modular KV cache connector component, decoupling LMCACHE from the rapid evolution of inference engines; (3) a first-class control API for flexible cache orchestration across GPU, CPU, storage, and network layers. Our evaluation shows that combining LMCACHE with vLLM achieves up to 15x improvement in throughput across workloads such as multi-round question answering and document analysis. Large-scale adoption of LMCACHE in enterprise settings provides us valuable insights, for example, fetching KV cache from remote storage has unsurprisingly benefits to prefill delay, and that context truncation, which is a widely applied technique in industry, can greatly reduce prefix cache hit ratio by half. The source code of LMCACHE is at: https://github.com/LMCache/LMCache.",
+  "published": "2025-10-08T00:15:04Z",
+  "updated": "2025-12-05T04:52:54Z",
+  "authors": [
+   "Yuhan Liu",
+   "Yihua Cheng",
+   "Jiayi Yao",
+   "Yuwei An",
+   "Xiaokun Chen",
+   "Shaoting Feng",
+   "Yuyang Huang",
+   "Samuel Shen",
+   "Rui Zhang",
+   "Kuntai Du",
+   "Junchen Jiang"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 73
+ },
+ {
+  "id": "2609.34555v1",
+  "title": "PulseInfer: I/O-Centric Sparse KV Cache Offloading for Efficient Long-Context LLM Decoding",
+  "abstract": "Long-context LLM serving is increasingly bottlenecked by decode, where large KV caches limit batch size and underutilize GPUs. Sparse KV cache offloading expands effective capacity by storing most historical KV blocks in CPU DRAM and recalling only selected blocks on demand. However, we find that existing offloading systems shift the bottleneck to CPU-GPU recall I/O: recall volume varies widely across layers, decode steps and requests, while headwise sparse selection fragments recalls into many small PCIe transfers. This paper presents PulseInfer, an I/O-centric sparse KV cache offloading system. PulseInfer hides variable recall latency with interruptible layer-wise scheduling, adapts offloading decisions with IO-Adaptive Offloading Admission, and coalesces fragmented transfers using SoloHead sparse selection and a gather-scatter I/O engine. Implemented on SGLang, PulseInfer improves decode throughput by up to 4.7x over SGLang and 2.6x over the best existing offloading baseline, while reducing TPOT by up to 76% and preserving near-lossless accuracy.",
+  "published": "2026-09-28T08:12:39Z",
+  "updated": "2026-09-28T08:12:39Z",
+  "authors": [
+   "Qiuyang Zhang",
+   "Kai Zhou",
+   "Kai Lu",
+   "Haocheng Lu",
+   "Jian Zhou",
+   "Yuanpeng Su",
+   "Kun Bao",
+   "Jiguang Wan",
+   "Fei Wu"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 69
+ },
+ {
+  "id": "2609.19969v1",
+  "title": "DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression",
+  "abstract": "The widespread adoption of long-horizon agents has made model workloads increasingly input-heavy. Although prior work has substantially reduced the cost of long-context computation, prefill remains computationally expensive, and large KV caches continue to strain HBM and SSD capacity and data-transfer bandwidth. Together, these compute, storage, and bandwidth demands constitute the primary bottleneck to further lowering deployment costs. To address this challenge, we introduce DeepSeek-V4.1-Flash, a multimodal Mixture-of-Experts (MoE) model with 552B backbone parameters and support for contexts of up to one million tokens. With its Causal Encoder-Decoder (CED) architecture, the model activates 16B parameters per token during decode but only 8B parameters during prefill, substantially improving cost efficiency for agentic workloads. To push the limits of KV cache compression, DeepSeek-V4.1-Flash combines cross-layer KV cache reuse in Compressed Sparse Attention 2 (CSA2) with FP4 KV caching. These designs reduce its global KV cache footprint (always in HBM) to 890 bytes per token, roughly 1/4 of the corresponding footprint of DeepSeek-V4-Flash. Further, through a dedicated deployment optimization known as SWA Bounded Replay, DeepSeek-V4.1-Flash reduces its persistent KV cache footprint (always on SSD or in host memory) to roughly 1/8 of that of DeepSeek-V4-Flash. Despite its much smaller KV cache footprint, the model delivers substantially better performance than the baseline. In addition, we streamline the DeepSeek-V4 architecture and introduce several efficient architectural extensions. We pretrain DeepSeek-V4.1-Flash on a multimodal corpus comprising 45T tokens and conduct comprehensive post-training, yielding strong performance across diverse text-based and multimodal agentic scenarios. Model checkpoints are available at https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash.",
+  "published": "2026-09-17T09:43:10Z",
+  "updated": "2026-09-17T09:43:10Z",
+  "authors": [
+   " DeepSeek-AI",
+   " :",
+   "Anyi Xu",
+   "B. Li",
+   "Bangcai Lin",
+   "Bing Xue",
+   "BingCheng Xian",
+   "Bingzheng Xu",
+   "Bochao Wu",
+   "Bowei Zhang",
+   "Boyi Deng",
+   "C. C. Yu",
+   "Chao Jin",
+   "Chaofan Lin",
+   "Chen Dong",
+   "Chenbing Wang",
+   "Chenfan Feng",
+   "Chengda Lu",
+   "Chenggang Zhao",
+   "Chengqi Deng",
+   "Chengyuan Zhang",
+   "Chenhao Xu",
+   "Chenqi Zhao",
+   "Chenze Shao",
+   "Chuhao Wang",
+   "Chuqi Zhang",
+   "Damai Dai",
+   "Dejian Yang",
+   "Deli Chen",
+   "Di Huang",
+   "Di Wu",
+   "Donghao Li",
+   "Erhang Li",
+   "Eric Fu",
+   "F. Zhou",
+   "Fangwei Zhou",
+   "Fangyun Lin",
+   "Fangzhou Yuan",
+   "Feiyu Xia",
+   "Fucong Dai",
+   "Guangbo Hao",
+   "Guanglin Li",
+   "Guanting Chen",
+   "Guoai Cao",
+   "Guofan Fan",
+   "Guolai Meng",
+   "Guowei Li",
+   "Haichuan Zhang",
+   "Haiyang Ma",
+   "Haiyang Shen",
+   "Han Li",
+   "Han Yu",
+   "Han Zhang",
+   "Hangyuan Deng",
+   "Hanwei Xu",
+   "Hanxiang Xu",
+   "Hanxun Zhong",
+   "Hao Guo",
+   "Hao Jiang",
+   "Hao Li",
+   "Hao Qin",
+   "Haodong Wen",
+   "Haofen Liang",
+   "Haofeng Huang",
+   "Haohua Liu",
+   "Haoling Zhang",
+   "Haoming Luo",
+   "Haoran Yang",
+   "Haotian Xu",
+   "Haotian Yuan",
+   "Haoting Huang",
+   "Haowen Luo",
+   "Haoyang Cai",
+   "Haoyu Chen",
+   "Haozhe Ji",
+   "Hengran Zhang",
+   "Hengrui Wang",
+   "Hengxu Wu",
+   "Honghui Ding",
+   "Hongxuan Tang",
+   "Huadong Wang",
+   "Huanqi Cao",
+   "Huazuo Gao",
+   "Hui Qu",
+   "Hui Zeng",
+   "J. Yang",
+   "J. H. Jin",
+   "J. H. Zhang",
+   "J. X. Zou",
+   "Jia Yu",
+   "Jiahui Zhou",
+   "Jiajun Chen",
+   "Jialiang Huang",
+   "Jialin Zhao",
+   "Jiamin Tang",
+   "Jian Zhou",
+   "Jianan Tong",
+   "Jianwen Li",
+   "Jiaqi Zhu",
+   "Jiarui Wang",
+   "Jiasheng Ye",
+   "Jiashi Li",
+   "Jiaxin Xu",
+   "Jiaying Ding",
+   "Jibai Lu",
+   "Jiewen Hu",
+   "Jin Yan",
+   "Jincheng Zhai",
+   "Jingchang Chen",
+   "Jingcheng Hu",
+   "Jingli Zhou",
+   "Jingsheng Xu",
+   "Jingting Xiang",
+   "Jingyan Yun",
+   "Jingyang Yuan",
+   "Jingyuan Cheng",
+   "Jinhua Zhu",
+   "Jinpeng Wang",
+   "Jinyi Chen",
+   "Jinyi Hu",
+   "Jiping Yu",
+   "Jueliang Guo",
+   "Junbo Pei",
+   "Junbo Sun",
+   "Junguang Jiang",
+   "Junjie Qiu",
+   "Junkang Zhou",
+   "Junqi Liu",
+   "Junren Li",
+   "Junxian Li",
+   "Junxiao Song",
+   "Junyi Guo",
+   "Kai Dong",
+   "Kaifeng Chen",
+   "Kaige Gao",
+   "Kang Guan",
+   "Kangdong Yuan",
+   "Ke Hong",
+   "Ke Xu",
+   "Kefan Zhao",
+   "Kexin Ji",
+   "Kexin Zhang",
+   "Kexing Zhou",
+   "Kuai Yu",
+   "Lan Zhang",
+   "Lean Wang",
+   "Lecong Zhang",
+   "Lei Wang",
+   "Letian Gao",
+   "Liang Zhao",
+   "Liansheng Xu",
+   "Lihua Guo",
+   "Lingxiao Luo",
+   "Lingyue Fu",
+   "Litao Deng",
+   "Litong Wang",
+   "Liyue Zhang",
+   "Longhao Chen",
+   "Lu Chen",
+   "Luotian Huang",
+   "Luyao Ma",
+   "Luyao Wang",
+   "M. S. Di",
+   "Max Mei",
+   "Menghao Ye",
+   "Miao Cui",
+   "Mingchuan Zhang",
+   "Minghua Zhang",
+   "Minghui Tang",
+   "Mingjing Zhang",
+   "Mingqi Wei",
+   "Mingshu Chen",
+   "Mingxing Liu",
+   "Mingxu Zhou",
+   "Mingyu Xu",
+   "Mingyu Yang",
+   "Mingze Wang",
+   "Muyang Chen",
+   "Ni Shentu",
+   "Ning Wang",
+   "Niufang Ning",
+   "Panpan Huang",
+   "Peixin Cong",
+   "Peiyi Wang",
+   "Peiyuan Xin",
+   "Pengfei Ren",
+   "Pengfei Yan",
+   "Pengle Zhang",
+   "Qi Kang",
+   "Qi Tang",
+   "Qiancheng Wang",
+   "Qiang Li",
+   "Qihao Zhu",
+   "Qingyang Li",
+   "Qinyu Chen",
+   "Qiushi Du",
+   "Qizhou Guo",
+   "Rongxian Xu",
+   "Rui Ding",
+   "Rui Hu",
+   "Rui Tian",
+   "Rui Yu",
+   "Ruidong Zhu",
+   "Ruifan Xu",
+   "Ruihan Yang",
+   "Ruihang Xia",
+   "Ruijie Lu",
+   "Ruilin Geng",
+   "Ruipeng Hong",
+   "Ruiqi Ge",
+   "Ruisong Zhang",
+   "Ruize Sun",
+   "Ruizhe Pan",
+   "Runji Wang",
+   "Runqian Chen",
+   "Runxin Xu",
+   "Ruohong Tian",
+   "Ruomeng Shen",
+   "Ruoyu Zhang",
+   "Ryan X.",
+   "S. H. Liu",
+   "Shanghao Lu",
+   "Shangyan Zhou",
+   "Shanhuang Chen",
+   "Shaofei Cai",
+   "Shaoheng Nie",
+   "Shaoyuan Chen",
+   "Shengding Hu",
+   "Shengkai Lin",
+   "Shengwen Ran",
+   "Shengyu Liu",
+   "Shengyuan Jia",
+   "Shi Bai",
+   "Shi Feng",
+   "Shicheng Xu",
+   "Shichun Liu",
+   "Shiqiang Hu",
+   "Shirong Ma",
+   "Shiyu Wang",
+   "Shiyuan Feng",
+   "Shufan Gong",
+   "Shuhan Lin",
+   "Shuiping Yu",
+   "Shunfeng Zhou",
+   "Shuo Yang",
+   "Shuomeng Wang",
+   "Shuting Guo",
+   "Shuting Pan",
+   "Shuying Yu",
+   "Sinuo Cao",
+   "Siyi Lin",
+   "Sizhe Chen",
+   "Songyang Chen",
+   "Songyang Zhou",
+   "Tao Ni",
+   "Tao Yun",
+   "Tian Jin",
+   "Tian Pei",
+   "Tian Ye",
+   "Tianle Lin",
+   "Tianran Ji",
+   "Tianyi Cui",
+   "Tianyuan Yue",
+   "Tingting Yu",
+   "Tongrui Xiong",
+   "Wangding Zeng",
+   "Wei Liu",
+   "Wei Zhang",
+   "Weibin Xu",
+   "Weihao Zeng",
+   "Weilin Zhao",
+   "Wen Liu",
+   "Wenfeng Liang",
+   "Wenjie Pang",
+   "Wenjing Luo",
+   "Wenjing Yao",
+   "Wenjun Gao",
+   "Wenkai Shao",
+   "Wenkai Yang",
+   "Wenli Zhang",
+   "Wenlu Wang",
+   "Wenlve Huang",
+   "Wenqian Yan",
+   "Wentao Zhang",
+   "Xi Gao",
+   "Xiang He",
+   "Xiang Li",
+   "Xiangli Li",
+   "Xiangwen Wang",
+   "Xiangying Zhang",
+   "Xiankui Wei",
+   "Xiao Bi",
+   "Xiaodong Liu",
+   "Xiaohan Wang",
+   "Xiaojian Qu",
+   "Xiaokang Chen",
+   "Xiaokang Zhang",
+   "Xiaotao Nie",
+   "Xiaoyao Zou",
+   "Xiaoyuan Li",
+   "Xicheng Guo",
+   "Xieting Chu",
+   "Xin Cheng",
+   "Xin Liu",
+   "Xin Xie",
+   "Xinbo Xu",
+   "Xingchao Liu",
+   "Xingchen Liu",
+   "Xingkai Yu",
+   "Xingyou Li",
+   "Xintong Yao",
+   "Xinyang Chen",
+   "Xinyong Jiang",
+   "Xinyu Yang",
+   "Xinyu Yang",
+   "Xu Chen",
+   "Xuanyu Wang",
+   "Xubei Zhong",
+   "Xuecheng Su",
+   "Xuejie Liu",
+   "Xuheng Lin",
+   "Xujie Fan",
+   "Xuncheng Zhao",
+   "Xuwei Fu",
+   "Y. C. Yan",
+   "Y. H. Jiang",
+   "Y. T. Wu",
+   "Y. W. M.",
+   "Y. Z. Wang",
+   "Yafei Gao",
+   "Yang Yang",
+   "Yang Zhang",
+   "Yanru Ma",
+   "Yanwen Huang",
+   "Yao Li",
+   "Yao Li",
+   "Yao Meng",
+   "Yao Zhao",
+   "Yaofeng Sun",
+   "Yaohui Wang",
+   "Yaoyang Ye",
+   "Yehang Yin",
+   "Yexinrui Wu",
+   "Yi Qian",
+   "Yi Tao",
+   "Yi Yu",
+   "Yichao Zhang",
+   "Yichen Jiang",
+   "Yicheng Wang",
+   "Yifan Ding",
+   "Yifan Shi",
+   "Yifeng Peng",
+   "Yifeng Zhai",
+   "Yijia Wu",
+   "Yiliang Xiong",
+   "Yilun Wang",
+   "Ying He",
+   "Ying Zhou",
+   "Yingjia Luo",
+   "Yinmin Zhong",
+   "Yiping Wang",
+   "Yisong Wang",
+   "Yixiang Zhang",
+   "Yixiao Chen",
+   "Yixuan Tan",
+   "Yixuan Wei",
+   "Yiyang Ma",
+   "Yiyao Yang",
+   "Yiyuan Liu",
+   "Yizai Cai",
+   "Yizhen Wei",
+   "Yizhi Wang",
+   "Yonglun Yang",
+   "Yongqi Zhuo",
+   "Yongqiang Guo",
+   "Yongtong Wu",
+   "Yu Wu",
+   "Yu Zhang",
+   "Yuan Bian",
+   "Yuan Cheng",
+   "Yuan Ou",
+   "Yuan Sun",
+   "Yuanfan Xu",
+   "Yuanhang Sun",
+   "Yuanhao Li",
+   "Yuchen Liu",
+   "Yuchen Yao",
+   "Yudong Han",
+   "Yuduan Wang",
+   "Yuhan Wu",
+   "Yuhao Meng",
+   "Yuheng Zou",
+   "YuKun Li",
+   "Yunchuan Wang",
+   "Yunfan Xiao",
+   "Yunfan Xiong",
+   "Yupeng Chen",
+   "Yuqian Cao",
+   "Yuqian Wang",
+   "Yuqing Chen",
+   "Yushun Zhang",
+   "Yutong Lin",
+   "Yuwei Xiao",
+   "Yuxian Gu",
+   "Yuxiang Chen",
+   "Yuxiang Huang",
+   "Yuxiang Luo",
+   "Yuxiang You",
+   "Yuxin Chen",
+   "Yuxin Xiang",
+   "Yuxuan Liu",
+   "Yuxuan Zhou",
+   "Yuyang Zhou",
+   "Yuzhe Guo",
+   "Yuzhen Huang",
+   "Yuzhuo Bai",
+   "Z. Y. Z.",
+   "Zanlin Ni",
+   "Zehao Wang",
+   "Zehua Zhao",
+   "Zehui Ren",
+   "Zejun Zhao",
+   "Zhangli Sha",
+   "Zhanying Wang",
+   "Zhaochen Zhang",
+   "Zhaoshuai Du",
+   "Zhe Fu",
+   "Zhean Xu",
+   "Zhenda Xie",
+   "Zheng Liu",
+   "Zhengyan Zhang",
+   "Zhenhua Dong",
+   "Zhewen Hao",
+   "Zhibang Wang",
+   "Zhibin Gou",
+   "Zhicheng Ma",
+   "Zhihao Li",
+   "Zhihong Shao",
+   "Zhihuan Huang",
+   "Zhijie Li",
+   "Zhirui Lu",
+   "Zhixian Huang",
+   "Zhixuan Chen",
+   "Zhixuan Chen",
+   "Zhixuan Pan",
+   "Zhiyu Wu",
+   "Zhizhou Ren",
+   "Zhu He",
+   "Zhuoshu Li",
+   "Zhuping Zhang",
+   "Zian Xu",
+   "Zihao Wang",
+   "Zihui Gu",
+   "Zijia Zhu",
+   "Zili Zhang",
+   "Zilin Li",
+   "Zilong Hou",
+   "Zilong Lyu",
+   "Ziqiao Wang",
+   "Ziwei Xie",
+   "Ziya Zhang",
+   "Ziyi Gao",
+   "Zizheng Pan",
+   "Zonglin Li",
+   "Zongqing Yao",
+   "Zui Chen",
+   "Zuofan Wu",
+   "Chenchen Ling",
+   "Chengyu Hou",
+   "Chong Chen",
+   "D. Li",
+   "Di Qi",
+   "Dongjie Ji",
+   "Fang Wei",
+   "Fanyi Xia",
+   "Fei Xie",
+   "Feiyi Tan",
+   "Hailong Guo",
+   "Haiyan Zhai",
+   "Hui Zhou",
+   "Huihui Tan",
+   "Huijie Li",
+   "Jia Luo",
+   "Jia Song",
+   "Jialu Cai",
+   "Jian Liang",
+   "Jiangting Zhou",
+   "Jiaqi Gao",
+   "Jiayi Shao",
+   "Jie Chen",
+   "Jieyu Yang",
+   "Jin Chen",
+   "Jingde Zhang",
+   "Jingzi Zhou",
+   "Jinqian Wang",
+   "Jinyang Liu",
+   "JinZhao Sun",
+   "Junhua Ling",
+   "Junmin Zheng",
+   "Kaicheng Yang",
+   "Ke Xu",
+   "Le Su",
+   "Leyi Xia",
+   "Liangfeng Ding",
+   "Lin Zhuo",
+   "Linwang Ma",
+   "Linyan Zhu",
+   "Liyu Cai",
+   "Luqi Yao",
+   "M. K. Zhang",
+   "Meng Li",
+   "Miao Lin",
+   "Miaojun Wang",
+   "Min Zhang",
+   "Mingming Li",
+   "Mingming Wang",
+   "Mingze Yin",
+   "Minmin Han",
+   "Nan Cao",
+   "Ning Wang",
+   "Ningxin Ma",
+   "Panpan Wang",
+   "Peihan Lin",
+   "Peng Sun",
+   "Peng Zhang",
+   "Qian Ying",
+   "Qiang Xiang",
+   "Qiao Wang",
+   "Qingmiao Mao",
+   "Qiwei Jiang",
+   "Rongli Jin",
+   "Ruyi Chen",
+   "Sha Tao",
+   "Shangmian Sun",
+   "Shaoqing Wu",
+   "Shichao Zou",
+   "Si Lei",
+   "Tianyang Zhang",
+   "Tianyu Sun",
+   "Tingting Yin",
+   "W. L. Xiao",
+   "Wei An",
+   "Wei Li",
+   "Wei Wang",
+   "Weiwei Lin",
+   "Wenqing Hou",
+   "X. Lin",
+   "Xiangfei Meng",
+   "Xianzhu Huang",
+   "Xiao Peng",
+   "Xiaoqian Li",
+   "Xiaoting Zhang",
+   "Xiaowen Sun",
+   "Xiaoxiang Wang",
+   "Xiaoyu Ye",
+   "Xinrou Zhang",
+   "Xinyu Zhang",
+   "Xue Cao",
+   "Xueyin Chen",
+   "Yanan Zhou",
+   "Yanhong Xu",
+   "Yao Xia",
+   "Yao Xu",
+   "Yi Shao",
+   "Yihong Zhang",
+   "Yiling Ma",
+   "Ying Tang",
+   "Yining Lou",
+   "Yiru Chen",
+   "Yishi Piao",
+   "Yixuan Chen",
+   "Yong Xiong",
+   "Yuchen Xuan",
+   "Yuehan Yang",
+   "Yuer Xu",
+   "Yukun Zha",
+   "Yunxian Ma",
+   "Yuping Lin",
+   "Yuting Yan",
+   "Yutong Xie",
+   "Yuwen Sheng",
+   "Yuxuan Zhu",
+   "Zekai Zhang",
+   "Zhe Ju",
+   "Zhenzhen Lin",
+   "Zheren Gao",
+   "Zheyang Sun",
+   "Zhigang Yan",
+   "Zhongyu Wu",
+   "Zi Wang",
+   "Zihua Qu",
+   "Ziling Yan",
+   "Ziyi Wan"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 2
+   }
+  ],
+  "score": 69
+ },
+ {
+  "id": "2603.27138v1",
+  "title": "ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation for LLM Inference",
+  "abstract": "Large language models encounter critical GPU memory capacity constraints during long-context inference, where KV cache memory consumption severely limits decode batch sizes. While existing research has explored offloading KV cache to DRAM, these approaches either demand frequent GPU-CPU data transfers or impose extensive CPU computation requirements, resulting in poor GPU utilization as the system waits for I/O operations or CPU processing to complete. We propose ScoutAttention, a novel KV cache offloading framework that accelerates LLM inference through collaborative GPU-CPU attention computation. To prevent CPU computation from bottlenecking the system, ScoutAttention introduces GPU-CPU collaborative block-wise sparse attention that significantly reduces CPU load. Unlike conventional parallel computing approaches, our framework features a novel layer-ahead CPU pre-computation algorithm, enabling the CPU to initiate attention computation one layer in advance, complemented by asynchronous periodic recall mechanisms to maintain minimal CPU compute load. Experimental results demonstrate that ScoutAttention maintains accuracy within 2.4% of baseline while achieving 2.1x speedup compared to existing offloading methods.",
+  "published": "2026-03-28T05:06:05Z",
+  "updated": "2026-03-28T05:06:05Z",
+  "authors": [
+   "Qiuyang Zhang",
+   "Kai Zhou",
+   "Ding Tang",
+   "Kai Lu",
+   "Cheng Li",
+   "Zhenyu Yang",
+   "Peng Xu",
+   "Jiguang Wan"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "Accepted at the 63rd Design Automation Conference (DAC 2026)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 2
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 3
+   }
+  ],
+  "score": 67
+ },
+ {
+  "id": "2604.08426v5",
+  "title": "KV Cache Offloading for Context-Intensive Tasks",
+  "abstract": "With the growing demand for long-context LLMs across a wide range of applications, the key-value (KV) cache has become a critical bottleneck for both latency and memory usage. Recently, KV-cache offloading has emerged as a promising approach to reduce memory footprint and inference latency while preserving accuracy. Prior evaluations have largely focused on tasks that do not require extracting large amounts of information from the context. In this work, we study KV-cache offloading on context-intensive tasks: problems where the solution requires looking up a lot of information from the input prompt. We create and release the Text2JSON benchmark, a highly context-intensive task that requires extracting structured knowledge from raw text. We evaluate modern KV offloading on Text2JSON and other context-intensive tasks and find significant performance degradation on both Llama 3 and Qwen 3 models. Our analysis identifies two key reasons for poor accuracy: low-rank projection of keys and unreliable landmarks, and proposes a simpler alternative strategy that significantly improves accuracy across multiple LLM families and benchmarks. These findings highlight the need for a comprehensive and rigorous evaluation of long-context compression techniques.",
+  "published": "2026-04-09T16:30:44Z",
+  "updated": "2026-09-01T15:59:50Z",
+  "authors": [
+   "Andrey Bocharnikov",
+   "Ivan Ermakov",
+   "Denis Kuznedelev",
+   "Vyacheslav Zhdanovskiy",
+   "Yegor Yershov"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "Preprint",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 66
+ },
+ {
+  "id": "2601.13631v1",
+  "title": "ContiguousKV: Accelerating LLM Prefill with Granularity-Aligned KV Cache Management",
+  "abstract": "Efficiently serving Large Language Models (LLMs) with persistent Prefix Key-Value (KV) Cache is critical for applications like conversational search and multi-turn dialogue. Serving a request requires loading the pre-computed prefix KV cache and generating the first token, defined as the Re-Prefill Phase. Offloading this shared prefix cache to secondary storage is essential for memory scalability. Re-Prefill with offloading suffers from severe I/O bottlenecks in two aspects. First, semantic-aware KV cache pruning algorithms select important tokens in fine granularity, while systems manage I/O in coarse, fixed-size blocks, causing severe read amplification. Second, the sequential dependency between identifying important tokens and loading KV cache creates idle I/O and compute bubbles, under-utilizing system resources. This paper proposes \\textit{ContiguousKV}, a high-performance prefix KV cache offloading system that bridges algorithmic semantics with I/O efficiency to accelerate the Re-Prefill phase. We first introduce \\textit{ContiguousChunk}, a unified data management granularity that aligns KV cache pruning with I/O operations. All the mechanisms critical for I/O performance are performed at the granularity of ContiguousChunk, thereby eliminating read amplification. By exploiting the high similarity in important ContiguousChunk indices across layers, we propose intra- and inter-period asynchronous prefetching to break the sequential dependency between I/O and compute, effectively eliminating idle bubbles. Finally, we propose attention-guided cache management to retain semantically critical prefix data in memory. Evaluations on Qwen2.5 series models show that ContiguousKV achieves a 3.85x speedup in the Re-Prefill phase over the state-of-the-art offloading system IMPRESS, while maintaining high output quality.",
+  "published": "2026-01-20T05:58:19Z",
+  "updated": "2026-01-20T05:58:19Z",
+  "authors": [
+   "Jing Zou",
+   "Shangyu Wu",
+   "Hancong Duan",
+   "Qiao Li",
+   "Chun Jason Xue"
+  ],
+  "categories": [
+   "cs.OS",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   }
+  ],
+  "score": 66
+ },
+ {
+  "id": "2603.17803v1",
+  "title": "Swarm: Co-Activation Aware KVCache Offloading Across Multiple SSDs",
+  "abstract": "The key-value (KV) cache has become the dominant contributor to memory consumption in large language model (LLM) inference. Although offloading KVCache from GPU high-bandwidth memory (HBM) to CPU DRAM alleviates device memory pressure, DRAM remains capacity-limited and costly for large, persistent workloads. Solid-state drives (SSDs) provide a cost-effective alternative, but naive SSD-based paging is fundamentally bandwidth-bound due to limited PCIe throughput and per-device bandwidth constraints. In this paper, we observe that KVCache activations in real-world workloads exhibit strong and stable correlations. We term this phenomenon KVCache Co-Activation, where accessing a KV entry is often accompanied by a stable and recurring set of other KV entries. Leveraging this property, we present Swarm, an SSD-based KVCache offloading system that converts bandwidth-bound single-device access into parallel I/O across multiple SSDs. Specifically, Swarm clusters co-activated KV entries offline and distributes the resulting clusters across SSDs using graph-based placement with selective replication to maximize parallel I/O bandwidth. At runtime, Swarm performs load-balanced cluster retrieval and dynamically adapts clustering and caching decisions to sustain high bandwidth utilization under evolving access patterns. Evaluations show that Swarm reduces I/O time by 2.41x and improves effective bandwidth utilization by 2.72x.",
+  "published": "2026-03-18T14:59:16Z",
+  "updated": "2026-03-18T14:59:16Z",
+  "authors": [
+   "Tuowei Wang",
+   "Liyun Chu",
+   "Ruwen Fan",
+   "Ju Ren"
+  ],
+  "categories": [
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 64
+ },
+ {
+  "id": "2511.01815v2",
+  "title": "KV Cache Transform Coding for Compact Storage in LLM Inference",
+  "abstract": "Serving large language models (LLMs) at scale necessitates efficient key-value (KV) cache management. KV caches can be reused across conversation turns via shared-prefix prompts that are common in iterative code editing and chat. However, stale caches consume scarce GPU memory, require offloading, or force recomputation. We present KVTC, a lightweight transform coder that compresses KV caches for compact on-GPU and off-GPU storage. Drawing on classical media compression, KVTC combines PCA-based feature decorrelation, adaptive quantization, and entropy coding. It requires only a brief initial calibration and leaves model parameters unchanged. By exploiting redundancies in KV caches, KVTC achieves up to 20$\\times$ compression while maintaining reasoning and long-context accuracy, and 40$\\times$ or higher for specific use cases. We test KVTC with Llama 3, Mistral NeMo, and R1-Qwen 2.5 models across benchmarks including AIME25, GSM8K, LiveCodeBench, LongBench, MATH-500, MMLU, Qasper and RULER. It consistently outperforms inference-time baselines such as token eviction, quantization, and SVD-based methods, while achieving higher compression ratios. These results support KVTC as a practical building block for memory-efficient LLM serving with reusable KV caches.",
+  "published": "2025-11-03T18:20:35Z",
+  "updated": "2026-03-11T15:57:41Z",
+  "authors": [
+   "Konrad Staniszewski",
+   "Adrian Łańcucki"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "Accepted to ICLR 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   },
+   {
+    "dim": "kv-compression",
+    "query": "abs:\"KV cache\" AND (abs:compression OR abs:quantization OR abs:eviction OR abs:sparsity)",
+    "rank": 3
+   }
+  ],
+  "score": 64
+ },
+ {
+  "id": "2507.11507v2",
+  "title": "Oneiros: KV Cache Optimization through Parameter Remapping for Multi-tenant LLM Serving",
+  "abstract": "KV cache accelerates LLM inference by avoiding redundant computation, at the expense of memory. To support larger KV caches, prior work extends GPU memory with CPU memory via CPU-offloading. This involves swapping KV cache between GPU and CPU memory. However, because the cache updates dynamically, such swapping incurs high CPU memory traffic. We make a key observation that model parameters remain constant during runtime, unlike the dynamically updated KV cache. Building on this, we introduce Oneiros, which avoids KV cache swapping by remapping, and thereby repurposing, the memory allocated to model parameters for KV cache. This parameter remapping is especially beneficial in multi-tenant environments, where the memory used for the parameters of the inactive models can be more aggressively reclaimed. Exploiting the high CPU-GPU bandwidth offered by the modern hardware, such as the NVIDIA Grace Hopper Superchip, we show that Oneiros significantly outperforms state-of-the-art solutions, achieving a reduction of 44.8%-82.5% in tail time-between-token latency, 20.7%-99.3% in tail time-to-first-token latency, and 6.6%-86.7% higher throughput compared to vLLM. Source code of Oneiros is available at https://github.com/UT-SysML/Oneiros/.",
+  "published": "2025-07-15T17:23:22Z",
+  "updated": "2025-10-29T21:56:19Z",
+  "authors": [
+   "Ruihao Li",
+   "Shagnik Pal",
+   "Vineeth Narayan Pullu",
+   "Prasoon Sinha",
+   "Jeeho Ryoo",
+   "Lizy K. John",
+   "Neeraja J. Yadwadkar"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 64
+ },
+ {
+  "id": "2409.04992v1",
+  "title": "InstInfer: In-Storage Attention Offloading for Cost-Effective Long-Context LLM Inference",
+  "abstract": "The widespread of Large Language Models (LLMs) marks a significant milestone in generative AI. Nevertheless, the increasing context length and batch size in offline LLM inference escalate the memory requirement of the key-value (KV) cache, which imposes a huge burden on the GPU VRAM, especially for resource-constraint scenarios (e.g., edge computing and personal devices). Several cost-effective solutions leverage host memory or SSDs to reduce storage costs for offline inference scenarios and improve the throughput. Nevertheless, they suffer from significant performance penalties imposed by intensive KV cache accesses due to limited PCIe bandwidth. To address these issues, we propose InstInfer, a novel LLM inference system that offloads the most performance-critical computation (i.e., attention in decoding phase) and data (i.e., KV cache) parts to Computational Storage Drives (CSDs), which minimize the enormous KV transfer overheads. InstInfer designs a dedicated flash-aware in-storage attention engine with KV cache management mechanisms to exploit the high internal bandwidths of CSDs instead of being limited by the PCIe bandwidth. The optimized P2P transmission between GPU and CSDs further reduces data migration overheads. Experimental results demonstrate that for a 13B model using an NVIDIA A6000 GPU, InstInfer improves throughput for long-sequence inference by up to 11.1$\\times$, compared to existing SSD-based solutions such as FlexGen.",
+  "published": "2024-09-08T06:06:44Z",
+  "updated": "2024-09-08T06:06:44Z",
+  "authors": [
+   "Xiurui Pan",
+   "Endian Li",
+   "Qiao Li",
+   "Shengwen Liang",
+   "Yizhou Shan",
+   "Ke Zhou",
+   "Yingwei Luo",
+   "Xiaolin Wang",
+   "Jie Zhang"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 3
+   }
+  ],
+  "score": 64
+ },
+ {
+  "id": "2610.38355v1",
+  "title": "FlatCake: A Flat KVCache Storage Architecture for LLM Serving",
+  "abstract": "KV cache reuse accelerates LLM serving, but existing systems manage host DRAM and NVMe SSD as a tiered hierarchy where DRAM acts as an intermediate cache. Production LLM workloads break both premises of this hierarchy. First, bimodal reuse defeats DRAM temporal filtering, since workloads are dominated either by one-shot blocks with long reuse distances or by multi-gigabyte agentic sessions that exceed DRAM capacity, putting SSD on the critical read path. Second, DRAM staging and eviction-ordered layout bottleneck SSD restoration. Holding host staging buffers for in-flight prefixes causes contention under load that aborts prefetches, while incremental eviction scatters a session's blocks across the SSD and prevents large sequential reads. We present FlatCake, a flat KV storage architecture that exposes host DRAM and NVMe SSD as peer media in a unified 64-bit address space. Exploiting the fact that KV blocks are write-once, immutable, and reused at session scope, FlatCake places each block directly onto its target medium in session-contiguous, layer-major order at creation time and never migrates it. FlatCake streams coalesced SSD reads directly into a bounded GPU window via GPUDirect Storage and decouples DRAM and SSD request queues to prevent head-of-line blocking. On a production Claude Code trace with DeepSeek-V4-Flash, FlatCake sustains a 94% cache hit rate as load increases (versus 64% for Mooncake), eliminates Mooncake's $6.5\\times$--$6.7\\times$ SSD read amplification, and reduces peak-load mean TTFT by $1.6\\times$ while improving total token throughput by $1.6\\times$. Across 8K--128K contexts on Llama-3.1-70B, FlatCake further reduces mean TTFT by up to $2.4\\times$ over Mooncake and $1.8\\times$ over Mooncake-GDS.",
+  "published": "2026-10-28T06:54:51Z",
+  "updated": "2026-10-28T06:54:51Z",
+  "authors": [
+   "Xin Huang",
+   "Teng Ma",
+   "Zhuoran Li",
+   "Yibo Zhao",
+   "Zhaoshi Li",
+   "Qianchao Zhu",
+   "Wei Yang",
+   "Chenxi Wang",
+   "Tao Xie",
+   "Youwei Zhuo"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.OS"
+  ],
+  "comment": "10 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "industrial-systems",
+    "query": "all:Mooncake",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 4
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 5
+   }
+  ],
+  "score": 62
+ },
+ {
+  "id": "2509.00105v2",
+  "title": "AdaptCache: KV Cache Native Storage Hierarchy for Low-Delay and High-Quality Language Model Serving",
+  "abstract": "Large language model (LLM) applications often reuse previously processed context, such as chat history and documents, which introduces significant redundant computation. Existing LLM serving systems address such redundant computation by storing the KV caches of processed context and loading the corresponding KV cache when a new request reuses the context. Further, as these LLM applications scale, the total size of KV caches becomes excessively large and requires both DRAM and SSD for full storage. However, prior work that stores KV caches in DRAM and SSD suffers from high loading delays, as most KV cache hits come from SSD, which is slow to load. To increase the KV cache hit rate on DRAM, we identify lossy KV cache compression as a promising approach. We design a lossy compression system that decides the compression algorithm, compression rate and device placement for each KV cache entry to maximise DRAM hits and minimise loading delay without significantly degrading generation quality. Compared to various static compression baselines across three tasks, our system AdaptCache achieves 1.43--2.4 x delay savings at the same quality and 6--55% quality improvements at the same delay.",
+  "published": "2025-08-28T00:46:51Z",
+  "updated": "2026-01-15T21:12:02Z",
+  "authors": [
+   "Shaoting Feng",
+   "Hanchen Li",
+   "Kuntai Du",
+   "Zhuohan Gu",
+   "Yuhan Liu",
+   "Jiayi Yao",
+   "Siddhant Ray",
+   "Samuel Shen",
+   "Yihua Cheng",
+   "Ganesh Ananthanarayanan",
+   "Junchen Jiang"
+  ],
+  "categories": [
+   "cs.OS",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "Accepted at SOSP 2025 - The International Workshop on Big Memory (BigMem)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 62
+ },
+ {
+  "id": "2504.11816v1",
+  "title": "Cost-Efficient LLM Serving in the Cloud: VM Selection with KV Cache Offloading",
+  "abstract": "LLM inference is essential for applications like text summarization, translation, and data analysis, but the high cost of GPU instances from Cloud Service Providers (CSPs) like AWS is a major burden. This paper proposes InferSave, a cost-efficient VM selection framework for cloud based LLM inference. InferSave optimizes KV cache offloading based on Service Level Objectives (SLOs) and workload charac teristics, estimating GPU memory needs, and recommending cost-effective VM instances. Additionally, the Compute Time Calibration Function (CTCF) improves instance selection accuracy by adjusting for discrepancies between theoretical and actual GPU performance. Experiments on AWS GPU instances show that selecting lower-cost instances without KV cache offloading improves cost efficiency by up to 73.7% for online workloads, while KV cache offloading saves up to 20.19% for offline workloads.",
+  "published": "2025-04-16T07:02:38Z",
+  "updated": "2025-04-16T07:02:38Z",
+  "authors": [
+   "Kihyun Kim",
+   "Jinwoo Kim",
+   "Hyunsun Chung",
+   "Myung-Hoon Cha",
+   "Hong-Yeon Kim",
+   "Youngjae Kim"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "10 pages, 6 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 2
+   },
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 3
+   }
+  ],
+  "score": 62
+ },
+ {
+  "id": "2508.06978v1",
+  "title": "SSD Offloading for LLM Mixture-of-Experts Weights Considered Harmful in Energy Efficiency",
+  "abstract": "Large Language Models (LLMs) applying Mixture-of-Experts (MoE) scale to trillions of parameters but require vast memory, motivating a line of research to offload expert weights from fast-but-small DRAM (HBM) to denser Flash SSDs. While SSDs provide cost-effective capacity, their read energy per bit is substantially higher than that of DRAM. This paper quantitatively analyzes the energy implications of offloading MoE expert weights to SSDs during the critical decode stage of LLM inference. Our analysis, comparing SSD, CPU memory (DDR), and HBM storage scenarios for models like DeepSeek-R1, reveals that offloading MoE weights to current SSDs drastically increases per-token-generation energy consumption (e.g., by up to ~12x compared to the HBM baseline), dominating the total inference energy budget. Although techniques like prefetching effectively hide access latency, they cannot mitigate this fundamental energy penalty. We further explore future technological scaling, finding that the inherent sparsity of MoE models could potentially make SSDs energy-viable if Flash read energy improves significantly, roughly by an order of magnitude.",
+  "published": "2025-08-09T13:18:04Z",
+  "updated": "2025-08-09T13:18:04Z",
+  "authors": [
+   "Kwanhee Kyung",
+   "Sungmin Yun",
+   "Jung Ho Ahn"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "4 pages, 6 figures, accepted at IEEE Computer Architecture Letters",
+  "journal_ref": "",
+  "doi": "10.1109/LCA.2025.3592563",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 1
+   }
+  ],
+  "score": 61
+ },
+ {
+  "id": "2604.26074v1",
+  "title": "DAK: Direct-Access-Enabled GPU Memory Offloading with Optimal Efficiency for LLM Inference",
+  "abstract": "LLM inference is constrained by GPU memory capacity and bandwidth. Tiered memory architectures mitigate this by allowing the GPU to offload memory to the remote tier. However, existing memory offloading frameworks rely on prefetching data into local GPU HBM. This approach underutilizes system resources by introducing HBM contention, squandering memory capacity, and creating pipeline bubbles. We show that enabling direct GPU access to remote memory significantly outperforms prefetching, achieving optimal aggregate system bandwidth. We propose DAK, an end-to-end direct-access memory offloading framework that repurposes the Tensor Memory Accelerator (TMA) to asynchronously fetch offloaded weights and KV caches directly from remote memory into GPU shared memory (SMEM). To maximize remote access performance, DAK introduces a greedy algorithm to determine optimal per-operation offloading ratios, alongside active congestion control and TMA multicast to eliminate interconnect bottlenecks and read amplification. Evaluations across diverse architectures show that DAK achieves near-optimal bandwidth aggregation, with up to 3$\\times$ performance gains on NVLink-C2C and 1.8$\\times$ on PCIe systems compared to state-of-the-art memory offloading baselines.",
+  "published": "2026-04-28T19:30:47Z",
+  "updated": "2026-04-28T19:30:47Z",
+  "authors": [
+   "Shouxu Lin",
+   "Zhiyuan Guo",
+   "Jiaxin Lin"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 1
+   }
+  ],
+  "score": 60
+ },
+ {
+  "id": "2511.00321v1",
+  "title": "Scalable Processing-Near-Memory for 1M-Token LLM Inference: CXL-Enabled KV-Cache Management Beyond GPU Limits",
+  "abstract": "The expansion of context windows in large language models (LLMs) to multi-million tokens introduces severe memory and compute bottlenecks, particularly in managing the growing Key-Value (KV) cache. While Compute Express Link (CXL) enables non-eviction frameworks that offload the full KV-cache to scalable external memory, these frameworks still suffer from costly data transfers when recalling non-resident KV tokens to limited GPU memory as context lengths increase. This work proposes scalable Processing-Near-Memory (PNM) for 1M-Token LLM Inference, a CXL-enabled KV-cache management system that coordinates memory and computation beyond GPU limits. Our design offloads token page selection to a PNM accelerator within CXL memory, eliminating costly recalls and enabling larger GPU batch sizes. We further introduce a hybrid parallelization strategy and a steady-token selection mechanism to enhance compute efficiency and scalability. Implemented atop a state-of-the-art CXL-PNM system, our solution delivers consistent performance gains for LLMs with up to 405B parameters and 1M-token contexts. Our PNM-only offloading scheme (PNM-KV) and GPU-PNM hybrid with steady-token execution (PnG-KV) achieve up to 21.9x throughput improvement, up to 60x lower energy per token, and up to 7.3x better total cost efficiency than the baseline, demonstrating that CXL-enabled multi-PNM architectures can serve as a scalable backbone for future long-context LLM inference.",
+  "published": "2025-10-31T23:50:44Z",
+  "updated": "2025-10-31T23:50:44Z",
+  "authors": [
+   "Dowon Kim",
+   "MinJae Lee",
+   "Janghyeon Kim",
+   "HyuckSung Kwon",
+   "Hyeonggyu Jeong",
+   "Sang-Soo Park",
+   "Minyong Yoon",
+   "Si-Dong Roh",
+   "Yongsuk Kwon",
+   "Jinin So",
+   "Jungwook Choi"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 3
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 4
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 5
+   }
+  ],
+  "score": 59
+ },
+ {
+  "id": "2512.14946v1",
+  "title": "EVICPRESS: Joint KV-Cache Compression and Eviction for Efficient LLM Serving",
+  "abstract": "Reusing KV cache is essential for high efficiency of Large Language Model (LLM) inference systems. With more LLM users, the KV cache footprint can easily exceed GPU memory capacity, so prior work has proposed to either evict KV cache to lower-tier storage devices, or compress KV cache so that more KV cache can be fit in the fast memory. However, prior work misses an important opportunity: jointly optimizing the eviction and compression decisions across all KV caches to minimize average generation latency without hurting quality. We propose EVICPRESS, a KV-cache management system that applies lossy compression and adaptive eviction to KV cache across multiple storage tiers. Specifically, for each KV cache of a context, EVICPRESS considers the effect of compression and eviction of the KV cache on the average generation quality and delay across all contexts as a whole. To achieve this, EVICPRESS proposes a unified utility function that quantifies the effect of quality and delay of the lossy compression or eviction. To this end, EVICPRESS's profiling module periodically updates the utility function scores on all possible eviction-compression configurations for all contexts and places KV caches using a fast heuristic to rearrange KV caches on all storage tiers, with the goal of maximizing the utility function scores on each storage tier. Compared to the baselines that evict KV cache or compress KV cache, EVICPRESS achieves higher KV-cache hit rates on fast devices, i.e., lower delay, while preserving high generation quality by applying conservative compression to contexts that are sensitive to compression errors. Evaluation on 12 datasets and 5 models demonstrates that EVICPRESS achieves up to 2.19x faster time-to-first-token (TTFT) at equivalent generation quality.",
+  "published": "2025-12-16T22:21:55Z",
+  "updated": "2025-12-16T22:21:55Z",
+  "authors": [
+   "Shaoting Feng",
+   "Yuhan Liu",
+   "Hanchen Li",
+   "Xiaokun Chen",
+   "Samuel Shen",
+   "Kuntai Du",
+   "Zhuohan Gu",
+   "Rui Zhang",
+   "Yuyang Huang",
+   "Yihua Cheng",
+   "Jiayi Yao",
+   "Qizheng Zhang",
+   "Ganesh Ananthanarayanan",
+   "Junchen Jiang"
+  ],
+  "categories": [
+   "cs.OS",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   },
+   {
+    "dim": "kv-compression",
+    "query": "abs:\"KV cache\" AND (abs:compression OR abs:quantization OR abs:eviction OR abs:sparsity)",
+    "rank": 3
+   }
+  ],
+  "score": 58
+ },
+ {
+  "id": "2610.22579v1",
+  "title": "MemLLM: End-to-end In-Storage Acceleration of On-device Retrieval-Augmented Generation using Precomputed KV Caches",
+  "abstract": "Retrieval-augmented generation (RAG) on edge devices enables personalized large language model (LLM) inference while preserving privacy. However, RAG's inherent length asymmetry makes the prefill phase the dominant bottleneck. While precomputing the KV caches offline alleviates the prefill cost on server systems, the multi-gigabyte caches over the narrow interconnect create a severe I/O wall for on-device systems. To mitigate this, we propose MemLLM, an end-to-end in-storage processing (ISP) architecture that executes the complete attention pipeline based on precomputed KV caches within the SSD. MemLLM utilizes per-channel accelerators to fully utilize the aggregated NAND channel bandwidth and accelerates all KV cache-related computations on the storage-side to minimize PCIe transfers. To efficiently handle the sparse updates required by RAG, MemLLM introduces a fused recomputation-query kernel paired with a hardware-based filter logic to halve the NAND read volume and eliminate write-back penalties. Furthermore, MemLLM's global SRAM-based stateful reduction engine enables a completely DRAM-less dataflow, thereby removing the internal memory bottlenecks and bounding the PCIe egress to an $O(1)$ footprint. A full-stack software stack allows asynchronous, zero-copy transfers from the ISP to the host and provides transparent execution within modern ML frameworks. Evaluated across eight real-world RAG datasets and six on-device LLM models, MemLLM achieves an average end-to-end speedup of 4.06$\\times$ over the GPU baseline.",
+  "published": "2026-10-15T19:27:40Z",
+  "updated": "2026-10-15T19:27:40Z",
+  "authors": [
+   "Seungkwan Kang",
+   "Hyungseok Ko",
+   "Heemin Kim",
+   "Myoungsoo Jung"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "To be published in IEEE/ACM MICRO 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "vector-rag-storage",
+    "query": "abs:\"retrieval augmented generation\" AND (abs:cache OR abs:storage)",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"LLM serving\" OR abs:\"LLM inference\"",
+    "rank": 4
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 5
+   }
+  ],
+  "score": 57
+ },
+ {
+  "id": "2610.21165v1",
+  "title": "From Long Context to Selective Memory:A Survey of Memory-Centric Compression for Large Language Models",
+  "abstract": "Long-context capability has become essential for large language models (LLMs) to handle complex tasks, yet continuously expanding the context window does not remove the computational, storage, and information-selection pressures incurred at inference time. Existing work on prompt compression, KV-cache management, efficient serving, retrieval augmentation, and agent memory is usually discussed in isolation, leaving the flow of information between storage and computation insufficiently understood. This survey reframes long-context compression as a memory-management problem for allocating inference-time resources. We distinguish compute-active memory, which directly participates in model computation, from compute-inactive memory, which lies outside the computation path but can be stored, retrieved, updated, or forgotten, and we characterize offloaded KV caches, persistent prefix caches, and precomputed KV states as intermediate states on the activation path. On this basis, we formulate writing, offloading, recall, retrieval-and-injection, materialization, eviction, consolidation, and forgetting as state transitions within an information lifecycle, and introduce a budgeted cost model that places these operations in a single cost account. The resulting framework unifies short-term context compression, long-term memory management, and the transitions between them, and shows that the central challenge is not merely reducing information volume but deciding which information should participate in costly inference, when, and in what form. We further summarize evaluation dimensions, benchmark gaps, and open challenges, and argue that future research should move from static, pointwise compression toward dynamic, governable, lifecycle-aware memory management.",
+  "published": "2026-10-15T03:24:36Z",
+  "updated": "2026-10-15T03:24:36Z",
+  "authors": [
+   "Chaogui Gou"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"agent\" AND abs:memory AND abs:\"large language model\"",
+    "rank": 4
+   }
+  ],
+  "score": 57
+ },
+ {
+  "id": "2604.06370v1",
+  "title": "ForkKV: Scaling Multi-LoRA Agent Serving via Copy-on-Write Disaggregated KV Cache",
+  "abstract": "The serving paradigm of large language models (LLMs) is rapidly shifting towards complex multi-agent workflows where specialized agents collaborate over massive shared contexts. While Low-Rank Adaptation (LoRA) enables the efficient co-hosting of these specialized agents on a single base model, it introduces a critical memory footprint bottleneck during serving. Specifically, unique LoRA activations cause Key-Value (KV) cache divergence across agents, rendering traditional prefix caching ineffective for shared contexts. This forces redundant KV cache maintenance, rapidly saturating GPU capacity and degrading throughput. To address this challenge, we introduce ForkKV, a serving system for multi-LoRA agent workflows centered around a novel memory management paradigm in OS: fork with copy-on-write (CoW). By exploiting the structural properties of LoRA, ForkKV physically decouples the KV cache into a massive shared component (analogous to the parent process's memory pages) and lightweight agent-specific components (the child process's pages). To support this mechanism, we propose a DualRadixTree architecture that allows newly forked agents to inherit the massive shared cache and apply CoW semantics for their lightweight unique cache. Furthermore, to guarantee efficient execution, we design ResidualAttention, a specialized kernel that reconstructs the disaggregated KV cache directly within on-chip SRAM. Comprehensive evaluations across diverse language models and practical datasets of different tasks demonstrate that ForkKV achieves up to 3.0x the throughput of state-of-the-art multi-LoRA serving systems with a negligible impact on generation quality.",
+  "published": "2026-04-07T18:52:25Z",
+  "updated": "2026-04-07T18:52:25Z",
+  "authors": [
+   "Shao Wang",
+   "Rui Ren",
+   "Lin Gui"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   }
+  ],
+  "score": 57
+ },
+ {
+  "id": "2604.02442v2",
+  "title": "ReFlux: Reversible Compute Placement for CXL-Enabled Storage",
+  "abstract": "Static offload to computational storage devices proves brittle because device-side processors throttle under sustained thermal load, while opaque, vendor-specific interfaces inflate adoption costs so severely that no computational storage platform has achieved broad deployment; to address this, we argue that storage-side compute should be reversible, allowing individual pipeline stages to migrate between host and device at runtime beneath standard interfaces that require zero application modification. We present ReFlux, which realizes this principle on CXL SSDs by decomposing I/O-path logic into migratable storage actors compiled to WebAssembly, with actors sharing state through coherent CXL.mem regions so that only lightweight control state, roughly 8 KB, moves during migration, while a thermal-aware scheduler triggers per-stage drain-and-switch when device temperature or queue pressure rises, offloading compute-intensive actors to the host while leaving I/O-bound stages on the device. In our evaluation on an FPGA-based CXL SSD prototype and two production CSDs, ReFlux sustains over twice the throughput of thermally throttled CSDs under 30-minute sustained writes, delivers three to four times the inference throughput under KV-cache pressure, and reduces host CPU utilization by 65% through MWAIT-based notification.",
+  "published": "2026-04-02T18:14:28Z",
+  "updated": "2026-08-25T01:47:39Z",
+  "authors": [
+   "Yanpeng Hu",
+   "Yiwei Yang",
+   "Yusheng Zheng",
+   "Estabon Ramos",
+   "Jianchang Su",
+   "Andi Quinn",
+   "Wei Zhang"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 2
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"computational storage\" OR abs:\"near-memory computing\" OR abs:\"processing in memory\"",
+    "rank": 3
+   }
+  ],
+  "score": 56
+ },
+ {
+  "id": "2604.03143v1",
+  "title": "TokenDance: Scaling Multi-Agent LLM Serving via Collective KV Cache Sharing",
+  "abstract": "Multi-agent LLM applications organize execution in synchronized rounds where a central scheduler gathers outputs from all agents and redistributes the combined context. This All-Gather communication pattern creates massive KV Cache redundancy, because every agent's prompt contains the same shared output blocks, yet existing reuse methods fail to exploit it efficiently. We present TokenDance, a system that scales the number of concurrent agents by exploiting the All-Gather pattern for collective KV Cache sharing. TokenDance's KV Collector performs KV Cache reuse over the full round in one collective step, so the cost of reusing a shared block is paid once regardless of agent count. Its Diff-Aware Storage encodes sibling caches as block-sparse diffs against a single master copy, achieving 11-17x compression on representative workloads. Evaluation on GenerativeAgents and AgentSociety shows that TokenDance supports up to 2.7x more concurrent agents than vLLM with prefix caching under SLO requirement, reduces per-agent KV Cache storage by up to 17.5x, and achieves up to 1.9x prefill speedup over per-request position-independent caching.",
+  "published": "2026-04-03T16:04:40Z",
+  "updated": "2026-04-03T16:04:40Z",
+  "authors": [
+   "Zhuohang Bian",
+   "Feiyang Wu",
+   "Chengrui Zhang",
+   "Hangcheng Dong",
+   "Yun Liang",
+   "Youwei Zhuo"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "14 pages, 14 figures, arXiv:submit/7438760 [cs.DC], preprint under review",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 2
+   }
+  ],
+  "score": 54
+ },
+ {
+  "id": "2602.21548v2",
+  "title": "DualPath: Breaking the Storage Bandwidth Bottleneck in Agentic LLM Inference",
+  "abstract": "The performance of multi-turn, agentic LLM inference is increasingly dominated by KV-Cache storage I/O rather than computation. In prevalent disaggregated architectures, loading the massive KV-Cache from external storage creates a fundamental imbalance: storage NICs on prefill engines become bandwidth-saturated, while those on decoding engines remain idle. This asymmetry severely constrains overall system throughput. We present DualPath, an inference system that breaks this bottleneck by introducing dual-path KV-Cache loading. Beyond the traditional storage-to-prefill path, DualPath enables a novel storage-to-decode path, in which the KV-Cache is loaded into decoding engines and then efficiently transferred to prefill engines via RDMA over the compute network. DualPath combines this optimized data path -- which inherently avoids network congestion and avoids interference with latency-critical model execution communications -- with a global scheduler that dynamically balances load across prefill and decode engines. Our evaluation on three models with production agentic workloads demonstrates that DualPath improves offline inference throughput by up to 1.87$\\times$ on our in-house inference system. It can also improve online serving throughput by an average factor of 1.96$\\times$ without violating SLO.",
+  "published": "2026-02-25T04:10:58Z",
+  "updated": "2026-02-26T02:04:07Z",
+  "authors": [
+   "Yongtong Wu",
+   "Shaoyuan Chen",
+   "Yinmin Zhong",
+   "Rilin Huang",
+   "Yixuan Tan",
+   "Wentao Zhang",
+   "Liyue Zhang",
+   "Shangyan Zhou",
+   "Yuxuan Liu",
+   "Shunfeng Zhou",
+   "Mingxing Zhang",
+   "Xin Jin",
+   "Panpan Huang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-disagg-sched",
+    "query": "abs:prefill AND abs:decode AND abs:scheduling",
+    "rank": 2
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 3
+   }
+  ],
+  "score": 54
+ },
+ {
+  "id": "2602.18750v2",
+  "title": "HillInfer: Efficient Long-Context LLM Inference on the Edge with Hierarchical KV Eviction using SmartSSD",
+  "abstract": "Deploying Large Language Models (LLMs) on memory-constrained AI Personal Computers (AIPCs) enables low-latency, privacy-preserving inference, but long-context generation is fundamentally bottlenecked by the linearly growing Key-Value (KV) cache. While dynamic KV eviction mitigates this memory wall, existing offloading strategies either trigger crippling PCIe I/O bottlenecks on standard SSDs or suffer from FPGA resource exhaustion by forcing compute-intensive exact attention on a single, weak Computational Storage Drive (CSD). In this paper, we propose HillInfer, a CSD-assisted KV eviction framework that introduces a paradigm shift: offloading strictly lightweight token importance evaluation to a single CSD (e.g., SmartSSD) on AIPCs. To fully capitalize on this lightweight offloading strategy, HillInfer orchestrates a Hierarchical KV Cache Manager (HKM) that leverages temporal locality and dynamic token hit rates to physically partition cache pools, thereby eliminating cross-device I/O thrashing. Additionally, we design an Adaptive Prefetch-based Pipeline (APP) that adaptively balances the evaluation workload between the host CPU and the SmartSSD, effectively masking the heterogeneous straggler effect. Finally, we introduce a CSD-based Evaluation Configuration (CEC) to enable resource-efficient near-data processing on the FPGA. Extensive experiments on a commodity AIPC demonstrate that HillInfer achieves up to an 8.56$\\times$ speedup over state-of-the-art baselines, delivering low-latency, I/O-efficient long-context inference without sacrificing model accuracy.",
+  "published": "2026-02-21T08:19:59Z",
+  "updated": "2026-03-25T06:46:30Z",
+  "authors": [
+   "He Sun",
+   "Shinan Liu",
+   "Li Li",
+   "Mingjun Xiao"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "16 pages, 16 figures, under review",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2505.02922v3",
+  "title": "RetroInfer: A Vector Storage Engine for Scalable Long-Context LLM Inference",
+  "abstract": "Recent large language models (LLMs) are rapidly extending their context windows, yet inference throughput lags due to increasing GPU memory and bandwidth demands. This is because the key-value (KV) cache, an intermediate structure storing token representations, grows linearly with context length and requires an iterative linear scan for attention computation. A promising direction to accelerate long-context inference is to exploit attention's inherent sparsity by offloading the KV cache to CPU memory and retrieving only a small subset of tokens important to the current generation step. However, prior sparse attention approaches struggle to balance accuracy and retrieval cost due to varying sparsity patterns and inefficient GPU-CPU memory management. We present RetroInfer, a vector storage engine that realizes a sparsity-based KV cache for long-context inference. RetroInfer introduces an Attention-aWare VEctor index (wave index), which fundamentally improves the tradeoff between attention accuracy and retrieval cost through tripartite attention approximation, accuracy-bound attention estimation, and segmented clustering. We also design the wave buffer, a GPU-CPU buffer manager that assigns computation and manages data across heterogeneous hardware. We evaluate RetroInfer across a range of models and workloads, demonstrating up to 4.4X decoding throughput over full attention at 120K context and up to 12.2X over sparse attention baselines at 1 million tokens -- all while preserving full-attention-level accuracy.",
+  "published": "2025-05-05T18:01:17Z",
+  "updated": "2026-04-27T10:13:35Z",
+  "authors": [
+   "Yaoqi Chen",
+   "Jinkai Zhang",
+   "Baotong Lu",
+   "Qianxi Zhang",
+   "Chengruidong Zhang",
+   "Jing Liu",
+   "Jingjia Luo",
+   "Di Liu",
+   "Huiqiang Jiang",
+   "Qi Chen",
+   "Bailu Ding",
+   "Xiao Yan",
+   "Jiawei Jiang",
+   "Chen Chen",
+   "Mingxing Zhang",
+   "Cheng Li",
+   "Yuqing Yang",
+   "Fan Yang",
+   "Mao Yang"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "16 pages; Accepted by VLDB 2026",
+  "journal_ref": "PVLDB, 19(5): 1016-1031, 2026",
+  "doi": "10.14778/3796195.3796212",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2606.16135v1",
+  "title": "SwiftCache: Efficient LLM Serving for Multi-turn Conversations with Heterogeneous KV Cache Sharing",
+  "abstract": "Multi-turn conversation is a fundamental scenario in LLM applications, widely used in chatbots and AI agents. As the conversation evolves, historical tokens accumulate continuously. Existing systems cache their key-value (KV) pairs to avoid redundant computation. However, limited GPU memory (HBM) capacity often forces these KV caches to be offloaded to CPU memory or SSD, making KV cache reloads increasingly costly in terms of latency as the context grows. Meanwhile, the constrained HBM capacity also limits the maximum inference length, thereby restricting the number of turns that can be supported in a conversation. To address these two challenges, we propose SwiftCache, a collaborative inference system that enables heterogeneous models to share underutilized GPU memory and NVLink bandwidth within a server. Specifically, models with low KV cache demand donate idle GPU memory to store the prefix cache of high-demand models, allowing cross-model KV cache sharing over NVLink and avoiding slow PCIe transfers. SwiftCache further reduces memory pressure by keeping only the KV cache of the currently active layer in local GPU memory, thereby enabling longer-context inference. Our experiments on real-world workloads show that SwiftCache reduces P99 time-to-first-token (TTFT) by up to 69% and extends maximum context length by up to 3.98x compared to vLLM and SGLang, with minimal interference to co-located models.",
+  "published": "2026-06-15T02:48:15Z",
+  "updated": "2026-06-15T02:48:15Z",
+  "authors": [
+   "Jianmin Hu",
+   "Minxian Xu",
+   "Sa Wang",
+   "Chong Ma",
+   "Min Shen",
+   "Kejiang Ye",
+   "Lin Qu",
+   "Chengzhong Xu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "15 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 52
+ },
+ {
+  "id": "2602.09725v3",
+  "title": "Efficient Remote KV Cache Reuse with GPU-native Video Codec",
+  "abstract": "Remote KV cache reuse fetches KV cache for identical contexts from remote storage, avoiding recomputation, accelerating LLM inference. While it excels in high-speed networks, its performance degrades significantly in bandwidth-limited scenarios. Recent studies address this by transmitting KV caches in compressed form, but the associated heavyweight decompression counteracts the KV reuse benefits. In this paper, we propose an efficient and widely deployable remote KV cache reuse solution that leverages GPU-native video codecs. Our system, KVCodec, enables effective KV cache coding with two techniques. The codec-friendly tensor layout compresses the KV cache in a highly compact video format, enabling fast transmission. The efficient KV fetcher orchestrates the transmission, decoding, and restoration of compressed KV caches in an efficient pipelined manner, eliminating resource contention, masking network fluctuations, and achieving minimum time-to-first-token (TTFT). We prototype KVCodec on diverse GPUs from high- to low-end. Experiments reveal that it reduces TTFT by up to 3.51 times while maintaining lossless accuracy, compared to SOTA methods.",
+  "published": "2026-02-10T12:29:02Z",
+  "updated": "2026-05-12T14:12:11Z",
+  "authors": [
+   "Liang Mi",
+   "Weijun Wang",
+   "Jinghan Chen",
+   "Ting Cao",
+   "Haipeng Dai",
+   "Yunxin Liu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "Accepted by SIGCOMM 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 2
+   }
+  ],
+  "score": 52
+ },
+ {
+  "id": "2502.16002v4",
+  "title": "KVLink: Accelerating Large Language Models via Efficient KV Cache Reuse",
+  "abstract": "We describe KVLink, an approach for efficient key-value (KV) cache reuse in large language models (LLMs). In many LLM applications, different inputs can share overlapping context, such as the same retrieved document appearing in multiple queries. However, the LLMs still need to encode the entire context for each query, leading to redundant computation. In this paper, we investigate a new strategy to eliminate such inefficiency, where the KV cache of each document is precomputed independently. During inference, the KV caches of retrieved documents are concatenated, allowing the model to reuse cached representations instead of recomputing them. To mitigate the performance degradation when using KV caches computed independently for each document, KVLink introduces two key techniques: adjusting positional embeddings of the KV cache at inference to match the global position after concatenation, and using trainable special tokens to restore self-attention across independently encoded documents. Experiments across 7 datasets demonstrate that KVLink improves question answering accuracy by an average of 4% over state-of-the-art methods. Furthermore, by leveraging precomputed KV caches, our approach reduces time-to-first-token by up to 96% compared to standard LLM inference, making it a scalable and efficient solution for context reuse. Additionally, KVLink can be combined with KV cache compression to further save cache loading and storage overhead while outperforming the baselines.",
+  "published": "2025-02-21T23:34:29Z",
+  "updated": "2025-11-10T00:11:57Z",
+  "authors": [
+   "Jingbo Yang",
+   "Bairu Hou",
+   "Wei Wei",
+   "Yujia Bao",
+   "Shiyu Chang"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 52
+ },
+ {
+  "id": "2309.06180v1",
+  "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+  "abstract": "High throughput serving of large language models (LLMs) requires batching sufficiently many requests at a time. However, existing systems struggle because the key-value cache (KV cache) memory for each request is huge and grows and shrinks dynamically. When managed inefficiently, this memory can be significantly wasted by fragmentation and redundant duplication, limiting the batch size. To address this problem, we propose PagedAttention, an attention algorithm inspired by the classical virtual memory and paging techniques in operating systems. On top of it, we build vLLM, an LLM serving system that achieves (1) near-zero waste in KV cache memory and (2) flexible sharing of KV cache within and across requests to further reduce memory usage. Our evaluations show that vLLM improves the throughput of popular LLMs by 2-4$\\times$ with the same level of latency compared to the state-of-the-art systems, such as FasterTransformer and Orca. The improvement is more pronounced with longer sequences, larger models, and more complex decoding algorithms. vLLM's source code is publicly available at https://github.com/vllm-project/vllm",
+  "published": "2023-09-12T12:50:04Z",
+  "updated": "2023-09-12T12:50:04Z",
+  "authors": [
+   "Woosuk Kwon",
+   "Zhuohan Li",
+   "Siyuan Zhuang",
+   "Ying Sheng",
+   "Lianmin Zheng",
+   "Cody Hao Yu",
+   "Joseph E. Gonzalez",
+   "Hao Zhang",
+   "Ion Stoica"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "SOSP 2023",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   }
+  ],
+  "score": 52
+ },
+ {
+  "id": "2609.17573v1",
+  "title": "GroupKV: Hierarchical KV Cache Management for Long-Context Diffusion LLM Inference",
+  "abstract": "Diffusion large language models (dLLMs) are emerging as a promising generative paradigm that complements autoregressive decoding. In long-context settings, KV cache bloat and offloading transfer overhead have become primary bottlenecks in inference systems. Meanwhile, the periodic full-sequence recomputation and localized token updates in dLLMs make the KV lifecycle substantially more dynamic, complicating cache management and prefetch scheduling while making heavyweight token-level indexing or clustering schemes harder to amortize effectively during decoding. To address these challenges, we present \\textsc{GroupKV}, a lightweight hierarchical KV cache management system for long-context dLLM inference. We observe that under block-wise decoding, tokens within the same generation block tend to access highly overlapping and spatially concentrated context regions, making group-level sparse selection effective. Building on this observation, \\textsc{GroupKV} partitions the context into contiguous groups and performs coarse-to-fine sparse selection. \\textsc{GroupKV} further exploits cross-layer consistency to enable predictive prefetching, and incorporates a staleness correction mechanism to maintain cache coherence under dynamic KV updates. Additionally, \\textsc{GroupKV} adopts streaming prefill to reduce peak memory consumption during prefilling. Experiments show that \\textsc{GroupKV} extends the maximum serviceable context length by up to $48.00\\times$ under constrained GPU memory, improves end-to-end inference performance by up to $3.73\\times$ in offload-based long-context settings, and maintains competitive task accuracy.",
+  "published": "2026-07-30T16:19:56Z",
+  "updated": "2026-07-30T16:19:56Z",
+  "authors": [
+   "Jinhao Wang",
+   "Zhexin Hu",
+   "Kangjie Zhou",
+   "Xin Zhou",
+   "Fangfang Liu"
+  ],
+  "categories": [
+   "cs.OS",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 51
+ },
+ {
+  "id": "2606.02964v1",
+  "title": "Multi-Segment Attention: Enabling Efficient KV-Cache Management for Faster Large Language Model Serving",
+  "abstract": "Large Language Model (LLM) inference relies on key-value (KV) caches to avoid redundant attention computation. While approximate KV cache retention techniques reduce memory usage by sacrificing model accuracy, lossless approaches instead evict KV cache blocks from GPU memory and reconstruct them on demand to preserve exact outputs. Existing lossless KV cache management systems primarily base eviction decisions on access frequency or positional heuristics, without considering how different KV cache blocks affect the execution efficiency of GPU attention kernels. In this paper, we propose AsymCache, a computation-latency-aware KV cache management system for LLM inference that explicitly aligns cache residency decisions with GPU attention kernel performance, including three key components: Multi-Segment Attention (MSA) for efficient non-contiguous KV context processing, a cache eviction policy that jointly optimizes hit rate and position-aware recomputation cost, and an adaptive chunking scheduler for high hardware utilization. Experiments show that AsymCache reduces TTFT by up to 1.90-2.03x and time-per-output-token (TPOT) by 1.62-1.71x over latest baselines, confirming the effectiveness of the method in common workloads and validating its design goal of balancing computational efficiency with cache hit rate. Moreover, the low-level design of AsymCache allows seamless integration into agent serving systems such as Continuum, where it further reduces average job latency by up to 18.1%.",
+  "published": "2026-06-01T23:51:37Z",
+  "updated": "2026-06-01T23:51:37Z",
+  "authors": [
+   "Chunan Shi",
+   "Yilei Chen",
+   "Yilin Chen",
+   "Xupeng Miao",
+   "Bin Cui"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.CL",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   }
+  ],
+  "score": 51
+ },
+ {
+  "id": "2604.10539v1",
+  "title": "IceCache: Memory-efficient KV-cache Management for Long-Sequence LLMs",
+  "abstract": "Key-Value (KV) cache plays a crucial role in accelerating inference in large language models (LLMs) by storing intermediate attention states and avoiding redundant computation during autoregressive generation. However, its memory footprint scales linearly with sequence length, often leading to severe memory bottlenecks on resource-constrained hardware. Prior work has explored offloading KV cache to the CPU while retaining only a subset on the GPU, but these approaches often rely on imprecise token selection and suffer performance degradation in long-generation tasks such as chain-of-thought reasoning. In this paper, we propose a novel KV cache management strategy, IceCache, which integrates semantic token clustering with PagedAttention. By organizing semantically related tokens into contiguous memory regions managed by a hierarchical, dynamically updatable data structure, our method enables more efficient token selection and better utilization of memory bandwidth during CPU-GPU transfers. Experimental results on LongBench show that, with a 256-token budget, IceCache maintains 99% of the original accuracy achieved by the full KV cache model. Moreover, compared to other offloading-based methods, IceCache attains competitive or even superior latency and accuracy while using only 25% of the KV cache token budget, demonstrating its effectiveness in long-sequence scenarios. The code is available on our project website at https://yuzhenmao.github.io/IceCache/.",
+  "published": "2026-04-12T09:02:20Z",
+  "updated": "2026-04-12T09:02:20Z",
+  "authors": [
+   "Yuzhen Mao",
+   "Qitong Wang",
+   "Martin Ester",
+   "Ke Li"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   }
+  ],
+  "score": 51
+ },
+ {
+  "id": "2510.18586v5",
+  "title": "TokenCake: A KV-Cache-centric Serving Framework for LLM-based Multi-Agent Applications",
+  "abstract": "Large Language Models (LLMs) are increasingly deployed in complex multi-agent applications that rely on external function calls. This workload creates severe performance challenges for the KV Cache: spatial contention leads to the eviction of critical agents' caches and temporal underutilization leaves the cache of agents stalled on long-running function calls idling in GPU memory. We present TokenCake, a KV-Cache-centric serving framework that bridges this gap by co-optimizing scheduling and memory management through an agent-aware design. TokenCake's Temporal Scheduler employs an event-driven, opportunistic policy to proactively offload idle KV Caches during function calls and uses predictive uploading to hide data transfer latency. TokenCake's Spatial Scheduler uses dynamic memory partitioning, guided by a hybrid priority metric combining graph structure and runtime state, to reserve GPU memory for critical-path agents. Our evaluation on representative multi-agent benchmarks shows that TokenCake reduces end-to-end latency by up to 47.06% in memory-constrained settings and improves effective GPU utilization by 16.9 percentage points compared to vLLM. TokenCake is publicly available at https://github.com/pkulemonade/TokenCake.",
+  "published": "2025-10-21T12:39:32Z",
+  "updated": "2026-09-28T13:11:02Z",
+  "authors": [
+   "Zhuohang Bian",
+   "Feiyang Wu",
+   "Zhuoran Li",
+   "Teng Ma",
+   "Youwei Zhuo"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "14 pages, 17 figures, 3 tables, 2 algorithms. Accepted at EuroSys '27",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:\"data transfer\" AND abs:\"KV cache\"",
+    "rank": 2
+   }
+  ],
+  "score": 51
+ },
+ {
+  "id": "2411.01142v1",
+  "title": "NEO: Saving GPU Memory Crisis with CPU Offloading for Online LLM Inference",
+  "abstract": "Online LLM inference powers many exciting applications such as intelligent chatbots and autonomous agents. Modern LLM inference engines widely rely on request batching to improve inference throughput, aiming to make it cost-efficient when running on expensive GPU accelerators. However, the limited GPU memory has largely limited the batch size achieved in practice, leaving significant GPU compute resources wasted. We present NEO, an online LLM inference system that offloads part of attention compute and KV cache states from the GPU to the local host CPU, effectively increasing the GPU batch size and thus inference throughput. To this end, NEO proposes asymmetric GPU-CPU pipelining and load-aware scheduling to balance GPU and CPU loads and fully utilize their compute and memory resources. We evaluate NEO on a wide range of workloads (i.e., code generation, text summarization), GPUs (i.e., T4, A10G, H100), and LLM models (i.e., 7B, 8B, 70B). NEO achieves up to 7.5$\\times$, 26%, and 14% higher throughput compared to GPU-only approach on T4, A10G, and H100 GPUs, respectively, while maintaining the same latency; with more powerful CPUs, NEO achieves up to 79.3% throughput gain on A10G GPU.",
+  "published": "2024-11-02T05:15:44Z",
+  "updated": "2024-11-02T05:15:44Z",
+  "authors": [
+   "Xuanlin Jiang",
+   "Yang Zhou",
+   "Shiyi Cao",
+   "Ion Stoica",
+   "Minlan Yu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 1
+   }
+  ],
+  "score": 50
+ },
+ {
+  "id": "2605.18071v1",
+  "title": "KVDrive: A Holistic Multi-Tier KV Cache Management System for Long-Context LLM Inference",
+  "abstract": "Supporting long-context LLMs is challenging due to the substantial memory demands of the key-value (KV) cache. Existing offloading systems store the full cache in host memory and selectively fetch critical entries during decoding, but this strategy quickly hits a ceiling: sparsity cannot be pushed further without degrading accuracy. As a result, when context length and batch size grow, the volume of KV transfers rises sharply and becomes the dominant source of decoding latency. We present KVDrive, a holistic multi-tier KV cache management system spanning GPU memory, host DRAM, and SSD. Unlike prior work that pursues greater sparsity through algorithmic refinements, KVDrive tackles the problem from a systems perspective - jointly orchestrating cache placement, pipeline scheduling, and cross-tier coordination to sustain high-throughput inference under tight GPU budgets. KVDrive advances three fundamental capabilities: it adapts cache management to attention behavior to maximize reuse and minimize redundant data movement; it restructures the decoding pipeline to overlap I/O- and CPU/GPU compute-bound stages, eliminating stalls across heterogeneous resources; and it harmonizes data movement across memory tiers to unlock scalable long-context inference far beyond GPU and DRAM limits. We have implemented a fully functional prototype of KVDrive and evaluated it on long-context benchmarks with popular LLMs. The system achieves up to 1.74x higher throughput compared to state-of-the-art works while preserving accuracy.",
+  "published": "2026-05-18T08:54:16Z",
+  "updated": "2026-05-18T08:54:16Z",
+  "authors": [
+   "Jian Lin",
+   "Jiazhi Mi",
+   "Zicong Hong",
+   "Haodong Wang",
+   "Qianli Liu",
+   "Haodyue Zhang",
+   "Peng Li",
+   "Song Guo"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2604.19769v1",
+  "title": "TTKV: Temporal-Tiered KV Cache for Long-Context LLM Inference",
+  "abstract": "Key-value (KV) caching is critical for efficient inference in large language models (LLMs), yet its memory footprint scales linearly with context length, resulting in a severe scalability bottleneck. Existing approaches largely treat KV states as equally important across time, implicitly assuming uniform precision and accessibility. However, this assumption contrasts with human memory systems, where memories vary in clarity, recall frequency, and relevance with temporal proximity.Motivated by this insight, we propose TTKV, a KV cache management framework that maps the human memory system onto the KV cache. TTKV partitions the KV cache into temporal tiers with heterogeneous capacity and precision. The design addresses three aspects: (1) Tier Layout, decoupling fast and slow memory using HBM and DRAM; (2) Tier Content, assigning more recent KV states to faster, higher-precision tiers based on temporal proximity; and (3) Tier Interaction, employing block-wise streaming attention to overlap communication and computation when accessing slow tiers. Experiments show that TTKV reduces cross-tier traffic by 5.94x on 128K-context tasks, achieving up to 76% latency reduction and 2x throughput improvement over strong baselines.",
+  "published": "2026-03-27T09:01:23Z",
+  "updated": "2026-03-27T09:01:23Z",
+  "authors": [
+   "Gradwell Dzikanyanga",
+   "Weihao Yang",
+   "Hao Huang",
+   "Donglei Wu",
+   "Shihao Wang",
+   "Wen Xia",
+   "Sanjeeb K C"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2511.00868v2",
+  "title": "FlexiCache: Leveraging Temporal Stability of Attention Heads for Efficient KV Cache Management",
+  "abstract": "Large Language Model (LLM) serving is increasingly constrained by the growing size of the key-value (KV) cache, which scales with both context length and generation length. Prior work shows that attention is dominated by a small subset of critical tokens, yet existing systems struggle to exploit this efficiently without degrading accuracy, especially in long generation. We make a key observation: the temporal stability of these critical tokens varies significantly across KV heads: some heads consistently focus on the same tokens, while others shift frequently. Building on this insight, we introduce FlexiCache, a hierarchical KV-cache management system that leverages the temporal stability of KV heads to reduce GPU memory usage and computation overhead, while preserving model accuracy. FlexiCache classifies KV heads as stable or unstable: it retains all KV-cache pages from unstable heads in GPU memory, whereas for stable heads, it keeps only the top-K pages on the GPU and offloads the rest to host memory. By exploiting temporal stability, FlexiCache performs periodic reranking for stable heads to fetch newly promoted top pages. Implemented atop vLLM, FlexiCache reduces GPU memory footprint for long-context requests by up to 70%, improves offline serving throughput by 1.38-1.55x, and lowers online token latency by 1.6-2.1x, all while maintaining accuracy in long-context, long-generation scenarios.",
+  "published": "2025-11-02T09:33:12Z",
+  "updated": "2026-04-20T15:56:23Z",
+  "authors": [
+   "Nazmul Takbir",
+   "Hamidreza Alikhani",
+   "Nikil Dutt",
+   "Sangeetha Abdu Jyothi"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "Accepted at MLSys-2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2507.19823v1",
+  "title": "HCAttention: Extreme KV Cache Compression via Heterogeneous Attention Computing for LLMs",
+  "abstract": "Processing long-context inputs with large language models presents a significant challenge due to the enormous memory requirements of the Key-Value (KV) cache during inference. Existing KV cache compression methods exhibit noticeable performance degradation when memory is reduced by more than 85%. Additionally, strategies that leverage GPU-CPU collaboration for approximate attention remain underexplored in this setting. We propose HCAttention, a heterogeneous attention computation framework that integrates key quantization, value offloading, and dynamic KV eviction to enable efficient inference under extreme memory constraints. The method is compatible with existing transformer architectures and does not require model fine-tuning. Experimental results on the LongBench benchmark demonstrate that our approach preserves the accuracy of full-attention model while shrinking the KV cache memory footprint to 25% of its original size. Remarkably, it stays competitive with only 12.5% of the cache, setting a new state-of-the-art in LLM KV cache compression. To the best of our knowledge, HCAttention is the first to extend the Llama-3-8B model to process 4 million tokens on a single A100 GPU with 80GB memory.",
+  "published": "2025-07-26T06:43:14Z",
+  "updated": "2025-07-26T06:43:14Z",
+  "authors": [
+   "Dongquan Yang",
+   "Yifan Yang",
+   "Xiaotian Yu",
+   "Xianbiao Qi",
+   "Rong Xiao"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-compression",
+    "query": "abs:\"KV cache\" AND (abs:compression OR abs:quantization OR abs:eviction OR abs:sparsity)",
+    "rank": 2
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2502.09921v2",
+  "title": "A Cost-Effective Near-Storage Processing Solution for Offline Inference of Long-Context LLMs",
+  "abstract": "The computational and memory demands of large language models for generative inference present significant challenges for practical deployment. One promising solution targeting offline inference is offloading-based batched inference, which extends the GPU's memory hierarchy with host memory and storage. However, it often suffers from substantial I/O overhead, primarily due to the large KV cache sizes that scale with batch size and context window length. In this paper, we introduce HILOS, a framework that boosts offline inference throughput using near-storage processing. The core of HILOS is attention near storage, which offloads memory-intensive attention operations to near-storage accelerators, reducing traffic across the system interconnect. Building on attention near storage, HILOS incorporates three additional optimizations. First, cooperative X-cache minimizes KV cache I/O by exploiting available host resources after offloading. Second, delayed KV cache writeback hides storage write latency and mitigates storage write amplification. Finally, a memory-efficient attention accelerator sustains high throughput for long sequences within the resource constraints of NSP devices. We implemented and evaluated HILOS on a real system equipped with 16 SmartSSDs. Compared to state-of-the-art offloading-based inference frameworks, HILOS achieves up to 7.86x throughput while reducing energy consumption by up to 85\\%. The source code for HILOS is available at https://github.com/hongsunjang/HILOS.",
+  "published": "2025-02-14T05:19:46Z",
+  "updated": "2026-02-06T09:06:07Z",
+  "authors": [
+   "Hongsun Jang",
+   "Jaeyong Song",
+   "Changmin Shin",
+   "Si Ung Noh",
+   "Jaewon Jung",
+   "Jisung Park",
+   "Jinho Lee"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "ASPLOS'26",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2609.36938v1",
+  "title": "Efficient Agentic LLM Serving over SSD-based Sparse KV Storage",
+  "abstract": "Agentic sessions driven by Large language models (LLMs) often alternate between model inference and tool use, accumulating long histories across successive rounds. Serving these sessions efficiently requires reducing attention computation and retaining history key-value (KV) caches to avoid recomputation. Recently, frontier open-source LLMs adopt sparse attention to reduce computation by selecting only part of the history, while SSDs provide a cheaper alternative to CPU DRAM for storing KV caches. However, sparse KV selection depends on the ad hoc intermediate values during model inference, so it forces SSD reads to lie on the inference critical path. These reads are further slowed by fragmented accesses and read-write interference in SSDs. To address these challenges, we present Janus, an agentic serving framework for sparse attention LLMs with SSD-centric KV storage. Janus focuses on append prefill, which processes each round's newly added inputs and accounts for most history KV loading. To move SSD reads out of the critical path, Janus runs the model's own KV selection module on earlier intermediate values, predicting KV demand without additional training. The predicted reads overlap with model computation, and any prediction misses are fetched before attention executes to preserve model outputs. To improve SSD efficiency, Janus coalesces adjacent reads, packs scattered KV pages into sequential writes on the CPU, and limits background writes while reads are active. Across three models and three agentic traces, Janus outperforms existing works by up to 1.57-3.69 times (1.22-1.85 times on average) in terms of the time to first token latency, while maintaining decode efficiency.",
+  "published": "2026-09-29T07:50:41Z",
+  "updated": "2026-09-29T07:50:41Z",
+  "authors": [
+   "Wenhao He",
+   "Ping Zhang",
+   "Xiaohe Hu",
+   "Chutian Wang",
+   "Jinlong Hou",
+   "Yuan Cheng",
+   "Peng Sun",
+   "Fangcheng Fu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 2
+   }
+  ],
+  "score": 48
+ },
+ {
+  "id": "2502.12574v1",
+  "title": "HeadInfer: Memory-Efficient LLM Inference by Head-wise Offloading",
+  "abstract": "Transformer-based large language models (LLMs) demonstrate impressive performance in long context generation. Extending the context length has disproportionately shifted the memory footprint of LLMs during inference to the key-value cache (KV cache). In this paper, we propose HEADINFER, which offloads the KV cache to CPU RAM while avoiding the need to fully store the KV cache for any transformer layer on the GPU. HEADINFER employs a fine-grained, head-wise offloading strategy, maintaining only selective attention heads KV cache on the GPU while computing attention output dynamically. Through roofline analysis, we demonstrate that HEADINFER maintains computational efficiency while significantly reducing memory footprint. We evaluate HEADINFER on the Llama-3-8B model with a 1-million-token sequence, reducing the GPU memory footprint of the KV cache from 128 GB to 1 GB and the total GPU memory usage from 207 GB to 17 GB, achieving a 92% reduction compared to BF16 baseline inference. Notably, HEADINFER enables 4-million-token inference with an 8B model on a single consumer GPU with 24GB memory (e.g., NVIDIA RTX 4090) without approximation methods.",
+  "published": "2025-02-18T06:26:05Z",
+  "updated": "2025-02-18T06:26:05Z",
+  "authors": [
+   "Cheng Luo",
+   "Zefan Cai",
+   "Hanshi Sun",
+   "Jinqi Xiao",
+   "Bo Yuan",
+   "Wen Xiao",
+   "Junjie Hu",
+   "Jiawei Zhao",
+   "Beidi Chen",
+   "Anima Anandkumar"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-compression",
+    "query": "abs:\"KV cache\" AND abs:\"long context\"",
+    "rank": 2
+   }
+  ],
+  "score": 48
+ },
+ {
+  "id": "2609.07175v1",
+  "title": "Enabling High-Bandwidth Flash for Generative Recommendation Serving with Write-Aware KV Cache Policy",
+  "abstract": "Generative recommendation (GR) systems increasingly leverage user-level KV cache reuse to avoid recomputing long user histories. However, the growing KV cache capacity and bandwidth requirements introduce new challenges for memory system. High-Bandwidth Flash (HBF) provides a promising solution by offering substantially higher capacity than HBM while approaching HBM-class read bandwidth, enabling larger scale KV cache retention and improved serving throughput. Yet conventional Least-Recently-Used (LRU) KV cache management tightly couples KV cache writes with cache misses, generating excessive write traffic that rapidly exhausts flash endurance. In this work, we evaluate a write-aware KV cache policy based on admission-controlled LRU-K for HBF-based GR serving. By filtering low-reuse users before cache admission, LRU-K decouples KV cache writes from misses and significantly reduces unnecessary writes. We develop an analytical model to characterize GR serving performance, KV cache write traffic, and HBF lifetime, and evaluate performance across diverse memory systems and GR workloads. Our results show that HBF-based systems achieve 3.8 to 4.7 times higher throughput than HBM-only systems. Moreover, LRU-K extends HBF lifetime from about one year under conventional LRU to over six years with a moderate K=10, while maintaining comparable or even slightly improved throughput. These results highlight the importance of write aware KV cache policy for sustainable HBF-based GR serving.",
+  "published": "2026-09-07T08:07:14Z",
+  "updated": "2026-09-07T08:07:14Z",
+  "authors": [
+   "Danni Peng",
+   "Kai Wu",
+   "Tianyu Zuo",
+   "Pengfei Xia",
+   "Hui Zang"
+  ],
+  "categories": [
+   "cs.AR"
+  ],
+  "comment": "5 pages, 7 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   }
+  ],
+  "score": 47
+ },
+ {
+  "id": "2602.23592v2",
+  "title": "KEEP: A KV-Cache-Centric Memory Management System for Efficient Embodied Planning",
+  "abstract": "Memory-augmented Large Language Models (LLMs) have demonstrated remarkable capability for complex and long-horizon embodied planning. By keeping track of past experiences and environmental states, memory enables LLMs to maintain a global view, thereby avoiding repetitive exploration. However, existing approaches often store the memory as raw text, leading to excessively long prompts and high prefill latency. While it is possible to store and reuse the KV caches, the efficiency benefits are greatly undermined due to frequent KV cache updates. In this paper, we propose KEEP, a KV-cache-centric memory management system for efficient embodied planning. KEEP features 3 key innovations: (1) a Static-Dynamic Memory Construction algorithm that reduces KV cache recomputation by mixed-granularity memory group; (2) a Multi-hop Memory Re-computation algorithm that dynamically identifies important cross-attention among different memory groups and reconstructs memory interactions iteratively; (3) a Layer-balanced Memory Loading that eliminates unbalanced KV cache loading and cross-attention computation across different layers. Extensive experimental results have demonstrated that KEEP achieves 2.68x speedup with negligible accuracy loss compared with text-based memory methods on ALFRED dataset. Compared with the KV re-computation method CacheBlend (EuroSys'25), KEEP shows 4.13% success rate improvement and 1.90x time-to-first-token (TTFT) reduction. Our code is available on https://github.com/PKU-SEC-Lab/KEEP_Embodied_Memory.",
+  "published": "2026-02-27T01:48:07Z",
+  "updated": "2026-03-17T07:20:39Z",
+  "authors": [
+   "Zebin Yang",
+   "Tong Xie",
+   "Baotong Lu",
+   "Shaoshan Liu",
+   "Bo Yu",
+   "Meng Li"
+  ],
+  "categories": [
+   "cs.RO",
+   "cs.AI",
+   "cs.SE"
+  ],
+  "comment": "DAC 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   }
+  ],
+  "score": 47
+ },
+ {
+  "id": "2502.12665v2",
+  "title": "A$^2$ATS: Retrieval-Based KV Cache Reduction via Windowed Rotary Position Embedding and Query-Aware Vector Quantization",
+  "abstract": "Long context large language models (LLMs) pose significant challenges for efficient serving due to the large memory footprint and high access overhead of KV cache. Retrieval-based KV cache reduction methods can mitigate these challenges, typically by offloading the complete KV cache to CPU and retrieving necessary tokens on demand during inference. However, these methods still suffer from unsatisfactory accuracy degradation and extra retrieval overhead. To address these limitations, this paper proposes A$^2$ATS, a novel retrieval-based KV cache reduction method. A$^2$ATS aims to obtain an accurate approximation of attention scores by applying the vector quantization technique to key states, thereby enabling efficient and precise retrieval of the top-K tokens. First, we propose Windowed Rotary Position Embedding, which decouples the positional dependency from query and key states after position embedding. Then, we propose query-aware vector quantization that optimizes the objective of attention score approximation directly. Finally, we design the heterogeneous inference architecture for KV cache offloading, enabling long context serving with larger batch sizes. Experimental results demonstrate that A$^2$ATS can achieve a lower performance degradation with similar or lower overhead compared to existing methods, thereby increasing long context serving throughput by up to $2.7 \\times$.",
+  "published": "2025-02-18T09:11:51Z",
+  "updated": "2025-06-03T17:18:23Z",
+  "authors": [
+   "Junhui He",
+   "Junna Xing",
+   "Nan Wang",
+   "Rui Xu",
+   "Shangyu Wu",
+   "Peng Zhou",
+   "Qiang Liu",
+   "Chun Jason Xue",
+   "Qingan Li"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-compression",
+    "query": "abs:\"KV cache\" AND abs:\"long context\"",
+    "rank": 2
+   }
+  ],
+  "score": 47
+ },
+ {
+  "id": "2609.21172v2",
+  "title": "TierKV: Long-Context On-Device LLMs via Predictive Multi-Tier KV Caching",
+  "abstract": "Large language models (LLMs) are moving onto mobile devices for increasingly diverse workloads over text, images, video, and audio. These applications often require long contexts, making the Key-Value (KV) cache a dominant memory bottleneck because it grows linearly with sequence length and is accessed at every decoding step. Prior work reduces KV-cache footprint through low-rank compression, token eviction, or flash offloading, but the resulting reconstruction overhead, irreversible token loss, or I/O stalls can offset the benefit of saving memory. We present TierKV, a mobile LLM inference framework built on Predictive Multi-Tier Cache Optimization (PMCO). Before decoding starts, PMCO predicts future cache demand from prefill hidden states and jointly assigns tokens to exact, low-rank, and flash-offloaded tiers under the device memory and accuracy budgets. This formulation retains access to the full context, removes the circular dependency of reactive eviction, and admits a closed-form solver that selects tier boundaries and per-layer ranks at runtime. Across eight text, vision, and audio models on three mobile SoCs, TierKV improves prefill throughput by up to 17.6x over existing mobile LLM frameworks, reduces RAM-resident KV cache by 12.5-34%, thereby enabling substantially longer contexts under the same memory budget, while incurring only minor accuracy degradation.",
+  "published": "2026-09-18T00:36:05Z",
+  "updated": "2026-09-29T16:29:49Z",
+  "authors": [
+   "Zhihao Shu",
+   "Md Musfiqur Rahman Sanim",
+   "Jie Hu",
+   "Kun Yuan",
+   "Minghai Qin",
+   "Gagan Agrawal",
+   "Wei Niu"
+  ],
+  "categories": [
+   "cs.LG",
+   "eess.SY"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2609.06940v1",
+  "title": "Unified AI Gateway: A Framework for Joint Model Routing and KV Cache Management",
+  "abstract": "Large language model (LLM) inference increasingly spans models that differ in size, capability, price, and provider. This shift creates two costs for developers. One is the integration cost of choosing among and switching between many models. The other is the inference cost of rebuilding a KV cache when it is unavailable or incompatible with the selected model. We define and analyze the Unified AI Gateway as a system setting for an edge-deployed AI traffic hub. It coordinates model routing, KV cache management, and compute placement across end devices, edge resources, and cloud model services. At request time, the gateway jointly selects a target model, an execution site, and a KV cache action under task-quality, latency, cost, and resource constraints. In parallel, background cache-management actions optimize KV cache placement, replication, retrieval, and lifecycle decisions for subsequent requests. We synthesize existing evidence on KV cache reuse, compression, cross-model mapping, distributed storage, and transfer, and discuss the remaining challenges of integrating these capabilities into one system. Across eight typical workload profiles, our workload-level analytical simulation reports TTFT speedups of 1.25$\\times$--13.28$\\times$ and input-cost benefits of 1.20$\\times$--6.16$\\times$.",
+  "published": "2026-09-07T02:21:39Z",
+  "updated": "2026-09-07T02:21:39Z",
+  "authors": [
+   "Jiaxun Lu",
+   "Xiang Zhang",
+   "Yunfeng Shao"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "15 pages, 5 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2601.19910v1",
+  "title": "Understanding Bottlenecks for Efficiently Serving LLM Inference With KV Offloading",
+  "abstract": "KV cache offloading enables long-context LLM inference by storing caches in CPU DRAM, but PCIe bandwidth limitations create severe bottlenecks. In this paper, we develops an analytical framework that derives $κ_{\\text{crit}}$, the critical cached-to-prefill token ratio where execution becomes memory-bound and show typical workloads exceed this threshold by orders of magnitude. Empirical characterization reveals 99\\% of latency spent on transfers and serving offloaded requests results in GPU's consuming only 28\\% of their rated TDP, motivating our proposed optimizations for hardware interconnects, model architectures, and scheduling algorithms.",
+  "published": "2025-12-16T19:29:13Z",
+  "updated": "2025-12-16T19:29:13Z",
+  "authors": [
+   "William Meng",
+   "Benjamin Lee",
+   "Hong Wang"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.DC"
+  ],
+  "comment": "Submitted to MLSys 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 1
+   },
+   {
+    "dim": "benchmarks-measurement",
+    "query": "abs:\"LLM inference\" AND (abs:trace OR abs:workload OR abs:characterization OR abs:benchmark)",
+    "rank": 2
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2511.02230v7",
+  "title": "Continuum: Efficient and Robust Multi-Turn LLM Agent Scheduling with KV Cache Time-to-Live",
+  "abstract": "KV cache management is essential for efficient LLM inference. To maximize utilization, existing inference engines evict finished requests' KV cache if new requests are waiting. This policy breaks for agentic workloads, which interleave LLM calls with tools, introducing pauses that prevent effective KV reuse across turns. Since many tool calls have much shorter durations than human response multi-turn chatbot, it would be promising to retain the KV cache in during these tools. However, many challenges remain. First, we need to consider both the potential cost of recomputation or reloading (if offloading enabled) as well as the increasing queueing delays after eviction from GPU. Second, due to the internal variance of tool call durations, the method needs to remain robust under limited predictability of tool call durations. We present Continnum, a serving system to optimize job completion time for multi-turn agent workloads by introducing time-to-live mechanism for KV cache retention. For requests that generate tool calls, Continnum selectively pins the KV cache in GPU memory with a time-to-live value determined by the reload cost and potential queueing delay induced by eviction. When the TTL expires, the KV cache can be automatically evicted to free up GPU memory, providing robust performance under edge cases. When combined with program-level first-come-first-serve, Continnum preserves multi-turn continuity, and reduces delay for agentic workflows. Evaluations on real-world agents (SWE-Bench, BFCL, OpenHand) with Llama-3.1 8B/70B, Gemma-3 12B, and GLM-4.5 355B shows that Continnum improves the average job completion times by over 8x while improving throughput.",
+  "published": "2025-11-04T03:43:05Z",
+  "updated": "2026-09-08T19:42:41Z",
+  "authors": [
+   "Hanchen Li",
+   "Runyuan He",
+   "Qiuyang Mang",
+   "Qizheng Zhang",
+   "Huanzhi Mao",
+   "Xiaokun Chen",
+   "Hangrui Zhou",
+   "Huanchen Zhang",
+   "Alvin Cheung",
+   "Joseph Gonzalez",
+   "Ion Stoica"
+  ],
+  "categories": [
+   "cs.OS",
+   "cs.AI",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 1
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2610.31169v1",
+  "title": "SARIA: Persistence-Aware KV Caching with Coordinated DRAM--SSD Reload for LLM Agents",
+  "abstract": "Multi-turn LLM agents usually reuse long context prefixes, making key value (KV) caching crucial for reducing prefill latency. SSDs provide a low-cost extension to limited DRAM capacity but introduce two key challenges. Eagerly persisting all KV cache blocks incurs substantial write traffic and rapidly consumes finite SSD endurance. Meanwhile, the small number of SSDs provisioned in typical GPU servers limits aggregate reload bandwidth, making SSD-resident KV cache much slower to retrieve than that in DRAM and inflating prefill latency. We present \\textsc{Saria} (Selective Admission and Reload for Inference Acceleration), a KV caching system that jointly manages DRAM and SSD by exploiting the session-level temporal locality of LLM agents to reduce SSD writes and accelerate cache reload. On the write path, \\textsc{Saria} uses eviction and reuse history to selectively persist KV cache blocks that exhibit reuse opportunities beyond their DRAM residency, avoiding unnecessary writes for KV cache already hosted in DRAM. On the read path, \\textsc{Saria} promotes selected SSD-hit KV cache blocks from GPU memory into DRAM after prefill, allowing subsequent reuse within the same session to reduce SSD read traffic while limiting DRAM contention. A transfer coordinator paces DRAM reads while SSD transfers are active, allowing both paths to make progress and efficiently share GPU ingress bandwidth. We implement \\textsc{Saria} on LMCache MP and evaluate it using workloads from TraceLab and WEKA, covering both full-attention and hybrid-attention models. The results show that \\textsc{Saria} reduces SSD writes by 57.1--58.9\\% compared with popular full duplicate caching and the mean time to first token (TTFT) by 42.3--79.7\\% over DRAM-only caching.",
+  "published": "2026-10-22T12:25:27Z",
+  "updated": "2026-10-22T12:25:27Z",
+  "authors": [
+   "Hui Li",
+   "Qihui Zhou",
+   "Xiao Yan",
+   "Shumeng Zhang",
+   "Zijie Dai",
+   "Zequn Gong",
+   "Mingcong Song",
+   "Guoping Long",
+   "Hongjie Si",
+   "James Cheng"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "12 pages, 16 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:memory AND (abs:LLM OR abs:transformer) AND abs:system",
+    "rank": 3
+   }
+  ],
+  "score": 45
+ },
+ {
+  "id": "2609.01338v1",
+  "title": "mzCache: On-Device LLM Memory Management under Multitasking",
+  "abstract": "On-device mobile Large Language Model (LLM) inference is gaining significant attention. However, mobile devices operate in highly dynamic multitasking environments where users frequently switch between applications. This creates memory pressure, forcing LLM memory (model weights and KV cache) to be evicted by the operating system. When a new inference request arrives, the inference system must restore the evicted memory through slow storage reads or recompute the entire KV cache, severely degrading responsiveness. To address this, we present mzCache, an on-device LLM inference system with specialized memory management for multitasking environments. Under unpredictable memory pressure, mzCache elastically evicts LLM memory and leverages the unified memory of mobile SoCs to enable zero-wait inference on the GPU with concurrent CPU-side restoration. mzCache realizes this through restoration-oriented memory management: LLM memory is partitioned into fine-grained shared buffers to enable partial eviction and restoration with concurrent cross-processor access, while hybrid swap and backward-out eviction policies ensure low-latency restoration from any eviction state. Implemented on llama.cpp and deployed as an Android application, mzCache achieves 2.1-5.5$\\times$ reduction in Time-to-First-Token compared to storage-backed partial offload and demonstrates its effectiveness in real multitasking scenarios.",
+  "published": "2026-09-01T14:49:20Z",
+  "updated": "2026-09-01T14:49:20Z",
+  "authors": [
+   "Hongseung Yu",
+   "Minsung Kim",
+   "Jongseok Park",
+   "Kyunghan Lee"
+  ],
+  "categories": [
+   "cs.OS",
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "MobiCom 2026",
+  "journal_ref": "",
+  "doi": "10.1145/3795866.3844495",
+  "provenance": [
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND (abs:offload OR abs:storage OR abs:SSD OR abs:disk OR abs:hierarchical)",
+    "rank": 1
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"KV cache\" AND abs:memory AND abs:management",
+    "rank": 2
+   },
+   {
+    "dim": "kv-offload-tiered",
+    "query": "abs:\"LLM inference\" AND abs:offloading",
+    "rank": 3
+   },
+   {
+    "dim": "model-loading-serving",
+    "query": "abs:\"model weight\" AND (abs:offloading OR abs:streaming OR abs:cache)",
+    "rank": 4
+   }
+  ],
+  "score": 45
+ }
+]

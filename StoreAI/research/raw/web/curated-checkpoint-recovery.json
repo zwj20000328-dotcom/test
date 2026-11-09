@@ -1,0 +1,2267 @@
+[
+ {
+  "id": "2605.17821v1",
+  "title": "TierCheck: Tiered Checkpointing for Fault Tolerance in Large Language Model Training",
+  "abstract": "Large Language Model (LLM) training is frequently interrupted by a heterogeneous spectrum of failures, from common GPU crashes to catastrophic cluster-wide outages. Existing checkpointing systems rely on monolithic, single-tier storage backend, forcing a trade-off between state-saving overhead and recovery speed. We propose TierCheck, a cluster-aware tiered checkpointing system that aligns storage placement with failure heterogeneity. TierCheck adopts a three-tier design that maintains lightweight differential checkpoints in local and peer memory for fast localized recovery, while asynchronously migrating heavyweight base checkpoints to remote persistent storage. It also ensures strict global consistency across tiers without stalling training, and achieves fast cluster-aware checkpoint restoration during recovery. Evaluations on models up to 40 billion parameters show that TierCheck achieves low training overhead, reduces end-to-end checkpointing time to under 10s, and supports high-frequency checkpointing, ultimately striking an optimal balance between low-overhead persistence and fast recovery.",
+  "published": "2026-05-18T03:48:32Z",
+  "updated": "2026-05-18T03:48:32Z",
+  "authors": [
+   "Shujie Han",
+   "Feng Jiang",
+   "Patrick P. C. Lee",
+   "Xiao Zhang",
+   "Zhijie Huang",
+   "Nannan Zhao",
+   "Xiaonan Zhao",
+   "Lichen Pan"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 44
+ },
+ {
+  "id": "2511.12376v2",
+  "title": "BitSnap: Checkpoint Sparsification and Quantization in LLM Training",
+  "abstract": "As large language models (LLMs) continue to grow in size and complexity, efficient checkpoint saving\\&loading has become crucial for managing storage, memory usage, and fault tolerance in LLM training. The current works do not comprehensively take into account the optimization of these several aspects. This paper proposes a novel checkpoint sparsification and quantization method that adapts dynamically to different training stages and model architectures. We present a comprehensive analysis of existing lossy and lossless compression techniques, identify current limitations, and introduce our adaptive approach that balances compression ratio, speed, and precision impact throughout the training process. Experiments on different sizes of LLMs demonstrate that our bitmask-based sparsification method achieves 16x compression ratio without compromising model accuracy. Additionally, the cluster-based quantization method achieves 2x compression ratio with little precision loss.",
+  "published": "2025-11-15T22:48:59Z",
+  "updated": "2025-11-18T02:44:24Z",
+  "authors": [
+   "Yanxin Peng",
+   "Qingping Li",
+   "Baodong Wu",
+   "Shigang Li",
+   "Guohao Dai",
+   "Shengen Yan",
+   "Yu Wang"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "12 pages, numerous figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2609.18178v2",
+  "title": "Zero-I/O Fault Recovery for Sharded Deep Learning via Dynamic Framework Dependency Rebinding",
+  "abstract": "Distributed model training at scale is frequently interrupted by transient network failures, conventionally forcing cluster managers to abort all processes and roll back to the latest checkpoint. While periodic checkpointing provides durability, frequent snapshotting introduces severe storage backpressure: our measurements on a 1.216B-parameter decoder reveal that per-update asynchronous checkpointing incurs up to a +656.7% latency overhead, consumes 32.5 GiB of host memory, and generates 3.39 TB/hour of storage traffic. To eliminate this overhead, we present AccelPact, a parallel runtime enabling zero-I/O in-memory fault recovery for sharded distributed training. When communication fails at a committed optimizer step, device memory remains quiescent and uncorrupted, yet continuation fails because frameworks like PyTorch FSDP cache internal communication handles across module wrappers and parameter hierarchies. AccelPact resolves this dependency invalidation via a non-invasive reference-rebinding mechanism coordinated by an out-of-band Gloo consensus protocol. On 16 NVIDIA RTX 5880 GPUs training full-parameter Mistral-7B, AccelPact eliminates checkpoint replay, yielding a 1.197x whole-run goodput improvement over cold restart and 1.194x over NVRx checkpoint restoration at checkpoint age 5, rising to 1.698x at age 18. Across ten successive fault injections, all 16 ranks maintain bit-identical parameter state with zero numerical drift. Across 4-to-16 GPU cluster topologies, reference rebinding executes in constant time (0.493-0.518 ms). Operating directly on native communicator instances, AccelPact requires zero application-code modifications and avoids compiler graph breaks under torch.compile, providing an efficient foundation for resilient deep learning.",
+  "published": "2026-09-16T06:05:43Z",
+  "updated": "2026-10-04T13:27:42Z",
+  "authors": [
+   "Genlang Chen",
+   "Junyi Zhu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "8 pages, 4 figures, 10 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2406.11257v1",
+  "title": "ExCP: Extreme LLM Checkpoint Compression via Weight-Momentum Joint Shrinking",
+  "abstract": "Large language models (LLM) have recently attracted significant attention in the field of artificial intelligence. However, the training process of these models poses significant challenges in terms of computational and storage capacities, thus compressing checkpoints has become an urgent problem. In this paper, we propose a novel Extreme Checkpoint Compression (ExCP) framework, which significantly reduces the required storage of training checkpoints while achieving nearly lossless performance. We first calculate the residuals of adjacent checkpoints to obtain the essential but sparse information for higher compression ratio. To further excavate the redundancy parameters in checkpoints, we then propose a weight-momentum joint shrinking method to utilize another important information during the model optimization, i.e., momentum. In particular, we exploit the information of both model and optimizer to discard as many parameters as possible while preserving critical information to ensure optimal performance. Furthermore, we utilize non-uniform quantization to further compress the storage of checkpoints. We extensively evaluate our proposed ExCP framework on several models ranging from 410M to 7B parameters and demonstrate significant storage reduction while maintaining strong performance. For instance, we achieve approximately $70\\times$ compression for the Pythia-410M model, with the final performance being as accurate as the original model on various downstream tasks. Codes will be available at https://github.com/Gaffey/ExCP.",
+  "published": "2024-06-17T06:47:29Z",
+  "updated": "2024-06-17T06:47:29Z",
+  "authors": [
+   "Wenshuo Li",
+   "Xinghao Chen",
+   "Han Shu",
+   "Yehui Tang",
+   "Yunhe Wang"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "ICML 2024 oral",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2401.14351v2",
+  "title": "ServerlessLLM: Low-Latency Serverless Inference for Large Language Models",
+  "abstract": "This paper presents ServerlessLLM, a distributed system designed to support low-latency serverless inference for Large Language Models (LLMs). By harnessing the substantial near-GPU storage and memory capacities of inference servers, ServerlessLLM achieves effective local checkpoint storage, minimizing the need for remote checkpoint downloads and ensuring efficient checkpoint loading. The design of ServerlessLLM features three core contributions: (i) \\emph{fast multi-tier checkpoint loading}, featuring a new loading-optimized checkpoint format and a multi-tier loading system, fully utilizing the bandwidth of complex storage hierarchies on GPU servers; (ii) \\emph{efficient live migration of LLM inference}, which enables newly initiated inferences to capitalize on local checkpoint storage while ensuring minimal user interruption; and (iii) \\emph{startup-time-optimized model scheduling}, which assesses the locality statuses of checkpoints on each server and schedules the model onto servers that minimize the time to start the inference. Comprehensive evaluations, including microbenchmarks and real-world scenarios, demonstrate that ServerlessLLM dramatically outperforms state-of-the-art serverless systems, reducing latency by 10 - 200X across various LLM inference workloads.",
+  "published": "2024-01-25T17:55:07Z",
+  "updated": "2024-07-25T08:08:11Z",
+  "authors": [
+   "Yao Fu",
+   "Leyang Xue",
+   "Yeqi Huang",
+   "Andrei-Octavian Brabete",
+   "Dmitrii Ustiugov",
+   "Yuvraj Patel",
+   "Luo Mai"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "18th USENIX Symposium on Operating Systems Design and Implementation",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   },
+   {
+    "dim": "model-loading-serving",
+    "query": "abs:serverless AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 2
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2602.22158v1",
+  "title": "LLMTailor: A Layer-wise Tailoring Tool for Efficient Checkpointing of Large Language Models",
+  "abstract": "Checkpointing is essential for fault tolerance in training large language models (LLMs). However, existing methods, regardless of their I/O strategies, periodically store the entire model and optimizer states, incurring substantial storage overhead and resource contention. Recent studies reveal that updates across LLM layers are highly non-uniform. Across training steps, some layers may undergo more significant changes, while others remain relatively stable or even unchanged. This suggests that selectively checkpointing only layers with significant updates could reduce overhead without harming training. Implementing such selective strategies requires fine-grained control over both weights and optimizer states, which no current tool provides. To address this gap, we propose \\texttt{LLMTailor}, a checkpoint-merging framework that filters and assembles layers from different checkpoints to form a composite checkpoint. Our evaluation indicates that LLMTailor can work with different selective checkpointing strategies and effectively reduce checkpoint size (e.g., 4.3 times smaller for Llama3.1-8B) and checkpoint time (e.g., 2.8 times faster for Qwen2.5-7B) while maintaining model quality.",
+  "published": "2026-02-25T18:05:17Z",
+  "updated": "2026-02-25T18:05:17Z",
+  "authors": [
+   "Minqiu Sun",
+   "Xin Huang",
+   "Luanzheng Guo",
+   "Nathan R. Tallent",
+   "Kento Sato",
+   "Dong Dai"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "9 pages, 3 figures, accepted at PDSW'25",
+  "journal_ref": "",
+  "doi": "10.1145/3731599.3767515",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2512.11094v2",
+  "title": "SHIFT: Exploring the Boundary of RDMA Network Fault Tolerance",
+  "abstract": "Under gang scheduling for large-scale distributed large language model (LLM) training, a single network anomaly can stall or abort an entire job. Current network fault tolerance mechanisms typically adopt a ``fallback and bypass'' approach within the switching fabric and at the access layer, tolerating in-network and access-layer failures. We explore whether RDMA fault tolerance can be extended to the cross-NIC level by failing over traffic to intra-host backup NICs. For the first time, we prove a fundamental Trilemma: it is impossible to have Cross-NIC RDMA failover that simultaneously preserves Exactly-Once Execution, Receiver-NIC Opacity, and a Zero-Copy datapath. Fortunately, we observe that dominant training frameworks (e.g., NCCL) rely on idempotent bulk transfers that tolerate relaxed memory ordering, as long as notification ordering is preserved. Leveraging this insight, we present SHIFT, a user-space RDMA layer that provides cross-NIC fault tolerance while preserving correct memory semantics. We implement SHIFT in \\texttt{rdma-core} and evaluate it with PyTorch distributed training. Results show that SHIFT incurs negligible overhead during normal operation and successfully masks fatal NIC failures and link anomalies, allowing training to continue without costly restarts.",
+  "published": "2025-12-11T20:10:58Z",
+  "updated": "2026-02-26T13:58:45Z",
+  "authors": [
+   "Shengkai Lin",
+   "Kairui Zhou",
+   "Hongtao Zhang",
+   "Yibo Wu",
+   "Yi Pan",
+   "Yihan Yang",
+   "Qinwei Yang",
+   "Wei Zhang",
+   "Arvind Krishnamurthy",
+   "Shizhen Zhao"
+  ],
+  "categories": [
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 1
+   },
+   {
+    "dim": "network-transfer",
+    "query": "abs:RDMA AND (abs:LLM OR abs:inference OR abs:\"KV cache\")",
+    "rank": 2
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2511.07035v1",
+  "title": "GoCkpt: Gradient-Assisted Multi-Step overlapped Checkpointing for Efficient LLM Training",
+  "abstract": "The accuracy of large language models (LLMs) improves with increasing model size, but increasing model complexity also poses significant challenges to training stability. Periodic checkpointing is a key mechanism for fault recovery and is widely used in LLM training. However, traditional checkpointing strategies often pause or delay GPU computation during checkpoint saving for checkpoint GPU-CPU transfer, resulting in significant training interruptions and reduced training throughput. To address this issue, we propose GoCkpt, a method to overlap checkpoint saving with multiple training steps and restore the final checkpoint on the CPU. We transfer the checkpoint across multiple steps, each step transfers part of the checkpoint state, and we transfer some of the gradient data used for parameter updates. After the transfer is complete, each partial checkpoint state is updated to a consistent version on the CPU, thus avoiding the checkpoint state inconsistency problem caused by transferring checkpoints across multiple steps. Furthermore, we introduce a transfer optimization strategy to maximize GPU-CPU bandwidth utilization and SSD persistence throughput. This dual optimization overlapping saves across steps and maximizing I/O efficiency significantly reduces invalid training time. Experimental results show that GoCkpt can increase training throughput by up to 38.4% compared to traditional asynchronous checkpoint solutions in the industry. We also find that GoCkpt can reduce training interruption time by 86.7% compared to the state-of-the-art checkpoint transfer methods, which results in a 4.8% throughput improvement.",
+  "published": "2025-11-10T12:31:54Z",
+  "updated": "2025-11-10T12:31:54Z",
+  "authors": [
+   "Keyao Zhang",
+   "Yiquan Chen",
+   "Zhuo Hu",
+   "Wenhai Lin",
+   "Jiexiong Xu",
+   "Wenzhi Chen"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "12 pages, 10 figures, 1 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 26
+ },
+ {
+  "id": "2607.01646v2",
+  "title": "PHOENIX: Resilient LLM Training with Hot-Swapping via Zero-Overhead Checkpoint",
+  "abstract": "State-of-the-art large language model (LLM) training takes tens of thousands of graphics processing units (GPUs) for months and encounters failures across the software and hardware stack. Existing fault-tolerance mechanisms either impose non-trivial overhead during failure-free execution or suffer from prolonged recovery latency, particularly under scenarios where a small subset of compute nodes experience permanent failures. %The tradeoff between failure-free overhead and recovery latency forms a space forms a Pareto frontier We present PHOENIX to simultaneously address both optimization objectives. PHOENIX incorporates a fault-tolerance mechanism that restores LLM training via hot-swapping, namely by replacing failed nodes with spare nodes without terminating the complete job. The hot-swapping of PHOENIX is enabled by two ideas: First, it exploits an off-critical-path in-memory checkpointing mechanism for spatial redundancy. Second, it introduces a communicator reconstruction protocol that replaces failed nodes with spare nodes at runtime. PHOENIX efficiently overlaps the in-memory checkpointing with computation, thus introducing zero overhead during error-free execution. Upon permanent node failures, PHOENIX can rebuild memory states with minimal recomputation by leveraging in-memory checkpoints. We evaluate PHOENIX across scales (up to 512 NVIDIA A100 GPUs) and LLMs (up to 65B parameters), and observe zero checkpoint overhead with hot-swapping recovery completing in under 40 seconds. These results show that PHOENIX simultaneously achieves both zero-overhead error-free execution and extremely low recovery cost.",
+  "published": "2026-07-02T03:17:58Z",
+  "updated": "2026-07-06T23:06:49Z",
+  "authors": [
+   "Haotian Xie",
+   "Junlin Chen",
+   "Mingkai Zheng",
+   "Lishan Yang",
+   "Zhao Zhang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2406.06567v2",
+  "title": "DHA: Learning Decoupled-Head Attention from Transformer Checkpoints via Adaptive Heads Fusion",
+  "abstract": "Large language models (LLMs) with billions of parameters demonstrate impressive performance. However, the widely used Multi-Head Attention (MHA) in LLMs incurs substantial computational and memory costs during inference. While some efforts have optimized attention mechanisms by pruning heads or sharing parameters among heads, these methods often lead to performance degradation or necessitate substantial continued pre-training costs to restore performance. Based on the analysis of attention redundancy, we design a Decoupled-Head Attention (DHA) mechanism. DHA adaptively configures group sharing for key heads and value heads across various layers, achieving a better balance between performance and efficiency. Inspired by the observation of clustering similar heads, we propose to progressively transform the MHA checkpoint into the DHA model through linear fusion of similar head parameters step by step, retaining the parametric knowledge of the MHA checkpoint. We construct DHA models by transforming various scales of MHA checkpoints given target head budgets. Our experiments show that DHA remarkably requires a mere 0.25\\% of the original model's pre-training budgets to achieve 97.6\\% of performance while saving 75\\% of KV cache. Compared to Group-Query Attention (GQA), DHA achieves a 5$\\times$ training acceleration, a maximum of 13.93\\% performance improvement under 0.01\\% pre-training budget, and 4\\% relative improvement under 0.05\\% pre-training budget.",
+  "published": "2024-06-03T13:28:43Z",
+  "updated": "2024-12-07T13:23:39Z",
+  "authors": [
+   "Yilong Chen",
+   "Linhao Zhang",
+   "Junyuan Shang",
+   "Zhenyu Zhang",
+   "Tingwen Liu",
+   "Shuohuan Wang",
+   "Yu Sun"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "Accepted at NeurIPS 2024 10 pages, 9 figures, 3 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 24
+ },
+ {
+  "id": "2609.27193v1",
+  "title": "LayerCheck: Adaptive Layer-wise Checkpointing for Large Language Model Post-training",
+  "abstract": "With the rising computational and monetary costs of training large language models (LLMs), checkpointing---periodically storing model states for recovery---becomes essential for fault tolerance. Conventional checkpointing entails a severe trade-off between checkpoint frequency (I/O overhead) and computational recovery (recovery time). State-of-the-art approaches mitigate this cost through pipelining checkpoint I/Os, differential checkpointing, or in-memory persistence, yet none leverage the distinct characteristics of LLM training dynamics, where model weight updates are non-uniformly distributed across transformer layers. This observation implies that saving all weights each time might not be efficient. Inspired by this observation, we present LayerCheck, a layer-wise adaptive checkpointing framework that selectively persists layers whose updates exceed a threshold. This design avoids periodic I/O bursts by distributing layer-wise checkpoint writes over time, resulting in smoother and more balanced I/O profiles. Upon recovery, LayerCheck reconstructs a mixed-timestamp composite model state by aggregating the most recently persisted versions of each layer together with their matching optimizer states. Under a bounded per-layer staleness guard, this introduces a controlled perturbation: under standard Adam assumptions it adds a bounded staleness term, and empirically the post-restart loss deviates from the failure-free trajectory by at most 0.54%. Empirical results on multiple open-source LLMs with different datasets further demonstrate that recovered models preserve the original convergence behavior and accuracy while substantially reducing checkpoint overheads. Specifically, LayerCheck achieves up to 22.6x reduction in total checkpoint size and 1.31x reduction in end-to-end training time compared to state-of-the-art systems, significantly lowering the cost of checkpointing.",
+  "published": "2026-09-23T00:57:59Z",
+  "updated": "2026-09-23T00:57:59Z",
+  "authors": [
+   "Minqiu Sun",
+   "Xin Huang",
+   "Luanzheng Guo",
+   "Nathan R. Tallent",
+   "Kento Sato",
+   "Dong Dai"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "Accepted to the 2026 IEEE International Conference on Cluster Computing (CLUSTER 2026). 19 pages, 8 figures, 3 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 23
+ },
+ {
+  "id": "2408.04307v3",
+  "title": "MoC-System: Efficient Fault Tolerance for Sparse Mixture-of-Experts Model Training",
+  "abstract": "As large language models continue to scale up, distributed training systems have expanded beyond 10k nodes, intensifying the importance of fault tolerance. Checkpoint has emerged as the predominant fault tolerance strategy, with extensive studies dedicated to optimizing its efficiency. However, the advent of the sparse Mixture-of-Experts (MoE) model presents new challenges due to the substantial increase in model size, despite comparable computational demands to dense models. In this work, we propose the Mixture-of-Checkpoint System (MoC-System) to orchestrate the vast array of checkpoint shards produced in distributed training systems. MoC-System features a novel Partial Experts Checkpointing (PEC) mechanism, an algorithm-system co-design that strategically saves a selected subset of experts, effectively reducing the MoE checkpoint size to levels comparable with dense models. Incorporating hybrid parallel strategies, MoC-System involves fully sharded checkpointing strategies to evenly distribute the workload across distributed ranks. Furthermore, MoC-System introduces a two-level checkpointing management method that asynchronously handles in-memory snapshots and persistence processes. We build MoC-System upon the Megatron-DeepSpeed framework, achieving up to a 98.9% reduction in overhead for each checkpointing process compared to the original method, during MoE model training with ZeRO-2 data parallelism and expert parallelism. Additionally, extensive empirical analyses substantiate that our methods enhance efficiency while maintaining comparable model accuracy, even achieving an average accuracy increase of 1.08% on downstream tasks.",
+  "published": "2024-08-08T08:40:15Z",
+  "updated": "2025-04-09T13:51:25Z",
+  "authors": [
+   "Weilin Cai",
+   "Le Qin",
+   "Jiayi Huang"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "Accepted to ASPLOS 2025",
+  "journal_ref": "Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2. 2025",
+  "doi": "10.1145/3676641.3716006",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   },
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 2
+   }
+  ],
+  "score": 23
+ },
+ {
+  "id": "2610.07688v1",
+  "title": "FailBench: Evaluating Fault Tolerance Across Distributed Training Architectures",
+  "abstract": "Distributed deep learning relies on data, pipeline, tensor, and hybrid parallelism, yet fault-tolerance mechanisms are typically evaluated only on the architecture for which they were designed. This leaves practitioners with little guidance when choosing mechanisms across architectures. FailBench provides a unified evaluation harness covering seven distributed training architectures, eight crash-fault-tolerance mechanisms and a no-FT baseline, and single, concurrent, and cascading fail-stop failures. We evaluate 142 (architecture, mechanism, trace) combinations on an 8xV100 cluster, with per-rank checkpoint states ranging from 205 MB to 2.7 GB. Three findings emerge. First, no mechanism is universally best: on A2, disk checkpointing has the lowest steady-state overhead (0.5%), in-memory replication restores fastest (~17 ms), and just-in-time checkpointing avoids periodic steady-state checkpoint cost but incurs ~0.9 s upon failure. When process-group re-formation takes seconds, mechanisms differ more in runtime overhead than restore speed. Second, gossip training increases sample throughput by 17.9% after losing a worker, yet shows no detectable improvement in loss progress over a matched no-fault baseline. Third, mechanism cost depends strongly on architecture: in-memory replication overhead ranges from 3.7% to 176%. We translate these findings into a decision framework for selecting fault-tolerance mechanisms and release FailBench as an open artifact.",
+  "published": "2026-10-06T03:24:48Z",
+  "updated": "2026-10-06T03:24:48Z",
+  "authors": [
+   "Khaled Aljbab",
+   "Amine Barrak"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   },
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 2
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2602.15846v2",
+  "title": "Gated Tree Cross-Attention for Checkpoint-Compatible Syntax Injection in Decoder-Only LLMs",
+  "abstract": "Decoder-only large language models achieve strong broad performance but are brittle to minor grammatical perturbations, undermining reliability for downstream reasoning. However, directly injecting explicit syntactic structure into an existing checkpoint can interfere with its pretrained competence. We introduce a checkpoint-compatible gated tree cross-attention (GTCA) branch that reads precomputed constituency chunk memory while leaving backbone architecture unchanged. Our design uses a token update mask and staged training to control the scope and timing of structural updates. Across benchmarks and Transformer backbones, GTCA strengthens syntactic robustness beyond continued-training baselines without compromising Multiple-Choice QA performance or commonsense reasoning, providing a practical checkpoint-compatible route to more syntax-robust decoder-only LLMs.",
+  "published": "2026-01-23T10:28:58Z",
+  "updated": "2026-04-27T03:18:38Z",
+  "authors": [
+   "Xinyu Gao",
+   "Shaonan Wang",
+   "Nai Ding"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "ACL 2026 MainConference",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2504.18580v1",
+  "title": "Parameter-Efficient Checkpoint Merging via Metrics-Weighted Averaging",
+  "abstract": "Checkpoint merging is a technique for combining multiple model snapshots into a single superior model, potentially reducing training time for large language models. This paper explores checkpoint merging in the context of parameter-efficient fine-tuning (PEFT), where only small adapter modules (e.g. LoRA) are trained. We propose Metrics-Weighted Averaging (MWA), a simple yet effective method to merge model checkpoints by weighting their parameters according to performance metrics. In particular, we investigate weighting by training loss and by training steps, under the intuition that lower-loss or later-step checkpoints are more valuable. We introduce a formula with a penalty factor to adjust weight distribution, requiring only one hyperparameter regardless of the number of checkpoints. Experiments on three fine-tuning tasks (mathematical reasoning, preference alignment, and general instruction tuning) show that MWA consistently produces merged models that outperform the naive uniform average of checkpoints. Notably, loss-weighted merging often yields the best results, delivering up to 5% higher task accuracy than the baseline uniform merge and even surpassing the final individual checkpoint's performance. These findings validate checkpoint merging for PEFT and demonstrate that a metric-driven weighting heuristic can efficiently boost model performance with minimal computational overhead.",
+  "published": "2025-04-23T05:11:21Z",
+  "updated": "2025-04-23T05:11:21Z",
+  "authors": [
+   "Shi Jie Yu",
+   "Sehyun Choi"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2412.15411v5",
+  "title": "Sparse Checkpointing for Fast and Reliable MoE Training",
+  "abstract": "As large language models scale, training them requires thousands of GPUs over extended durations--making frequent failures an inevitable reality. While checkpointing remains the primary fault-tolerance mechanism, existing methods fall short when applied to Mixture-of-Experts (MoE) models. Due to their substantially larger training state, MoE models exacerbate checkpointing overheads, often causing costly stalls or prolonged recovery that severely degrade training efficiency. We present MoEvement, a distributed, in-memory checkpointing system tailored for MoE models. MoEvement is built on three key ideas: (1) sparse checkpointing, which incrementally snapshots subsets of experts across iterations to reduce overhead; (2) a sparse-to-dense checkpoint conversion mechanism that incrementally reconstructs consistent dense checkpoints from sparse snapshots; and (3) upstream logging of activations and gradients at pipeline-stage boundaries, enabling localized recovery without re-executing unaffected workers. Evaluations across diverse MoE models with up to 64 experts show that MoEvement reduces checkpointing overhead by up to $4\\times$ and recovery overhead by up to $31\\times$ compared to state-of-the-art approaches, sustaining ETTR $\\ge 0.94$ even under frequent failures (MTBF as low as 10 minutes) and delivering up to $8\\times$ overall training speedup, all without compromising synchronous training semantics. Overall, MoEvement offers a robust and scalable fault-tolerance solution for the next generation of sparsely activated models.",
+  "published": "2024-12-19T21:34:44Z",
+  "updated": "2026-03-19T00:31:05Z",
+  "authors": [
+   "Swapnil Gandhi",
+   "Christos Kozyrakis"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "NSDI'26 | Camera-Ready",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2012.00825v2",
+  "title": "A Study of Checkpointing in Large Scale Training of Deep Neural Networks",
+  "abstract": "Deep learning (DL) applications are increasingly being deployed on HPC systems, to leverage the massive parallelism and computing power of those systems for DL model training. While significant effort has been put to facilitate distributed training by DL frameworks, fault tolerance has been largely ignored. In this work, we evaluate checkpoint-restart, a common fault tolerance technique in HPC workloads. We perform experiments with three state-of-the-art DL frameworks common in HPC Chainer, PyTorch, and TensorFlow). We evaluate the computational cost of checkpointing, file formats and file sizes, the impact of scale, and deterministic checkpointing. Our evaluation shows some critical differences in checkpoint mechanisms and exposes several bottlenecks in existing checkpointing implementations. We provide discussion points that can aid users in selecting a fault-tolerant framework to use in HPC. We also provide takeaway points that framework developers can use to facilitate better checkpointing of DL workloads in HPC.",
+  "published": "2020-12-01T20:53:17Z",
+  "updated": "2021-03-29T17:03:54Z",
+  "authors": [
+   "Elvis Rojas",
+   "Albert Njoroge Kahira",
+   "Esteban Meneses",
+   "Leonardo Bautista Gomez",
+   "Rosa M Badia"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "2020 International Conference on High Performance Computing & Simulation (HPCS20)",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   },
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 2
+   }
+  ],
+  "score": 21
+ },
+ {
+  "id": "2607.04749v1",
+  "title": "Direct Model State Migration for Elastic Training of Large Language Models",
+  "abstract": "Large language model (LLM) training shall adapt to dynamic resources in shared clusters to tackle the elasticity, including passive preemption and optimistic scaling. State migration across device sets is required when altering the hybrid-parallel configuration due to dynamic resources. Existing solutions rely on checkpoint-based mechanisms, which persist complete states to storage for resuming with re-assigned resources, forcing all GPUs to stall when transferring model states. Despite optimization efforts, checkpoint-based solutions incur prohibitive latency due to data movement across memory hierarchies. We propose ETC, a checkpoint-free state migration framework for elastic hybrid-parallel LLM training. We exploits the state locality to minimize inter-GPU data movement, replacing storage persistence with direct peer-to-peer communication. Besides, we eliminate node fragmentation through communication coalescing. Integrated with Megatron-LM, ETC reduces migration overhead by 2.33$\\times$ to 6.37$\\times$ compared to checkpoint-based solutions across diverse parallel configurations. By enabling efficient migration, ETC unlocks practical elastic training in production environments.",
+  "published": "2026-07-06T07:39:00Z",
+  "updated": "2026-07-06T07:39:00Z",
+  "authors": [
+   "Weijian Liu",
+   "Mingzhen Li",
+   "Rui Kang",
+   "Chen Sun",
+   "Guangming Tan",
+   "Weile Jia"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   },
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"elastic training\" OR abs:\"failure recovery\" AND abs:LLM",
+    "rank": 2
+   }
+  ],
+  "score": 18
+ },
+ {
+  "id": "2610.07518v1",
+  "title": "Harmful SFT Leaves a Continuous Trace in LLM Checkpoint Updates",
+  "abstract": "Safety auditing of post-trained large language models typically relies on model behavior, requiring model execution and depending on the coverage of available evaluations. This work asks a different question: Do the target behaviors optimized during supervised fine-tuning (SFT) leave readable evidence directly in checkpoint updates? We find that harmful-compliance SFT induces a continuous, objective-dependent ordering in checkpoint-update space. Using a reference geometry defined by pure harmful-compliance, safety-targeted, and benign-utility SFT, we find that a checkpoint-level coordinate s_H tracks controlled harmful-objective composition with Spearman correlations of 0.986-0.992 across four 7-8B backbones, with the same ordering persisting at larger model scales. Matched compliance-versus-refusal controls show that this checkpoint trace reflects the SFT objective rather than harmful-input exposure, while additional controls rule out simple explanations based on harmful-example count or generic training intensity. Building on this structure, we introduce TRACE, a weights-only auditing method that localizes an unknown checkpoint update relative to frozen harmful and non-harmful reference prototypes and converts this geometry into a continuous harmful-objective score. TRACE requires neither model queries nor access to the unknown SFT data, and can be evaluated directly from checkpoint updates. Across distribution shifts, unseen data, different SFT configurations, partial checkpoint access, and LoRA/full-parameter fine-tuning, the trace remains stable and is positively associated with independently measured attack success rates. TRACE remains informative even at low harmful-objective proportions, providing a complementary auditing signal when behavioral evaluation is unavailable or incomplete. Code is available at https://anonymous.4open.science/r/Code4TRACE-54D3.",
+  "published": "2026-10-05T23:28:45Z",
+  "updated": "2026-10-05T23:28:45Z",
+  "authors": [
+   "Ziqun Bao",
+   "Xinyu Zhang",
+   "Yuchen Shao",
+   "Chengcheng Wan"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2609.22248v1",
+  "title": "Checkpoints Are Not Enough: Trust Calibration in CoSLR, a Human-AI System for Systematic Literature Reviews",
+  "abstract": "Systematic Literature Reviews (SLRs) are essential for evidence-based research but remain time-consuming, requiring researchers to manage large volumes of publications across planning, screening, analysis, and reporting. Large language models (LLMs) can now produce fluent, well-structured review text, which makes it difficult to distinguish synthesis that was verified by a researcher from synthesis that merely appears authoritative. This raises the risk that unverified AI-generated synthesis enters the scholarly record carrying the credibility of a systematic review. We present CoSLR, a Human-AI collaborative multi-agent system that supports the SLR workflow through a modular three-phase pipeline using large language models and Retrieval-Augmented Generation (RAG), and that places explicit, mandatory human checkpoints on the path between generated output and its acceptance. In a survey-based study with 63 participants, the system was received positively: 27 of 63 participants (42.9 percent) rated its usability highly, indicating that the mandatory checkpoints did not come at the cost of a workable interface. However, a checkpoint safeguards the review only if researchers use it to verify: 22 of 63 participants (34.9 percent) reported that they would trust AI-generated summaries and reports without additional human checking after only a short interaction with the system. These findings indicate that Human-AI collaboration can support literature review work, but that the effectiveness of human oversight depends on whether users are willing to exercise it. This is a calibration problem that interface design must address directly, not assume.",
+  "published": "2026-09-05T20:11:23Z",
+  "updated": "2026-09-05T20:11:23Z",
+  "authors": [
+   "MD Aidul Islam",
+   "Malik Abdul Sami",
+   "Muhammad Waseem",
+   "Zeeshan Rasheed",
+   "Kai-kristian Kemell",
+   "Zheying Zhang",
+   "Pekka Abrahamsson"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.IR"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2606.30921v1",
+  "title": "Towards Transparent Checkpointing with AI-driven Code Generation",
+  "abstract": "Adding reliable checkpoint/restart support to an MPI scientific application is a time-consuming expert effort that requires deep knowledge of both the application and resilience. We ask whether a frontier large language model can perform this work end-to-end without human intervention. We assemble a benchmark suite of MPI applications spanning diverse domains and computation patterns, and drive an iterative code-generation loop for each application using Anthropic's Claude Opus 4.7 invoked through the OpenCode CLI. Across six scientific applications, the LLM generates working checkpoint/restart code in 50 minutes on average while consuming 3.4 M tokens per application. The generated code adds negligible overhead during normal failure-free execution on five of six applications and recovers from injected process failures with efficiency comparable to human-engineered checkpoint/restart implementations. These results suggest that automated end-to-end LLM-driven resilience engineering is technically viable today for a meaningful fraction of HPC applications.",
+  "published": "2026-06-29T21:13:53Z",
+  "updated": "2026-06-29T21:13:53Z",
+  "authors": [
+   "Hai Duc Nguyen",
+   "Tekin Bicer",
+   "Kyle Chard",
+   "Ian Foster",
+   "Bogdan Nicolae"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "FlexScience'26: The 2026 Workshop on AI and Scientific Computing at Scale using Flexible Computing Infrastructures (in conjunction with HPDC'26)",
+  "doi": "10.1145/3806645.3816237",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2511.09864v1",
+  "title": "Uncertainty-Guided Checkpoint Selection for Reinforcement Finetuning of Large Language Models",
+  "abstract": "Reinforcement learning (RL) finetuning is crucial to aligning large language models (LLMs), but the process is notoriously unstable and exhibits high variance across model checkpoints. In practice, selecting the best checkpoint is challenging: evaluating checkpoints on the validation set during training is computationally expensive and requires a good validation set, while relying on the final checkpoint provides no guarantee of good performance. We introduce an uncertainty-guided approach for checkpoint selection (UGCS) that avoids these pitfalls. Our method identifies hard question-answer pairs using per-sample uncertainty and ranks checkpoints by how well they handle these challenging cases. By averaging the rewards of the top-uncertain samples over a short training window, our method produces a stable and discriminative signal without additional forward passes or significant computation overhead. Experiments across three datasets and three LLMs demonstrate that it consistently identifies checkpoints with stronger generalization, outperforming traditional strategies such as relying on training or validation performance. These results highlight that models solving their hardest tasks with low uncertainty are the most reliable overall.",
+  "published": "2025-11-13T01:46:58Z",
+  "updated": "2025-11-13T01:46:58Z",
+  "authors": [
+   "Manh Nguyen",
+   "Dung Nguyen",
+   "Dai Do",
+   "Svetha Venkatesh",
+   "Hung Le"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2509.04084v5",
+  "title": "Optimizing Frequent Checkpointing via Low-Cost Differential for Distributed Training Systems",
+  "abstract": "Distributed training of large deep-learning models often leads to failures, so checkpointing is commonly employed for recovery. State-of-the-art studies focus on frequent checkpointing for fast recovery from failures. However, frequent checkpointing generates numerous checkpoints, incurring substantial costs and thus degrading training performance. Recently, differential checkpointing has been proposed to reduce costs, but it is limited to recommendation systems, so its application to general distributed training systems remains unexplored. In this paper, we find that gradients generated during distributed training can be reused to construct differential checkpoints, while the former's size is smaller than the latter's, motivating us to reuse gradients for low-cost differential checkpointing. Based on this main idea, we propose \\sysname, a frequent checkpointing framework for compression-enabled training systems that reuses compressed gradients as differential checkpoints, eliminating redundant differential computation and reducing checkpoint transmission cost. Furthermore, we extend gradient reuse to scenarios without gradient compression and propose \\sysnameplus, which employs layer-wise-reuse snapshotting and incremental-merging persistence to overlap checkpointing with training execution. Experiments on diverse workloads, including billion-parameter-scale models, demonstrate that \\sysname and \\sysnameplus significantly reduce checkpointing overhead and enable checkpointing at frequencies as high as once per iteration, reducing training time by up to 89.2\\% and 81.2\\%, respectively.",
+  "published": "2025-09-04T10:27:30Z",
+  "updated": "2026-10-09T11:32:25Z",
+  "authors": [
+   "Chenxuan Yao",
+   "Yuchong Hu",
+   "Feifan Liu",
+   "Zhengyu Liu",
+   "Lin Wang",
+   "Mingqi Li",
+   "Dan Feng"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2505.17829v1",
+  "title": "Stepwise Reasoning Checkpoint Analysis: A Test Time Scaling Method to Enhance LLMs' Reasoning",
+  "abstract": "Mathematical reasoning through Chain-of-Thought (CoT) has emerged as a powerful capability of Large Language Models (LLMs), which can be further enhanced through Test-Time Scaling (TTS) methods like Beam Search and DVTS. However, these methods, despite improving accuracy by allocating more computational resources during inference, often suffer from path homogenization and inefficient use of intermediate results. To address these limitations, we propose Stepwise Reasoning Checkpoint Analysis (SRCA), a framework that introduces checkpoints between reasoning steps. It incorporates two key strategies: (1) Answer-Clustered Search, which groups reasoning paths by their intermediate checkpoint answers to maintain diversity while ensuring quality, and (2) Checkpoint Candidate Augmentation, which leverages all intermediate answers for final decision-making. Our approach effectively reduces path homogenization and creates a fault-tolerant mechanism by utilizing high-quality intermediate results. Experimental results show that SRCA improves reasoning accuracy compared to existing TTS methods across various mathematical datasets.",
+  "published": "2025-05-23T12:42:50Z",
+  "updated": "2025-05-23T12:42:50Z",
+  "authors": [
+   "Zezhong Wang",
+   "Xingshan Zeng",
+   "Weiwen Liu",
+   "Yufei Wang",
+   "Liangyou Li",
+   "Yasheng Wang",
+   "Lifeng Shang",
+   "Xin Jiang",
+   "Qun Liu",
+   "Kam-Fai Wong"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2503.19050v1",
+  "title": "Mist: Efficient Distributed Training of Large Language Models via Memory-Parallelism Co-Optimization",
+  "abstract": "Various parallelism, such as data, tensor, and pipeline parallelism, along with memory optimizations like activation checkpointing, redundancy elimination, and offloading, have been proposed to accelerate distributed training for Large Language Models. To find the best combination of these techniques, automatic distributed training systems are proposed. However, existing systems only tune a subset of optimizations, due to the lack of overlap awareness, inability to navigate the vast search space, and ignoring the inter-microbatch imbalance, leading to sub-optimal performance. To address these shortcomings, we propose Mist, a memory, overlap, and imbalance-aware automatic distributed training system that comprehensively co-optimizes all memory footprint reduction techniques alongside parallelism. Mist is based on three key ideas: (1) fine-grained overlap-centric scheduling, orchestrating optimizations in an overlapped manner, (2) symbolic-based performance analysis that predicts runtime and memory usage using symbolic expressions for fast tuning, and (3) imbalance-aware hierarchical tuning, decoupling the process into an inter-stage imbalance and overlap aware Mixed Integer Linear Programming problem and an intra-stage Dual-Objective Constrained Optimization problem, and connecting them through Pareto frontier sampling. Our evaluation results show that Mist achieves an average of 1.28$\\times$ (up to 1.73$\\times$) and 1.27$\\times$ (up to 2.04$\\times$) speedup compared to state-of-the-art manual system Megatron-LM and state-of-the-art automatic system Aceso, respectively.",
+  "published": "2025-03-24T18:21:08Z",
+  "updated": "2025-03-24T18:21:08Z",
+  "authors": [
+   "Zhanda Zhu",
+   "Christina Giannoula",
+   "Muralidhar Andoorveedu",
+   "Qidong Su",
+   "Karttikeya Mangalam",
+   "Bojian Zheng",
+   "Gennady Pekhimenko"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "Accepted by EuroSys 2025",
+  "journal_ref": "",
+  "doi": "10.1145/3689031.3717461",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 17
+ },
+ {
+  "id": "2309.14139v1",
+  "title": "Exploring the Impact of Serverless Computing on Peer To Peer Training Machine Learning",
+  "abstract": "The increasing demand for computational power in big data and machine learning has driven the development of distributed training methodologies. Among these, peer-to-peer (P2P) networks provide advantages such as enhanced scalability and fault tolerance. However, they also encounter challenges related to resource consumption, costs, and communication overhead as the number of participating peers grows. In this paper, we introduce a novel architecture that combines serverless computing with P2P networks for distributed training and present a method for efficient parallel gradient computation under resource constraints. Our findings show a significant enhancement in gradient computation time, with up to a 97.34\\% improvement compared to conventional P2P distributed training methods. As for costs, our examination confirmed that the serverless architecture could incur higher expenses, reaching up to 5.4 times more than instance-based architectures. It is essential to consider that these higher costs are associated with marked improvements in computation time, particularly under resource-constrained scenarios. Despite the cost-time trade-off, the serverless approach still holds promise due to its pay-as-you-go model. Utilizing dynamic resource allocation, it enables faster training times and optimized resource utilization, making it a promising candidate for a wide range of machine learning applications.",
+  "published": "2023-09-25T13:51:07Z",
+  "updated": "2023-09-25T13:51:07Z",
+  "authors": [
+   "Amine Barrak",
+   "Ranim Trabelsi",
+   "Fehmi Jaafar",
+   "Fabio Petrillo"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 1
+   }
+  ],
+  "score": 16
+ },
+ {
+  "id": "2609.26365v1",
+  "title": "Privacy-Preserving Coordinated Operation of Power Grids and AI Data Centers: A Checkpoint-Aware Three-Phase Scheme",
+  "abstract": "The rapid growth of large language model training and serving is driving AI data centers (AIDCs) toward gigawatt scale. Unlike conventional commercial loads, AIDCs possess significant operational flexibility through dynamic voltage and frequency scaling (DVFS) of training and inference workloads, while periodic model checkpointing can induce abrupt power drops and rebounds that erode operating reserves and increase transmission congestion risks. Coordinating AIDC operation with grid scheduling under these unique operational characteristics is challenging because grid and AIDC operators are generally unwilling to share proprietary data and decision-making authority. This paper proposes a hierarchical privacy-preserving coordinated operation scheme between the power grid and AIDCs to address this gap. The proposed scheme contains three phases. In Phase I, the grid operator computes a certified inner approximation of the AIDCs security region for subsequent coordination. In Phase II, the AIDC operator coordinates training and inference AIDCs to optimize workload allocation within the certified security region and generate power schedules and checkpoint alerts. In Phase III, the grid operator solves a checkpoint-aware two-stage robust optimal power flow (OPF) considering renewable generation and checkpoint uncertainties. By exchanging only compact interface information, the framework preserves the privacy of both grid and AIDCs, avoids frequent iterative communication, and enables secure coordination with guaranteed feasibility. Numerical studies on a modified IEEE 14-bus system and a modified NYISO system demonstrate the effectiveness, robustness, and security of the proposed framework.",
+  "published": "2026-09-22T13:07:37Z",
+  "updated": "2026-09-22T13:07:37Z",
+  "authors": [
+   "Ziang Liu",
+   "Ruizhang Yang",
+   "Xin Cui",
+   "Francis Yunhe Hou"
+  ],
+  "categories": [
+   "eess.SY"
+  ],
+  "comment": "10 pages",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2605.18852v2",
+  "title": "Robust Checkpoint Selection for Multimodal LLMs via Agentic Evaluation and Stability-Aware Ranking",
+  "abstract": "Selecting a final checkpoint for multimodal large language models (MLLMs) is challenging when late-stage candidates are closely matched and downstream evaluation signals are noisy. Small observed differences can be comparable to variability introduced by finite evaluation samples, LLM-based judges, and ambiguous multimodal evidence, while validation loss may not identify the checkpoint preferred by downstream evaluation. We formulate late-stage checkpoint selection as a stability-aware decision problem under evaluation uncertainty and propose a progressive framework combining pointwise filtering, listwise ranking, and pairwise refinement. Repeated evaluation-set subsampling is used to characterize ranking stability, while percentile-based aggregation accounts for lower- and upper-tail behavior. Experiments show that multimodal data evaluability is critical: quality-aware curation of OCR-heavy inputs reduces ranking flip rate from 32.5\\% to 11.2\\% and increases inter-run agreement from 0.61 to 0.84. We further observe divergence between validation-loss progression and downstream checkpoint preference in two independent MLLM settings. An additional public Qwen2.5-VL-7B reproduction across 11 checkpoints shows tightly clustered pointwise scores and frequently tie-dominated final pairwise comparisons, while repeated evaluation most often selects an intermediate rather than the final checkpoint. These results suggest that reliable MLLM checkpoint selection should quantify and reserve evaluation uncertainty rather than force decisions from small differences in a single metric.",
+  "published": "2026-05-13T12:18:32Z",
+  "updated": "2026-08-13T14:28:29Z",
+  "authors": [
+   "Qinwu Xu",
+   "Zhuoheng Li",
+   "Jessie Salas"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2602.09629v1",
+  "title": "Stop Testing Attacks, Start Diagnosing Defenses: The Four-Checkpoint Framework Reveals Where LLM Safety Breaks",
+  "abstract": "Large Language Models (LLMs) deploy safety mechanisms to prevent harmful outputs, yet these defenses remain vulnerable to adversarial prompts. While existing research demonstrates that jailbreak attacks succeed, it does not explain \\textit{where} defenses fail or \\textit{why}. To address this gap, we propose that LLM safety operates as a sequential pipeline with distinct checkpoints. We introduce the \\textbf{Four-Checkpoint Framework}, which organizes safety mechanisms along two dimensions: processing stage (input vs.\\ output) and detection level (literal vs.\\ intent). This creates four checkpoints, CP1 through CP4, each representing a defensive layer that can be independently evaluated. We design 13 evasion techniques, each targeting a specific checkpoint, enabling controlled testing of individual defensive layers. Using this framework, we evaluate GPT-5, Claude Sonnet 4, and Gemini 2.5 Pro across 3,312 single-turn, black-box test cases. We employ an LLM-as-judge approach for response classification and introduce Weighted Attack Success Rate (WASR), a severity-adjusted metric that captures partial information leakage overlooked by binary evaluation. Our evaluation reveals clear patterns. Traditional Binary ASR reports 22.6\\% attack success. However, WASR reveals 52.7\\%, a 2.3$\\times$ higher vulnerability. Output-stage defenses (CP3, CP4) prove weakest at 72--79\\% WASR, while input-literal defenses (CP1) are strongest at 13\\% WASR. Claude achieves the strongest safety (42.8\\% WASR), followed by GPT-5 (55.9\\%) and Gemini (59.5\\%). These findings suggest that current defenses are strongest at input-literal checkpoints but remain vulnerable to intent-level manipulation and output-stage techniques. The Four-Checkpoint Framework provides a structured approach for identifying and addressing safety vulnerabilities in deployed systems.",
+  "published": "2026-02-10T10:17:25Z",
+  "updated": "2026-02-10T10:17:25Z",
+  "authors": [
+   "Hayfa Dhahbi",
+   "Kashyap Thimmaraju"
+  ],
+  "categories": [
+   "cs.CR",
+   "cs.AI",
+   "cs.CY",
+   "cs.ET",
+   "cs.HC"
+  ],
+  "comment": "17 pages, pre-print",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2403.19390v2",
+  "title": "Checkpoint Merging via Bayesian Optimization in LLM Pretraining",
+  "abstract": "The rapid proliferation of large language models (LLMs) such as GPT-4 and Gemini underscores the intense demand for resources during their training processes, posing significant challenges due to substantial computational and environmental costs. To alleviate this issue, we propose checkpoint merging in pretraining LLM. This method utilizes LLM checkpoints with shared training trajectories, and is rooted in an extensive search space exploration for the best merging weight via Bayesian optimization. Through various experiments, we demonstrate that: (1) Our proposed methodology exhibits the capacity to augment pretraining, presenting an opportunity akin to obtaining substantial benefits at minimal cost; (2) Our proposed methodology, despite requiring a given held-out dataset, still demonstrates robust generalization capabilities across diverse domains, a pivotal aspect in pretraining.",
+  "published": "2024-03-28T13:01:18Z",
+  "updated": "2025-06-03T06:01:14Z",
+  "authors": [
+   "Deyuan Liu",
+   "Zecheng Wang",
+   "Bingning Wang",
+   "Weipeng Chen",
+   "Chunshan Li",
+   "Zhiying Tu",
+   "Dianhui Chu",
+   "Bo Li",
+   "Dianbo Sui"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 15
+ },
+ {
+  "id": "2606.17787v1",
+  "title": "LUMEN: Coordinated Failure Recovery for Distributed LLM Serving",
+  "abstract": "Modern large language model (LLM) serving clusters distribute inference requests across multiple worker processes on different GPUs, but failures are prevalent at scale. When a worker fails, the cluster simultaneously loses the failed worker's GPU-resident key-value (KV) caches and serving capacity, leaving surviving workers to absorb the redirected traffic while re-running interrupted requests from scratch. Existing fault-tolerant systems either restart interrupted requests from scratch or restore KV caches from checkpoints stored on a fixed neighboring worker, but both approaches route recovery work without considering current cluster load and leave the recovering worker idle during model reload. We present LUMEN, a fault-tolerant LLM serving system that treats recovery as a load-aware coordination problem across three decision points: checkpoint placement before failures, interrupted-request distribution at failure time, and serving capacity restoration during model reload. We evaluate LUMEN using both prototype experiments and large-scale simulations and demonstrate significant improvements in serving and recovery times.",
+  "published": "2026-06-16T11:02:20Z",
+  "updated": "2026-06-16T11:02:20Z",
+  "authors": [
+   "Zhang Cao",
+   "Shujie Han",
+   "Juncheng Zhang",
+   "Yuanming Ren",
+   "Yongkun Li",
+   "Patrick P. C. Lee"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 14
+ },
+ {
+  "id": "2512.20953v1",
+  "title": "Diving into 3D Parallelism with Heterogeneous Spot Instance GPUs: Design and Implications",
+  "abstract": "The rapid growth of large language models (LLMs) and the continuous release of new GPU products have significantly increased the demand for distributed training across heterogeneous GPU environments. In this paper, we present a comprehensive analysis of the challenges involved in implementing 3D parallelism in such environments, addressing critical issues such as the need for symmetric tensor parallelism, efficient gradient synchronization in asymmetric pipeline parallelism, and the trade-offs between memory utilization and computational efficiency. Building upon these insights, we introduce AutoHet, a novel system that automatically identifies the optimal parallelism plan for distributed training on heterogeneous GPUs. AutoHet supports asymmetric 3D parallelism structures and facilitates fine-grained workload distribution. We propose a theoretical model that frames the device grouping and load balancing as an optimization problem to minimize per-iteration training time, thus effectively balancing computing power and memory usage across GPUs with diverse capabilities. To enable elastic training upon spot instance preemption, AutoHet presents an efficient recovery strategy that prioritizes to retrieve training states from local nodes, and only downloads the missing checkpoints from the cloud storage. Our extensive evaluation, conducted on three large-scale models and utilizing combinations of three different GPU types, demonstrates that AutoHet outperforms existing DNN training systems, achieving up to a 1.79$\\times$ speedup in training throughput compared with Megatron-LM and Whale, and a 4.38$\\times$ speedup of recovery speed compared to a spot instance baseline.",
+  "published": "2025-12-24T05:21:47Z",
+  "updated": "2025-12-24T05:21:47Z",
+  "authors": [
+   "Yuxiao Wang",
+   "Yuedong Xu",
+   "Qingyang Duan",
+   "Yuxuan Liu",
+   "Lei Jiao",
+   "Yinghao Yu",
+   "Jun Wu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.NI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 14
+ },
+ {
+  "id": "2605.18815v1",
+  "title": "DynaTrain: Fast Online Parallelism Switching for Elastic LLM Training",
+  "abstract": "Modern large language model (LLM) training is inherently dynamic: resource fluctuations, RLHF phase shifts, and cluster elasticity continually reshape the optimal parallelism layout, posing a significant challenge to existing training frameworks built around a static execution model. We present DynaTrain, a distributed training system for sub-second, online reconfiguration across arbitrary multi-dimensional parallelism. At its core, we propose a Virtual Parameter Space (VPS) abstraction that unifies all distributed training states under one logical coordinate space, turning any parallelism configuration into a deterministic mapping and collapsing complex transition into manageable geometric intersections. On top of VPS, a state routing-and-transition layer executes rank-local transfers under a memory-aware, deadlock-free schedule, and an Elastic Device Manager overlaps new-world construction with ongoing training to mask topology-change cost. On dense and MoE models up to 235B parameters, DynaTrain reconfigures a 70B dense model in under 2s and a 235B MoE model in 4.36s, outperforming state-of-the-art checkpoint-based and elastic systems by up to three orders of magnitude while preserving correctness.",
+  "published": "2026-05-12T09:51:28Z",
+  "updated": "2026-05-12T09:51:28Z",
+  "authors": [
+   "Yuanqing Wang",
+   "Yuchen Zhang",
+   "Hao Lin",
+   "Junhao Hu",
+   "Chunyang Zhu",
+   "Quanlu Zhang",
+   "Boxun Li",
+   "Guohao Dai",
+   "Zhi Yang",
+   "Daning Cheng",
+   "Yunquan Zhang",
+   "Yu Wang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "GitHub Repo: https://github.com/infinigence/ElasticMegatron",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 13
+ },
+ {
+  "id": "2406.06563v1",
+  "title": "Skywork-MoE: A Deep Dive into Training Techniques for Mixture-of-Experts Language Models",
+  "abstract": "In this technical report, we introduce the training methodologies implemented in the development of Skywork-MoE, a high-performance mixture-of-experts (MoE) large language model (LLM) with 146 billion parameters and 16 experts. It is initialized from the pre-existing dense checkpoints of our Skywork-13B model. We explore the comparative effectiveness of upcycling versus training from scratch initializations. Our findings suggest that the choice between these two approaches should consider both the performance of the existing dense checkpoints and the MoE training budget. We highlight two innovative techniques: gating logit normalization, which improves expert diversification, and adaptive auxiliary loss coefficients, allowing for layer-specific adjustment of auxiliary loss coefficients. Our experimental results validate the effectiveness of these methods. Leveraging these techniques and insights, we trained our upcycled Skywork-MoE on a condensed subset of our SkyPile corpus. The evaluation results demonstrate that our model delivers strong performance across a wide range of benchmarks.",
+  "published": "2024-06-03T03:58:41Z",
+  "updated": "2024-06-03T03:58:41Z",
+  "authors": [
+   "Tianwen Wei",
+   "Bo Zhu",
+   "Liang Zhao",
+   "Cheng Cheng",
+   "Biye Li",
+   "Weiwei Lü",
+   "Peng Cheng",
+   "Jianhao Zhang",
+   "Xiaoyu Zhang",
+   "Liang Zeng",
+   "Xiaokun Wang",
+   "Yutuan Ma",
+   "Rui Hu",
+   "Shuicheng Yan",
+   "Han Fang",
+   "Yahui Zhou"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 13
+ },
+ {
+  "id": "2511.21089v1",
+  "title": "MLPMoE: Zero-Shot Architectural Metamorphosis of Dense LLM MLPs into Static Mixture-of-Experts",
+  "abstract": "Large Language Models (LLMs) are predominantly deployed as dense transformers, where every parameter in every feed-forward block is activated for every token. While architecturally simple, this is computationally inefficient, since inference costs scale linearly with parameter count. Recent upcycling methods such as MoEfication, CMoE, ToMoE, and MoORE reveal that much of the useful computation lives in sparse, semi-modular substructures inside dense feed-forward networks, but these approaches typically rely on clustering, activation profiling, singular value decomposition, or custom routing that requires calibration data. This paper introduces MLPMoE (MLP Mixture-of-Experts), a training-free, deterministic transformation that restructures the dense MLP in transformer blocks into a static, high-cardinality mixture of experts. The transformation uses simple tensor slicing and summation, reinterpreting the algebra of tensor parallelism as a topological conversion rather than a distributed training pattern. We further introduce Fractal Fade (differential branch sparsity) and Compensated Pruning (variance-preserving branch reduction) as lightweight mechanisms for structured sparsity. On Qwen2.5-0.5B-Instruct and DeepSeek-R1-Distill-Llama-8B, the zero-shot MLPMoE transform changes a proxy perplexity metric by less than 0.05 percent while keeping the parameter count effectively constant. On the 8B model, differential sparsity removes about 20 percent of MLP parameters while keeping perplexity within about 2 percent of the dense baseline. The method operates entirely post hoc on existing checkpoints and does not require gradients, calibration sets, or router training. Code is available at https://gist.github.com/iwallarm/fc2ef1eddf226ca7814f9e5e2ae9bad1",
+  "published": "2025-11-26T06:14:26Z",
+  "updated": "2025-11-26T06:14:26Z",
+  "authors": [
+   "Ivan Novikov"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 12
+ },
+ {
+  "id": "2609.25482v1",
+  "title": "Terminal Shrinkage Averaging Reveals a Schedule-Estimator Interaction in LLM Pretraining",
+  "abstract": "Large language model (LLM) pretraining conventionally returns the raw final iterate. This couples two design choices: the learning-rate schedule that generates the parameter trajectory and the estimator that constructs the deployed model (e.g. the raw final iterate or a checkpoint average). A schedule that promotes optimization progress may differ from one that minimizes variation in the raw final iterate. Separating these choices creates an opportunity to maintain progress late in training while reducing variation in the returned model. To this end, we propose \\emph{Terminal Shrinkage Averaging (TSA)}, which interpolates between the raw final iterate and the average of recent checkpoints to balance recent progress against terminal variation. We analyze how TSA changes the preferred terminal learning-rate schedule under a local quadratic approximation and test this interaction through a sequence of controlled NanoChat experiments. Finally, we demonstrate that the resulting gains transfer to depth-22 NanoChat, where the combined schedule and estimator improve validation quality. A qualifying time-to-GPT-2 run also finishes faster than the public baseline used in our experiments, providing preliminary evidence of benchmark acceleration.",
+  "published": "2026-09-21T23:19:17Z",
+  "updated": "2026-09-21T23:19:17Z",
+  "authors": [
+   "Adam Ousherovitch",
+   "Yixin Wang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2412.01152v1",
+  "title": "INTELLECT-1 Technical Report",
+  "abstract": "In this report, we introduce INTELLECT-1, the first 10 billion parameter language model collaboratively trained across the globe, demonstrating that large-scale model training is no longer confined to large corporations but can be achieved through a distributed, community-driven approach. INTELLECT-1 was trained on 1 trillion tokens using up to 14 concurrent nodes distributed across 3 continents, with contributions from 30 independent compute providers dynamically joining and leaving the training process, while maintaining 83-96% compute utilization and 36.2-41.4% model FLOPS utilization. We leverage PRIME, our scalable distributed training framework designed for fault-tolerant, high-performance training on unreliable, globally distributed nodes. Key innovations in PRIME include the ElasticDeviceMesh, which manages dynamic global process groups for fault-tolerant communication across the internet and local process groups for communication within a node, live checkpoint recovery kernels, and a hybrid DiLoCo-FSDP2 implementation. Using PRIME with DiLoCo and our custom int8 all-reduce, we achieve a 400x reduction in communication bandwidth compared to traditional data-parallel training settings while delivering comparable performance. These results demonstrate the feasibility and promise of training frontier foundation models in a decentralized network of global GPU resources.",
+  "published": "2024-12-02T05:52:32Z",
+  "updated": "2024-12-02T05:52:32Z",
+  "authors": [
+   "Sami Jaghouar",
+   "Jack Min Ong",
+   "Manveer Basra",
+   "Fares Obeid",
+   "Jannik Straube",
+   "Michael Keiblinger",
+   "Elie Bakouch",
+   "Lucas Atkins",
+   "Maziyar Panahi",
+   "Charles Goddard",
+   "Max Ryabinin",
+   "Johannes Hagemann"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "19 pages, 6 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2306.03241v2",
+  "title": "Early Weight Averaging meets High Learning Rates for LLM Pre-training",
+  "abstract": "Training Large Language Models (LLMs) incurs significant cost; hence, any strategy that accelerates model convergence is helpful. In this paper, we investigate the ability of a simple idea checkpoint averaging along the trajectory of a training run to improve both convergence and generalization quite early on during training. Here we show that models trained with high learning rates observe higher gains due to checkpoint averaging. Furthermore, these gains are amplified when checkpoints are sampled with considerable spacing in training steps. Our training recipe outperforms conventional training and popular checkpoint averaging baselines such as exponential moving average (EMA) and stochastic moving average (SWA). We evaluate our training recipe by pre-training LLMs, where high learning rates are inherently preferred due to extremely large batch sizes. Specifically, we pre-trained nanoGPT-2 models of varying sizes, small (125M), medium (335M), and large (770M)on the OpenWebText dataset, comprised of 9B tokens. Additionally, we present results for publicly available Pythia LLMs, ranging from 1B to 12B, which were trained on the PILE-deduped dataset containing 207B tokens.",
+  "published": "2023-06-05T20:51:44Z",
+  "updated": "2023-12-11T22:31:12Z",
+  "authors": [
+   "Sunny Sanyal",
+   "Atula Neerkaje",
+   "Jean Kaddour",
+   "Abhishek Kumar",
+   "Sujay Sanghavi"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "17 pages, 13 figures, presented at NeurIPs 2023 WANT workshop",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 11
+ },
+ {
+  "id": "2608.20953v1",
+  "title": "Quantization-Aware Healing: A Practical Recipe for Recovering Compressed, 4-Bit LLMs",
+  "abstract": "Serving large language models cheaply increasingly means shipping models that are both structurally compressed to a fraction of their parameters and quantized to 4 bits. Together these steps degrade reasoning, mathematics, coding, and long-context behavior enough to require a recovery, or healing, stage before deployment. The default recipe, quantization-aware training (QAT), re-fits the compressed, quantized model to hard labels; in our pipeline it converged slowly and collapsed past its peak. We adopted Quantization-Aware Healing (QAH) instead. Because a structurally compressed model is never independently trained at full precision, its bfloat16 checkpoint is a distillation-recovered approximation of the original; QAH distills the 4-bit student directly from the original, uncompressed model. On a GPT-OSS 120B to 60B to MXFP4 pipeline, the QAH student matches or beats its bfloat16 source on 7 of 9 benchmarks at roughly 4 times less weight memory and half the teacher's parameter count, and is released open-weight as Hypernova-60B. Against a matched QAT baseline it reaches a comparable peak about 7 times faster and stays stable under continued training, without hand-tuned early stopping. We also report deployment lessons, including a large, reproducible quality gap between distributed-training backends. Our aim is a recipe deployable without a multi-week hyper-parameter search.",
+  "published": "2026-08-21T10:19:27Z",
+  "updated": "2026-08-21T10:19:27Z",
+  "authors": [
+   "Bakbergen Ryskulov",
+   "Iker García-Ferrero",
+   "David Montero",
+   "David Jansen",
+   "Ali Hashemi",
+   "Jezabel R. Garcia",
+   "Antonio Tiene",
+   "Román Orús"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.LG",
+   "cs.PF"
+  ],
+  "comment": "Patent Application Number: 26382838.6 / P202602102EP",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 10
+ },
+ {
+  "id": "2404.09679v1",
+  "title": "AntDT: A Self-Adaptive Distributed Training Framework for Leader and Straggler Nodes",
+  "abstract": "Many distributed training techniques like Parameter Server and AllReduce have been proposed to take advantage of the increasingly large data and rich features. However, stragglers frequently occur in distributed training due to resource contention and hardware heterogeneity, which significantly hampers the training efficiency. Previous works only address part of the stragglers and could not adaptively solve various stragglers in practice. Additionally, it is challenging to use a systematic framework to address all stragglers because different stragglers require diverse data allocation and fault-tolerance mechanisms. Therefore, this paper proposes a unified distributed training framework called AntDT (Ant Distributed Training Framework) to adaptively solve the straggler problems. Firstly, the framework consists of four components, including the Stateful Dynamic Data Sharding service, Monitor, Controller, and Agent. These components work collaboratively to efficiently distribute workloads and provide a range of pre-defined straggler mitigation methods with fault tolerance, thereby hiding messy details of data allocation and fault handling. Secondly, the framework provides a high degree of flexibility, allowing for the customization of straggler mitigation solutions based on the specific circumstances of the cluster. Leveraging this flexibility, we introduce two straggler mitigation solutions, namely AntDT-ND for non-dedicated clusters and AntDT-DD for dedicated clusters, as practical examples to resolve various types of stragglers at Ant Group. Justified by our comprehensive experiments and industrial deployment statistics, AntDT outperforms other SOTA methods more than 3x in terms of training efficiency. Additionally, in Alipay's homepage recommendation scenario, using AntDT reduces the training duration of the ranking model from 27.8 hours to just 5.4 hours.",
+  "published": "2024-04-15T11:20:44Z",
+  "updated": "2024-04-15T11:20:44Z",
+  "authors": [
+   "Youshao Xiao",
+   "Lin Ju",
+   "Zhenglei Zhou",
+   "Siyuan Li",
+   "Zhaoxin Huan",
+   "Dalong Zhang",
+   "Rujie Jiang",
+   "Lin Wang",
+   "Xiaolu Zhang",
+   "Lei Liang",
+   "Jun Zhou"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 1
+   }
+  ],
+  "score": 10
+ },
+ {
+  "id": "2505.12815v2",
+  "title": "Learning In Chaos: Efficient Autoscaling and Self-Healing for Multi-Party Distributed Training",
+  "abstract": "Node and link churn in multi-party, cross-region clusters over wide-area networks (WANs) often disrupts distributed training. However, checkpoint-based recovery and cloud-centric autoscaling react slowly and assume centralized control, which is misaligned with the self-governed setup where institutions can freely join and leave. This paper proposes Chaos, a multi-party distributed training system with self-healing and autoscaling, enabling robust and elastic training under churn. It speeds up autoscaling via multi-neighbor state replication and model sharding. We formalize the sharding and assignment as a MINLP that captures WAN heterogeneity, and reduce it to a tractable MILP by analyzing its monotonicity on a divisibility chain. By establishing an equivalence, we derive a greedy algorithm that follows optimality rules and yields the optimal solution in polynomial time. Chaos uses a cluster monitor to track resource and topology changes, and handles scaling events through peer negotiation protocols, enabling fully self-governed autoscaling among institutions. Experiments show that Chaos has substantially lower scale-out delay than Pollux, Elan, and Autoscaling, and handles scale-in, connect-link, and disconnect-link events within 20ms. It also delivers the lowest idle time, showing superior resource use and scalability as the cluster grows.",
+  "published": "2025-05-19T07:52:17Z",
+  "updated": "2025-09-13T18:39:29Z",
+  "authors": [
+   "Wenjiao Feng",
+   "Rongxing Xiao",
+   "Zonghang Li",
+   "Hongfang Yu",
+   "Gang Sun",
+   "Long Luo",
+   "Mohsen Guizani",
+   "Qirong Ho",
+   "Steve Liu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "14 pages, 16 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"elastic training\" OR abs:\"failure recovery\" AND abs:LLM",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2412.12636v3",
+  "title": "TrainMover: An Interruption-Resilient Runtime for ML Training",
+  "abstract": "Large-scale ML training jobs are frequently interrupted by hardware and software anomalies, failures, and management events. Existing solutions like checkpoint-restart or runtime reconfiguration suffer from long downtimes and degraded performance. We present TrainMover, a resilient LLM training runtime that leverages elastic and standby machines to handle interruptions with minimal downtime and zero memory overhead. To achieve these goals, TrainMover introduces three key techniques: two-phase, delta-based communication group setup; communication-free sandboxed warmup; and general standby design that enables failure recovery from any role. Our evaluation shows that TrainMover consistently achieves around 20 seconds of downtime when handling various interruptions at the 1024-GPU scale. TrainMover is projected to reduce wasted GPU hours by 55% compared to the best alternative, saving 1.4 million GPU-hours per week at the 64K-GPU scale.",
+  "published": "2024-12-17T07:59:31Z",
+  "updated": "2026-05-15T08:04:19Z",
+  "authors": [
+   "ChonLam Lao",
+   "Jiaqi Gao",
+   "Jiamin Cao",
+   "Zhipeng Zhang",
+   "Pengcheng Zhang",
+   "Jiangfei Duan",
+   "Zhilong Zheng",
+   "Yu Guan",
+   "Yichi Xu",
+   "Yong Li",
+   "Zhengping Qian",
+   "Aditya Akella",
+   "Minlan Yu",
+   "Ennan Zhai",
+   "Dennis Cai",
+   "Jingren Zhou"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG",
+   "cs.PF"
+  ],
+  "comment": "14 pages body, 19 pages total",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"elastic training\" OR abs:\"failure recovery\" AND abs:LLM",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2310.10046v3",
+  "title": "TRANSOM: An Efficient Fault-Tolerant System for Training LLMs",
+  "abstract": "Large language models (LLMs) with hundreds of billions or trillions of parameters, represented by chatGPT, have achieved profound impact on various fields. However, training LLMs with super-large-scale parameters requires large high-performance GPU clusters and long training periods lasting for months. Due to the inevitable hardware and software failures in large-scale clusters, maintaining uninterrupted and long-duration training is extremely challenging. As a result, A substantial amount of training time is devoted to task checkpoint saving and loading, task rescheduling and restart, and task manual anomaly checks, which greatly harms the overall training efficiency. To address these issues, we propose TRANSOM, a novel fault-tolerant LLM training system. In this work, we design three key subsystems: the training pipeline automatic fault tolerance and recovery mechanism named Transom Operator and Launcher (TOL), the training task multi-dimensional metric automatic anomaly detection system named Transom Eagle Eye (TEE), and the training checkpoint asynchronous access automatic fault tolerance and recovery technology named Transom Checkpoint Engine (TCE). Here, TOL manages the lifecycle of training tasks, while TEE is responsible for task monitoring and anomaly reporting. TEE detects training anomalies and reports them to TOL, who automatically enters the fault tolerance strategy to eliminate abnormal nodes and restart the training task. And the asynchronous checkpoint saving and loading functionality provided by TCE greatly shorten the fault tolerance overhead. The experimental results indicate that TRANSOM significantly enhances the efficiency of large-scale LLM training on clusters. Specifically, the pre-training time for GPT3-175B has been reduced by 28%, while checkpoint saving and loading performance have improved by a factor of 20.",
+  "published": "2023-10-16T04:06:52Z",
+  "updated": "2023-10-18T15:42:59Z",
+  "authors": [
+   "Baodong Wu",
+   "Lei Xia",
+   "Qingping Li",
+   "Kangyu Li",
+   "Xu Chen",
+   "Yongqiang Guo",
+   "Tieyao Xiang",
+   "Yuheng Chen",
+   "Shigang Li"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "14 pages, 9 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2208.14228v3",
+  "title": "EasyScale: Accuracy-consistent Elastic Training for Deep Learning",
+  "abstract": "Distributed synchronized GPU training is commonly used for deep learning. The resource constraint of using a fixed number of GPUs makes large-scale training jobs suffer from long queuing time for resource allocation, and lowers the cluster utilization. Adapting to resource elasticity can alleviate this but often introduces inconsistent model accuracy, due to lacking of capability to decouple model training procedure from resource allocation. We propose EasyScale, an elastic training system that achieves consistent model accuracy under resource elasticity for both homogeneous and heterogeneous GPUs. EasyScale preserves the data-parallel training behaviors strictly, traces the consistency-relevant factors carefully, utilizes the deep learning characteristics for EasyScaleThread abstraction and fast context-switching. To utilize heterogeneous cluster, EasyScale dynamically assigns workers based on the intra-/inter-job schedulers, minimizing load imbalance and maximizing aggregated job throughput. Deployed in an online serving cluster, EasyScale powers the training jobs to utilize idle GPUs opportunistically, improving overall cluster utilization by 62.1%.",
+  "published": "2022-08-30T12:59:00Z",
+  "updated": "2023-11-07T02:24:22Z",
+  "authors": [
+   "Mingzhen Li",
+   "Wencong Xiao",
+   "Biao Sun",
+   "Hanyu Zhao",
+   "Hailong Yang",
+   "Shiru Ren",
+   "Zhongzhi Luan",
+   "Xianyan Jia",
+   "Yi Liu",
+   "Yong Li",
+   "Wei Lin",
+   "Depei Qian"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "To be appeared at SC'23. Link: https://sc23.supercomputing.org/presentation/?id=pap262&sess=sess168",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"elastic training\" OR abs:\"failure recovery\" AND abs:LLM",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2112.06222v2",
+  "title": "Rise of Distributed Deep Learning Training in the Big Model Era: From a Software Engineering Perspective",
+  "abstract": "Deep learning (DL) has become a key component of modern software. In the \"big model\" era, the rich features of DL-based software substantially rely on powerful DL models, e.g., BERT, GPT-3, and the recently emerging GPT-4, which are trained on the powerful cloud with large datasets. Hence, training effective DL models has become a vital stage in the whole software lifecycle. When training deep learning models, especially those big models, developers need to parallelize and distribute the computation and memory resources amongst multiple devices in the training process, which is known as distributed deep learning training, or distributed training for short. However, the unique challenges that developers encounter in distributed training process have not been studied in the software engineering community. Given the increasingly heavy dependence of current DL-based software on distributed training, this paper aims to fill in the knowledge gap and presents the first comprehensive study on developers' issues in distributed training. To this end, we analyze 1,131 real-world developers' issues about using these frameworks reported on Stack Overflow and GitHub. We construct a fine-grained taxonomy consisting of 30 categories regarding the fault symptoms and summarize common fix patterns for different symptoms. Based on the results, we suggest actionable implications on research avenues that can potentially facilitate the distributed training to develop DL-based software, such as focusing on the frequent and common fix patterns when designing testing or debugging tools, developing efficient testing and debugging techniques for communication configuration along with the synthesis of network configuration analysis, designing new multi-device checkpoint-and-replay techniques to help reproduction, and designing serverless APIs for cloud platforms.",
+  "published": "2021-12-12T12:58:48Z",
+  "updated": "2023-04-28T05:37:23Z",
+  "authors": [
+   "Xuanzhe Liu",
+   "Diandian Gu",
+   "Zhenpeng Chen",
+   "Jinfeng Wen",
+   "Zili Zhang",
+   "Yun Ma",
+   "Haoyu Wang",
+   "Xin Jin"
+  ],
+  "categories": [
+   "cs.SE"
+  ],
+  "comment": "Accepted by ACM Transactions on Software Engineering and Methodology (TOSEM 2023). Please include TOSEM in any citations",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 9
+ },
+ {
+  "id": "2109.03389v1",
+  "title": "An Optimal Resource Allocator of Elastic Training for Deep Learning Jobs on Cloud",
+  "abstract": "Cloud training platforms, such as Amazon Web Services and Huawei Cloud provide users with computational resources to train their deep learning jobs. Elastic training is a service embedded in cloud training platforms that dynamically scales up or down the resources allocated to a job. The core technique of an elastic training system is to best allocate limited resources among heterogeneous jobs in terms of shorter queueing delay and higher training efficiency. This paper presents an optimal resource allocator for elastic training system that leverages a mixed-integer programming (MIP) model to maximize the training progress of deep learning jobs. We take advantage of the real-world job data obtained from ModelArts, the deep learning training platform of Huawei Cloud and conduct simulation experiments to compare the optimal resource allocator with a greedy one as benchmark. Numerical results show that the proposed allocator can reduce queuing time by up to 32% and accelerate training efficiency by up to 24% relative to the greedy resource allocator, thereby greatly improving user experience with Huawei ModelArts and potentially enabling the realization of higher profits for the product. Also, the optimal resource allocator is fast in decision-making, taking merely 0.4 seconds on average.",
+  "published": "2021-09-08T01:38:09Z",
+  "updated": "2021-09-08T01:38:09Z",
+  "authors": [
+   "Liang Hu",
+   "Jiangcheng Zhu",
+   "Zirui Zhou",
+   "Ruiqing Cheng",
+   "Xiaolong Bai",
+   "Yong Zhang"
+  ],
+  "categories": [
+   "eess.SY",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"elastic training\" OR abs:\"failure recovery\" AND abs:LLM",
+    "rank": 1
+   }
+  ],
+  "score": 8
+ },
+ {
+  "id": "2609.37169v1",
+  "title": "Trajectory Soup: Pushing the Compute-Scaling Frontier of LLM Mid-training via Diverse Trajectories",
+  "abstract": "Mid-training equips pretrained large language models with specialized and reasoning capabilities, but the returns of this stage are bounded since additional serial compute yields little further downstream improvement and can even degrade some capabilities, which places a practical ceiling on how much compute mid-training absorbs. We revisit how this compute should be allocated to a single run or multiple similar optimizations. We find that branches forked from a shared checkpoint under various controlled recipe reaches measurably different regions of parameter space, and establish a form of compatible diversity that extending one run cannot supply. Therefore, we introduce Trajectory Soup, which distributes a mid-training budget over several independent branches, and consolidates strongest checkpoints selected on validation through intra- and inter-trajectory averaging into a single model. A local bias and variance analysis separates the two averaging levels, showing that inter-trajectory averaging removes residual error beyond the reach of averaging within a trajectory, while checkpoint selection carries a bias that bounds how many checkpoints are worth merging. Across model scales, learning-rate schedules, token budgets, and trajectory counts, Trajectory Soup improves aggregate downstream performance over the strongest single-trajectory average under matched budgets and keeps improving as budgets expand, with the advantage preserved after an identical post-training pipeline. These results position trajectory allocation and merging as a practical way to extend the compute-scaling frontier of mid-training beyond serial saturation.",
+  "published": "2026-09-29T09:57:15Z",
+  "updated": "2026-09-29T09:57:15Z",
+  "authors": [
+   "Zhehao Huang",
+   "Changxin Tian",
+   "Qingyuan Yang",
+   "Kunlong Chen",
+   "Ziqi Liu",
+   "Zhiqiang Zhang",
+   "Xiaolin Huang",
+   "Jun Zhou"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2608.20574v3",
+  "title": "FlavourBench: Executable Culinary Reward Maps for Language Model Evaluation and Post-Training",
+  "abstract": "We introduce FlavorBench: a benchmark for Compiling Dense Deterministic Answer Maps from a Versioned Culinary Embeddings Model. We test 27 frontier large language model endpoints on 534 substitution, pairing and constraining tasks for tasks that request a 3-ingredient portfolio from 8 candidates and score all 56 resulting portfolios. We conducted multiplicity-controlled paired tests on 101 of 351 model contrasts for this task-set. The largest point estimate on this task-set was achieved by Grok 4.6 at 65.1. The same rankings for this task-set were also achieved on several independently-compiled panels (using a variety of familiar metrics, task filters, etc.) and 3 public Epicure checkpoints. We present a 3-seed post-training study where LoRA SFT of a Qwen3-0.6B checkpoint on 270 optimal answers for Epicure to score on this task-set resulted in a 13.3 point gain on 84 anchor-disjoint maps (compared to format and label-matched control; 95% CI: 6.52, 20.29; p = 0.000170).",
+  "published": "2026-08-20T21:14:52Z",
+  "updated": "2026-09-02T13:30:47Z",
+  "authors": [
+   "Josef Chen",
+   "Erim Hayretci"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.CY",
+   "cs.LG",
+   "cs.SE"
+  ],
+  "comment": "18 pages, 11 figures. Evaluation of 27 frontier language-model endpoints on 534 identical tasks per model, comprising 14,418 scored model-task cells. Adds reward-map sensitivity, selection and metric robustness, held-out Recipe1MSubs substitution validation, and a preregistered controlled reward-transfer study. Code, dataset, and interactive leaderboard links remain unchanged",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2608.10812v2",
+  "title": "Reference-Free Post-Training of Open Large Language Models for Multilingual Machine Translation",
+  "abstract": "We study reference-free post-training for multilingual machine translation with open large language models. Starting from the supervised-finetuned MiLMMT-46-v0.1 models, we apply Group Relative Policy Optimization (GRPO) with a reward that averages two reference-free quality estimation models and is gated by language identification. We then linearly interpolate the supervised fine-tuning (SFT) and reinforcement learning (RL) model checkpoints to obtain MiLMMT-46-v1.0. Across 46 languages, the resulting models consistently improve translation quality over their SFT counterparts, outperform strong recent open baselines, including Seed-X, HY-MT2, and TranslateGemma, and achieve leading reference-free scores against evaluated proprietary systems such as Google Translate, Gemini 3 Pro, and GPT-5. We further investigate on-policy distillation (OPD) and find that it reaches, but does not surpass, the quality frontier achieved by RL with checkpoint interpolation. We release the models and code to facilitate future research.",
+  "published": "2026-08-11T11:30:38Z",
+  "updated": "2026-08-12T10:06:17Z",
+  "authors": [
+   "Chris Han",
+   "Pengzhi Gao",
+   "Pei Fu",
+   "Jian Luan"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2608.07974v1",
+  "title": "ZeroLock: Concurrent Memory-Efficient LLM Training via Modular Update Decoupling",
+  "abstract": "Large language model (LLM) fine-tuning at the edge adapts the model to scenario-specific data while preserving privacy. Although existing studies proposed pipeline parallelism to address the limited memory and computing resources of edge devices, they commonly rely on backpropagation (BP) training, which has a fundamental limitation of update locking and could experience severe throughput and memory bottlenecks. In this work, we propose a BP-free algorithm, called ZeroLock, that decouples the model updates into independent chunk updates by local objective construction. It breaks the update locking of BP and hence can improve throughput at the algorithm level and lower memory usage by reducing activation storage. To the best of our knowledge, we provide the first theoretical framework for such local objective construction-based approaches under general model chunk division by mapping local objectives to the global objective. We prove that ZeroLock has a convergence rate of $\\tilde{\\mathcal{O}}(1/\\sqrt{T})$, which differs from BP only by polylogarithmic factors. We design a system for ZeroLock and build real-world prototypes, incorporating techniques such as early forwarding and failure recovery for efficient and robust implementation. Experiments on the prototype show that compared to BP-based baselines, ZeroLock reduces the memory by 26.5% and improves throughput by 4.9%.",
+  "published": "2026-08-08T07:19:21Z",
+  "updated": "2026-08-08T07:19:21Z",
+  "authors": [
+   "Wentao Dai",
+   "Xuanran Li",
+   "Yuxiang Zhang",
+   "Ming Tang",
+   "Chao Huang"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"elastic training\" OR abs:\"failure recovery\" AND abs:LLM",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2604.19354v2",
+  "title": "Do Agents Dream of Root Shells? Partial-Credit Evaluation of LLM Agents in Capture the Flag Challenges",
+  "abstract": "Large Language Model (LLM) agents are increasingly proposed for autonomous cybersecurity tasks, but their capabilities in realistic offensive settings remain poorly understood. We present DeepRed, an open-source benchmark for evaluating LLM-based agents on realistic Capture The Flag (CTF) challenges in isolated virtualized environments. DeepRed places an agent in a Kali attacker environment with terminal tools and optional web search, connected over a private network to a target challenge, and records full execution traces for analysis. To move beyond binary solved/unsolved outcomes, we introduce a partial-credit scoring method based on challenge-specific checkpoints derived from public writeups, together with an automated summarise-then-judge labelling pipeline for assigning checkpoint completion from logs. Using DeepRed, we benchmark ten commercially accessible LLMs on ten VM-based CTF challenges spanning different challenge categories. The results indicate that current agents remain limited: the best model achieves only 35% average checkpoint completion, performing strongest on common challenge types and weakest on tasks requiring non-standard discovery and longer-horizon adaptation.",
+  "published": "2026-04-21T11:35:33Z",
+  "updated": "2026-05-06T12:08:31Z",
+  "authors": [
+   "Ali Al-Kaswan",
+   "Maksim Plotnikov",
+   "Maxim Hájek",
+   "Roland Vízner",
+   "Arie van Deursen",
+   "Maliheh Izadi"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.CR",
+   "cs.SE"
+  ],
+  "comment": "Accepted to AIWare'26 Benchmark and Dataset Track",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2512.03644v1",
+  "title": "FFTrainer: Fast Failover in Large-Language Model Training with Almost-Free State Management",
+  "abstract": "Recent developments in large language models (LLMs) have introduced new requirements for efficient and robust training. As LLM clusters scale, node failures, lengthy recoveries, and bulky checkpoints erode efficiency. Infrequent asynchronous checkpoints trigger costly rollbacks, yet higher frequencies add prohibitive overhead. To address these challenges, we propose FFTrainer, a system designed for robust LLM training. FFTrainer leverages surplus network capacity to quickly save and load states, thereby preventing rollbacks and accelerating recovery. Compared with prior checkpointing approaches, FFTrainer reduces recovery time by up to 98% and mitigates GPU utilization loss by up to 68% without hindering normal training.",
+  "published": "2025-12-03T10:27:35Z",
+  "updated": "2025-12-03T10:27:35Z",
+  "authors": [
+   "Bohan Zhao",
+   "Yuanhong Wang",
+   "Chenglin Liu",
+   "Jiagi Pan",
+   "Guang Yang",
+   "Ruitao Liu",
+   "Tingrui Zhang",
+   "Kai Luo",
+   "Wei Xu"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2510.04848v1",
+  "title": "Instability in Downstream Task Performance During LLM Pretraining",
+  "abstract": "When training large language models (LLMs), it is common practice to track downstream task performance throughout the training process and select the checkpoint with the highest validation score. However, downstream metrics often exhibit substantial fluctuations, making it difficult to identify the checkpoint that truly represents the best-performing model. In this study, we empirically analyze the stability of downstream task performance in an LLM trained on diverse web-scale corpora. We find that task scores frequently fluctuate throughout training, both at the aggregate and example levels. To address this instability, we investigate two post-hoc checkpoint integration methods: checkpoint averaging and ensemble, motivated by the hypothesis that aggregating neighboring checkpoints can reduce performance volatility. We demonstrate both empirically and theoretically that these methods improve downstream performance stability without requiring any changes to the training procedure.",
+  "published": "2025-10-06T14:33:38Z",
+  "updated": "2025-10-06T14:33:38Z",
+  "authors": [
+   "Yuto Nishida",
+   "Masaru Isonuma",
+   "Yusuke Oda"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "Accepted to EMNLP 2025 Findings",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2506.21833v2",
+  "title": "Memory Savings at What Cost? A Study of Alternatives to Backpropagation",
+  "abstract": "Forward-mode automatic differentiation (FmAD) and zero-order (ZO) optimization are increasingly proposed as memory-efficient, backpropagation-free alternatives for large language model (LLM) fine-tuning, yet their benefits are typically evaluated only against standard backpropagation (BP), omitting memory-efficient variants such as activation checkpointing. We present a unified theoretical and empirical comparison of BP, checkpointed BP, FmAD, and ZO for LLM and vision-language model training, showing that while FmAD and ZO reduce activation memory, they trade memory for higher computational cost and longer wall-clock time to convergence, resulting in lower accuracy and slower training, especially under constrained perturbation budgets. Across models, BP with checkpointing outperforms FmAD and ZO variants, including variance-reduced methods, achieving up to 31.1% higher accuracy, 34.8% faster convergence, and 3.8x fewer computations at comparable memory usage, while also revealing instability-related failure modes in FmAD and ZO. Overall, our results correct a one-sided benchmarking narrative by showing that memory-efficient methods entail fundamentally different trade-offs, and that ignoring these distinctions has led to misleading conclusions about LLM optimization in prior work. Our source code is available at {https://github.com/Astuary/Gradient_Estimation_Methods}.",
+  "published": "2025-06-27T00:47:03Z",
+  "updated": "2026-07-10T19:11:43Z",
+  "authors": [
+   "Kunjal Panchal",
+   "Sunav Choudhary",
+   "Yuriy Brun",
+   "Hui Guan"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "Accepted to ICML 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2505.14065v1",
+  "title": "Prime Collective Communications Library -- Technical Report",
+  "abstract": "This report presents the Prime Collective Communications Library (PCCL), a novel fault-tolerant collective communication library designed for distributed ML workloads over the public internet. PCCL introduces a new programming model that enables dynamic peer joining and failure recovery. The library implements efficient collective operations like all-reduce while providing robust fault tolerance mechanisms that allow the system to continue operating even when peers fail or join during ongoing operations. We demonstrate that PCCL's design enables practical solutions to dynamic membership challenges in workloads with repeated operations and deterministic state advancement. Our implementation passes extensive stress tests across all major operating systems, showing reliable operation even under rapid peer churn and concurrent collective operations. By dispatching to multiple connections, we can efficiently utilize cross-continental long-fat-pipe TCP WAN links, in our experiments achieving up to 45 Gbit/s of bandwidth utilization across Europe and 25 Gbit/s across North America and Europe. PCCL's architecture enables easy implementation of distributed low-communication optimization strategies like DiLoCo, which significantly reduce communication frequency. Combined with quantization, this leads to a significant reduction in the bandwidth required for distributed training workloads. PCCL also allows for concurrent collective operations, which enables optimization strategies like async DiLoCo, which can completely hide communication overhead by implementing one-step delayed parameter updates. PCCL can facilitate exact bit-parity of the shared state across peers in all cases induced by graceful or abrupt peer churn. While PCCL exposes a C99 API, Python bindings are available which are compatible with PyTorch alongside FSDP. PCCL is available under the open source MIT license.",
+  "published": "2025-05-20T08:11:42Z",
+  "updated": "2025-05-20T08:11:42Z",
+  "authors": [
+   "Michael Keiblinger",
+   "Mario Sieg",
+   "Jack Min Ong",
+   "Sami Jaghouar",
+   "Johannes Hagemann"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "31 pages, 5 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"fault tolerance\" AND abs:\"distributed training\"",
+    "rank": 1
+   }
+  ],
+  "score": 7
+ },
+ {
+  "id": "2610.13047v1",
+  "title": "Execution-Feasible Dispatch of LLM Pre-training Loads for Renewable-Dominant AI Data Centers",
+  "abstract": "AI data centers (AIDCs) are emerging as large power-system loads, making their operational flexibility increasingly valuable. Existing studies often treat AIDC demand as continuously adjustable or generically delay-tolerant, which overstating the flexibility of large language model (LLM) pretraining. This paper proposes an execution-feasible dispatch framework for LLM pre-training in renewable-dominant AIDCs. LLM descriptors are first converted into checkpoint-domain daily workloads, then mapped to feasible 3D-parallel GPU modes with explicit throughput, GPU-capacity, memory, and IT-power limits. The resulting checkpoint- and mode-constrained load states are embedded into a day-ahead power dispatch model. Case studies on a 2048 GPUs AIDC with two LLaMA pretraining tasks show that checkpoint-aware 3D dispatch reduces operating cost by 20.02% and renewable curtailment from 1.077 to 0.014 MWh relative to fixed continuous training. Related results also show that checkpoint records alone do not create load flexibility,practical grid-interactive flexibility arises from checkpoint waiting combined with execution-feasible 3D-mode compensation.",
+  "published": "2026-10-09T06:01:58Z",
+  "updated": "2026-10-09T06:01:58Z",
+  "authors": [
+   "Xi Tong",
+   "Ershun Du",
+   "Haiyang Jiang",
+   "Long Chen",
+   "Qin Wang"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "12 Figures, 6 Tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2609.22904v2",
+  "title": "LLMs Anchor on Chief Complaint and Fail to Integrate Evidence in Sequential Clinical Triage",
+  "abstract": "Triage in the emergency department (ED) is a sequential decision process that unfolds turn by turn. Existing evaluations of large language models (LLMs) for triage use completed retrospective records and report performance close to that of physicians. We implement a methodology for evaluating LLMs on sequential triage, the task of predicting a triage acuity label from a growing prefix of a nurse-patient conversation. We evaluate six LLMs at five sequential checkpoints on two corpora: 425 LLM-generated (SIMULATED) and 50 physician-authored (CLINICIAN) conversations, both labelled under the Emergency Severity Index (ESI). Every model, measured by quadratic weighted kappa (QWK), degrades from moderate-to-substantial agreement on completed records to fair-to-moderate agreement at every sequential checkpoint. Controlled perturbations show that the label at every checkpoint is anchored on the chief complaint exchanges, and prompting interventions fail to lift this plateau. Models extract clinically relevant content from later turns, yet the surprisal of the true label rises across the checkpoints. So the model fails to integrate the evidence. Three expert clinicians on the same conversations reach a QWK of 0.887-0.929, while the best model reaches 0.295. Predictions concentrate at ESI-2 and ESI-3, and models agree with each other more than with the ground truth, so ensembling worsens the failure. Deploying LLMs for ED triage based on offline benchmarks alone misses this sequential failure.",
+  "published": "2026-09-19T09:24:23Z",
+  "updated": "2026-09-24T10:35:43Z",
+  "authors": [
+   "Dipankar Srirag",
+   "Haokai Zhao",
+   "Ashutosh Kumar",
+   "Eleanor Hopper",
+   "Michael Dalton",
+   "Quoc Dung Nguyen",
+   "Aditya Joshi",
+   "Salil S. Kanhere",
+   "Padmanesan Narasimhan"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "Under Review",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2606.01080v1",
+  "title": "ThinkSwitch: Context Distillation with LoRA and Weight Interpolation for Specific-Purpose Reasoning Tasks",
+  "abstract": "Large language models often improve on difficult tasks by spending inference-time compute on a reasoning trace before producing the final answer. That extra computation can be useful, but it also raises latency, token cost, and deployment complexity. We introduce \\textbf{ThinkSwitch}, a low-compute procedure for co-training paired instruct and thinking checkpoints. Starting from compatible Qwen3-4B instruct and thinking models, each iteration asks the thinking checkpoint to generate answers, removes the reasoning trace, distills the answer-only pairs into the instruct checkpoint with QLoRA, and reconstructs a thinking checkpoint with spherical weight interpolation. The only human-supplied inputs are task prompts; the labels are generated by the model itself. On a 30-question AIME 2026 evaluation, ThinkSwitch improves the instruct checkpoint from 10/30 to 20/30 and the thinking checkpoint from 14/30 to 22/30. On a 30-question PubMedQA subset, it improves the instruct checkpoint from 13/30 to 18/30 and the thinking checkpoint from 18/30 to 25/30. The complete experiment uses 15 training prompts per domain and costs \\$2.86 on a single cloud RTX 3070. The results are small-scale, but they indicate that targeted distillation loops can move part of the benefit of explicit reasoning into weights while preserving a separate thinking mode.",
+  "published": "2026-05-31T07:57:45Z",
+  "updated": "2026-05-31T07:57:45Z",
+  "authors": [
+   "Dhruv Saini",
+   "Rohan Pandey"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2604.01025v1",
+  "title": "Fast and Accurate Probing of In-Training LLMs' Downstream Performances",
+  "abstract": "The paradigm of scaling Large Language Models (LLMs) in both parameter size and test time has pushed the boundaries of AI capabilities, but at the cost of making the traditional generative evaluation paradigm prohibitively expensive, therefore making the latency of LLM's in-training downstream performance evaluation unbearable. However, simple metrics like training loss (perplexity) are not always correlated with downstream performance, as sometimes their trends diverge from the actual task outcomes. This dilemma calls for a method that is computationally efficient and sufficiently accurate in measuring model capabilities. To address this challenge, we introduce a new in-training evaluation paradigm that uses a lightweight probe for monitoring downstream performance. The probes take the internal representations of LLM checkpoints (during training) as input and directly predict the checkpoint's performance on downstream tasks measured by success probability (i.e., pass@1). We design several probe architectures, validating their effectiveness using the OLMo3-7B's checkpoints across a diverse set of downstream tasks. The probes can accurately predict a checkpoint's performance (with avg. AUROC$>$0.75), have decent generalizability across checkpoints (earlier predicts later), and reduce the computation latency from $\\sim$1 hr (using conventional generative evaluation method) to $\\sim$3 min. In sum, this work presents a practical and scalable in-training downstream evaluation paradigm, enabling a more agile, informed, and efficient LLM development process.",
+  "published": "2026-04-01T15:32:56Z",
+  "updated": "2026-04-01T15:32:56Z",
+  "authors": [
+   "Zhichen Liu",
+   "Tianle Lun",
+   "Zhibin Wen",
+   "Hao An",
+   "Yulin Ou",
+   "Jianhui Xu",
+   "Hao Zhang",
+   "Wenyi Fang",
+   "Yang Zheng",
+   "Yang Xu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ },
+ {
+  "id": "2602.04705v1",
+  "title": "ERNIE 5.0 Technical Report",
+  "abstract": "In this report, we introduce ERNIE 5.0, a natively autoregressive foundation model desinged for unified multimodal understanding and generation across text, image, video, and audio. All modalities are trained from scratch under a unified next-group-of-tokens prediction objective, based on an ultra-sparse mixture-of-experts (MoE) architecture with modality-agnostic expert routing. To address practical challenges in large-scale deployment under diverse resource constraints, ERNIE 5.0 adopts a novel elastic training paradigm. Within a single pre-training run, the model learns a family of sub-models with varying depths, expert capacities, and routing sparsity, enabling flexible trade-offs among performance, model size, and inference latency in memory- or time-constrained scenarios. Moreover, we systematically address the challenges of scaling reinforcement learning to unified foundation models, thereby guaranteeing efficient and stable post-training under ultra-sparse MoE architectures and diverse multimodal settings. Extensive experiments demonstrate that ERNIE 5.0 achieves strong and balanced performance across multiple modalities. To the best of our knowledge, among publicly disclosed models, ERNIE 5.0 represents the first production-scale realization of a trillion-parameter unified autoregressive model that supports both multimodal understanding and generation. To facilitate further research, we present detailed visualizations of modality-agnostic expert routing in the unified model, alongside comprehensive empirical analysis of elastic training, aiming to offer profound insights to the community.",
+  "published": "2026-02-04T16:18:15Z",
+  "updated": "2026-02-04T16:18:15Z",
+  "authors": [
+   "Haifeng Wang",
+   "Hua Wu",
+   "Tian Wu",
+   "Yu Sun",
+   "Jing Liu",
+   "Dianhai Yu",
+   "Yanjun Ma",
+   "Jingzhou He",
+   "Zhongjun He",
+   "Dou Hong",
+   "Qiwen Liu",
+   "Shuohuan Wang",
+   "Junyuan Shang",
+   "Zhenyu Zhang",
+   "Yuchen Ding",
+   "Jinle Zeng",
+   "Jiabin Yang",
+   "Liang Shen",
+   "Ruibiao Chen",
+   "Weichong Yin",
+   "Siyu Ding",
+   "Dai Dai",
+   "Shikun Feng",
+   "Siqi Bao",
+   "Bolei He",
+   "Yan Chen",
+   "Zhenyu Jiao",
+   "Ruiqing Zhang",
+   "Zeyu Chen",
+   "Qingqing Dang",
+   "Kaipeng Deng",
+   "Jiajun Jiang",
+   "Enlei Gong",
+   "Guoxia Wang",
+   "Yanlin Sha",
+   "Yi Liu",
+   "Yehan Zheng",
+   "Weijian Xu",
+   "Jiaxiang Liu",
+   "Zengfeng Zeng",
+   "Yingqi Qu",
+   "Zhongli Li",
+   "Zhengkun Zhang",
+   "Xiyang Wang",
+   "Zixiang Xu",
+   "Xinchao Xu",
+   "Zhengjie Huang",
+   "Dong Wang",
+   "Bingjin Chen",
+   "Yue Chang",
+   "Xing Yuan",
+   "Shiwei Huang",
+   "Qiao Zhao",
+   "Xinzhe Ding",
+   "Shuangshuang Qiao",
+   "Baoshan Yang",
+   "Bihong Tang",
+   "Bin Li",
+   "Bingquan Wang",
+   "Binhan Tang",
+   "Binxiong Zheng",
+   "Bo Cui",
+   "Bo Ke",
+   "Bo Zhang",
+   "Bowen Zhang",
+   "Boyan Zhang",
+   "Boyang Liu",
+   "Caiji Zhang",
+   "Can Li",
+   "Chang Xu",
+   "Chao Pang",
+   "Chao Zhang",
+   "Chaoyi Yuan",
+   "Chen Chen",
+   "Cheng Cui",
+   "Chenlin Yin",
+   "Chun Gan",
+   "Chunguang Chai",
+   "Chuyu Fang",
+   "Cuiyun Han",
+   "Dan Zhang",
+   "Danlei Feng",
+   "Danxiang Zhu",
+   "Dong Sun",
+   "Dongbo Li",
+   "Dongdong Li",
+   "Dongdong Liu",
+   "Dongxue Liu",
+   "Fan Ding",
+   "Fan Hu",
+   "Fan Li",
+   "Fan Mo",
+   "Feisheng Wu",
+   "Fengwei Liu",
+   "Gangqiang Hu",
+   "Gaofeng Lu",
+   "Gaopeng Yong",
+   "Gexiao Tian",
+   "Guan Wang",
+   "Guangchen Ni",
+   "Guangshuo Wu",
+   "Guanzhong Wang",
+   "Guihua Liu",
+   "Guishun Li",
+   "Haibin Li",
+   "Haijian Liang",
+   "Haipeng Ming",
+   "Haisu Wang",
+   "Haiyang Lu",
+   "Haiye Lin",
+   "Han Zhou",
+   "Hangting Lou",
+   "Hanwen Du",
+   "Hanzhi Zhang",
+   "Hao Chen",
+   "Hao Du",
+   "Hao Liu",
+   "Hao Zhou",
+   "Haochen Jiang",
+   "Haodong Tian",
+   "Haoshuang Wang",
+   "Haozhe Geng",
+   "Heju Yin",
+   "Hong Chen",
+   "Hongchen Xue",
+   "Hongen Liu",
+   "Honggeng Zhang",
+   "Hongji Xu",
+   "Hongwei Chen",
+   "Hongyang Zhang",
+   "Hongyuan Zhang",
+   "Hua Lu",
+   "Huan Chen",
+   "Huan Wang",
+   "Huang He",
+   "Hui Liu",
+   "Hui Zhong",
+   "Huibin Ruan",
+   "Jiafeng Lu",
+   "Jiage Liang",
+   "Jiahao Hu",
+   "Jiahao Hu",
+   "Jiajie Yang",
+   "Jialin Li",
+   "Jian Chen",
+   "Jian Wu",
+   "Jianfeng Yang",
+   "Jianguang Jiang",
+   "Jianhua Wang",
+   "Jianye Chen",
+   "Jiaodi Liu",
+   "Jiarui Zhou",
+   "Jiawei Lv",
+   "Jiaxin Zhou",
+   "Jiaxuan Liu",
+   "Jie Han",
+   "Jie Sun",
+   "Jiefan Fang",
+   "Jihan Liu",
+   "Jihua Liu",
+   "Jing Hu",
+   "Jing Qian",
+   "Jing Yan",
+   "Jingdong Du",
+   "Jingdong Wang",
+   "Jingjing Wu",
+   "Jingyong Li",
+   "Jinheng Wang",
+   "Jinjin Li",
+   "Jinliang Lu",
+   "Jinlin Yu",
+   "Jinnan Liu",
+   "Jixiang Feng",
+   "Jiyi Huang",
+   "Jiyuan Zhang",
+   "Jun Liang",
+   "Jun Xia",
+   "Jun Yu",
+   "Junda Chen",
+   "Junhao Feng",
+   "Junhong Xiang",
+   "Junliang Li",
+   "Kai Liu",
+   "Kailun Chen",
+   "Kairan Su",
+   "Kang Hu",
+   "Kangkang Zhou",
+   "Ke Chen",
+   "Ke Wei",
+   "Kui Huang",
+   "Kun Wu",
+   "Kunbin Chen",
+   "Lei Han",
+   "Lei Sun",
+   "Lei Wen",
+   "Linghui Meng",
+   "Linhao Yu",
+   "Liping Ouyang",
+   "Liwen Zhang",
+   "Longbin Ji",
+   "Longzhi Wang",
+   "Meng Sun",
+   "Meng Tian",
+   "Mengfei Li",
+   "Mengqi Zeng",
+   "Mengyu Zhang",
+   "Ming Hong",
+   "Mingcheng Zhou",
+   "Mingming Huang",
+   "Mingxin Chen",
+   "Mingzhu Cai",
+   "Naibin Gu",
+   "Nemin Qiu",
+   "Nian Wang",
+   "Peng Qiu",
+   "Peng Zhao",
+   "Pengyu Zou",
+   "Qi Wang",
+   "Qi Xin",
+   "Qian Wang",
+   "Qiang Zhu",
+   "Qianhui Luo",
+   "Qianwei Yang",
+   "Qianyue He",
+   "Qifei Wu",
+   "Qinrui Li",
+   "Qiwen Bao",
+   "Quan Zhang",
+   "Quanxiang Liu",
+   "Qunyi Xie",
+   "Rongrui Zhan",
+   "Rufeng Dai",
+   "Rui Peng",
+   "Ruian Liu",
+   "Ruihao Xu",
+   "Ruijie Wang",
+   "Ruixi Zhang",
+   "Ruixuan Liu",
+   "Runsheng Shi",
+   "Ruting Wang",
+   "Senbo Kang",
+   "Shan Lu",
+   "Shaofei Yu",
+   "Shaotian Gong",
+   "Shenwei Hu",
+   "Shifeng Zheng",
+   "Shihao Guo",
+   "Shilong Fan",
+   "Shiqin Liu",
+   "Shiwei Gu",
+   "Shixi Zhang",
+   "Shuai Yao",
+   "Shuang Zhang",
+   "Shuangqiao Liu",
+   "Shuhao Liang",
+   "Shuwei He",
+   "Shuwen Yang",
+   "Sijun He",
+   "Siming Dai",
+   "Siming Wu",
+   "Siyi Long",
+   "Songhe Deng",
+   "Suhui Dong",
+   "Suyin Liang",
+   "Teng Hu",
+   "Tianchan Xu",
+   "Tianliang Lv",
+   "Tianmeng Yang",
+   "Tianyi Wei",
+   "Tiezhu Gao",
+   "Ting Sun",
+   "Ting Zhang",
+   "Tingdan Luo",
+   "Wei He",
+   "Wei Luan",
+   "Wei Yin",
+   "Wei Zhang",
+   "Wei Zhou",
+   "Weibao Gong",
+   "Weibin Li",
+   "Weicheng Huang",
+   "Weichong Dang",
+   "Weiguo Zhu",
+   "Weilong Zhang",
+   "Weiqi Tan",
+   "Wen Huang",
+   "Wenbin Chang",
+   "Wenjing Du",
+   "Wenlong Miao",
+   "Wenpei Luo",
+   "Wenquan Wu",
+   "Xi Shi",
+   "Xi Zhao",
+   "Xiang Gao",
+   "Xiangguo Zhang",
+   "Xiangrui Yu",
+   "Xiangsen Wang",
+   "Xiangzhe Wang",
+   "Xianlong Luo",
+   "Xianying Ma",
+   "Xiao Tan",
+   "Xiaocong Lin",
+   "Xiaofei Wang",
+   "Xiaofeng Peng",
+   "Xiaofeng Wu",
+   "Xiaojian Xu",
+   "Xiaolan Yuan",
+   "Xiaopeng Cui",
+   "Xiaotian Han",
+   "Xiaoxiong Liu",
+   "Xiaoxu Fei",
+   "Xiaoxuan Wu",
+   "Xiaoyu Wang",
+   "Xiaoyu Zhang",
+   "Xin Sun",
+   "Xin Wang",
+   "Xinhui Huang",
+   "Xinming Zhu",
+   "Xintong Yu",
+   "Xinyi Xu",
+   "Xinyu Wang",
+   "Xiuxian Li",
+   "XuanShi Zhu",
+   "Xue Xu",
+   "Xueying Lv",
+   "Xuhong Li",
+   "Xulong Wei",
+   "Xuyi Chen",
+   "Yabing Shi",
+   "Yafeng Wang",
+   "Yamei Li",
+   "Yan Liu",
+   "Yanfu Cheng",
+   "Yang Gao",
+   "Yang Liang",
+   "Yang Wang",
+   "Yang Wang",
+   "Yang Yang",
+   "Yanlong Liu",
+   "Yannian Fu",
+   "Yanpeng Wang",
+   "Yanzheng Lin",
+   "Yao Chen",
+   "Yaozong Shen",
+   "Yaqian Han",
+   "Yehua Yang",
+   "Yekun Chai",
+   "Yesong Wang",
+   "Yi Song",
+   "Yichen Zhang",
+   "Yifei Wang",
+   "Yifeng Guo",
+   "Yifeng Kou",
+   "Yilong Chen",
+   "Yilong Guo",
+   "Yiming Wang",
+   "Ying Chen",
+   "Ying Wang",
+   "Yingsheng Wu",
+   "Yingzhan Lin",
+   "Yinqi Yang",
+   "Yiran Xing",
+   "Yishu Lei",
+   "Yixiang Tu",
+   "Yiyan Chen",
+   "Yong Zhang",
+   "Yonghua Li",
+   "Yongqiang Ma",
+   "Yongxing Dai",
+   "Yongyue Zhang",
+   "Yu Ran",
+   "Yu Sun",
+   "Yu-Wen Michael Zhang",
+   "Yuang Liu",
+   "Yuanle Liu",
+   "Yuanyuan Zhou",
+   "Yubo Zhang",
+   "Yuchen Han",
+   "Yucheng Wang",
+   "Yude Gao",
+   "Yuedong Luo",
+   "Yuehu Dong",
+   "Yufeng Hu",
+   "Yuhui Cao",
+   "Yuhui Yun",
+   "Yukun Chen",
+   "Yukun Gao",
+   "Yukun Li",
+   "Yumeng Zhang",
+   "Yun Fan",
+   "Yun Ma",
+   "Yunfei Zhang",
+   "Yunshen Xie",
+   "Yuping Xu",
+   "Yuqin Zhang",
+   "Yuqing Liu",
+   "Yurui Li",
+   "Yuwen Wang",
+   "Yuxiang Lu",
+   "Zefeng Cai",
+   "Zelin Zhao",
+   "Zelun Zhang",
+   "Zenan Lin",
+   "Zezhao Dong",
+   "Zhaowu Pan",
+   "Zhaoyu Liu",
+   "Zhe Dong",
+   "Zhe Zhang",
+   "Zhen Zhang",
+   "Zhengfan Wu",
+   "Zhengrui Wei",
+   "Zhengsheng Ning",
+   "Zhenxing Li",
+   "Zhenyu Li",
+   "Zhenyu Qian",
+   "Zhenyun Li",
+   "Zhi Li",
+   "Zhichao Chen",
+   "Zhicheng Dong",
+   "Zhida Feng",
+   "Zhifan Feng",
+   "Zhihao Deng",
+   "Zhijin Yu",
+   "Zhiyang Chen",
+   "Zhonghui Zheng",
+   "Zhuangzhuang Guo",
+   "Zhujun Zhang",
+   "Zhuo Sun",
+   "Zichang Liu",
+   "Zihan Lin",
+   "Zihao Huang",
+   "Zihe Zhu",
+   "Ziheng Zhao",
+   "Ziping Chen",
+   "Zixuan Zhu",
+   "Ziyang Xu",
+   "Ziyi Liang",
+   "Ziyuan Gao"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:\"elastic training\" OR abs:\"failure recovery\" AND abs:LLM",
+    "rank": 1
+   }
+  ],
+  "score": 6
+ }
+]

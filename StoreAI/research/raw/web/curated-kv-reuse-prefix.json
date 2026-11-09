@@ -1,0 +1,1825 @@
+[
+ {
+  "id": "2609.26828v1",
+  "title": "Bridging LLM Serving and CXL-SSDs with Chunk-Aware KV Cache Management",
+  "abstract": "NAND-backed storage offers the capacity needed to scale LLM prefix caching, but its block I/O path incurs CPU cache contention and host-DRAM staging in addition to NAND latency. Our characterization shows that these interface costs persist even with DRAM as the storage medium, motivating CXL-SSDs for byte-addressable access to NAND-backed capacity. Surprisingly, however, a stock CXL-SSD remains about 3$\\times$ slower than local DRAM and no faster than an NVMe SSD, while generic prefetching provides little benefit. We present LM-CXD, a CXL-SSD specialized for LLM prefix caching. LM-CXD bridges the semantic gap between the serving engine, which knows which KV chunks will be consumed, and the device, which controls their placement and movement. It makes KV chunks device-visible I/O units, exposes NAND-to-DRAM progress to the serving engine, and uses device DRAM as a GPU-accessible buffer. LM-CXD further coordinates request scheduling with windowed prefetching and pipelines layerwise KV movement with GPU computation to hide NAND latency under limited device DRAM. Across five LLM models, LM-CXD reduces average TTFT over a stock CXL-SSD by up to 2.6$\\times$ with compute asynchronous prefetching and 4.03$\\times$ with layerwise prefetching, achieving TTFT within 1.5$\\times$ of local DRAM on average.",
+  "published": "2026-09-20T22:40:01Z",
+  "updated": "2026-09-20T22:40:01Z",
+  "authors": [
+   "Hyunsun Chung",
+   "Taewan Noh",
+   "Minji Kim",
+   "Joo-Young Hwang",
+   "Hong-Yeon Kim",
+   "Youngjae Kim"
+  ],
+  "categories": [
+   "cs.AR",
+   "cs.AI",
+   "cs.ET"
+  ],
+  "comment": "12 pages, 17 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 3
+   }
+  ],
+  "score": 78
+ },
+ {
+  "id": "2608.21362v1",
+  "title": "KVBoost: Chunk-Level Key-Value Cache Reuse with Deviation-Guided Recomputation for Efficient Large Language Model Inference",
+  "abstract": "Transformer-based large language models (LLMs) incur high prefill latency because key-value (KV) tensors must be recomputed for each request. Existing prefix-caching systems reduce this cost but require prompts to share a leading contiguous prefix, limiting effectiveness when shared content appears at arbitrary positions. We present KVBoost, a chunk-level KV cache reuse system for HuggingFace-compatible decoder models that enables reuse regardless of content position. KVBoost introduces a dual-hash keying scheme that separates positional identity (prefix hash) from content identity (content hash), supporting both exact and approximate cache matches. To address attention boundary errors from independently cached chunks, KVBoost employs two repair strategies: SelectiveRecompute, which re-encodes boundary regions, and CacheBlendRecompute, which identifies and recomputes high-deviation tokens after a probe pass. The system further incorporates asymmetric KV quantization (int8/int4), adaptive chunk boundary splitting, and importance-weighted eviction under a fixed memory budget. Evaluated on Qwen/Qwen2.5-3B over 1,000 bug-localization samples, KVBoost achieves a 4.49x reduction in time-to-first-token (142.4 ms vs.\\ 639.1 ms) and outperforms prefix caching by 16%, with no loss in accuracy (99.2% vs.\\ 99.1%). KVBoost provides a practical, memory-bounded inference acceleration layer compatible with RoPE-based models without architectural modification.",
+  "published": "2026-05-21T02:16:13Z",
+  "updated": "2026-05-21T02:16:13Z",
+  "authors": [
+   "Srihari Unnikrishnan"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 67
+ },
+ {
+  "id": "2503.16525v2",
+  "title": "KVShare: An LLM Service System with Efficient and Effective Multi-Tenant KV Cache Reuse",
+  "abstract": "Recent advances in long-text understanding have pushed the context length of large language models (LLMs) up to one million tokens. It boosts LLMs's accuracy and reasoning capacity but causes exorbitant computational costs and unsatisfactory Time to First Token (TTFT). KV cache reuse, which reuses the exact same KV cache of prefixes and templates or shares similar ones but with extra selective recomputation, offers a promising way to tackle this issue. However, prior studies overlook the cross-request KV reuse and the attention deviations introduced by new tokens during the decoding stage. In this paper, we present a KV cache management module that shares the KV cache across requests under multi-tenant scenarios without sacrificing model accuracy. Our system, KVShare, enables accurate and efficient LLM serving by 1) a Dual-Stage High Deviation algorithm (DHD) that conditionally selects a small portion of KV cache to be recomputed during both prefill and decode phases, and 2) a cache-aware scheduler that prioritizes requests based on their KV cache hit rates and orchestrates continuous batching to achieve enhanced system efficiency and faster TTFT. Multi-task experiments conducted on models such as Qwen2.5-7B,Llama3.1-8B and Yi1.5-9B demonstrate that KVShare reduces TTFT by up to 9.39x and increases 1.2x of the throughput compared to the full KV recompute. Moreover, KVShare achieves 20.38% boost in terms of accuracy compared to SOTA methods.",
+  "published": "2025-03-17T16:43:35Z",
+  "updated": "2025-05-16T12:42:48Z",
+  "authors": [
+   "Huan Yang",
+   "Renji Zhang",
+   "Mingzhe Huang",
+   "Weijun Wang",
+   "Yin Tang",
+   "Yuanchun Li",
+   "Yunxin Liu",
+   "Deyu Zhang"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 67
+ },
+ {
+  "id": "2510.10129v2",
+  "title": "CacheClip: Accelerating RAG with Effective KV Cache Reuse",
+  "abstract": "Retrieval-Augmented Generation (RAG) systems suffer from severe time-to-first-token (TTFT) bottlenecks due to long input sequences. Existing KV cache reuse methods face a fundamental trade-off: prefix caching requires identical prefixes that rarely occur in RAG scenarios, while direct precomputation sacrifices quality due to missing inter-chunk attention and repeated attention sinks. Recent methods like APE and CacheBlend partially address these issues but remain inadequate for robust RAG applications. This paper presents CacheClip, a novel framework that achieves both fast TTFT and high generation quality. Our key insight is that small auxiliary LLMs exhibit similar last-layer attention distributions to primary LLMs (the target model for generation), enabling efficient identification of tokens critical for restoring inter-chunk attention, thereby significantly improving response quality on cross-chunk reasoning tasks. CacheClip integrates four techniques: (1) auxiliary-model-guided token selection for selective KV cache recomputation, (2) shared prefixes to eliminate redundant attention sinks, (3) a sliding-window grouping strategy to maintain local coherence during partial KV cache updates, and (4) a CPU-GPU hybrid design that offloads auxiliary model inference to idle CPU resources, avoiding additional GPU overhead. The recomputation ratio is adjustable, allowing users to flexibly balance efficiency and quality for different deployment requirements. Experiments show CacheClip retains up to 85.2% and 91.1% of full-attention performance on NIAH and LongBench, outperforming CacheBlend and APE by 16.1 and 12.8 points on NIAH, and by 4.5 and 4.2 points on LongBench (with recomp% = 20%). Meanwhile, CacheClip accelerates LLM inference by up to 3.33$\\times$ in prefill time (with recomp% = 20%), providing a practical solution to the efficiency-quality trade-off in RAG systems.",
+  "published": "2025-10-11T09:28:26Z",
+  "updated": "2026-05-21T08:20:19Z",
+  "authors": [
+   "Bin Yang",
+   "Qiuyu Leng",
+   "Jun Zeng",
+   "Zhenhua Wu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 65
+ },
+ {
+  "id": "2509.16857v1",
+  "title": "ShadowServe: Interference-Free KV Cache Fetching for Distributed Prefix Caching",
+  "abstract": "Distributed prefix caching accelerates long-context LLM serving by reusing KV cache entries for common context prefixes. However, KV cache fetches can become a bottleneck when network bandwidth is limited. Compression mitigates the bandwidth issue, but can degrade overall performance when decompression interferes with model computation. We present ShadowServe, the first SmartNIC-accelerated, interference-free prefix caching system for LLM serving. ShadowServe separates a control plane on the host and a data plane fully offloaded to the SmartNIC, which eliminates interference to both host GPU and CPU. To overcome the SmartNIC's limited compute and memory resources, we design a chunked pipeline that parallelizes data plane operations across the SmartNIC's compute resources, and a minimal-copy memory management scheme that reduces memory pressure on the SmartNIC. Compared to state-of-the-art solutions, ShadowServe achieves up to 2.2x lower loaded time-per-output-token (TPOT), and reduces time-to-first-token (TTFT) by up to 1.38x in low-bandwidth scenarios (<= 20 Gbps), translating to up to 1.35x higher throughput.",
+  "published": "2025-09-21T00:59:45Z",
+  "updated": "2025-09-21T00:59:45Z",
+  "authors": [
+   "Xingyu Xiang",
+   "Raj Joshi",
+   "Yuhan Liu",
+   "Jiayi Yao",
+   "Chenxingyu Zhao",
+   "Junchen Jiang",
+   "Yang Zhou",
+   "Eddie Kohler",
+   "Minlan Yu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 64
+ },
+ {
+  "id": "2610.25136v1",
+  "title": "Visual Cache Reuse for Efficient Multimodal Inference",
+  "abstract": "Vision-language model (VLM) inference incurs substantial prefill latency and memory overhead due to the long visual token sequences of large visual inputs. Existing serving systems typically exploit exact cache reuse through prefix caching or position-independent caching, overlooking the potential of approximate caching in real-world workloads. However, directly reusing an approximate cache entry may introduce spurious visual information, which naive approaches that select a subset of important visual tokens for recomputation fail to adequately mitigate this risk. We present VisMemo, an efficient serving system that enables approximate KV cache reuse for modern VLMs. Its core is a system-algorithm co-design that combines an entropy-aware KV cache reuse algorithm with differentiated cache management. Specifically, VisMemo uses patch entropy to identify reuse candidates and warmup attention to prioritize recomputation based on the current query. To support the large cache capacity across GPU memory, CPU memory, and SSD storage, VisMemo applies distinct I/O and cache policies to exact and approximate hits: sparse patch-level I/O for approximate hits, prioritized retention for exact hits, and a reserved CPU victim cache for preset entries selected using offline workload priors and online reuse observations. VisMemo further optimizes the memory access path between the inference engine and the storage backend, eliminating redundant caching and unnecessary data movement. Experiments on multiple public datasets show that VisMemo preserves output quality under approximate reuse. On a real-world production trace, VisMemo increases the overall cache hit rate from 27.78% to 61.45% and reduces prefill latency by up to 48.3% at 8K input tokens.",
+  "published": "2026-10-18T09:41:29Z",
+  "updated": "2026-10-18T09:41:29Z",
+  "authors": [
+   "Shuheng Gao",
+   "Yuankai Fan",
+   "Jiaqiang Ma",
+   "Jiawei Shao",
+   "Yongkun Li",
+   "Xuelong Li"
+  ],
+  "categories": [
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   }
+  ],
+  "score": 58
+ },
+ {
+  "id": "2610.15186v1",
+  "title": "SAFE-KV: Causal Suffix Repair for Behavior-Preserving Non-Prefix KV Cache Reuse in RAG",
+  "abstract": "Retrieval-augmented generation (RAG) reuses the same documents across many requests, making non-prefix KV-cache reuse attractive. Yet a cached document state is not reusable text: it is a context-conditioned causal state whose keys and values depend on the prefix, position, and preceding documents under which it was computed. We formulate non-prefix KV reuse as a behavior-preservation problem with full prefill on the exact prompt as the reference, and introduce SAFE-KV, which repairs a composed cache by re-encoding the causal suffix from a selected start document. On Qwen2.5-7B-Instruct, prefix-conditioned composition preserves only 47.2% of HotpotQA-500 and 37.8% of 2Wiki-500 full-prefill answers; SAFE-KV with risk-guided K2 selection restores 99.8%/98.4% (donor-copy protocol) and 100.0%/98.4% with actual suffix forwarding. Document-only and fixed-window repairs recover far less, because the document states after the repaired region keep histories that omit it. Reuse without repair is exact up to four documents and degrades at sixteen, where suffix repair recovers 98-100%. Faithful repair re-encodes most of the context, so in a single-request L40S study SAFE-KV's operating rule serves every workload by full prefill. SAFE-KV thus establishes the causal-state contract for non-prefix reuse and a validated repair mechanism that meets it.",
+  "published": "2026-10-10T21:19:57Z",
+  "updated": "2026-10-10T21:19:57Z",
+  "authors": [
+   "Xingjian Zhang"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.LG"
+  ],
+  "comment": "Accepted to Findings of AACL-IJCNLP 2026. 36 pages, 5 figures, 33 tables. Code: https://github.com/XingjianZhang-dev/safe-kv",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 58
+ },
+ {
+  "id": "2610.13060v1",
+  "title": "KV-Repurpose: A Testbed for Evaluating Non-Prefix KV-Cache Reuse",
+  "abstract": "KV-cache reuse in large language model serving is commonly limited to exact prompt prefixes, preventing reuse when the same retrieved document appears after different system prompts, conversation histories, or dynamic metadata. We present KV-Repurpose, an open-source, vLLM-based system for developing and evaluating segment-wise KV-cache reuse beyond exact prefixes. The system combines cache-aware segment scheduling, prompt construction, capacity management, workload generation, and runtime monitoring. Experiments on long-context benchmarks show that naive segment reuse largely preserves output quality for single-document question answering and summarization, while exposing clear limitations in cross-document reasoning. Under a Zipfian RAG-style workload in which 20% of requests share a fixed prefix, KV-Repurpose achieves a substantially higher token-level cache hit rate than prefix caching at the same 30 GB cache capacity, 63.9% versus 3.3%, resulting in lower TTFT. Even with 1 TB of cache capacity, prefix caching reaches only a 17.9% hit rate in this workload. Source code is available under the Apache-2.0 license at https://github.com/taiga333/eval-kv-repurpose.",
+  "published": "2026-10-09T06:17:10Z",
+  "updated": "2026-10-09T06:17:10Z",
+  "authors": [
+   "Taiga Ikeda",
+   "Daisuke Miyashita",
+   "Jun Deguchi"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 55
+ },
+ {
+  "id": "2610.05833v1",
+  "title": "Request Order Matters: Cache-History Sensitivity in Selective KV-Cache Reuse for Rolling Agents",
+  "abstract": "Long-running agents repeatedly call an LLM while retaining most of their document window, evicting old documents, and appending new ones. These rolling updates break exact prefix caching and motivate non-prefix KV-cache reuse with selective recomputation. We show that persistent KV-cache reuse with selective recomputation can be history-dependent: in our rolling-agent workload, an unchanged prompt can produce different answers depending on the requests processed before it. At a matched 5% recomputation budget, document-aligned recomputation reduces answer variation across request orders from 69.0% with CacheBlend's token top-$k$ policy to 26.1%. When each prompt is evaluated after a different sequence of preceding requests, document-aligned recomputation improves fidelity to full prefill by 34.5-52.5 percentage points over token top-$k$, while both policies achieve approximately 5.7$\\times$ median TTFT speedup. Our ablation study shows that, in our rolling-agent workload, contiguity is the main factor associated with robust selective recomputation.",
+  "published": "2026-10-05T05:37:22Z",
+  "updated": "2026-10-05T05:37:22Z",
+  "authors": [
+   "Tiffany Gu",
+   "Annie Guan",
+   "Manshu Huang",
+   "Nitin Rao",
+   "Siddhant Shah",
+   "Margaret Capetz"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.LG",
+   "cs.PF"
+  ],
+  "comment": "10 pages, 5 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 54
+ },
+ {
+  "id": "2609.33477v1",
+  "title": "Just Let Linear States Forget the Distant Past: Prefix Caching via Suffix Replay for Hybrid LLMs",
+  "abstract": "Hybrid LLMs interleave full-attention layers with linear-attention layers to reduce long-context inference cost, but this structure complicates prefix caching. Full-attention KV caches are token-addressable, whereas linear-attention layers maintain recurrent states that cannot be rolled back to arbitrary prefix boundaries. Existing systems materialize recurrent-state checkpoints, restricting prefix reuse to checkpoint-aligned positions. We present SuffixReplay, the first prefix caching system that lets hybrid LLMs reuse cached prefixes at every cache-supported page boundary without materializing recurrent-state checkpoints. Our key insight is to just let linear states forget the distant past. Modern linear-attention mechanisms use recurrent decay and gating to attenuate the influence of old inputs. Therefore, instead of checkpointing every prefix boundary, SuffixReplay approximates the state at a matched boundary by replaying only a recent suffix of the layer's input hidden states, which we retain as anchors. At the algorithmic level, SuffixReplay combines layer-wise and token-wise anchor sparsity with a bounded replay budget to control storage, computation, and quality. At the system level, it uses an independently managed anchor sidecar and a pipelined replay path to overlap anchor movement and state reconstruction with the native serving pipeline. We evaluate SuffixReplay on three hybrid LLMs: OLMo-Hybrid-7B, Qwen3.5-4B, and Qwen3.6-27B-FP8. Across these models, SuffixReplay retains 91.4-100% of full-prefill quality on average across LongBench and RULER, while using only 0.36-0.51x the amortized per-token storage of SGLang's default 8192-token checkpoint cache. Integrated into SGLang, SuffixReplay reduces median TTFT by 15-70% on branching workloads, sustains 2.3-4.3x SGLang's throughput when the working set exceeds HBM, and matches SGLang on high-hit continuation traffic.",
+  "published": "2026-09-27T11:43:56Z",
+  "updated": "2026-09-27T11:43:56Z",
+  "authors": [
+   "Yirui Liu",
+   "Ruoling Qi",
+   "Xuaner Wu",
+   "Yuxin Jin",
+   "Jian Chen",
+   "Penghang Liu",
+   "Yafei Huang",
+   "Jiawei Shao",
+   "Xuelong Li"
+  ],
+  "categories": [
+   "cs.AI",
+   "cs.PF"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 2
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2609.32278v2",
+  "title": "RR-Evict: Fine-Grained Prefix Cache Eviction beyond LRU for Agentic LLM Serving",
+  "abstract": "LLM-based agents execute long-horizon tasks through repeated model calls interleaved with tool execution and user interaction. As each call extends the history accumulated in previous turns, prefix caching avoids repeated prefill of the agent's entire context. However, the aggregate cache footprint grows with context length and concurrency, forcing serving systems to reclaim cached KV tensors. We identify recency synchronization: accesses to an agent's cached history refresh its cache nodes together, causing least recently used (LRU) eviction to concentrate on a few agents' private histories. When a fully evicted agent returns, it must recompute nearly its entire accumulated context, producing a large time-to-first-token (TTFT) outlier even if most other requests retain substantial cache reuse. We present RR-EVICT, a fine-grained prefix-cache eviction strategy that distributes reclamation across idle agent trajectories. RR-EVICT visits agents in round-robin order and evicts a tail chunk from each, preserving reusable prefixes for more agents when capacity remains for idle state. Returning agents can reuse these partial histories and recompute smaller missing suffixes. The policy requires no prediction of future arrivals or tool latency. We implement RR-EVICT in SGLang and evaluate conversational and coding-agent workloads under colocated and prefill-decode-disaggregated serving. Compared with LRU, RR-EVICT reduces P99 TTFT by up to 75.4% and P99 uncached prompt tokens by up to 65.7%.",
+  "published": "2026-09-26T06:09:15Z",
+  "updated": "2026-10-02T21:09:45Z",
+  "authors": [
+   "Zaifeng Pan",
+   "Chris Wu",
+   "Zhengding Hu",
+   "Xinwei Qiang",
+   "Zhongkai Yu",
+   "Yufei Ding"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2609.10790v1",
+  "title": "Composable CXL Memory as a Kubernetes-Native Shared Memory for LLM Serving",
+  "abstract": "We present a Kubernetes Dynamic Resource Allocation (DRA) driver that makes composable CXL memory a schedulable cluster resource, and evaluate the resulting shared-memory tier for cross-node KV-cache reuse in LLM serving. The driver composes CXL regions on demand, materializes them as DAX devices on each participating host, and injects them into pods under a single Container Device Interface (CDI) name so that pods on different nodes access the same physical region. A shared-memory connector for vLLM/llm-d uses that region as a KV-cache tier with a slot directory embedded inside the shared medium, which eliminates the need for an external metadata service. On a two-node cluster with a 512\\,GiB CXL appliance and Qwen2.5-7B-Instruct, cross-node prefix reuse reduces TTFT by 5.5$\\times$--36.6$\\times$ at an external hit rate of 95.4--99.5\\,\\%, while node-local tiers (GPU prefix caching, CPU-DRAM offload) fall back to full recompute. The sharing gap, defined as the latency ratio between cross-node and same-node reuse, is 1--4\\%, indicating that cross-node reuse incurs little additional latency relative to same-node reuse on our testbed. Both replicas run full engines; the study demonstrates memory disaggregation rather than prefill/decode disaggregation. We report this as a feasibility study rather than a performance evaluation.",
+  "published": "2026-09-09T19:52:48Z",
+  "updated": "2026-09-09T19:52:48Z",
+  "authors": [
+   "Hongjian Fan",
+   "Kevin Zhang",
+   "David Habinsky",
+   "Sean Dykstra"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "23 pages, 9 figures, 9 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:CXL AND (abs:LLM OR abs:\"machine learning\" OR abs:inference)",
+    "rank": 2
+   },
+   {
+    "dim": "memory-hierarchy-hw",
+    "query": "abs:\"memory disaggregation\" AND (abs:LLM OR abs:inference)",
+    "rank": 3
+   }
+  ],
+  "score": 53
+ },
+ {
+  "id": "2410.03065v2",
+  "title": "Compute Or Load KV Cache? Why Not Both?",
+  "abstract": "Large Language Models (LLMs) are increasingly deployed in large-scale online services, enabling sophisticated applications. However, the computational overhead of generating key-value (KV) caches in the prefill stage presents a major bottleneck, particularly for long-context inputs. Prefix caching mitigates this issue by storing KV caches for reuse, reducing redundant computation. Despite its advantages, prefix caching suffers from high latency due to the limited I/O bandwidth of storage devices, constraining inference efficiency. To address this challenge, we introduce Cake, a novel KV cache loading system that optimally utilizes both computational and I/O resources in parallel. Cake employs a bidirectional scheduling strategy that dynamically balances KV cache computation and loading, ensuring efficient resource utilization. Additionally, Cake incorporates an adaptive scheduling mechanism that seamlessly integrates with non-prefix caching requests, improving system throughput and adapting to fluctuating resource availabilty. Through extensive evaluations across various hardware configurations, datasets, and storage conditions, Cake achieves on average 2.6x reduction in Time to First Token (TTFT) compared to compute-only and I/O-only methods. Our findings highlight Cake as an effective and practical solution for optimizing long-context LLM inference, bridging the gap between computation and I/O efficiency in large-scale AI deployments.",
+  "published": "2024-10-04T01:11:09Z",
+  "updated": "2025-02-20T23:28:01Z",
+  "authors": [
+   "Shuowei Jin",
+   "Xueshen Liu",
+   "Qingzhao Zhang",
+   "Z. Morley Mao"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 51
+ },
+ {
+  "id": "2608.09225v1",
+  "title": "Governing the KV Cache: Preventing Timing Side-Channel Leakage in Multi-Tenant LLM Inference",
+  "abstract": "The key-value (KV) cache is the primary throughput optimization in modern large language model (LLM) inference, enabling prefix reuse across requests. In multi-tenant deployments this cache is shared across tenants, creating a timing side channel: an adversarial tenant can reconstruct another tenant's private prompt by probing cache-hit latency. Three published attacks exploit it -- PROMPTPEEK, EarlyBird and InputSnatch -- reaching up to 100% attack success rate against unprotected vLLM and SGLang, with rates varying by cache architecture and prompt structure. We present KVGov, a governance layer addressing all three attack families' prefix-cache paths under one mechanism. A per-principal salt sigma_p = HMAC_K(secret, principal_id) seeds the block-hash chain, making cache keys cryptographically disjoint across principals. An ablation (N=1000 trials, seed 2026, deterministic judges) isolates this salt as the necessary and sufficient component. KVGov adds ORIGAMI, a Stackelberg water-filling audit scheduler that reduces adversary expected utility by 12.6% at realistic tenant heterogeneity (Gini 0.63), and an evolutionary stability analysis giving a 31.6% adversary-prevalence tipping point below which global caching remains stable. On real hardware (Qwen2.5-7B-Instruct, vLLM 0.26.0, NVIDIA A100) we measure a gate-verified cold/cached TTFT ratio of 0.22, confirming the channel is exploitable at production scale; the defense itself is evaluated in simulation calibrated to those measurements. We replicate the channel on an independent stack (llama.cpp on Apple Metal, ratio 0.093). Finally, isolation and cache efficiency need not conflict: identifying information resides only where prompts diverge, so injecting the salt at that boundary rather than the chain root retains an estimated 93% of the prefix-cache benefit with no cross-principal signal.",
+  "published": "2026-08-10T07:47:57Z",
+  "updated": "2026-08-10T07:47:57Z",
+  "authors": [
+   "Tejasvi C. Addagada"
+  ],
+  "categories": [
+   "cs.CR",
+   "cs.AI"
+  ],
+  "comment": "12 pages, 5 figures, 9 tables. Measurements on NVIDIA A100 with vLLM 0.26.0, independently replicated on llama.cpp/Apple Metal. Experimental scripts and raw results available from the author on request",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 50
+ },
+ {
+  "id": "2608.14624v1",
+  "title": "Learning Agent Execution for KV-Cache Management in Agentic Serving",
+  "abstract": "Multi-agent LLM systems have emerged as an important deployment paradigm for AI services, where each user request is decomposed into a sequence of specialized agents. Across these workflows, every agent repeatedly executes a fixed context consisting of system prompts, tool definitions, and few-shot examples, creating substantial opportunities for KV-cache reuse. Existing LLM serving systems, however, manage KV-cache reactively using prefix caching and recency-based replacement, causing reusable agent contexts to be evicted before their next invocation and forcing repeated recomputation. We present CacheScout, an agent-aware KV-cache runtime layer for multi-agent LLM serving. The key insight is that future KV-cache reuse is governed by agent execution semantics rather than cache recency alone. CacheScout captures these semantics by learning agent execution transitions online, without requiring predefined workflow graphs or offline training, and uses the learned execution model to guide both cache eviction and proactive prefetching while leaving the serving critical path unchanged. We implement CacheScout on top of vLLM. Across representative real-world multi-agent workloads, CacheScout improves KV-cache hit rate by 10-18 percentage points, reduces mean TTFT by 18-45%, lowers mean per-turn latency by 29-38%, and increases peak throughput by up to 57%. These benefits also generalize to larger models, reducing TTFT by up to 54% while sustaining 37% higher throughput.",
+  "published": "2026-07-16T22:28:19Z",
+  "updated": "2026-07-16T22:28:19Z",
+  "authors": [
+   "Rui Zhang",
+   "Chaeeun Kim",
+   "Shaoting Feng",
+   "Kuntai Du",
+   "Yuhan Liu",
+   "Yi Zhong",
+   "Cheng-Wei Ching",
+   "Junchen Jiang",
+   "Liting Hu"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2606.17107v1",
+  "title": "Models Take Notes at Prefill: KV Cache Can Be Editable and Composable",
+  "abstract": "Prefix caching reuses prefill only across an exactly shared prefix, so one changed field invalidates the entire downstream cache. Yet overwriting the field's own key/value vectors and reusing the rest leaves the model acting on the old value. The reason, established causally across four model families: at prefill the model has already written the field-conditioned conclusion onto downstream notes; the field's own key/value drives under 1% of the decision. Read as a notebook of memoized conclusions, two capabilities follow. (1) It is editable. A salient erratum amends the notes; and with chain-of-thought, editing the field alone recovers the decision (1.00 at 8B, ~1% compute), while without CoT it is ignored. (2) It is composable. The notes are position-portable, so a precompiled skill can be RoPE-repositioned and spliced into any context, indistinguishable from full recompute (logit cosine 0.90-0.999, twelve models) at O(L) rather than O(L^2) time-to-first-token. A unified edit+compose agent stays decision-identical to recompute at up to 14.9x lower latency. The approach applies to any per-token attention KV cache, validated across scale, quantization, Mixture-of-Experts, and multimodal caches, and extends to several attention variants through small adapters. Because the erratum is append-only, it composes with production prefix caching: in an online vLLM benchmark it keeps the prefix cache-aligned (98.5% hit-rate), cutting p90 time-to-first-token by 53-398x.",
+  "published": "2026-06-14T15:31:23Z",
+  "updated": "2026-06-14T15:31:23Z",
+  "authors": [
+   "Bojie Li"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2605.18825v1",
+  "title": "Not All Tokens Are Worth Caching: Learning Semantic-Aware Eviction for LLM Prefix Caches",
+  "abstract": "Prefix caching is a key optimization in Large Language Model (LLM) serving, reusing attention Key-Value (KV) states across requests with shared prompt prefixes to reduce expensive prefill computation. However, its benefit depends critically on the eviction policy as GPU memory is scarce, and existing policies such as LRU largely treat cached blocks uniformly. This view ignores a fundamental property of LLM prompts: not all tokens are equally worth caching. We show that different token types within a prompt, including system prompts, user queries, tool outputs, model responses, and chain-of-thought reasoning, exhibit up to 756x variation in reuse rates, yet no existing eviction policy exploits this signal. In this paper, we present SAECache (Semantic-Adaptive Eviction for prefix caches), a semantic-adaptive prefix cache eviction policy that addresses this gap through three innovations: (1) a multi-queue architecture that routes KV blocks to task-specific queues with tailored priority metrics, capturing both session reuse in multi-turn requests and structural reuse in templated single-turn requests; (2) a semantic-aware token weighting mechanism that learns the reuse value of different token types online through eviction feedback; and (3) a fully adaptive online learning schema for all parameter updates, including log-normal timing parameters, position decay power, queue weights, and meta-parameters, which eliminates manual tuning and enables automatic adaptation to deployment-specific workload characteristics. Through extensive evaluation across heterogeneous workloads, we demonstrate that SAECache achieves 1.4x-2.7x TTFT improvement over production-style baselines, while fixed-parameter alternatives can degrade by up to 2.7x under workload mismatch -- a failure mode our adaptive approach avoids entirely.",
+  "published": "2026-05-12T18:38:24Z",
+  "updated": "2026-05-12T18:38:24Z",
+  "authors": [
+   "Shaoke Fang",
+   "Ziang Li",
+   "Wenfei Wu",
+   "Jiatong Ji",
+   "Qingsong Liu",
+   "Ruizhi Pu"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 49
+ },
+ {
+  "id": "2606.01751v2",
+  "title": "SparseX: Efficient Segment-Level KV Cache Sharing for Interleaved LLM Serving",
+  "abstract": "In long-context LLM serving, the prefill stage often dominates time-to-first-token and computational cost. Although Prefix Cache in vLLM/PagedAttention has been widely used to reuse identical prompt prefixes, repeated content in practical applications frequently appears as non-prefix, cross-request, cross-turn, and cross-agent segments, which makes conventional cache mechanisms insufficient. This paper presents SparseX, a segment-level KV Cache sharing method for common serving scenarios. SparseX uses contiguous token segments as reuse units and exploits Sparse-Q indices that naturally arise in KV Cache reuse workloads to estimate the key tokens that require correction. Based on this estimate, SparseX performs Sparse-KV Recomputation within a single forward pass, thereby restoring cross-segment contextual interactions under complex interleaved reuse patterns while avoiding additional models or separate preprocessing stages for token selection. SparseX further implements a full+sparse hybrid attention mode based on a layer-specific threshold: early layers retain full attention to obtain a more stable token-importance signal, and later layers switch to sparse recomputation to improve reuse quality on complex long-context tasks. We implement SparseX-vLLM on top of vLLM, integrating segment-level cache lookup, PagedAttention management, RoPE alignment, Sparse-Q token selection, and FlashAttention backends into a unified execution path. SparseX is model-agnostic, training-free, and compatible with Prefix Cache, and it provides unified support for common online serving scenarios including multi-round chat, retrieval-augmented generation (RAG), and agent workflows.",
+  "published": "2026-06-01T06:12:55Z",
+  "updated": "2026-06-07T12:43:36Z",
+  "authors": [
+   "Quqing Zhang",
+   "Kai Chen",
+   "Ning Liao",
+   "Zehao Lin",
+   "Bo Tang",
+   "Feiyu Xiong",
+   "Zhiyu Li",
+   "Xiaoxing Wang"
+  ],
+  "categories": [
+   "cs.PF"
+  ],
+  "comment": "Corrected author metadata only; no changes to the paper content",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "vector-rag-storage",
+    "query": "abs:\"retrieval augmented generation\" AND (abs:cache OR abs:storage)",
+    "rank": 2
+   }
+  ],
+  "score": 48
+ },
+ {
+  "id": "2601.08343v1",
+  "title": "When KV Cache Reuse Fails in Multi-Agent Systems: Cross-Candidate Interaction is Crucial for LLM Judges",
+  "abstract": "Multi-agent LLM systems routinely generate multiple candidate responses that are aggregated by an LLM judge. To reduce the dominant prefill cost in such pipelines, recent work advocates KV cache reuse across partially shared contexts and reports substantial speedups for generation agents. In this work, we show that these efficiency gains do not transfer uniformly to judge-centric inference. Across GSM8K, MMLU, and HumanEval, we find that reuse strategies that are effective for execution agents can severely perturb judge behavior: end-task accuracy may appear stable, yet the judge's selection becomes highly inconsistent with dense prefill. We quantify this risk using Judge Consistency Rate (JCR) and provide diagnostics showing that reuse systematically weakens cross-candidate attention, especially for later candidate blocks. Our ablation further demonstrates that explicit cross-candidate interaction is crucial for preserving dense-prefill decisions. Overall, our results identify a previously overlooked failure mode of KV cache reuse and highlight judge-centric inference as a distinct regime that demands dedicated, risk-aware system design.",
+  "published": "2026-01-13T09:02:58Z",
+  "updated": "2026-01-13T09:02:58Z",
+  "authors": [
+   "Sichu Liang",
+   "Zhenglin Wang",
+   "Jiajia Chu",
+   "Pengfei Xia",
+   "Hui Zang",
+   "Deyu Zhou"
+  ],
+  "categories": [
+   "cs.MA",
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 48
+ },
+ {
+  "id": "2512.17910v1",
+  "title": "Efficient Multi-Adapter LLM Serving via Cross-Model KV-Cache Reuse with Activated LoRA",
+  "abstract": "Modern large language model (LLM) systems increasingly rely on multi-turn pipelines that are composed of multiple task-specific adapters, yet existing serving frameworks remain inefficient, incurring substantial recomputation overhead when switching between adapters. We present the first LLM serving engine that supports cross-model prefix cache reuse between base and adapted models via Activated LoRA (aLoRA), enabling efficient and fine-grained adapter switching during inference. Our design extends the vLLM framework by introducing base-aligned block hashing and activation-aware masking within the model execution path, permitting cache reuse across models while preserving compatibility with existing serving engine optimizations. Integrated into a production-grade inference stack, this approach supports dynamic adapter activation without excessive key-value tensor recomputation. Evaluation across representative multi-turn, multi-adapter pipelines demonstrates up to 58x end-to-end latency reduction and over 100x time-to-first-token improvement relative to standard LoRA baselines, with benefits that scale with model size and sequence length and manifest across all stages of the request lifecycle. This work bridges parameter-efficient model adaptation with high-performance serving, providing the first complete realization of cross-model KV-cache reuse in modern LLM inference engines.",
+  "published": "2025-11-26T02:34:48Z",
+  "updated": "2025-11-26T02:34:48Z",
+  "authors": [
+   "Allison Li",
+   "Kristjan Greenewald",
+   "Thomas Parnell",
+   "Navid Azizan"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 48
+ },
+ {
+  "id": "2609.32999v1",
+  "title": "Tessera: Demand-Driven KV Cache Management for Retrieval-Augmented LLM Serving",
+  "abstract": "RAG and retrieval-based agent memory both inject retrieved content into LLM prompts, as document chunks and recalled memory records, respectively. The same content can recur across requests at different prompt positions or after different preceding contexts, preventing reuse through conventional prefix caching. Our characterization finds that records recurring outside the matching prefix account for over 70% of injected memory tokens in agent-memory workloads. Composable KV-reuse methods enable reuse in such cases, but online serving introduces a management problem: a recurring unit's KV states may not yet exist, may have been evicted, or may reside on another node. We present Tessera, a disaggregated serving system that makes retrieval the control plane for KV reuse. By exposing the context units needed before model execution, retrieval allows Tessera to combine current demand with retrieval history, KV residency, and generation load to coordinate cache management and request routing. Generation nodes concurrently prepare locally cached, remotely cached, and missing states, while retaining newly computed states off the request's critical path. Across RAG and agent-memory workloads, Tessera lowers mean TTFT by up to 3.6x over SGLang and LMCache with EPIC at matched request rates, and sustains low TTFT at rates where the baselines saturate, while matching the answer quality of the underlying composition policy.",
+  "published": "2026-09-26T22:45:27Z",
+  "updated": "2026-09-26T22:45:27Z",
+  "authors": [
+   "Fei Fang",
+   "Chung-Hsiang Lo",
+   "Yi Liu",
+   "Yifan Hua",
+   "Chen Qian"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 47
+ },
+ {
+  "id": "2508.17219v1",
+  "title": "TokenLake: A Unified Segment-level Prefix Cache Pool for Fine-grained Elastic Long-Context LLM Serving",
+  "abstract": "Prefix caching is crucial to accelerate multi-turn interactions and requests with shared prefixes. At the cluster level, existing prefix caching systems are tightly coupled with request scheduling to optimize cache efficiency and computation performance together, leading to load imbalance, data redundancy, and memory fragmentation of caching systems across instances. To address these issues, memory pooling is promising to shield the scheduler from the underlying cache management so that it can focus on the computation optimization. However, because existing prefix caching systems only transfer increasingly longer prefix caches between instances, they cannot achieve low-latency memory pooling. To address these problems, we propose a unified segment-level prefix cache pool, TokenLake. It uses a declarative cache interface to expose requests' query tensors, prefix caches, and cache-aware operations to TokenLake for efficient pooling. Powered by this abstraction, TokenLake can manage prefix cache at the segment level with a heavy-hitter-aware load balancing algorithm to achieve better cache load balance, deduplication, and defragmentation. TokenLake also transparently minimizes the communication volume of query tensors and new caches. Based on TokenLake, the scheduler can schedule requests elastically by using existing techniques without considering prefix cache management. Evaluations on real-world workloads show that TokenLake can improve throughput by up to 2.6$\\times$ and 2.0$\\times$ and boost hit rate by 2.0$\\times$ and 2.1$\\times$, compared to state-of-the-art cache-aware routing and cache-centric PD-disaggregation solutions, respectively.",
+  "published": "2025-08-24T05:45:16Z",
+  "updated": "2025-08-24T05:45:16Z",
+  "authors": [
+   "Bingyang Wu",
+   "Zili Zhang",
+   "Yinmin Zhong",
+   "Guanzhe Huang",
+   "Yibo Zhu",
+   "Xuanzhe Liu",
+   "Xin Jin"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2505.21889v2",
+  "title": "EFIM: Efficient Serving of LLMs for Infilling Tasks with Improved KV Cache Reuse",
+  "abstract": "Large language models (LLMs) are often used for infilling tasks, which involve predicting or generating missing information in a given text. These tasks typically require multiple interactions with similar context. To reduce the computation of repeated historical tokens, cross-request key-value (KV) cache reuse, a technique that stores and reuses intermediate computations, has become a crucial method in multi-round interactive services. However, in infilling tasks, the KV cache reuse is often hindered by the structure of the prompt format, which typically consists of a prefix and suffix relative to the insertion point. Specifically, the KV cache of the prefix or suffix part is frequently invalidated as the other part (suffix or prefix) is incrementally generated. To address the issue, we propose EFIM, a transformed prompt format of FIM to unleash the performance potential of KV cache reuse. Although the transformed prompt can solve the inefficiency, it exposes subtoken generation problems in current LLMs, where they have difficulty generating partial words accurately. Therefore, we introduce a fragment tokenization training method which splits text into multiple fragments before tokenization during data processing. Experiments on two representative LLMs show that LLM serving with EFIM can lower the latency by 52% and improve the throughput by 98% while maintaining the original infilling capability. EFIM's source code is publicly available at https://github.com/gty111/EFIM.",
+  "published": "2025-05-28T02:07:03Z",
+  "updated": "2025-05-29T12:59:26Z",
+  "authors": [
+   "Tianyu Guo",
+   "Hande Dong",
+   "Yichong Leng",
+   "Feng Liu",
+   "Cheater Lin",
+   "Nong Xiao",
+   "Xianwei Zhang"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "31st International European Conference on Parallel and Distributed Computing (Euro-Par 2025 Oral)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 46
+ },
+ {
+  "id": "2610.41508v1",
+  "title": "HiState: Hierarchical Prefix Cache Management for Hybrid LLM Serving in Agentic Workloads",
+  "abstract": "Hybrid large language models combine full-attention and recurrent linear layers to reduce inference costs. Prefix caching can further reduce redundant computation across requests, but a recurrent checkpoint cannot recover an earlier state corresponding to a shorter prefix. Existing hybrid prefix caching systems retain checkpoints at selected boundaries to support common reuse patterns in conventional conversations. However, agent workloads modify and revisit earlier contexts, exposing reusable prefixes whose checkpoints were never saved or have already been evicted. A straightforward approach is to retain more checkpoints to reduce recomputation, but their cumulative footprint can displace reusable prefixes from other sessions and cause additional cache misses. To address these problems, we present HiState, a prefix cache management system for hybrid models serving agent workloads. Our key observation is that prefix reuse accesses all matching key-value (KV) entries but only one recurrent checkpoint, regardless of how many checkpoints are retained. This asymmetry allows HiState to retain historical checkpoints on SSD while prioritizing fast memory for KV entries: each hit retrieves only one checkpoint whose size is independent of context length. Within this hierarchy, we propose adaptive interval control to balance checkpoint storage against recomputation, and unified eviction to coordinate checkpoint sparsification with reclamation of stale trajectories. We implement HiState on top of vLLM and evaluate it on two public coding-agent trace datasets and controlled microbenchmarks. On real agent traces, HiState achieves up to 5.73x and 5.44x speedups in p99 TTFT over vLLM-Marconi and SGLang-HiCache, respectively.",
+  "published": "2026-10-30T09:59:44Z",
+  "updated": "2026-10-30T09:59:44Z",
+  "authors": [
+   "Zaifeng Pan",
+   "Lucas Wang",
+   "Xinwei Qiang",
+   "Yanbo Zhou",
+   "Chang Chen",
+   "Zhengding Hu",
+   "Yue Guan",
+   "Yufei Ding"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:storage AND (abs:LLM OR abs:\"large language model\")",
+    "rank": 3
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"agent\" AND abs:memory AND abs:\"large language model\"",
+    "rank": 4
+   }
+  ],
+  "score": 45
+ },
+ {
+  "id": "2502.03771v5",
+  "title": "vCache: Verified Semantic Prompt Caching",
+  "abstract": "Semantic caches return cached responses for semantically similar prompts to reduce LLM inference latency and cost. They embed cached prompts and store them alongside their response in a vector database. Embedding similarity metrics assign a numerical score to quantify the similarity between a request and its nearest neighbor prompt from the cache. Existing systems use the same static similarity threshold across all requests to determine whether two prompts can share similar responses. However, we observe that static thresholds do not give formal correctness guarantees, result in unexpected error rates, and lead to suboptimal cache hit rates. This paper proposes vCache, the first verified semantic cache with user-defined error rate guarantees for predictable performance. It employs an online learning algorithm to estimate an optimal threshold for each cached prompt, enabling reliable cache responses without additional training. Our experiments show that vCache consistently meets the specified error bounds while outperforming state-of-the-art static-threshold and fine-tuned embedding baselines with up to 12.5$\\times$ higher cache hit and 26$\\times$ lower error rates. We release the vCache implementation and four benchmarks to support future research.",
+  "published": "2025-02-06T04:16:20Z",
+  "updated": "2026-02-21T02:29:11Z",
+  "authors": [
+   "Luis Gaspar Schroeder",
+   "Aditya Desai",
+   "Alejandro Cuadron",
+   "Kyle Chu",
+   "Shu Liu",
+   "Mark Zhao",
+   "Stephan Krusche",
+   "Alfons Kemper",
+   "Matei Zaharia",
+   "Joseph E. Gonzalez"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.CL"
+  ],
+  "comment": "ICLR 2026 (accepted)",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 45
+ },
+ {
+  "id": "2411.05276v3",
+  "title": "GPT Semantic Cache: Reducing LLM Costs and Latency via Semantic Embedding Caching",
+  "abstract": "Large Language Models (LLMs), such as GPT, have revolutionized artificial intelligence by enabling nuanced understanding and generation of human-like text across a wide range of applications. However, the high computational and financial costs associated with frequent API calls to these models present a substantial bottleneck, especially for applications like customer service chatbots that handle repetitive queries. In this paper, we introduce GPT Semantic Cache, a method that leverages semantic caching of query embeddings in in-memory storage (Redis). By storing embeddings of user queries, our approach efficiently identifies semantically similar questions, allowing for the retrieval of pre-generated responses without redundant API calls to the LLM. This technique achieves a notable reduction in operational costs while significantly enhancing response times, making it a robust solution for optimizing LLM-powered applications. Our experiments demonstrate that GPT Semantic Cache reduces API calls by up to 68.8% across various query categories, with cache hit rates ranging from 61.6% to 68.8%. Additionally, the system achieves high accuracy, with positive hit rates exceeding 97%, confirming the reliability of cached responses. This technique not only reduces operational costs, but also improves response times, enhancing the efficiency of LLM-powered applications.",
+  "published": "2024-11-08T02:21:19Z",
+  "updated": "2024-12-09T01:44:10Z",
+  "authors": [
+   "Sajal Regmi",
+   "Chetan Phakami Pun"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 45
+ },
+ {
+  "id": "2608.30310v2",
+  "title": "Tail-Replay: Escaping the Curse of Linear Attention in Prefix Caching for Hybrid LLMs",
+  "abstract": "Hybrid large language models interleave full-attention layers with linear-attention layers to reduce the cost of long-context inference. This structure complicates prefix caching: full-attention key-value caches are token-addressable, whereas linear-attention layers maintain recurrent states that cannot be rolled back to arbitrary prefix boundaries. Existing hybrid prefix caching methods address this mismatch by storing recurrent-state checkpoints. As a result, token-level matches are directly usable only at positions aligned with stored checkpoints, constraining prefix reuse to a discrete set of boundaries. We present Tail-Replay, a prefix caching mechanism that enables unconstrained token-level prefix reuse in hybrid large language models. The key insight is that linear-attention mechanisms such as Gated DeltaNet can be viewed as a structured, lossy compression of the input prefix: gated recurrent updates progressively attenuate the contributions of earlier inputs. Consequently, the recurrent state of a matched prefix can be well approximated by replaying only a short, recent suffix of that prefix. Tail-Replay exploits this property by caching the exact full-attention key-value cache while omitting recurrent-state checkpoints. On a cache hit, it reconstructs the linear-attention states by replaying a short, recent suffix of the matched prefix. As a result, the reuse boundary is determined by the shared tokens rather than by recurrent-state checkpoints. We evaluate Tail-Replay on three Gated DeltaNet-based hybrid models using the LongBench and RULER benchmarks. With only a 5--10\\% replay budget, it retains 92.8--99.9\\% of full-prefill quality on LongBench and RULER. For serving efficiency, we evaluate time-to-first-token speedups across multiple matched-prefix lengths---8K, 16K, and 32K. The speedup grows with prefix length, reaching $9.1$--$14.3\\times$ over full prefill at 32K.",
+  "published": "2026-08-31T06:27:07Z",
+  "updated": "2026-10-15T14:12:48Z",
+  "authors": [
+   "Yirui Liu",
+   "Ruoling Qi",
+   "Xuaner Wu",
+   "Penghang Liu",
+   "Jian Chen"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "checkpoint-recovery",
+    "query": "abs:checkpoint AND (abs:\"large language model\" OR abs:\"distributed training\")",
+    "rank": 2
+   }
+  ],
+  "score": 44
+ },
+ {
+  "id": "2606.01065v1",
+  "title": "Leyline: KV Cache Directives for Agentic Inference",
+  "abstract": "Modern KV cache management assumes the chatbot workload: prompts arrive once and the cache grows append-only, so prefix caching and forward-only eviction are correct by construction. Agentic LLMs break this assumption. Their conversations evolve through policy-driven editing: failed tool calls are retried, stale outputs dropped, trajectories pivoted. Two distinct cache problems result. First, identical content moves to new positions between turns, invalidating exact-prefix caches even though the underlying KV would still be valid; recent work on position-independent caching for MLA addresses this reuse problem. Second, and this paper's focus, a policy may need to direct the serving system to actively remove or replace a span of cached content and continue without re-prefilling everything that came after. No existing primitive offers this. Production agentic harnesses fall back to re-prefill on every edit, paying full prefix-recomputation cost; kernel-level eviction methods make their own decisions and cannot accept policy directives from outside the kernel. We introduce Leyline, a serving-side primitive that closes this gap. A declarative directive 4-tuple separates what to edit from how to preserve position correctness. The policy declares the edit and its mode (in-place splice or prefix-trimmed re-prefill for semantic forgetting); an architecture-agnostic interface routes to a per-architecture kernel that restores attention math via a closed-form RoPE-rotation correction. The splice kernel lifts replay cache-hit by +11.2 pp and cuts latency by up to 241 ms. A ten-line truncation rule routed through the same interface lifts agentic solve rate by +14.3 pp on debug-gym. The mechanism is open; the policy space it enables is the agenda.",
+  "published": "2026-05-31T07:13:15Z",
+  "updated": "2026-05-31T07:13:15Z",
+  "authors": [
+   "Bole Ma",
+   "Jan Eitzinger",
+   "Harald Koestler"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 43
+ },
+ {
+  "id": "2605.20630v1",
+  "title": "Evaluating Temporal Semantic Caching and Workflow Optimization in Agentic Plan-Execute Pipelines",
+  "abstract": "Industrial asset operations workflows are latency-sensitive because a single user query may require coordination over sensor data, work orders, failure modes, forecasting tools, and domain-specific agents. We evaluate this problem on AssetOpsBench (AOB), an industrial agent benchmark whose plan-execute pipeline exposes repeated overhead from tool discovery, LLM planning, MCP tool execution, and final summarization. Existing LLM caching techniques such as KV-cache reuse and embedding-based semantic caching were designed for chatbot serving and break down when output validity depends on time, asset, or sensor parameters. We propose two complementary optimization layers for AOB plan-execute pipelines: a temporal semantic cache and a set of MCP workflow optimizations combining disk-backed tool-discovery caching and dependency-aware parallel step execution. MCP workflow optimizations corresponded to a 1.67x speedup and reduced median end-to-end latency by about 40.0% while the temporal-cache benchmark achieved a median of 30.6x speedup on cache hits. Beyond the speedup, our results expose a concrete failure mode of pure semantic caching for parameter-rich industrial queries, providing a critical analysis of how caching choices interact with evaluation correctness in MCP-backed agent benchmarks.",
+  "published": "2026-05-20T02:30:07Z",
+  "updated": "2026-05-20T02:30:07Z",
+  "authors": [
+   "Alimurtaza Mustafa Merchant",
+   "Krish Veera",
+   "Sajal Kumar Goyla",
+   "Shambhawi Bhure",
+   "Dhaval Patel",
+   "Kaoutar El Maghraoui"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "13 pages, 8 figures, 3 appendices",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 41
+ },
+ {
+  "id": "2605.05219v1",
+  "title": "Sparse Prefix Caching for Hybrid and Recurrent LLM Serving",
+  "abstract": "Prefix caching is a key latency optimization for autoregressive LLM serving, yet existing systems assume dense per-token key/value reuse. State-space models change the structure of the problem: a recurrent layer can resume from a single stored state rather than requiring the entire token history. This asymmetry opens a new design point between no reuse and dense caching: store exact recurrent states at a sparse set of checkpoint positions and, on a cache hit, resume from the deepest stored checkpoint and recompute the remaining suffix exactly. We formalize sparse prefix caching as checkpoint placement under a distribution over overlap depths, yielding an exact O(NM) dynamic program. For use cases where requests share a non-trivial prefix (e.g. asking different questions about a single long document), we show that our method consistently improves the Pareto frontier traced by standard heuristics on real-world data. Across QuALITY and System Prompts, distribution-aware placement dominates every fixed-budget baseline on the measured layer-group Pareto frontier and matches or outperforms the strongest heuristic (block caching) while typically using substantially fewer checkpoints, with the largest gains at low checkpoint budgets where the overlap distribution is most non-uniform. The method is most relevant when many requests share a substantial but not identical prefix within a retained cache entry. It preserves exact outputs, does not change the recurrent computation itself or require new recurrent update kernels, applies to recurrent/SSM layers whose hidden state can be extracted and restored exactly, and for hybrid models can be combined with existing KV-cache compression techniques.",
+  "published": "2026-04-17T09:24:58Z",
+  "updated": "2026-04-17T09:24:58Z",
+  "authors": [
+   "Mikhail Shirokikh",
+   "Sergey Nikolenko"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 41
+ },
+ {
+  "id": "2609.27746v1",
+  "title": "The KV Cache Working Set: Online Capacity Planning for LLM Inference Systems",
+  "abstract": "Prefix caching is critical for efficient large language model (LLM) serving, particularly for agentic workloads that repeatedly invoke the model with a growing conversation and tool-use history. By reusing the key-value (KV) states of previously processed prefixes, prefix caching avoids redundant prefill computation. Its effectiveness, however, depends on retaining a sufficiently large set of KV cache states. Provisioning enough cache to preserve all historical KV states is prohibitively expensive and often unnecessary, whereas insufficient capacity can substantially degrade the cache hit rate. Determining the KV cache working set, defined as the minimum cache capacity required to achieve a target hit rate, is therefore essential for efficient cache provisioning and system design. We present KVSET, an online analyzer that estimates the KV cache working set of LLM serving workloads. KVSET uses the Mattson stack algorithm to efficiently estimate cache hit rates across a wide range of cache capacities. For each KV cache page, KVSET computes its LRU stack distance and compares it with the page number of each candidate capacity. This comparison determines whether the page would be a hit at each capacity without independently simulating every capacity configuration. KVSET therefore substantially reduces the computational and memory overhead of conventional capacity-by-capacity simulation and makes online working-set analysis practical. KVSET further determines the minimum cache capacity based on the maximum LRU depth among the prefix pages required to achieve the target hit rate. We validate KVSET using traces collected from production LLM workloads and show that its estimates closely match measurements from real cache deployments. The open-source implementation supports both online request processing and offline trace replay.",
+  "published": "2026-09-23T11:59:45Z",
+  "updated": "2026-09-23T11:59:45Z",
+  "authors": [
+   "Luchang Li",
+   "Shuaishuai Wang",
+   "Zhao Ruan",
+   "Dongfang Li",
+   "Bozhao Gong"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "9 pages, 4 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 39
+ },
+ {
+  "id": "2601.06007v2",
+  "title": "Don't Break the Cache: An Evaluation of Prompt Caching for Long-Horizon Agentic Tasks",
+  "abstract": "Recent advancements in Large Language Model (LLM) agents have enabled complex multi-turn agentic tasks requiring extensive tool calling, where conversations can span dozens of API calls with increasingly large context windows. However, although major LLM providers offer prompt caching to reduce cost and latency, its benefits for agentic workloads remain underexplored in the research literature. To our knowledge, no prior work quantifies these cost savings or compares caching strategies for multi-turn agentic tasks. We present a comprehensive evaluation of prompt caching across three major LLM providers (OpenAI, Anthropic, and Google) and compare three caching strategies, including full context caching, system prompt only caching, and caching that excludes dynamic tool results. We evaluate on DeepResearch Bench, a multi-turn agentic benchmark where agents autonomously execute real-world web search tool calls to answer complex research questions, measuring both API cost and time to first token (TTFT) across over 500 agent sessions with 10,000-token system prompts. Our results demonstrate that prompt caching reduces API costs by 41-80% and improves time to first token by 13-31% across providers. We find that strategic prompt cache block control, such as placing dynamic content at the end of the system prompt, avoiding dynamic traditional function calling, and excluding dynamic tool results, provides more consistent benefits than naive full-context caching, which can paradoxically increase latency. An ablation study across prompt sizes (500-50,000 tokens) and tool call counts (3-50) demonstrates universal linear cost and TTFT benefits, after the provider caching token minimum, and reveal provider-specific strategy discrepancies across variants. We provide nuanced discussion and guidance for implementing prompt caching in production agentic systems.",
+  "published": "2026-01-09T18:41:57Z",
+  "updated": "2026-01-31T20:15:29Z",
+  "authors": [
+   "Elias Lumer",
+   "Faheem Nizar",
+   "Akshaya Jangiti",
+   "Kevin Frank",
+   "Anmol Gulati",
+   "Mandar Phadate",
+   "Vamse Kumar Subbiah"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "16 pages, 9 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 39
+ },
+ {
+  "id": "2606.09937v1",
+  "title": "RKSC: Reasoning-Aware KV Cache Sharing and Confident Early Exit for Multi-Step LLM Inference",
+  "abstract": "We introduce RKSC (Reasoning-Aware KV Cache Sharing), a training-free inference framework that eliminates two structural redundancies in multi-branch LLM reasoning pipelines. ASKS (Attention-Similarity KV Sharing) computes the prefix KV cache once and broadcasts it to all semantically similar branches via hidden-state cosine similarity, strictly generalising the token-exact prefix caching used by vLLM and SGLang. CGEE (Confidence-Gated Early Exit) applies two complementary exit mechanisms: (1) it skips the verification forward pass entirely when generation confidence is decisive across branches, and (2) it terminates the verification pass at an intermediate layer when per-layer entropy stabilises, using lightweight hooks on the transformer backbone. RSBCM (Reasoning-Selective Block Cache Manager) prevents unbounded cache growth via attention-weighted depth-priority eviction. Across five model families (7B-10B), four benchmarks, and 1,000 evaluated problems, RKSC achieves a mean speedup of 3.008x over the No-KV baseline (peak 3.990x), a 1.66x mean improvement over vLLM-equivalent prefix caching, with a CGEE-induced error rate of only 0.37% (6 errors out of 1,616 verify calls). No fine-tuning or architecture changes are required. Code is available at https://github.com/AnirudhSekar/RKSC.",
+  "published": "2026-06-07T21:36:20Z",
+  "updated": "2026-06-07T21:36:20Z",
+  "authors": [
+   "Anirudh Sekar"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL"
+  ],
+  "comment": "Accepted to the ICML 2026 Workshop on Statistical Frameworks for Uncertainty in Agentic Systems",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 38
+ },
+ {
+  "id": "2609.31415v1",
+  "title": "Evaluating the accuracy of KV cache reuse techniques",
+  "abstract": "Position-independent KV cache reuse aims to reduce latency in retrieval-augmented generation by reusing chunk-level KV caches across prompts. We show that current evaluations of KV cache reuse techniques rely on measurements that fail to faithfully capture the loss of accuracy attributable to reuse, often artificially inflating the reported effectiveness. We also show that existing datasets do not exhibit the reuse dynamics needed to thoroughly evaluate such techniques. To address these issues, we propose an evaluation methodology that measures this accuracy loss without ambiguity and we introduce Boxoffice, a tool that programmatically generates evaluation datasets that exercise challenging KV cache reuse patterns.",
+  "published": "2026-09-25T15:36:43Z",
+  "updated": "2026-09-25T15:36:43Z",
+  "authors": [
+   "Samuel Cestola",
+   "Tianxiang Xia",
+   "Pengfei Zheng",
+   "Weiyan Zheng",
+   "Bo Wang",
+   "Yi Zhao",
+   "Diego Didona"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "vector-rag-storage",
+    "query": "abs:\"retrieval augmented generation\" AND (abs:cache OR abs:storage)",
+    "rank": 2
+   }
+  ],
+  "score": 37
+ },
+ {
+  "id": "2403.02694v4",
+  "title": "MeanCache: User-Centric Semantic Caching for LLM Web Services",
+  "abstract": "Large Language Models (LLMs) like ChatGPT and Llama have revolutionized natural language processing and search engine dynamics. However, these models incur exceptionally high computational costs. For instance, GPT-3 consists of 175 billion parameters, where inference demands billions of floating-point operations. Caching is a natural solution to reduce LLM inference costs on repeated queries, which constitute about 31% of the total queries. However, existing caching methods are incapable of finding semantic similarities among LLM queries nor do they operate on contextual queries, leading to unacceptable false hit-and-miss rates. This paper introduces MeanCache, a user-centric semantic cache for LLM-based services that identifies semantically similar queries to determine cache hit or miss. Using MeanCache, the response to a user's semantically similar query can be retrieved from a local cache rather than re-querying the LLM, thus reducing costs, service provider load, and environmental impact. MeanCache leverages Federated Learning (FL) to collaboratively train a query similarity model without violating user privacy. By placing a local cache in each user's device and using FL, MeanCache reduces the latency and costs and enhances model performance, resulting in lower false hit rates. MeanCache also encodes context chains for every cached query, offering a simple yet highly effective mechanism to discern contextual query responses from standalone. Our experiments benchmarked against the state-of-the-art caching method, reveal that MeanCache attains an approximately 17% higher F-score and a 20% increase in precision during semantic cache hit-and-miss decisions while performing even better on contextual queries. It also reduces the storage requirement by 83% and accelerates semantic cache hit-and-miss decisions by 11%.",
+  "published": "2024-03-05T06:23:50Z",
+  "updated": "2025-03-07T14:49:07Z",
+  "authors": [
+   "Waris Gill",
+   "Mohamed Elidrisi",
+   "Pallavi Kalapatapu",
+   "Ammar Ahmed",
+   "Ali Anwar",
+   "Muhammad Ali Gulzar"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI",
+   "cs.CL",
+   "cs.CR",
+   "cs.DC"
+  ],
+  "comment": "Accepted at 2025 IEEE 39th International Parallel and Distributed Processing Symposium (IPDPS)",
+  "journal_ref": "2025 IEEE International Parallel and Distributed Processing Symposium (IPDPS)",
+  "doi": "10.1109/IPDPS64566.2025.00117",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 37
+ },
+ {
+  "id": "2512.16822v1",
+  "title": "MEPIC: Memory Efficient Position Independent Caching for LLM Serving",
+  "abstract": "Modern LLM applications such as deep-research assistants, coding agents, and Retrieval-Augmented Generation (RAG) systems, repeatedly process long prompt histories containing shared document or code chunks, creating significant pressure on the Key Value (KV) cache, which must operate within limited memory while sustaining high throughput and low latency. Prefix caching partially alleviates some of these costs by reusing KV cache for previously processed tokens, but limited by strict prefix matching. Position-independent caching (PIC) enables chunk-level reuse at arbitrary positions, but requires selective recomputation and positional-encoding (PE) adjustments. However, because these operations vary across queries, KV for the same chunk diverges across requests. Moreover, without page alignment, chunk KV layouts diverge in memory, preventing page sharing. These issues result in only modest HBM savings even when many requests reuse the same content. We present MEPIC, a memory-efficient PIC system that enables chunk KV reuse across positions, requests, and batches. MEPIC aligns chunk KV to paged storage, shifts recomputation from token- to block-level so only the first block is request-specific, removes positional encodings via Rotary Position Embedding (RoPE) fusion in the attention kernel, and makes remaining blocks fully shareable. These techniques eliminate most duplicate chunk KV in HBM, reducing usage by up to 2x over state-of-the-art PIC at comparable latency and accuracy, and up to 5x for long prompts, without any model changes.",
+  "published": "2025-12-18T18:04:01Z",
+  "updated": "2025-12-18T18:04:01Z",
+  "authors": [
+   "Qian Wang",
+   "Zahra Yousefijamarani",
+   "Morgan Lindsay Heisler",
+   "Rongzhi Gu",
+   "Bai Xiaolong",
+   "Shan Yizhou",
+   "Wei Zhang",
+   "Wang Lan",
+   "Ying Xiong",
+   "Yong Zhang",
+   "Zhenan Fan"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "vector-rag-storage",
+    "query": "abs:\"retrieval augmented generation\" AND (abs:cache OR abs:storage)",
+    "rank": 2
+   }
+  ],
+  "score": 36
+ },
+ {
+  "id": "2605.00528v2",
+  "title": "SAGA: Workflow-Atomic Scheduling for AI Agent Inference on GPU Clusters",
+  "abstract": "AI agents execute tens to hundreds of chained LLM calls per task, yet GPU schedulers treat each call as independent, discarding gigabytes of intermediate state between steps and inflating end-to-end latency by 3-8x. We argue that this request-level abstraction is fundamentally mismatched to compound AI workloads, and propose a shift to program-level scheduling: treating the entire agent workflow (not individual inference calls) as the first-class schedulable unit. We present SAGA, a distributed scheduler that implements this abstraction through three mechanisms: (1) Agent Execution Graphs that capture workflow structure to predict KV cache reuse across tool-call boundaries, achieving within 1.31x of Bélády's optimal offline policy; (2) session-affinity batching with work stealing that co-locates correlated requests while maintaining global load balance; and (3) Agent Fair Share, a task-completion-time fairness metric with provable bounded-deviation guarantees. On a 64-GPU cluster serving SWE-bench coding agents and WebArena browser tasks, SAGA reduces task completion time by 1.64x (geometric mean, p < 0.001) over vLLM v0.15.1 with prefix caching and affinity routing, while improving GPU memory utilization by 1.22x and achieving 99.2% SLO attainment under multi-tenant interference. These latency gains come at a quantified cost: approximately 30% lower peak throughput than throughput-optimal batch scheduling, a tradeoff appropriate for the latency-sensitive interactive deployments that dominate compound AI usage. Our results demonstrate that workflow-aware scheduling is essential for efficient compound AI serving.",
+  "published": "2026-05-01T09:05:28Z",
+  "updated": "2026-06-19T00:26:12Z",
+  "authors": [
+   "Dongxin Guo",
+   "Jikun Wu",
+   "Siu Ming Yiu"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG",
+   "cs.OS"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "1001.4135v1",
+  "title": "An Adaptive Dynamic Replacement Approach for a Multicast based Popularity Aware Prefix Cache Memory System",
+  "abstract": "In this paper we have proposed an adaptive dynamic cache replacement algorithm for a multimedia servers cache system. The goal is to achieve an effective utilization of the cache memory which stores the prefix of popular videos. A replacement policy is usually evaluated using hit ratio, the frequency with which any video is requested. Usually discarding the least recently used page is the policy of choice in cache management. The adaptive dynamic replacement approach for prefix cache is a self tuning, low overhead algorithm that responds online to changing access patterns. It constantly balances between lru and lfu to improve combined result. It automatically adapts to evolving workloads. Since in our algorithm we have considered a prefix caching with multicast transmission of popular objects it utilizes the hard disk and network bandwidth efficiently and increases the number of requests being served.",
+  "published": "2010-01-23T07:20:30Z",
+  "updated": "2010-01-23T07:20:30Z",
+  "authors": [
+   "P. Jayarekha",
+   "T. R. Gopalakrishnan Nair"
+  ],
+  "categories": [
+   "cs.MM"
+  ],
+  "comment": "7 pages, 6 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 35
+ },
+ {
+  "id": "2607.01299v2",
+  "title": "HYPIC: Accelerating Hybrid-Attention LLM Serving with Position-Independent Caching",
+  "abstract": "In retrieval-augmented generation and agentic LLM serving, prompts are assembled from independent segments into long contexts, making the prefill stage dominate per-request cost. Two directions have emerged to reduce this cost: position-independent caching (PIC) admits KV reuse for non-contiguous segments shared across requests, while hybrid-attention models cut computation by replacing most full-attention layers with linear attention. However, they cannot coexist: applying existing PIC methods to hybrid-attention models breaks down because per-token KV-cache reuse primitives do not transfer to the per-request recurrent state. We present Hypic, the first system to accelerate hybrid-attention LLM serving with position-independent caching. For linear-attention layers, we identify the segment-cumulative transition operator as the missing algebraic primitive and cache it alongside each segment's zero-start end-state, enabling near-exact and constant-time composition of independently cached segments. For the remaining full-attention layers, existing PIC methods also fail because linear layers do not expose the per-token hidden states needed for selective recomputation. We show that the largest deviations concentrate at segment beginnings and construct a small seam window that propagates hidden states through the hybrid-attention stack to repair cross-segment attention. Finally, Hypic introduces segment parallelism, which exploits PIC's segment-level self-containment to parallelize cache-miss prefill across instances, turning long cold requests into an accelerable workload. Evaluated across four hybrid-attention models and five workloads, Hypic reduces time-to-first-token by $3.25\\times$ on average and improves QPS by $1.66\\times$ over Prefix Cache, while preserving task quality with a 1.71-point gap from Full Recompute.",
+  "published": "2026-07-01T14:03:56Z",
+  "updated": "2026-07-12T15:14:05Z",
+  "authors": [
+   "Yifei Liu",
+   "Juntong Wu",
+   "Yang Liu",
+   "Junhao Hu",
+   "Minghao Li",
+   "Xiaoxu Chen",
+   "Weihang Chen"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 34
+ },
+ {
+  "id": "2606.07684v1",
+  "title": "Semantic Cache Distillation: Efficient State Transfer via Reuse and Selective Patching",
+  "abstract": "Disaggregated serving alleviates memory bottlenecks in Large Language Model (LLM) inference but creates a severe communication bottleneck: transmitting high-dimensional Key-Value (KV) caches often dominates time-to-first-token (TTFT). Moreover, reusing caches across heterogeneous models (e.g., base and fine-tuned variants) causes semantic misalignment that accumulates over layers, degrading generation quality. We propose Semantic Cache Distillation (SCD), a loss-constrained framework that replaces raw KV transmission with compact semantic codes. SCD addresses these challenges via two mechanisms: (1) Reuse, which reconstructs most layers from low-rank subspaces to minimize transfer cost, and (2) Patch, which predicts normalized inputs at sparse transition layers to truncate error propagation. Empirically, SCD delivers up to 2.65 $\\times$ TTFT speedup over the oracle consumer prefill and dominates quantization and selective recomputation baselines on the quality--latency Pareto frontier in bandwidth-constrained regimes, while keeping generation quality within 5\\% F1 of the oracle.",
+  "published": "2026-06-05T02:46:04Z",
+  "updated": "2026-06-05T02:46:04Z",
+  "authors": [
+   "Qianli Ma",
+   "Zhiqing Tang",
+   "Hanshuai Cui",
+   "Zhi Yao",
+   "Weijia Jia"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.AI"
+  ],
+  "comment": "Accepted to ICML 2026",
+  "journal_ref": "Proceedings of the 43rd International Conference on Machine Learning, PMLR 306:84953-84968, 2026",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:disaggregated AND abs:inference",
+    "rank": 2
+   }
+  ],
+  "score": 34
+ },
+ {
+  "id": "2610.36355v1",
+  "title": "WAKMan: Workload Aware KVCache Manager",
+  "abstract": "Prefix caching enables a Large Language Model (LLM) servers to reuse the Key-Value (KV) states and accelerate prefill computation stage for requests that share a prefix with earlier prompts, thus reducing latency and serving cost. With limited memory resource, the KV cache eviction policy becomes a decisive factor in determining the overall benefits of prefix caching. Production traffic may have single-turn, multi-turn, agentic, or a mixture of any combination of these request types. Our findings indicate that agentic steps return within seconds and favor recency, while popular prompts and long conversations return after many other requests and favor frequency. Across 20 mixes, no single policy is always best: vLLM's default strategy LRU provides 12% higher cache hits as compared to the frequency-oriented S3FIFO on agentic-heavy mixes but trails it by up to 22% elsewhere, and even a single workload parameter can flip the winner even for any particular mix. We present WAKMan, a workload-aware KV cache manager that picks its eviction policy from live traffic without knowing request types or reading prompts. It improves hit rate over LRU by 5 percentage points on average, with the lowest mean and worst-case optimality gap of all policies.",
+  "published": "2026-10-26T22:19:37Z",
+  "updated": "2026-10-26T22:19:37Z",
+  "authors": [
+   "Suhas Kumar Morisetty",
+   "Vaibhavi Lokegaonkar",
+   "Sachin Mathew Varghese",
+   "Wesley Harris"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "Work done during internship at Capital One",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"KV cache\"",
+    "rank": 2
+   },
+   {
+    "dim": "recent",
+    "query": "abs:\"agent\" AND abs:memory AND abs:\"large language model\"",
+    "rank": 3
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2609.28870v2",
+  "title": "When Fancy Eviction Fails: Rethinking Cache Replacement For LLM Prefix Reuse",
+  "abstract": "Long-running LLM applications repeatedly send growing context, making prefix caching critical for reducing prefill cost. Yet prefix-cache behavior under agentic workloads remains poorly understood. We study production traces from two companies and evaluate 14 eviction algorithms across HBM-constrained and large memory-pool settings. Despite a large gap to Belady, sophisticated policies designed for traditional caches provide little benefit over LRU. The reason is structural: prefix reuse is dominated by the regular pacing of active sessions, making recency unusually predictive. Prefix caching nevertheless introduces new challenges, including heavy-tailed session footprints and highly variable miss costs as attention computation grows with sequence length. We introduce the compute-savings ratio and two offline oracles to quantify these effects. Our results show that effective prefix-cache management should retain recency as its foundation while selectively adding quick demotion for one-hit prefixes, compute-aware partial eviction for expensive misses, and capacity-dependent eviction granularity. We will release the traces and simulator to support future research.",
+  "published": "2026-09-24T00:28:20Z",
+  "updated": "2026-10-01T17:56:23Z",
+  "authors": [
+   "Yiyu Liu",
+   "Minlan Yu",
+   "Juncheng Yang"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.LG"
+  ],
+  "comment": "20 pages, 20 figures, 6 tables",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2605.30613v1",
+  "title": "CacheProbe: Auditing Prompt Cache Isolation in Gateway APIs",
+  "abstract": "Over the past year, prompt caching in Large Language Models (LLMs) has become increasingly more popular across inference APIs. Prompt caching helps save precious compute resources and speeds up response times by reusing parts of the KV cache of a specific prompt for another request. However, many implementations of prompt caching are not secure against timing attacks or even basic metadata disclosure. Gu et al. (ICML 2025) develop a method to audit prompt caching in LLMs. This paper investigates whether OpenRouter's API gateway architecture introduces prompt caching vulnerabilities that bypass provider-level prompt cache isolation guarantees. Most LLM inference providers implement per-account or per-organization prompt caching to prevent data leaks, but does routing through OpenRouter with shared organizational credentials inadvertently create global cache sharing across all OpenRouter users?",
+  "published": "2026-05-28T22:06:54Z",
+  "updated": "2026-05-28T22:06:54Z",
+  "authors": [
+   "Ryan Fahey"
+  ],
+  "categories": [
+   "cs.CR",
+   "cs.LG"
+  ],
+  "comment": "11 pages, 8 figures, 2 tables Accepted at SAGAI '26 (Workshop on Secure Agents for Generative AI), co-located with IEEE Symposium on Security and Privacy 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2605.24914v1",
+  "title": "MVR-cache: Optimizing Semantic Caching via Multi-Vector Retrieval and Learned Prompt Segmentation",
+  "abstract": "To reduce LLM costs and latency, semantic caching systems must accurately identify when a new prompt matches a cached one. Current methods often rely on simplistic similarity measures, which limit their effectiveness. We introduce MVR-cache, a novel semantic caching approach that significantly improves retrieval accuracy by integrating Multi-Vector Retrieval (MVR). MVR-cache is built upon a learnable segmentation model that intelligently splits prompts, enabling fine-grained similarity comparisons via MaxSim. We derive the model's training objective from a rigorous theoretical analysis. This can ensure that optimizing this objective directly maximizes cache hits under strict correctness constraints. To solve the resulting non-differentiable combinatorial optimization problem, we leverage a reinforcement learning-based training strategy with the theoretically grounded objectives as the reward. Experimental results on established benchmarks across diverse tasks confirm that in comparison to the state-of-the-art, MVR-cache consistently increases the cache hit rates by up to 37% while maintaining the same correctness guarantees. MVR-cache is available at https://github.com/PKU-SDS-lab/MVR-Cache",
+  "published": "2026-05-24T07:33:46Z",
+  "updated": "2026-05-24T07:33:46Z",
+  "authors": [
+   "Ali Noshad",
+   "Zishan Zheng",
+   "Yinjun Wu"
+  ],
+  "categories": [
+   "cs.IR",
+   "cs.DB",
+   "cs.LG"
+  ],
+  "comment": "Published in ICML 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2504.02268v1",
+  "title": "Advancing Semantic Caching for LLMs with Domain-Specific Embeddings and Synthetic Data",
+  "abstract": "This report investigates enhancing semantic caching effectiveness by employing specialized, fine-tuned embedding models. Semantic caching relies on embedding similarity rather than exact key matching, presenting unique challenges in balancing precision, query latency, and computational efficiency. We propose leveraging smaller, domain-specific embedding models, fine-tuned with targeted real-world and synthetically generated datasets. Our empirical evaluations demonstrate that compact embedding models fine-tuned for just one epoch on specialized datasets significantly surpass both state-of-the-art open-source and proprietary alternatives in precision and recall. Moreover, we introduce a novel synthetic data generation pipeline for the semantic cache that mitigates the challenge of limited domain-specific annotated data, further boosting embedding performance. Our approach effectively balances computational overhead and accuracy, establishing a viable and efficient strategy for practical semantic caching implementations.",
+  "published": "2025-04-03T04:27:02Z",
+  "updated": "2025-04-03T04:27:02Z",
+  "authors": [
+   "Waris Gill",
+   "Justin Cechmanek",
+   "Tyler Hutcherson",
+   "Srijith Rajamohan",
+   "Jen Agarwal",
+   "Muhammad Ali Gulzar",
+   "Manvinder Singh",
+   "Benoit Dion"
+  ],
+  "categories": [
+   "cs.LG",
+   "cs.CL"
+  ],
+  "comment": "Initial study on embedding fine tuning for semantic cache. It also explores synthetic data. Total pages are 12, including refrences",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2411.19379v3",
+  "title": "Marconi: Prefix Caching for the Era of Hybrid LLMs",
+  "abstract": "Hybrid models that combine the language modeling capabilities of Attention layers with the efficiency of Recurrent layers (e.g., State Space Models) have gained traction in practically supporting long contexts in Large Language Model serving. Yet, the unique properties of these models complicate the usage of complementary efficiency optimizations such as prefix caching that skip redundant computations across requests. Most notably, their use of in-place state updates for recurrent layers precludes rolling back cache entries for partial sequence overlaps, and instead mandates only exact-match cache hits; the effect is a deluge of (large) cache entries per sequence, most of which yield minimal reuse opportunities. We present Marconi, the first system that supports efficient prefix caching with Hybrid LLMs. Key to Marconi are its novel admission and eviction policies that more judiciously assess potential cache entries based not only on recency, but also on (1) forecasts of their reuse likelihood across a taxonomy of different hit scenarios, and (2) the compute savings that hits deliver relative to memory footprints. Across diverse workloads and Hybrid models, Marconi achieves up to 34.4$\\times$ higher token hit rates (71.1% or 617 ms lower TTFT) compared to state-of-the-art prefix caching systems.",
+  "published": "2024-11-28T21:10:20Z",
+  "updated": "2025-04-10T05:06:29Z",
+  "authors": [
+   "Rui Pan",
+   "Zhuang Wang",
+   "Zhen Jia",
+   "Can Karakus",
+   "Luca Zancato",
+   "Tri Dao",
+   "Yida Wang",
+   "Ravi Netravali"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "MLSys 2025 camera-ready version",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 33
+ },
+ {
+  "id": "2608.01718v2",
+  "title": "LaCache: Robust Semantic Caching for LLM Serving",
+  "abstract": "Semantic caching, reusing responses to answer semantically similar queries, has seen growing adoption in LLM serving, offering faster responses and reduced costs. Yet existing schemes are fundamentally vulnerable to cache-collision attacks, wherein an adversary pollutes the cache by injecting adversarial queries, corrupting responses to subsequent legitimate requests. We present LaCache, a simple yet principled redesign of semantic caching that provides provable defense against such attacks. The key insight is that while the adversary has full control over the adversarial query, it has far less control over the corresponding LLM-generated response, which must simultaneously satisfy multiple competing constraints. Thus, LaCache shifts the integrity check from the query to the response: rather than checking only the cache hit of a query, LaCache additionally checks the cache hit of its first $k$ speculatively decoded tokens. Analytically, we prove that LaCache detects any cache-collision attack that produces a semantically distinct response with provably high probability. Empirically, evaluation across diverse LLMs and benchmarks confirms that LaCache reduces attack hit rate to near zero while preserving over 90% of benign cache utility. To our best knowledge, this work is the first to exploit the inherent constraints on adversarial responses in cache-collision attacks to provide provable security, pointing to a promising direction for building robust semantic caching.",
+  "published": "2026-08-03T05:31:24Z",
+  "updated": "2026-10-11T01:15:59Z",
+  "authors": [
+   "Jiacheng Liang",
+   "Yuhui Wang",
+   "Tanqiu Jiang",
+   "Ting Wang"
+  ],
+  "categories": [
+   "cs.AI"
+  ],
+  "comment": "NeurIPS 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 32
+ },
+ {
+  "id": "2502.07776v2",
+  "title": "Auditing Prompt Caching in Language Model APIs",
+  "abstract": "Prompt caching in large language models (LLMs) results in data-dependent timing variations: cached prompts are processed faster than non-cached prompts. These timing differences introduce the risk of side-channel timing attacks. For example, if the cache is shared across users, an attacker could identify cached prompts from fast API response times to learn information about other users' prompts. Because prompt caching may cause privacy leakage, transparency around the caching policies of API providers is important. To this end, we develop and conduct statistical audits to detect prompt caching in real-world LLM API providers. We detect global cache sharing across users in seven API providers, including OpenAI, resulting in potential privacy leakage about users' prompts. Timing variations due to prompt caching can also result in leakage of information about model architecture. Namely, we find evidence that OpenAI's embedding model is a decoder-only Transformer, which was previously not publicly known.",
+  "published": "2025-02-11T18:58:04Z",
+  "updated": "2025-07-13T04:42:28Z",
+  "authors": [
+   "Chenchen Gu",
+   "Xiang Lisa Li",
+   "Rohith Kuditipudi",
+   "Percy Liang",
+   "Tatsunori Hashimoto"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.CR",
+   "cs.LG"
+  ],
+  "comment": "Accepted at ICML 2025",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 31
+ },
+ {
+  "id": "2605.30574v1",
+  "title": "Probing the Prompt KV Cache: Where It Becomes Dispensable",
+  "abstract": "Prior KV cache compression schemes empirically demonstrate that the prompt cache is partially redundant during decoding, dropping or summarising entries with little accuracy loss. We ask when and what kind of redundancy: at which layers, after how many decoding steps, and in what form can the prompt span KV cache be replaced without breaking the task. A controlled splice intervention swept over layer cutoff and decoding steps shows this redundancy is about form (chat template scaffolding) rather than content. Replacing the upper layer prompt span KV cache with KV cache from a chat template scaffold whose user content is a neutral filler recovers near clean accuracy, while zeroing the same slots collapses accuracy. The dissociation replicates across the Qwen3, Gemma 3, and Llama 3 families on multiple datasets.",
+  "published": "2026-05-28T21:07:41Z",
+  "updated": "2026-05-28T21:07:41Z",
+  "authors": [
+   "Vinayshekhar Bannihatti Kumar",
+   "Manoj Ghuhan Arivazhagan",
+   "Disha Makhija",
+   "Rashmi Gangadharaiah"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2603.03301v1",
+  "title": "From Exact Hits to Close Enough: Semantic Caching for LLM Embeddings",
+  "abstract": "The rapid adoption of large language models (LLMs) has created demand for faster responses and lower costs. Semantic caching, reusing semantically similar requests via their embeddings, addresses this need but breaks classic cache assumptions and raises new challenges. In this paper, we explore offline policies for semantic caching, proving that implementing an optimal offline policy is NP-hard, and propose several polynomial-time heuristics. We also present online semantic aware cache policies that combine recency, frequency, and locality. Evaluations on diverse datasets show that while frequency based policies are strong baselines, our novel variant improves semantic accuracy. Our findings reveal effective strategies for current systems and highlight substantial headroom for future innovation. All code is open source.",
+  "published": "2026-02-07T10:16:46Z",
+  "updated": "2026-02-07T10:16:46Z",
+  "authors": [
+   "Dvir David Biton",
+   "Roy Friedman"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI",
+   "cs.LG"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2507.07061v1",
+  "title": "An Ensemble Embedding Approach for Improving Semantic Caching Performance in LLM-based Systems",
+  "abstract": "Semantic caching enhances the efficiency of large language model (LLM) systems by identifying semantically similar queries, storing responses once, and serving them for subsequent equivalent requests. However, existing semantic caching frameworks rely on single embedding models for query representation, which limits their ability to capture the diverse semantic relationships present in real-world query distributions. This paper presents an ensemble embedding approach that combines multiple embedding models through a trained meta-encoder to improve semantic similarity detection in LLM caching systems. We evaluate our method using the Quora Question Pairs (QQP) dataset, measuring cache hit ratios, cache miss ratios, token savings, and response times. Our ensemble approach achieves a 92\\% cache hit ratio for semantically equivalent queries while maintaining an 85\\% accuracy in correctly rejecting non-equivalent queries as cache misses. These results demonstrate that ensemble embedding methods significantly outperform single-model approaches in distinguishing between semantically similar and dissimilar queries, leading to more effective caching performance and reduced computational overhead in LLM-based systems.",
+  "published": "2025-07-08T09:20:12Z",
+  "updated": "2025-07-08T09:20:12Z",
+  "authors": [
+   "Shervin Ghaffari",
+   "Zohre Bahranifard",
+   "Mohammad Akbari"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "10 pages, 8 figures, 2 table. Submitted to the Journal of Information Science",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2402.01173v1",
+  "title": "Efficient Prompt Caching via Embedding Similarity",
+  "abstract": "Large language models (LLMs) have achieved huge success in numerous natural language process (NLP) tasks. However, it faces the challenge of significant resource consumption during inference. In this paper, we aim to improve the inference efficiency of LLMs by prompt caching, i.e., if the current prompt can be answered by the same response of a previous prompt, one can directly utilize that previous response without calling the LLM. Specifically, we focus on the prediction accuracy of prompt caching for single-round question-answering tasks via embedding similarity. The existing embeddings of prompts mostly focus on whether two prompts are semantically similar, which is not necessarily equivalent to whether the same response can answer them. Therefore, we propose a distillation-based method to fine-tune the existing embeddings for better caching prediction. Theoretically, we provide finite-sample guarantees for the convergence of our method under different types of loss functions. Empirically, we carefully construct a hard dataset based on Kwiatkowski et al. (2019) where the existing embedding model (Wang et al., 2022) only achieves an AUC of 0.51. We then fine-tune the above embedding model, which significantly improves the AUC of caching prediction from 0.51 to 0.81. We also conduct simulations demonstrating that our trained models achieve better caching efficiency than the previous embedding model.",
+  "published": "2024-02-02T06:34:11Z",
+  "updated": "2024-02-02T06:34:11Z",
+  "authors": [
+   "Hanlin Zhu",
+   "Banghua Zhu",
+   "Jiantao Jiao"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.LG"
+  ],
+  "comment": "21 pages, 3 figures",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 30
+ },
+ {
+  "id": "2605.07443v1",
+  "title": "RcLLM: Accelerating Generative Recommendation via Beyond-Prefix KV Caching",
+  "abstract": "Large Language Models (LLMs) are transforming recommendation from ranking into a generative task, but industrial deployment remains limited by the high latency of processing long, personalized prompts. Standard prefix caching provides limited benefit because reuse in recommendation workloads is often non-contiguous across user histories and item contexts. We present RcLLM, a distributed inference system for generative recommendation with Beyond-Prefix KV Caching. RcLLM decomposes prompts into reusable blocks and supports large item catalogs with a stratified distributed storage design: compact user-history caches are replicated for zero-latency retrieval, while massive item caches are sharded using similarity-aware placement. To reduce redundant quadratic attention computation, RcLLM combines an affinity-based global scheduler that improves data locality with a selective attention mechanism that corrects approximation errors. Experiments on real-world datasets show that RcLLM reduces Time-To-First-Token (TTFT) by 1.31x-9.51x compared with state-of-the-art prefix caching systems, enabling real-time serving with negligible impact on recommendation accuracy.",
+  "published": "2026-05-08T08:47:50Z",
+  "updated": "2026-05-08T08:47:50Z",
+  "authors": [
+   "Zhan Zhao",
+   "Yuxin Wang",
+   "Amelie Chi Zhou"
+  ],
+  "categories": [
+   "cs.DC"
+  ],
+  "comment": "Accepted by ICDCS 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 29
+ },
+ {
+  "id": "2606.17059v1",
+  "title": "Towards Distributed Inference of LLMs on a P2P Network",
+  "abstract": "Prefix caching can reduce LLM inference latency by reusing KV caches across requests with shared prompts, but cluster-scale reuse is challenging because caches are partitioned across nodes. We propose a decentralized, prefix-cache-aware routing scheme for peer-to-peer LLM serving. Each node maintains a local radix tree of its own cached prefixes and asynchronously refreshed estimates of peer caches using periodic anti-entropy. Requests are routed to the node with the longest estimated prefix match, without centralized coordination or KV-cache transfer. Stale metadata only causes cache misses, not incorrect outputs, making weak consistency sufficient for correctness. Evaluation on simulated MMLU workloads show that decentralized routing improves latency under low communication delay and skewed prefix distributions, while high network latency and affinity-induced hotspots limit its benefits.",
+  "published": "2026-05-07T15:40:51Z",
+  "updated": "2026-05-07T15:40:51Z",
+  "authors": [
+   "Shabari S Nair",
+   "Krishanu Saini"
+  ],
+  "categories": [
+   "cs.DC",
+   "cs.AI"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   }
+  ],
+  "score": 29
+ },
+ {
+  "id": "2603.02206v2",
+  "title": "VoiceAgentRAG: Solving the RAG Latency Bottleneck in Real-Time Voice Agents Using Dual-Agent Architectures",
+  "abstract": "We present VoiceAgentRAG, an open-source dual-agent memory router that decouples retrieval from response generation. A background Slow Thinker agent continuously monitors the conversation stream, predicts likely follow-up topics using an LLM, and pre-fetches relevant document chunks into a FAISS-backed semantic cache. A foreground Fast Talker agent reads only from this sub-millisecond cache, bypassing the vector database entirely on cache hits.",
+  "published": "2026-03-02T18:58:54Z",
+  "updated": "2026-03-03T04:32:59Z",
+  "authors": [
+   "Jielin Qiu",
+   "Jianguo Zhang",
+   "Zixiang Chen",
+   "Liangwei Yang",
+   "Ming Zhu",
+   "Juntao Tan",
+   "Haolin Chen",
+   "Wenting Zhao",
+   "Rithesh Murthy",
+   "Roshan Ram",
+   "Akshara Prabhakar",
+   "Shelby Heinecke",
+   "Caiming Xiong",
+   "Silvio Savarese",
+   "Huan Wang"
+  ],
+  "categories": [
+   "cs.SD"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 28
+ },
+ {
+  "id": "2607.26076v1",
+  "title": "FinCacheServe: Dependency-Consistent Answer Reuse for Cost-Efficient RAG Serving over Mutable Enterprise Documents",
+  "abstract": "Retrieval-augmented generation services over mutable enterprise documents repeatedly execute semantically equivalent analysis requests. Answer reuse can remove GPU-bound generation work, yet response caches require dependency consistency when filings, evidence chunks, and tool outputs change. FinCacheServe treats each generated answer as a serving object indexed by enterprise intent and guarded by document versions, evidence fingerprints, tool fingerprints, model identity, and decoding configuration. A vLLM implementation evaluates SEC-derived financial-document workloads with Qwen2.5 models. On a 2,230-request hosted 7B trace, FinCacheServe skips 53.27% of LLM calls with zero observed dependency-stale outputs. Across three hosted 32B operator-suite seeds, it skips 53.31% of 544 requests, compared with 38.97% for versioned semantic caching and 22.43% for grounded-style reuse. Capacity, backend, and SLO replays show oracle-bounded cache management, 100k-entry transactional metadata behavior, and 44.30% lower estimated Wh per dependency-fresh 2s-SLO success than versioned semantic caching.",
+  "published": "2026-07-14T02:58:16Z",
+  "updated": "2026-07-14T02:58:16Z",
+  "authors": [
+   "Lingteng Zeng",
+   "Yifan Jin"
+  ],
+  "categories": [
+   "cs.IR",
+   "cs.AI"
+  ],
+  "comment": "16 pages, 11 figures, 12 tables; preprint",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   },
+   {
+    "dim": "vector-rag-storage",
+    "query": "abs:\"retrieval augmented generation\" AND (abs:cache OR abs:storage)",
+    "rank": 2
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2606.19667v2",
+  "title": "CacheWeaver: Cache-Aware Evidence Ordering for Efficient Grounded RAG Inference",
+  "abstract": "Retrieval-Augmented Generation (RAG) improves factual grounding, but it also lengthens prompts and raises prefill cost. Prefix caching in serving engines such as vLLM reduces this cost only when requests share the same token prefix. In grounded generation, however, adjacent queries may retrieve overlapping evidence in different orders, so set overlap does not become reusable prefix overlap. We present CacheWeaver, a lightweight prompt-layer method for cache-aware evidence ordering. The method keeps a prefix tree over recently served evidence sequences and uses a greedy walk to place the most reusable prefix first, while leaving the serving engine and retrieved evidence set unchanged. Across three vLLM configurations, the method lowers median time-to-first-token (TTFT) by about 20-33 percent relative to retrieval-order prefix caching, without hurting answer quality in our QA tests. The greedy policy reaches 97.5 percent of the median TTFT gain from oracle ordering, indicating that most reusable prefix locality can be recovered by a simple scheduling layer between retrieval and inference.",
+  "published": "2026-06-18T00:38:46Z",
+  "updated": "2026-09-04T14:25:06Z",
+  "authors": [
+   "Kaizhen Tan",
+   "Rong Gu",
+   "Mingyuan Li"
+  ],
+  "categories": [
+   "cs.CL"
+  ],
+  "comment": "",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"prefix cache\" OR abs:\"prefix caching\" OR abs:\"KV reuse\" OR abs:\"KV cache reuse\"",
+    "rank": 1
+   },
+   {
+    "dim": "vector-rag-storage",
+    "query": "abs:\"retrieval augmented generation\" AND (abs:cache OR abs:storage)",
+    "rank": 2
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2601.23088v2",
+  "title": "From Similarity to Vulnerability: Key Collision Attack on LLM Semantic Caching",
+  "abstract": "Semantic caching has emerged as a pivotal technique for scaling LLM applications, widely adopted by major providers including AWS and Microsoft. By utilizing semantic embedding vectors as cache keys, this mechanism effectively minimizes latency and redundant computation for semantically similar queries. In this work, we conceptualize semantic cache keys as a form of fuzzy hashes. We demonstrate that the locality required to maximize cache hit rates fundamentally conflicts with the cryptographic avalanche effect necessary for collision resistance. Our conceptual analysis formalizes this inherent trade-off between performance (locality) and security (collision resilience), revealing that semantic caching is naturally vulnerable to key collision attacks. While prior research has focused on side-channel and privacy risks, we present the first systematic study of integrity risks arising from cache collisions. We introduce CacheAttack, an automated framework for launching black-box collision attacks. We evaluate CacheAttack in security-critical tasks and agentic workflows. It achieves a hit rate of 86\\% in LLM response hijacking and can induce malicious behaviors in LLM agent, while preserving strong transferability across different embedding models. A case study on a financial agent further illustrates the real-world impact of these vulnerabilities. Finally, we discuss mitigation strategies.",
+  "published": "2026-01-30T15:37:00Z",
+  "updated": "2026-06-30T05:19:59Z",
+  "authors": [
+   "Zhixiang Zhang",
+   "Zesen Liu",
+   "Yuchong Xie",
+   "Quanfeng Huang",
+   "Dongdong She"
+  ],
+  "categories": [
+   "cs.CR",
+   "cs.AI"
+  ],
+  "comment": "Accepted to ICML 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2508.07675v3",
+  "title": "Semantic Caching for Low-Cost LLM Serving: From Offline Learning to Online Adaptation",
+  "abstract": "Large Language Models (LLMs) are revolutionizing how users interact with information systems, yet their high inference cost poses serious scalability and sustainability challenges. Caching inference responses, allowing them to be retrieved without another forward pass through the LLM, has emerged as one possible solution. Traditional exact-match caching, however, overlooks the semantic similarity between queries, leading to unnecessary recomputation. Semantic caching addresses this by retrieving responses based on semantic similarity, but introduces a fundamentally different cache eviction problem: one must account for mismatch costs between incoming queries and cached responses. Moreover, key system parameters, such as query arrival probabilities and serving costs, are often unknown and must be learned over time. Existing semantic caching methods are largely ad-hoc, lacking theoretical foundations and unable to adapt to real-world uncertainty. In this paper, we present a principled, learning-based framework for semantic cache eviction under unknown query and cost distributions. We formulate both offline optimization and online learning variants of the problem, and develop provably efficient algorithms with state-of-the-art guarantees. We also evaluate our framework on a synthetic dataset, showing that our proposed algorithms perform matching or superior performance compared with baselines.",
+  "published": "2025-08-11T06:53:27Z",
+  "updated": "2026-02-13T17:03:20Z",
+  "authors": [
+   "Xutong Liu",
+   "Baran Atalar",
+   "Xiangxiang Dai",
+   "Jinhang Zuo",
+   "Siwei Wang",
+   "John C. S. Lui",
+   "Wei Chen",
+   "Carlee Joe-Wong"
+  ],
+  "categories": [
+   "cs.LG"
+  ],
+  "comment": "Accepted to INFOCOM 2026",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ },
+ {
+  "id": "2311.04934v2",
+  "title": "Prompt Cache: Modular Attention Reuse for Low-Latency Inference",
+  "abstract": "We present Prompt Cache, an approach for accelerating inference for large language models (LLM) by reusing attention states across different LLM prompts. Many input prompts have overlapping text segments, such as system messages, prompt templates, and documents provided for context. Our key insight is that by precomputing and storing the attention states of these frequently occurring text segments on the inference server, we can efficiently reuse them when these segments appear in user prompts. Prompt Cache employs a schema to explicitly define such reusable text segments, called prompt modules. The schema ensures positional accuracy during attention state reuse and provides users with an interface to access cached states in their prompt. Using a prototype implementation, we evaluate Prompt Cache across several LLMs. We show that Prompt Cache significantly reduce latency in time-to-first-token, especially for longer prompts such as document-based question answering and recommendations. The improvements range from 8x for GPU-based inference to 60x for CPU-based inference, all while maintaining output accuracy and without the need for model parameter modifications.",
+  "published": "2023-11-07T18:17:05Z",
+  "updated": "2024-04-25T15:45:19Z",
+  "authors": [
+   "In Gim",
+   "Guojun Chen",
+   "Seung-seob Lee",
+   "Nikhil Sarda",
+   "Anurag Khandelwal",
+   "Lin Zhong"
+  ],
+  "categories": [
+   "cs.CL",
+   "cs.AI"
+  ],
+  "comment": "To appear at MLSys 2024",
+  "journal_ref": "",
+  "doi": "",
+  "provenance": [
+   {
+    "dim": "kv-reuse-prefix",
+    "query": "abs:\"semantic cache\" OR abs:\"prompt cache\"",
+    "rank": 1
+   }
+  ],
+  "score": 27
+ }
+]
