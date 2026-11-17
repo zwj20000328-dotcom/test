@@ -1,0 +1,15 @@
+{
+  "name": "world-model-research",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "世界模型调研、方案设计与资源管理",
+  "scripts": {
+    "resources:validate": "node scripts/resources.mjs validate",
+    "resources:index": "node scripts/resources.mjs index",
+    "resources:check": "node scripts/resources.mjs index --check",
+    "resources:stats": "node scripts/resources.mjs stats",
+    "docs:links": "node scripts/check_links.mjs",
+    "arxiv:search": "node scripts/arxiv_tools.mjs search"
+  }
+}

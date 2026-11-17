@@ -1,0 +1,1087 @@
+# 世界模型资源清单
+# 字段说明见 docs/03-resources/conventions.md
+# 该文件是结构化事实来源; INDEX.md 由 `npm run resources:index` 生成。
+
+- id: WM-PAPER-001
+  title: "World Models"
+  type: paper
+  route: foundation
+  org: "David Ha, Jürgen Schmidhuber"
+  year: 2018
+  date: 2018-03-27
+  venue: arXiv
+  url: https://arxiv.org/abs/1803.10122
+  arxiv: "1803.10122"
+  status: read
+  confidence: A
+  priority: P0
+  tags: [foundational, vae, rnn, controller]
+  summary: "确立 V-M-C 范式:视觉压缩、循环动力学、控制器分离;今天大多数路线仍可追溯到这个分解。"
+  note: docs/03-resources/notes/note-WM-PAPER-001-world-models-2018.md
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-SURVEY-001
+  title: "World Models: A Comprehensive Survey of Architectures, Methodologies, Reasoning Paradigms, and Applications"
+  type: survey
+  route: survey
+  org: "arXiv"
+  year: 2026
+  date: 2026-05-28
+  venue: arXiv
+  url: https://arxiv.org/abs/2606.00133
+  arxiv: "2606.00133"
+  status: skimmed
+  confidence: B
+  priority: P0
+  tags: [survey, taxonomy, architectures, reasoning]
+  summary: "2026 年最系统的世界模型综述,按架构、方法族、推理范式与应用四轴分类,适合作为全景入口。"
+  added: 2026-11-17
+
+- id: WM-BLOG-001
+  title: "A Functional Taxonomy of World Models: Renderers, Simulators, Planners, and the Loop That Connects Them"
+  type: blog
+  route: foundation
+  org: "World Labs"
+  year: 2026
+  date: 2026-06-03
+  venue: "World Labs Blog"
+  url: https://www.worldlabs.ai/blog/taxonomy-of-world-models
+  status: read
+  confidence: B
+  priority: P0
+  tags: [taxonomy, renderer, simulator, planner, position]
+  summary: "把世界模型拆成渲染器、模拟器、规划器三种功能投影,并论证模拟器是把世界变成可行动场所的关键。"
+  note: docs/03-resources/notes/note-WM-BLOG-001-taxonomy.md
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-PAPER-002
+  title: "Mastering Diverse Domains through World Models"
+  type: paper
+  route: model-based-rl
+  org: "Danijar Hafner et al."
+  year: 2023
+  date: 2023-01-10
+  venue: "Nature 2025 / arXiv"
+  url: https://arxiv.org/abs/2301.04104
+  arxiv: "2301.04104"
+  status: read
+  confidence: A
+  priority: P1
+  tags: [dreamerv3, rssm, model-based-rl, imagination]
+  summary: "用一套超参在 150+ 任务上稳定训练,证明潜空间想象可以跨域;RSSM 仍是小算力团队最可靠的基线。"
+  note: docs/03-resources/notes/note-WM-PAPER-002-dreamerv3.md
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-PAPER-003
+  title: "TD-MPC2: Scalable, Robust World Models for Continuous Control"
+  type: paper
+  route: model-based-rl
+  org: "Nicklas Hansen et al."
+  year: 2023
+  date: 2023-10-25
+  venue: "ICLR 2024"
+  url: https://arxiv.org/abs/2310.16828
+  arxiv: "2310.16828"
+  status: skimmed
+  confidence: A
+  priority: P1
+  tags: [td-mpc2, latent-planning, mpc, decoder-free]
+  summary: "无解码器的隐式世界模型 + 局部轨迹优化,单套超参覆盖 104 个任务,并展示 317M 参数多任务扩展性。"
+  added: 2026-11-17
+
+- id: WM-PAPER-004
+  title: "DINO-WM: World Models on Pre-trained Visual Features enable Zero-shot Planning"
+  type: paper
+  route: latent-predictive
+  org: "Gaoyue Zhou et al."
+  year: 2024
+  date: 2024-11-07
+  venue: arXiv
+  url: https://arxiv.org/abs/2411.04983
+  arxiv: "2411.04983"
+  status: skimmed
+  confidence: A
+  priority: P1
+  tags: [dino-wm, frozen-features, zero-shot-planning, offline]
+  summary: "冻结 DINOv2 特征上学习动力学即可零样本规划,说明高质量语义表征能显著降低世界模型的学习难度。"
+  added: 2026-11-17
+
+- id: WM-PAPER-005
+  title: "Genie: Generative Interactive Environments"
+  type: paper
+  route: interactive
+  org: "Google DeepMind"
+  year: 2024
+  date: 2024-02-23
+  venue: arXiv
+  url: https://arxiv.org/abs/2402.15391
+  arxiv: "2402.15391"
+  status: read
+  confidence: A
+  priority: P1
+  tags: [genie, latent-action, interactive, video-tokenizer]
+  summary: "首个仅用无标注互联网视频训练的生成式可交互环境;潜在动作模型让无动作标签视频变成可控世界。"
+  note: docs/03-resources/notes/note-WM-PAPER-005-genie.md
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-PAPER-006
+  title: "V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning"
+  type: paper
+  route: latent-predictive
+  org: "Meta FAIR"
+  year: 2025
+  date: 2025-06-11
+  venue: arXiv
+  url: https://arxiv.org/abs/2506.09985
+  arxiv: "2506.09985"
+  status: read
+  confidence: A
+  priority: P0
+  tags: [jepa, self-supervised, robot-planning, action-conditioned]
+  summary: "100 万小时视频预训练 + 少量机器人轨迹后训练,证明潜空间预测可直接支撑零样本抓取与规划。"
+  note: docs/03-resources/notes/note-WM-PAPER-006-vjepa2.md
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-PAPER-007
+  title: "Training Agents Inside of Scalable World Models"
+  type: paper
+  route: model-based-rl
+  org: "Danijar Hafner et al."
+  year: 2025
+  date: 2025-09-29
+  venue: arXiv
+  url: https://arxiv.org/abs/2509.24527
+  arxiv: "2509.24527"
+  status: read
+  confidence: A
+  priority: P0
+  tags: [dreamer4, shortcut-forcing, minecraft, imagination, real-time]
+  summary: "Dreamer 4 用高效 Transformer 与 shortcut forcing 在单卡实时想象,仅凭离线数据在 Minecraft 学会挖钻石。"
+  note: docs/03-resources/notes/note-WM-PAPER-007-dreamer4.md
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-PAPER-008
+  title: "Cosmos World Foundation Model Platform for Physical AI"
+  type: paper
+  route: video-gen
+  org: "NVIDIA"
+  year: 2025
+  date: 2025-01-07
+  venue: arXiv
+  url: https://arxiv.org/abs/2501.03575
+  arxiv: "2501.03575"
+  status: skimmed
+  confidence: A
+  priority: P1
+  tags: [cosmos, world-foundation-model, tokenizer, diffusion, physical-ai]
+  summary: "把世界基础模型做成平台:数据治理、视频 tokenizer、预训练模型与后训练配方,并开源权重。"
+  added: 2026-11-17
+
+- id: WM-PAPER-009
+  title: "World Simulation with Video Foundation Models for Physical AI"
+  type: paper
+  route: video-gen
+  org: "NVIDIA"
+  year: 2025
+  date: 2025-10-28
+  venue: arXiv
+  url: https://arxiv.org/abs/2511.00062
+  arxiv: "2511.00062"
+  status: skimmed
+  confidence: A
+  priority: P1
+  tags: [cosmos-predict2.5, flow-matching, reinforcement-learning, text2world]
+  summary: "Cosmos-Predict2.5 用流匹配统一 Text/Image/Video2World,2B/14B 两档,并用 RL 后训练提升指令对齐。"
+  added: 2026-11-17
+
+- id: WM-PAPER-010
+  title: "Cosmos 3: Omnimodal World Models for Physical AI"
+  type: paper
+  route: wam
+  org: "NVIDIA"
+  year: 2026
+  date: 2026-06-23
+  venue: arXiv
+  url: https://arxiv.org/abs/2606.02800
+  arxiv: "2606.02800"
+  status: read
+  confidence: B
+  priority: P0
+  tags: [cosmos3, omnimodal, mixture-of-transformers, world-action]
+  summary: "用统一 mixture-of-transformers 同时处理语言、图像、视频、音频、动作,试图把 VLM、视频生成、世界模拟与 WAM 合并成一个骨干。"
+  note: docs/03-resources/notes/note-WM-PAPER-010-cosmos3.md
+  added: 2026-11-17
+
+- id: WM-PAPER-011
+  title: "GAIA-2: A Controllable Multi-View Generative World Model for Autonomous Driving"
+  type: paper
+  route: driving
+  org: "Wayve"
+  year: 2025
+  date: 2025-03-26
+  venue: arXiv
+  url: https://arxiv.org/abs/2503.20523
+  arxiv: "2503.20523"
+  status: skimmed
+  confidence: A
+  priority: P1
+  tags: [gaia2, driving, multi-view, controllable, latent-diffusion]
+  summary: "以自车动力学、智能体配置、环境与道路语义为结构化条件,生成多相机时空一致的驾驶视频。"
+  added: 2026-11-17
+
+- id: WM-PAPER-012
+  title: "SIMA 2: A Generalist Embodied Agent for Virtual Worlds"
+  type: paper
+  route: embodied
+  org: "Google DeepMind"
+  year: 2025
+  date: 2025-12-04
+  venue: arXiv
+  url: https://arxiv.org/abs/2512.04797
+  arxiv: "2512.04797"
+  status: skimmed
+  confidence: A
+  priority: P1
+  tags: [sima2, gemini, embodied-agent, virtual-worlds]
+  summary: "基于 Gemini 的通用具身智能体,在多种 3D 虚拟世界中理解高层目标、对话与图像指令,并泛化到未见环境。"
+  added: 2026-11-17
+
+- id: WM-PAPER-013
+  title: "Genie Envisioner: A Unified World Foundation Platform for Robotic Manipulation"
+  type: paper
+  route: wam
+  org: "AgiBot / 智元机器人"
+  year: 2025
+  date: 2025-11-04
+  venue: arXiv
+  url: https://arxiv.org/abs/2508.05635
+  arxiv: "2508.05635"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [genie-envisioner, agibot, manipulation, world-foundation]
+  summary: "面向机器人操作的世界基础平台,把指令条件视频生成、策略学习与评测串成闭环,是中国团队的代表性路线。"
+  added: 2026-11-17
+
+- id: WM-PAPER-014
+  title: "GE-Sim 2.0: A Roadmap Towards Comprehensive Closed-loop Video World Simulators for Robotic Manipulation"
+  type: paper
+  route: embodied
+  org: "AgiBot / 智元机器人"
+  year: 2026
+  date: 2026-05-26
+  venue: arXiv
+  url: https://arxiv.org/abs/2605.27491
+  arxiv: "2605.27491"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [ge-sim2, closed-loop, manipulation, world-judge, state-expert]
+  summary: "在数千小时真机数据上重训动作条件视频模拟器,并加入状态专家与世界裁判,把视频生成接进策略学习闭环。"
+  added: 2026-11-17
+
+- id: WM-PAPER-015
+  title: "GE-Act 2.0: Pretraining and Scaling a World-Action Model for Robotic Manipulation"
+  type: paper
+  route: wam
+  org: "AgiBot / 智元机器人"
+  year: 2026
+  date: 2026-09-04
+  venue: arXiv
+  url: https://arxiv.org/abs/2609.05588
+  arxiv: "2609.05588"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [ge-act2, wam, control-autoencoder, inverse-dynamics]
+  summary: "从零在操作数据上预训练 WAM,用控制导向自编码器 + 单步视觉规划器 + 逆动力学模型,挑战继承视频生成器的惯例。"
+  added: 2026-11-17
+
+- id: WM-PAPER-016
+  title: "InternW0: A Foundational Physical World Model for Efficient Real-World Interactions"
+  type: paper
+  route: wam
+  org: "Shanghai AI Laboratory"
+  year: 2026
+  date: 2026-09-23
+  venue: arXiv
+  url: https://arxiv.org/abs/2609.27656
+  arxiv: "2609.27656"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [internw0, asynchronous, multi-frequency, flow-matching]
+  summary: "异步多频架构:重型视频专家做长时程预测,轻量动作专家高频输出,强调部分可观测下的局部物理建模。"
+  added: 2026-11-17
+
+- id: WM-PAPER-017
+  title: "Magic-W0: A Structured World-Action Foundation Model for Physical Intelligence"
+  type: paper
+  route: wam
+  org: "arXiv"
+  year: 2026
+  date: 2026-09-30
+  venue: arXiv
+  url: https://arxiv.org/abs/2609.39870
+  arxiv: "2609.39870"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [magic-w0, structured-state, 3d-motion, wam]
+  summary: "把交互显式表示为当前状态、转移、未来状态三段式,用 3D 运动作为动作引起的结构化转移表征。"
+  added: 2026-11-17
+
+- id: WM-PAPER-018
+  title: "GreenWAM: A World Foundation Model for Robotics"
+  type: paper
+  route: wam
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-13
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.18774
+  arxiv: "2610.18774"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [greenwam, cross-embodiment, shared-action-space, world-arena]
+  summary: "用统一解剖动作空间覆盖 20 种机器人,同一模型兼顾世界模型与策略,并在 WorldArena 1.0 上取得领先。"
+  added: 2026-11-17
+
+- id: WM-PAPER-019
+  title: "LaST0.5: A Generalist World Action Model with Interaction-Centric Latent Reasoning"
+  type: paper
+  route: wam
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-10
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.14048
+  arxiv: "2611.14048"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [last0.5, interaction-centric, latent-reasoning, wam]
+  summary: "指出全局场景表征会淹没局部机器人-物体交互,提出以交互为中心的中间物理表征来桥接世界建模与动作生成。"
+  added: 2026-11-17
+
+- id: WM-PAPER-020
+  title: "WorldPlay: Towards Long-Term Geometric Consistency for Real-Time Interactive World Modeling"
+  type: paper
+  route: interactive
+  org: "arXiv"
+  year: 2025
+  date: 2025-12-16
+  venue: arXiv
+  url: https://arxiv.org/abs/2512.14614
+  arxiv: "2512.14614"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [worldplay, streaming, geometric-consistency, context-memory]
+  summary: "用双动作表示、重构式上下文记忆与 Context Forcing 蒸馏,在实时流式生成中维持长期几何一致性。"
+  added: 2026-11-17
+
+- id: WM-PAPER-021
+  title: "DreamX-World 1.0: A General-Purpose Interactive World Model"
+  type: paper
+  route: interactive
+  org: "arXiv"
+  year: 2026
+  date: 2026-06-15
+  venue: arXiv
+  url: https://arxiv.org/abs/2606.16993
+  arxiv: "2606.16993"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [dreamx, camera-control, autoregressive, long-horizon]
+  summary: "通用交互式文/图生视频世界模型,支持相机导航、重访旧区域与可提示事件,并用 E-PRoPE 做相机几何控制。"
+  added: 2026-11-17
+
+- id: WM-PAPER-022
+  title: "HY-World 2.0: A Multi-Modal World Model for Reconstructing, Generating, and Simulating 3D Worlds"
+  type: paper
+  route: 3d-scene
+  org: "Tencent Hunyuan"
+  year: 2026
+  date: 2026-04-15
+  venue: arXiv
+  url: https://arxiv.org/abs/2604.14268
+  arxiv: "2604.14268"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [hy-world2, tencent, 3d-generation, reconstruction, simulation]
+  summary: "腾讯混元把重建、生成、模拟 3D 世界统一到多模态世界模型,是从 2D 视频走向显式 3D 的代表路线。"
+  added: 2026-11-17
+
+- id: WM-PAPER-023
+  title: "NVIDIA OmniDreams: Real-Time Generative World Model for Closed-Loop Autonomous Vehicle Simulation"
+  type: paper
+  route: driving
+  org: "NVIDIA"
+  year: 2026
+  date: 2026-11-12
+  venue: arXiv
+  url: https://arxiv.org/abs/2606.03159
+  arxiv: "2606.03159"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [omnidreams, closed-loop, av-simulation, cosmos, action-conditioned]
+  summary: "从 Cosmos 中级/后训练出实时动作条件视频模型,用 2.1 万小时驾驶场景做闭环 AV 仿真,弥补重建式神经模拟器的泛化短板。"
+  added: 2026-11-17
+
+- id: WM-PAPER-024
+  title: "Interactive World Simulation with Cosmos for Physical AI"
+  type: paper
+  route: interactive
+  org: "NVIDIA"
+  year: 2026
+  date: 2026-11-04
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.06627
+  arxiv: "2611.06627"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [cosmos, interactive, streaming, external-simulator]
+  summary: "统一框架把 Cosmos 适配为实时交互模拟:既能预测动作的视觉后果,也能从外部物理引擎维护的状态生成观测。"
+  added: 2026-11-17
+
+- id: WM-PAPER-025
+  title: "Prediction or Persistence? What Future-Prediction Scores Miss About World Models"
+  type: paper
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-11
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.15082
+  arxiv: "2611.15082"
+  status: skimmed
+  confidence: B
+  priority: P0
+  tags: [evaluation, future-prediction, persistence-control, robotic-world-model]
+  summary: "未来预测分数混合了编码器质量、近期持续性与预测器贡献;用配对持续性控制才能分离出真正的预测能力。"
+  added: 2026-11-17
+
+- id: WM-PAPER-026
+  title: "Recovered or Memorized? Investigating Dynamical Consistency and Faithfulness in World Model Latents"
+  type: paper
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-13
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.18807
+  arxiv: "2611.18807"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [evaluation, dynamical-consistency, latent-faithfulness, arc]
+  summary: "提出 Anchored Recovery Certification,用离散 Fréchet 距离与干预子空间检验潜变量是否真的忠实于环境动力学,而不只是可解码。"
+  added: 2026-11-17
+
+- id: WM-PAPER-027
+  title: "World Models Need a Physical Registry: Learning Internal Predictive States for Physically Plausible World Models"
+  type: paper
+  route: foundation
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-12
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.16365
+  arxiv: "2610.16365"
+  status: read
+  confidence: B
+  priority: P0
+  tags: [physical-registry, internal-state, permanence, object-centric]
+  summary: "主张世界模型需要显式的内部物理状态注册表来维持对象永久性与物理合理性,与本项目持久世界状态的思路高度一致。"
+  note: docs/03-resources/notes/note-WM-PAPER-027-physical-registry.md
+  added: 2026-11-17
+
+- id: WM-PAPER-028
+  title: "Frame First, Decode Once: Object-Centric Coordinates and Single-Pass Decoding for System-1 World Models"
+  type: paper
+  route: latent-predictive
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-11
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.18761
+  arxiv: "2611.18761"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [object-centric, se2-frame, system-1, fast-decoding]
+  summary: "在物体初始位姿的 SE(2) 坐标系中表达输入输出,把候选动作排序的决策遗憾降低 1.9-2.2 倍,验证了物体中心坐标的价值。"
+  added: 2026-11-17
+
+- id: WM-PAPER-029
+  title: "The Sense Paradigm for World Models"
+  type: paper
+  route: latent-predictive
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-15
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.19796
+  arxiv: "2611.19796"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [jepa, collapse, directed-distance, irreversibility]
+  summary: "用有向距离上的单交叉熵损失替代目标网络/方差惩罚,使潜空间距离有语义并能区分可逆与不可逆转移。"
+  added: 2026-11-17
+
+- id: WM-PAPER-030
+  title: "GameWM: Toward Next-Generation Video Games with Interaction-Centric World Models"
+  type: paper
+  route: interactive
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-14
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.19247
+  arxiv: "2611.19247"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [gamewm, engine, renderer, division-of-labor]
+  summary: "让游戏引擎保留规则、状态、相机与世界布局,视频模型只生成昂贵的手工内容,是混合架构的清晰分工范式。"
+  added: 2026-11-17
+
+- id: WM-PAPER-031
+  title: "Old Is Not False: Valid-Time Memory for Interactive Video World Models"
+  type: paper
+  route: interactive
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-31
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.00758
+  arxiv: "2611.00758"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [memory, valid-time, interactive, temporal-consistency]
+  summary: "区分“过时”与“错误”,为交互视频世界模型引入有效时间记忆,避免旧观测被简单丢弃或错误覆盖。"
+  added: 2026-11-17
+
+- id: WM-PAPER-032
+  title: "VERDI: Verified Contradictions for Continual World-Model Optimization"
+  type: paper
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-17
+  venue: arXiv
+  url: https://arxiv.org/abs/2608.09537
+  arxiv: "2608.09537"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [continual-learning, verification, transfer, optimization]
+  summary: "把跨模型迁移的优化策略视为假设而非配方,只有在目标模型上实验验证过的矛盾才升级为可复用知识。"
+  added: 2026-11-17
+
+- id: WM-PAPER-033
+  title: "Causal-rCM: A Unified Teacher-Forcing and Self-Forcing Open Recipe for Autoregressive Diffusion Distillation in Streaming Video Generation and Interactive World Models"
+  type: paper
+  route: interactive
+  org: "arXiv"
+  year: 2026
+  date: 2026-06-24
+  venue: arXiv
+  url: https://arxiv.org/abs/2606.25473
+  arxiv: "2606.25473"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [distillation, streaming, autoregressive-diffusion, real-time]
+  summary: "把 teacher-forcing 与 self-forcing 统一为自回归扩散蒸馏配方,直接面向流式视频与交互世界模型的实时化。"
+  added: 2026-11-17
+
+- id: WM-PAPER-034
+  title: "Reconstruction or Semantics? What Makes a Latent Space Useful for Robotic World Models"
+  type: paper
+  route: latent-predictive
+  org: "arXiv"
+  year: 2026
+  date: 2026-05-07
+  venue: arXiv
+  url: https://arxiv.org/abs/2605.06388
+  arxiv: "2605.06388"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [latent-space, vae, semantic-encoder, robotic-world-model]
+  summary: "在固定协议下比较六种重建/语义编码器,发现高维语义潜空间也能有效训练动作条件世界模型,挑战“必须重建像素”的默认假设。"
+  added: 2026-11-17
+
+- id: WM-PAPER-035
+  title: "AEON: Unifying Video and 3D World Models"
+  type: paper
+  route: 3d-scene
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-04
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.28631
+  arxiv: "2610.28631"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [aeon, video-model, 3d-world-model, unification]
+  summary: "尝试把视频世界模型与 3D 世界模型统一到同一框架,回应“渲染与模拟是否应共用表征”的核心争议。"
+  added: 2026-11-17
+
+- id: WM-PAPER-036
+  title: "UniW(A)M: A Unified Mixture-of-Experts Framework for World and World-Action Models"
+  type: paper
+  route: wam
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-19
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.18697
+  arxiv: "2610.18697"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [unified, mixture-of-experts, world-model, wam]
+  summary: "用 MoE 在同一框架里同时服务纯世界模型与 world-action 模型,探索“预测世界”与“输出动作”的共享骨干。"
+  added: 2026-11-17
+
+- id: WM-PAPER-037
+  title: "Thinker-WM: A Unified World Model with Shared Multimodal Representations for Embodied Intelligence"
+  type: paper
+  route: wam
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-19
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.18447
+  arxiv: "2610.18447"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [thinker-wm, shared-representation, embodied]
+  summary: "以共享多模态表征统一具身世界模型的理解、预测与行动,代表 2026 年“统一骨干”方向的另一条实现。"
+  added: 2026-11-17
+
+- id: WM-PAPER-038
+  title: "UMI-WM: Interactive World Modeling for Bimanual Manipulation from Wrist Cameras"
+  type: paper
+  route: embodied
+  org: "arXiv"
+  year: 2026
+  date: 2026-09-30
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.23913
+  arxiv: "2610.23913"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [umi-wm, bimanual, wrist-camera, interactive]
+  summary: "仅用腕部相机做双臂操作的交互式世界建模,降低对全局视角与昂贵采集设备的依赖。"
+  added: 2026-11-17
+
+- id: WM-PAPER-039
+  title: "JEPA4R: Embodied JEPA World Models with 4D Point Planning"
+  type: paper
+  route: latent-predictive
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-14
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.19771
+  arxiv: "2611.19771"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [jepa, 4d-point-cloud, planning, manipulation]
+  summary: "在单深度相机的点云潜空间中预测与规划,200 步平均点误差约 1.1 cm,并可直接解码想象结果。"
+  added: 2026-11-17
+
+- id: WM-PAPER-040
+  title: "WA-JEPA: Goal-Aware Predictive Feedback Action Refinement for a World-Action Model"
+  type: paper
+  route: wam
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-14
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.19183
+  arxiv: "2611.19183"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [wa-jepa, action-refinement, goal-aware, latent-prediction]
+  summary: "先生成动作提案再预测未来,用目标差异残差与预测反馈迭代修正,避免代价高昂的候选动作搜索。"
+  added: 2026-11-17
+
+- id: WM-PAPER-041
+  title: "OnlyAct: Extracting Action Representations from Foundation Models for World Models"
+  type: paper
+  route: wam
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-10
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.14420
+  arxiv: "2611.14420"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [action-representation, foundation-models, latent-action]
+  summary: "从基础模型中抽取动作表征供给世界模型,回应“动作数据稀缺、动作空间不统一”的核心瓶颈。"
+  added: 2026-11-17
+
+- id: WM-BLOG-002
+  title: "Atlas: A World Model for Spatial Intelligence"
+  type: blog
+  route: 3d-scene
+  org: "World Labs"
+  year: 2026
+  date: 2026-09-01
+  venue: "World Labs Blog"
+  url: https://www.worldlabs.ai/blog/atlas
+  status: read
+  confidence: B
+  priority: P0
+  tags: [atlas, worldlabs, autoregressive-diffusion, spatial-context, 3d]
+  summary: "多模态自回归扩散 Transformer,把图像/深度/相机位姿锚定在 3D 空间上下文中,统一生成、重建与时空模拟。"
+  note: docs/03-resources/notes/note-WM-BLOG-002-atlas.md
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-BLOG-003
+  title: "Frameboy: Atlas in Real-time"
+  type: blog
+  route: interactive
+  org: "World Labs"
+  year: 2026
+  date: 2026-11-05
+  venue: "World Labs Blog"
+  url: https://www.worldlabs.ai/blog/atlas-realtime
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [frameboy, real-time, streaming, atlas]
+  summary: "把 Atlas 优化到云端 GPU 流式 15 fps,用实时相机控制探索;证明交互延迟下降会改变创作范式而非仅仅提速。"
+  added: 2026-11-17
+
+- id: WM-BLOG-004
+  title: "Building Worlds That Train Robots: Real-to-Sim-to-Real"
+  type: blog
+  route: embodied
+  org: "World Labs"
+  year: 2026
+  date: 2026-07-28
+  venue: "World Labs Blog"
+  url: https://www.worldlabs.ai/blog/real-to-sim-to-real
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [r2s2r, scenix, robot-policy, sim-to-real]
+  summary: "声称仅用仿真数据训练的策略可跨机器人/任务迁移,且仿真评测能预测真机相对表现与失败区域;需要独立复现验证。"
+  added: 2026-11-17
+
+- id: WM-BLOG-005
+  title: "Marble: A Multimodal World Model"
+  type: blog
+  route: 3d-scene
+  org: "World Labs"
+  year: 2025
+  date: 2025-11-12
+  venue: "World Labs Blog"
+  url: https://www.worldlabs.ai/blog/marble-world-model
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [marble, 3d-generation, gaussian-splatting, multimodal]
+  summary: "从文本/图像/视频生成可探索、可编辑的持久 3D 世界,输出 Gaussian splats;是 Atlas 的前代产品化形态。"
+  added: 2026-11-17
+
+- id: WM-BLOG-006
+  title: "RTFM: A Real-Time Frame Model"
+  type: blog
+  route: interactive
+  org: "World Labs"
+  year: 2025
+  date: 2025-10-16
+  venue: "World Labs Blog"
+  url: https://www.worldlabs.ai/blog/rtfm
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [rtfm, real-time, frame-model, 3d-cache]
+  summary: "轻量实时帧生成模型,用持久 3D 上下文缓存支持交互式新视角合成,是 Atlas/Frameboy 的技术前身。"
+  added: 2026-11-17
+
+- id: WM-BLOG-007
+  title: "Genie 3: A New Frontier for World Models"
+  type: blog
+  route: interactive
+  org: "Google DeepMind"
+  year: 2025
+  date: 2025-08-05
+  venue: "Google DeepMind Blog"
+  url: https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/
+  status: skimmed
+  confidence: C
+  priority: P0
+  tags: [genie3, real-time, 720p, promptable-events, interactive]
+  summary: "据官方博客,720p/24fps 实时可交互世界模型,可维持数分钟一致性并支持可提示世界事件;本次环境无法直接访问原页。"
+  verify: true
+  verify_reason: "Google DeepMind 页面在本环境被网络策略阻断,规格来自既有知识,需在可访问网络下核对原文。"
+  added: 2026-11-17
+
+- id: WM-BLOG-008
+  title: "NVIDIA Makes Cosmos World Foundation Models Openly Available to Physical AI Developers"
+  type: blog
+  route: video-gen
+  org: "NVIDIA"
+  year: 2025
+  date: 2025-01-06
+  venue: "NVIDIA Blog"
+  url: https://blogs.nvidia.com/blog/cosmos-world-foundation-models/
+  status: read
+  confidence: A
+  priority: P1
+  tags: [cosmos, open-weights, 20m-hours, tokenizer, physical-ai]
+  summary: "公开 Cosmos 权重与数据管线:2000 万小时、9000 万亿 token 训练,4-14B 参数,提供 Nano/Super/Ultra 三档。"
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-BLOG-009
+  title: "GAIA-2: Pushing the Boundaries of Video Generative Models for Safer Assisted and Automated Driving"
+  type: blog
+  route: driving
+  org: "Wayve"
+  year: 2025
+  date: 2025-03-26
+  venue: "Wayve Blog"
+  url: https://wayve.ai/thinking/gaia-2/
+  status: read
+  confidence: A
+  priority: P1
+  tags: [gaia2, driving, multi-camera, controllability, safety-critical]
+  summary: "以自车动作、环境、道路语义为条件生成多相机一致驾驶视频,覆盖英美德地理多样性并支持插入动态智能体。"
+  added: 2026-11-17
+  verified: 2026-11-17
+
+- id: WM-BLOG-010
+  title: "Sora 2"
+  type: blog
+  route: video-gen
+  org: "OpenAI"
+  year: 2025
+  date: 2025-09-30
+  venue: "OpenAI"
+  url: https://openai.com/index/sora-2/
+  status: skimmed
+  confidence: C
+  priority: P1
+  tags: [sora2, video-generation, audio, world-simulator]
+  summary: "据发布信息,视频生成加入同步音频与更强物理/可控性,仍以离线内容生成为主;本环境无法直接访问原页。"
+  verify: true
+  verify_reason: "OpenAI 页面返回 403,规格来自既有知识,需在可访问网络下核对原文与 system card。"
+  added: 2026-11-17
+
+- id: WM-BENCH-001
+  title: "WorldModelBench: Judging Video Generation Models As World Models"
+  type: benchmark
+  route: evaluation
+  org: "arXiv"
+  year: 2025
+  date: 2025-02-28
+  venue: arXiv
+  url: https://arxiv.org/abs/2502.20694
+  arxiv: "2502.20694"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [benchmark, instruction-following, physics-adherence, video]
+  summary: "从指令遵循与物理合理性两个维度评判视频生成模型作为世界模型的能力,是最早的系统性基准之一。"
+  added: 2026-11-17
+
+- id: WM-BENCH-002
+  title: "WorldArena 2.0: Extending Embodied World Model Benchmarking on Modality, Functionality and Platform"
+  type: benchmark
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-26
+  venue: arXiv
+  url: https://arxiv.org/abs/2605.17912
+  arxiv: "2605.17912"
+  status: skimmed
+  confidence: B
+  priority: P0
+  tags: [worldarena, embodied, benchmark, modality, functionality]
+  summary: "2026 年具身世界模型的主基准之一,从模态、功能与平台三个维度扩展评测;GreenWAM 等在此报告结果。"
+  added: 2026-11-17
+
+- id: WM-BENCH-003
+  title: "WMEval: Evaluating Interactive World Models Grounded on Physical Simulations"
+  type: benchmark
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-27
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.33894
+  arxiv: "2610.33894"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [wmeval, interactive, physical-simulation, benchmark]
+  summary: "以物理仿真为真值评估交互式世界模型,直接针对“交互后状态是否物理正确”这一核心能力。"
+  added: 2026-11-17
+
+- id: WM-BENCH-004
+  title: "The Flip Test: Video World Models Fail to Learn the World State"
+  type: benchmark
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-15
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.19822
+  arxiv: "2611.19822"
+  status: read
+  confidence: B
+  priority: P0
+  tags: [fliptest, counterfactual, state-tracking, minimal-pairs]
+  summary: "用视觉最小对与密集扫描检验模型是否跟踪世界状态;11 个视频世界模型全部失败,最佳仅 18.3% 配对准确率。"
+  note: docs/03-resources/notes/note-WM-BENCH-004-fliptest.md
+  added: 2026-11-17
+
+- id: WM-BENCH-005
+  title: "SciWorldBench: Do Video World Models Really Understand Scientific Experiments?"
+  type: benchmark
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-16
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.20899
+  arxiv: "2611.20899"
+  status: skimmed
+  confidence: B
+  priority: P1
+  tags: [sciworldbench, scientific-experiments, causal-reasoning, benchmark]
+  summary: "用科学实验场景检验视频世界模型是否理解因果与实验逻辑,而非仅拟合视觉外观。"
+  added: 2026-11-17
+
+- id: WM-PAPER-042
+  title: "V-JEPA-LM: Video-Language Models That Read Dynamics Beyond Static, Text-Aligned Representations"
+  type: paper
+  route: latent-predictive
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-13
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.17831
+  arxiv: "2611.17831"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [v-jepa, video-language, dynamics, representation]
+  summary: "指出纯文本对齐的视频表征会丢失动力学,主张用 JEPA 式预测表征补足“世界如何变化”的信息。"
+  added: 2026-11-17
+
+- id: WM-PAPER-043
+  title: "EviBridge: Encoding Predictive Visual Evidence for Proactive Interaction"
+  type: paper
+  route: interactive
+  org: "arXiv"
+  year: 2026
+  date: 2026-11-16
+  venue: arXiv
+  url: https://arxiv.org/abs/2611.20916
+  arxiv: "2611.20916"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [proactive, predictive-evidence, interaction]
+  summary: "把预测性视觉证据编码进主动交互,代表世界模型从“被动预测”走向“何时该行动/询问”的趋势。"
+  added: 2026-11-17
+
+- id: WM-PAPER-044
+  title: "ALPS: Visual State Encoders for World Models"
+  type: paper
+  route: latent-predictive
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-21
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.30120
+  arxiv: "2610.30120"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [state-encoder, visual-representation, world-model]
+  summary: "专门研究世界模型的视觉状态编码器,说明“编码什么”与“如何预测”同等重要。"
+  added: 2026-11-17
+
+- id: WM-PAPER-045
+  title: "Beyond Geometric Closure: Measuring and Diagnosing Mechanical Consistency in Visual Dynamics"
+  type: paper
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-20
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.24619
+  arxiv: "2610.24619"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [mechanical-consistency, evaluation, visual-dynamics]
+  summary: "超越几何闭合,直接度量视觉动力学中的机械一致性,补足现有视频指标对接触/受力不敏感的问题。"
+  added: 2026-11-17
+
+- id: WM-PAPER-046
+  title: "One Verdict Is Not Enough: Regression Testing Learned World Models and Their Test Harnesses"
+  type: paper
+  route: evaluation
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-29
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.41130
+  arxiv: "2610.41130"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [regression-testing, evaluation, harness, reliability]
+  summary: "单一结论不足以判断世界模型好坏,需要对模型与其评测工具做回归测试,警惕评测本身的方差与漂移。"
+  added: 2026-11-17
+
+- id: WM-PAPER-047
+  title: "Learning from Next-Frame Prediction: Towards Unified and Scalable Visual World Modeling"
+  type: paper
+  route: latent-predictive
+  org: "arXiv"
+  year: 2026
+  date: 2026-10-22
+  venue: arXiv
+  url: https://arxiv.org/abs/2610.30724
+  arxiv: "2610.30724"
+  status: skimmed
+  confidence: B
+  priority: P2
+  tags: [next-frame-prediction, unified, scalable]
+  summary: "重新审视下一帧预测作为统一、可扩展的视觉世界建模目标,回应“预测目标是否足够”的基础问题。"
+  added: 2026-11-17

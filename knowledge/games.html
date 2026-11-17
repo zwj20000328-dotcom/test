@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>练一练 · 知栈</title>
+<meta name="description" content="AI Infra 术语配对与瓶颈诊断小游戏：用两分钟检验你对算力、显存、带宽与网络的理解。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script src="assets/js/theme-init.js"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-nav="games">
+
+<header id="siteNav"></header>
+
+<main>
+  <section class="pagehead">
+    <div class="wrap">
+      <div class="eyebrow">Practise · 5 min</div>
+      <h1>练一练</h1>
+      <p>读懂概念只是第一步。这里有两个小练习：一个考术语，一个考“看到现象，判断瓶颈”。成绩只存在你自己的浏览器里，随时可以重来。</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:12px">
+    <div class="wrap">
+      <div class="game-shell" id="memoryShell">
+        <div class="game-head">
+          <div>
+            <div class="eyebrow" style="margin-bottom:6px">Game 01</div>
+            <h2 style="font-size:22px">术语配对</h2>
+            <p style="color:var(--muted);font-size:13.5px;margin:6px 0 0">翻开两张卡片，把术语和它的定义配成一对。共 8 对。</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+            <div class="game-stats">
+              <div><b id="moves">0</b>步数</div>
+              <div><b id="matches">0</b>配对</div>
+              <div><b id="timer">0:00</b>用时</div>
+            </div>
+            <button class="btn btn--ghost btn--sm" id="resetMemory">重新开始</button>
+          </div>
+        </div>
+        <div class="memory-grid" id="memoryGrid"></div>
+        <div id="memoryResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="game-shell" id="quizShell">
+        <div class="game-head">
+          <div>
+            <div class="eyebrow" style="margin-bottom:6px">Game 02</div>
+            <h2 style="font-size:22px">瓶颈诊断</h2>
+            <p style="color:var(--muted);font-size:13.5px;margin:6px 0 0">给你一个真实现象，判断瓶颈在哪：算力、显存带宽、显存容量、网络，还是数据管道。</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+            <div class="game-stats">
+              <div><b id="qProgress">1 / 10</b>进度</div>
+              <div><b id="qScore">0</b>得分</div>
+            </div>
+            <button class="btn btn--ghost btn--sm" id="resetQuiz">重新开始</button>
+          </div>
+        </div>
+        <div id="quizBody"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="siteFooter"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/games.js"></script>
+</body>
+</html>

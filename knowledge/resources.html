@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>资源库 · 知栈</title>
+<meta name="description" content="AI Infra 学习资源集合：论文、官方文档、课程、工具与数据，以及本站的内容与资源维护方式。">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script src="assets/js/theme-init.js"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-nav="resources">
+
+<header id="siteNav"></header>
+
+<main>
+  <section class="pagehead">
+    <div class="wrap">
+      <div class="eyebrow">Resources</div>
+      <h1>资源库</h1>
+      <p>教程里提到的论文、文档和工具，集中在这里。所有链接指向原始出处；标注的年份是首次发布或最近一次大版本的时间。</p>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="wrap toolbar__inner">
+      <div class="chips" id="resChips"></div>
+      <div class="search-field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.6-3.6"/></svg>
+        <input id="resSearch" type="search" placeholder="搜索资源…" autocomplete="off">
+      </div>
+      <span class="toolbar__count" id="resCount"></span>
+    </div>
+  </div>
+
+  <section class="wrap" style="padding-top:28px">
+    <div class="res-grid" id="resGrid"></div>
+    <div id="resEmpty" style="display:none;padding:60px 0;text-align:center;color:var(--muted)">没有匹配的资源。</div>
+  </section>
+
+  <section class="section" id="manage" style="border-top:1px solid var(--line);margin-top:40px">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Project</div>
+          <h2>项目资源管理</h2>
+          <p>这个站点的所有内容都是纯静态文件，没有后端。下面说明资源如何组织、如何新增一篇教程，以及如何导出学习进度。</p>
+        </div>
+        <div class="progress-ring progress-ring--lg" id="contentRing">0%</div>
+      </div>
+
+      <div class="grid grid--2" style="align-items:start">
+        <div class="panel-block">
+          <h2>目录结构</h2>
+          <pre class="tree">knowledge/
+├─ index.html          首页
+├─ track.html          知识地图
+├─ topic.html          教程页（按 ?t=slug 加载）
+├─ resources.html      本页
+├─ games.html          练一练
+├─ assets/
+│  ├─ css/style.css    设计系统与全部样式
+│  ├─ js/
+│  │  ├─ data.js       自动生成的元数据索引
+│  │  ├─ app.js        导航 / 主题 / 进度 / 搜索
+│  │  ├─ track.js      地图渲染与前置关系连线
+│  │  ├─ topic.js      正文装配、目录、代码复制
+│  │  └─ home.js / resources.js / games.js
+│  └─ favicon.svg
+├─ content/
+│  ├─ graph.js         层级、条目、前置关系、学习路径
+│  └─ aiinfra/*.js     31 篇正文（可独立增删）
+└─ tools/
+   ├─ build.mjs        生成 data.js 并校验内容
+   └─ serve.mjs        本地静态服务器</pre>
+        </div>
+
+        <div class="panel-block">
+          <h2>新增一篇教程</h2>
+          <ol class="steps">
+            <li>在 <code>content/graph.js</code> 的 <code>topics</code> 数组登记 slug、标题、层级、标签与前置条目。</li>
+            <li>新建 <code>content/aiinfra/&lt;slug&gt;.js</code>，按 <code>window.KB_CONTENT["&lt;slug&gt;"] = { ... html }</code> 的结构写正文。</li>
+            <li>运行 <code>npm run build</code>：自动合并摘要、要点、阅读时长，输出 <code>assets/js/data.js</code>，并校验图数、字数与 HTML 禁忌。</li>
+            <li>运行 <code>npm run serve</code> 本地预览，或直接双击 <code>index.html</code>（纯静态，file:// 也能跑）。</li>
+          </ol>
+          <pre class="code" data-lang="bash"><code>npm run build
+npm run serve</code></pre>
+          <p style="font-size:13px;color:var(--muted);margin-top:14px">
+            校验会检查：每篇至少 3 个 SVG、正文不少于 3000 字、不得包含脚本标签、正文中不得出现模板字符串的反引号或美元花括号序列。
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid--3" style="margin-top:16px">
+        <div class="panel-block">
+          <h2 style="font-size:15px">内容健康度</h2>
+          <div id="healthList" style="font-size:13.5px;color:var(--muted);line-height:2"></div>
+        </div>
+        <div class="panel-block">
+          <h2 style="font-size:15px">学习进度</h2>
+          <p style="font-size:13.5px">进度只保存在本机 localStorage。换浏览器或清理缓存会丢失，可以导出为 JSON 备份。</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn--ghost btn--sm" id="exportProgress">导出进度</button>
+            <button class="btn btn--ghost btn--sm" id="importProgress">导入进度</button>
+            <input type="file" id="importFile" accept="application/json" hidden>
+          </div>
+        </div>
+        <div class="panel-block">
+          <h2 style="font-size:15px">本地运行</h2>
+          <p style="font-size:13.5px">不需要构建工具或依赖。推荐用本地服务器打开，避免个别浏览器对 file:// 的脚本限制。</p>
+          <pre class="code" data-lang="bash"><code>npm run serve
+# http://localhost:4173</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="siteFooter"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/resources.js"></script>
+</body>
+</html>
