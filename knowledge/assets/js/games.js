@@ -4,20 +4,39 @@
   var esc = App.escapeHtml;
 
   /* ==========================================================
-     Game 01 · 术语配对
+     Game 01 · 术语配对（多模块 deck）
      ========================================================== */
-  var PAIRS = [
-    { term: 'HBM', def: '高带宽显存，GPU 的主存' },
-    { term: 'Warp', def: '32 个线程组成的调度单元' },
-    { term: 'AllReduce', def: '各卡求和后把结果广播给所有卡' },
-    { term: 'KV Cache', def: '缓存历史 K/V，避免重复计算' },
-    { term: 'MFU', def: '实际算力 ÷ 理论峰值算力' },
-    { term: 'NVLink', def: '机内 GPU 之间的高带宽互联' },
-    { term: 'ZeRO', def: '把优化器状态与梯度分片到各卡' },
-    { term: 'PagedAttention', def: '像操作系统分页一样管理 KV Cache' }
-  ];
+  var DECKS = {
+    aiinfra: {
+      name: 'AI Infra',
+      pairs: [
+        { term: 'HBM', def: '高带宽显存，GPU 的主存' },
+        { term: 'Warp', def: '32 个线程组成的调度单元' },
+        { term: 'AllReduce', def: '各卡求和后把结果广播给所有卡' },
+        { term: 'KV Cache', def: '缓存历史 K/V，避免重复计算' },
+        { term: 'MFU', def: '实际算力 ÷ 理论峰值算力' },
+        { term: 'NVLink', def: '机内 GPU 之间的高带宽互联' },
+        { term: 'ZeRO', def: '把优化器状态与梯度分片到各卡' },
+        { term: 'PagedAttention', def: '像操作系统分页一样管理 KV Cache' }
+      ]
+    },
+    cpp: {
+      name: 'C++',
+      pairs: [
+        { term: 'RAII', def: '构造时获取资源，析构时释放' },
+        { term: 'vtable', def: '虚函数的动态分派表' },
+        { term: 'Rule of Five', def: '拷贝/移动构造、赋值与析构的一致设计' },
+        { term: 'std::move', def: '无条件转换为右值引用，本身不移动' },
+        { term: 'ODR', def: '一个实体在整个程序中只能定义一次' },
+        { term: 'UB', def: '标准不规定行为，编译器可任意优化' },
+        { term: 'shared_ptr', def: '带引用计数的共享所有权' },
+        { term: 'happens-before', def: '跨线程的可见性与顺序关系' }
+      ]
+    }
+  };
 
   var mem = {
+    deckId: 'aiinfra',
     deck: [],
     flipped: [],
     matched: 0,
@@ -28,11 +47,28 @@
     seconds: 0
   };
 
+  function currentPairs() { return DECKS[mem.deckId].pairs; }
+
   var grid = document.getElementById('memoryGrid');
   var resultHost = document.getElementById('memoryResult');
   var movesEl = document.getElementById('moves');
   var matchesEl = document.getElementById('matches');
   var timerEl = document.getElementById('timer');
+  var deckHost = document.getElementById('deckChips');
+
+  function renderDeckChips() {
+    if (!deckHost) return;
+    deckHost.innerHTML = Object.keys(DECKS).map(function (id) {
+      return '<button class="chip' + (mem.deckId === id ? ' is-on' : '') + '" data-deck="' + id + '">' + esc(DECKS[id].name) + '</button>';
+    }).join('');
+    App.qsa('.chip', deckHost).forEach(function (b) {
+      b.addEventListener('click', function () {
+        mem.deckId = b.getAttribute('data-deck');
+        renderDeckChips();
+        resetMemory();
+      });
+    });
+  }
 
   function shuffle(a) {
     for (var i = a.length - 1; i > 0; i--) {
@@ -61,8 +97,9 @@
 
   function resetMemory() {
     stopTimer();
+    var pairs = currentPairs();
     mem.deck = shuffle(
-      PAIRS.reduce(function (acc, p, i) {
+      pairs.reduce(function (acc, p, i) {
         acc.push({ id: i, text: p.term, kind: 'term' });
         acc.push({ id: i, text: p.def, kind: 'def' });
         return acc;
@@ -75,7 +112,7 @@
     mem.started = false;
     mem.seconds = 0;
     movesEl.textContent = '0';
-    matchesEl.textContent = '0 / ' + PAIRS.length;
+    matchesEl.textContent = '0 / ' + pairs.length;
     timerEl.textContent = '0:00';
     resultHost.innerHTML = '';
     grid.innerHTML = mem.deck.map(function (c, i) {
@@ -109,8 +146,8 @@
     if (a.id === b.id && a.kind !== b.kind) {
       pair.forEach(function (c) { c.classList.add('is-matched'); });
       mem.matched++;
-      matchesEl.textContent = mem.matched + ' / ' + PAIRS.length;
-      if (mem.matched === PAIRS.length) winMemory();
+      matchesEl.textContent = mem.matched + ' / ' + currentPairs().length;
+      if (mem.matched === currentPairs().length) winMemory();
     } else {
       mem.locked = true;
       setTimeout(function () {
@@ -122,7 +159,7 @@
 
   function winMemory() {
     stopTimer();
-    var bestKey = 'zhizhan.game.memory.best';
+    var bestKey = 'zhizhan.game.memory.best.' + mem.deckId;
     var best = Number(localStorage.getItem(bestKey) || 0);
     var isBest = !best || mem.moves < best;
     if (isBest) localStorage.setItem(bestKey, String(mem.moves));
@@ -138,6 +175,7 @@
   }
 
   document.getElementById('resetMemory').addEventListener('click', resetMemory);
+  renderDeckChips();
   resetMemory();
 
   /* ==========================================================

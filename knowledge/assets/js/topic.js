@@ -8,6 +8,8 @@
   var params = new URLSearchParams(location.search);
   var slug = params.get('t') || D.topics[0].slug;
   var topic = App.topicBySlug[slug];
+  var track = topic ? App.trackById[topic.track] : null;
+  var trackTopics = topic ? D.topics.filter(function (t) { return t.track === topic.track; }) : [];
 
   function fail(msg) {
     root.innerHTML =
@@ -18,18 +20,18 @@
       '</div>';
   }
 
-  if (!topic) { fail('参数 t 缺失或条目不存在。'); return; }
+  if (!topic || !track) { fail('参数 t 缺失或条目不存在。'); return; }
 
   function loadContent(slug) {
     return new Promise(function (resolve, reject) {
       if (window.KB_CONTENT && window.KB_CONTENT[slug]) { resolve(window.KB_CONTENT[slug]); return; }
       var s = document.createElement('script');
-      s.src = 'content/aiinfra/' + slug + '.js';
+      s.src = 'content/' + topic.track + '/' + slug + '.js';
       s.onload = function () {
         if (window.KB_CONTENT && window.KB_CONTENT[slug]) resolve(window.KB_CONTENT[slug]);
         else reject(new Error('脚本已加载但没有写入内容'));
       };
-      s.onerror = function () { reject(new Error('无法加载 content/aiinfra/' + slug + '.js')); };
+      s.onerror = function () { reject(new Error('无法加载 content/' + topic.track + '/' + slug + '.js')); };
       document.head.appendChild(s);
     });
   }
@@ -42,13 +44,13 @@
   }
 
   function render(entry) {
-    var lv = D.levels[topic.level] || D.levels[0];
-    var idx = D.topics.indexOf(topic);
-    var prev = D.topics[idx - 1];
-    var next = D.topics[idx + 1];
+    var lv = track.levels.filter(function (l) { return l.id === topic.level; })[0] || track.levels[0];
+    var idx = trackTopics.indexOf(topic);
+    var prev = trackTopics[idx - 1];
+    var next = trackTopics[idx + 1];
 
     var prereq = (topic.prereq || []).map(function (s) { return App.topicBySlug[s]; }).filter(Boolean);
-    var dependents = D.topics.filter(function (t) { return (t.prereq || []).indexOf(topic.slug) >= 0; });
+    var dependents = trackTopics.filter(function (t) { return (t.prereq || []).indexOf(topic.slug) >= 0; });
 
     var related = '';
     if (prereq.length || dependents.length) {
@@ -95,11 +97,11 @@
       '<div class="topic-head">' +
         '<div class="crumbs">' +
           '<a href="index.html">首页</a><span>/</span>' +
-          '<a href="track.html">AI Infra</a><span>/</span>' +
-          '<a href="track.html?level=' + topic.level + '">L' + topic.level + ' ' + esc(lv.name) + '</a><span>/</span>' +
+          '<a href="track.html?track=' + encodeURIComponent(track.id) + '">' + esc(track.name) + '</a><span>/</span>' +
+          '<a href="track.html?track=' + encodeURIComponent(track.id) + '&level=' + topic.level + '">L' + topic.level + ' ' + esc(lv.name) + '</a><span>/</span>' +
           '<span style="color:var(--muted)">' + esc(topic.title) + '</span>' +
         '</div>' +
-        '<span class="badge badge--level" style="--lv:' + lv.color + '">LAYER ' + topic.level + ' · ' + esc(lv.name) + '</span>' +
+        '<span class="badge badge--level" style="--lv:' + lv.color + '">' + esc(track.name) + ' · LAYER ' + topic.level + ' · ' + esc(lv.name) + '</span>' +
         '<h1>' + esc(topic.title) + '</h1>' +
         '<p class="lede">' + esc(topic.subtitle || '') + '</p>' +
         '<div class="topic-meta">' +
@@ -238,14 +240,14 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    /* keyboard nav */
-    var idx = D.topics.indexOf(topic);
+    /* keyboard nav within the current track */
+    var idx = trackTopics.indexOf(topic);
     document.addEventListener('keydown', function (e) {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       var tag = (e.target.tagName || '').toLowerCase();
       if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
-      if (e.key === 'ArrowLeft' && D.topics[idx - 1]) location.href = 'topic.html?t=' + encodeURIComponent(D.topics[idx - 1].slug);
-      if (e.key === 'ArrowRight' && D.topics[idx + 1]) location.href = 'topic.html?t=' + encodeURIComponent(D.topics[idx + 1].slug);
+      if (e.key === 'ArrowLeft' && trackTopics[idx - 1]) location.href = 'topic.html?t=' + encodeURIComponent(trackTopics[idx - 1].slug);
+      if (e.key === 'ArrowRight' && trackTopics[idx + 1]) location.href = 'topic.html?t=' + encodeURIComponent(trackTopics[idx + 1].slug);
     });
   }
 
@@ -262,7 +264,7 @@
     note.className = 'callout callout--warn';
     note.style.margin = '24px 0';
     note.innerHTML = '<span class="callout__label">正文未就绪</span><div>' +
-      esc(err.message) + '。如果这是本地打开，请确认 content/aiinfra/' + esc(slug) + '.js 存在。</div>';
+      esc(err.message) + '。如果这是本地打开，请确认 content/' + esc(topic.track) + '/' + esc(slug) + '.js 存在。</div>';
     var article = document.getElementById('article');
     if (article) article.insertBefore(note, article.firstChild);
   });

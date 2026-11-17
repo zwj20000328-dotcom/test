@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>资源库 · 知栈</title>
-<meta name="description" content="AI Infra 学习资源集合：论文、官方文档、课程、工具与数据，以及本站的内容与资源维护方式。">
+<meta name="description" content="AI Infra 与 C++ 学习资源集合：论文、官方文档、课程、工具与数据，以及本站的内容与资源维护方式。">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <script src="assets/js/theme-init.js"></script>
 <link rel="stylesheet" href="assets/css/style.css">
@@ -68,8 +68,9 @@
 │  │  └─ home.js / resources.js / games.js
 │  └─ favicon.svg
 ├─ content/
-│  ├─ graph.js         层级、条目、前置关系、学习路径
-│  └─ aiinfra/*.js     31 篇正文（可独立增删）
+│  ├─ graph.js         模块、层级、条目、前置关系、路径
+│  ├─ aiinfra/*.js     AI Infra 正文（31 篇）
+│  └─ cpp/*.js         C++ 正文（33 篇）
 └─ tools/
    ├─ build.mjs        生成 data.js 并校验内容
    └─ serve.mjs        本地静态服务器</pre>
@@ -78,8 +79,8 @@
         <div class="panel-block">
           <h2>新增一篇教程</h2>
           <ol class="steps">
-            <li>在 <code>content/graph.js</code> 的 <code>topics</code> 数组登记 slug、标题、层级、标签与前置条目。</li>
-            <li>新建 <code>content/aiinfra/&lt;slug&gt;.js</code>，按 <code>window.KB_CONTENT["&lt;slug&gt;"] = { ... html }</code> 的结构写正文。</li>
+            <li>在 <code>content/graph.js</code> 对应模块的 <code>topics</code> 数组登记 slug、标题、层级、标签与前置条目。</li>
+            <li>新建 <code>content/&lt;模块&gt;/&lt;slug&gt;.js</code>，按 <code>window.KB_CONTENT["&lt;slug&gt;"] = { ... html }</code> 的结构写正文。</li>
             <li>运行 <code>npm run build</code>：自动合并摘要、要点、阅读时长，输出 <code>assets/js/data.js</code>，并校验图数、字数与 HTML 禁忌。</li>
             <li>运行 <code>npm run serve</code> 本地预览，或直接双击 <code>index.html</code>（纯静态，file:// 也能跑）。</li>
           </ol>

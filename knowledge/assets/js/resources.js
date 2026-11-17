@@ -44,7 +44,20 @@
     { type: 'tool', title: 'WebDataset', desc: '分片 tar 流式数据集格式，解决小文件与随机读瓶颈。', org: 'WebDataset', year: '2019—', url: 'https://github.com/webdataset/webdataset' },
     { type: 'data', title: 'MLPerf Benchmarks', desc: '训练与推理的标准化基准，注意区分场景与精度口径。', org: 'MLCommons', year: '持续更新', url: 'https://mlcommons.org/benchmarks/' },
     { type: 'course', title: 'Programming Massively Parallel Processors', desc: 'CUDA 与并行编程的系统教材，第 4 版覆盖 Tensor Core。', org: 'Kirk & Hwu', year: '2022', url: 'https://www.elsevier.com/books/programming-massively-parallel-processors/hwu/978-0-323-91231-0' },
-    { type: 'media', title: 'SemiAnalysis', desc: '硬件与数据中心供应链的深度分析，数字需交叉验证。', org: 'Dylan Patel 等', year: '持续更新', url: 'https://semianalysis.com/' }
+    { type: 'media', title: 'SemiAnalysis', desc: '硬件与数据中心供应链的深度分析，数字需交叉验证。', org: 'Dylan Patel 等', year: '持续更新', url: 'https://semianalysis.com/' },
+
+    { type: 'docs', title: 'cppreference', desc: 'C++ 语言与标准库的权威参考，按标准版本标注可用性。', org: 'cppreference.com', year: '持续更新', url: 'https://en.cppreference.com/w/' },
+    { type: 'docs', title: 'C++ Core Guidelines', desc: 'Stroustrup 与 Sutter 维护的现代 C++ 实践准则。', org: 'ISO C++', year: '持续更新', url: 'https://isocpp.github.io/CppCoreGuidelines/' },
+    { type: 'docs', title: 'C++ Compiler Support', desc: '各编译器对 C++11 到 C++26 特性的支持矩阵。', org: 'cppreference', year: '持续更新', url: 'https://en.cppreference.com/w/cpp/compiler_support' },
+    { type: 'tool', title: 'Compiler Explorer', desc: '在线查看 GCC/Clang/MSVC 生成的汇编、优化与 ABI 差异。', org: 'Godbolt', year: '持续更新', url: 'https://godbolt.org/' },
+    { type: 'tool', title: 'C++ Insights', desc: '把模板、lambda、范围 for 展开成编译器眼中的代码。', org: 'Andreas Fertig', year: '持续更新', url: 'https://cppinsights.io/' },
+    { type: 'docs', title: 'Itanium C++ ABI', desc: 'vtable、名称修饰、异常与 RTTI 的事实标准。', org: 'Itanium C++ ABI 委员会', year: '持续更新', url: 'https://itanium-cxx-abi.github.io/cxx-abi/' },
+    { type: 'docs', title: 'GCC libstdc++ Manual', desc: '标准库实现、扩展与 ABI 兼容性说明。', org: 'GCC', year: '持续更新', url: 'https://gcc.gnu.org/onlinedocs/libstdc++/' },
+    { type: 'tool', title: 'GoogleTest', desc: 'C++ 单元测试与断言的工业标准之一。', org: 'Google', year: '持续更新', url: 'https://google.github.io/googletest/' },
+    { type: 'docs', title: 'Clang Sanitizers', desc: 'ASan/UBSan/TSan/MSan 的用法与边界。', org: 'LLVM', year: '持续更新', url: 'https://clang.llvm.org/docs/' },
+    { type: 'docs', title: 'CMake Documentation', desc: 'target、属性、依赖与工具链的官方参考。', org: 'Kitware', year: '持续更新', url: 'https://cmake.org/documentation/' },
+    { type: 'docs', title: 'WG21 Papers', desc: 'C++ 标准提案与会议论文，追踪语言演进的第一手资料。', org: 'ISO C++', year: '持续更新', url: 'https://wg21.link/' },
+    { type: 'course', title: 'CppCon', desc: '年度 C++ 大会的公开演讲，覆盖语言、性能与工程实践。', org: 'CppCon', year: '持续更新', url: 'https://www.youtube.com/c/CppCon' }
   ];
 
   var TYPES = [
@@ -108,17 +121,19 @@
   var ring = document.getElementById('contentRing');
   if (ring) { ring.style.setProperty('--p', pct); ring.textContent = pct + '%'; }
   var avg = D.stats && D.stats.words && written ? Math.round(D.stats.words / written) : 0;
-  var missing = D.topics.filter(function (t) { return !t.hasContent; });
+  var liveTracks = D.tracks.filter(function (t) { return t.status === 'live' && t.stats && t.stats.topics; });
   var health = document.getElementById('healthList');
   if (health) {
     health.innerHTML =
-      '<div>正文完成：<b style="color:var(--ink)">' + written + ' / ' + total + '</b></div>' +
+      liveTracks.map(function (t) {
+        var s = t.stats;
+        return '<div>' + esc(t.name) + '：<b style="color:var(--ink)">' + s.written + ' / ' + s.topics + '</b>' +
+          (s.written < s.topics ? ' <span style="color:var(--amber)">待补 ' + (s.topics - s.written) + '</span>' : '') + '</div>';
+      }).join('') +
+      '<div>合计：<b style="color:var(--ink)">' + written + ' / ' + total + '</b> 篇</div>' +
       '<div>平均篇幅：<b style="color:var(--ink)">' + avg + '</b> 字/篇</div>' +
       '<div>原创图解：<b style="color:var(--ink)">' + (D.stats.diagrams || 0) + '</b> 张</div>' +
-      '<div>总阅读量：<b style="color:var(--ink)">' + Math.round((D.stats.minutes || 0) / 60) + '</b> 小时</div>' +
-      (missing.length
-        ? '<div style="color:var(--amber)">待补：' + missing.length + ' 篇</div>'
-        : '<div style="color:var(--teal)">全部正文已就绪</div>');
+      '<div>总阅读量：<b style="color:var(--ink)">' + Math.round((D.stats.minutes || 0) / 60) + '</b> 小时</div>';
   }
 
   /* progress export / import */

@@ -5,9 +5,11 @@
   var PROGRESS_KEY = 'zhizhan.progress.v1';
   var THEME_KEY = 'zhizhan.theme.v1';
 
-  var DATA = window.KB_DATA || { site: {}, levels: [], tracks: [], paths: [], topics: [], stats: {} };
+  var DATA = window.KB_DATA || { site: {}, tracks: [], topics: [], stats: {} };
   var topicBySlug = {};
+  var trackById = {};
   DATA.topics.forEach(function (t) { topicBySlug[t.slug] = t; });
+  (DATA.tracks || []).forEach(function (t) { trackById[t.id] = t; });
 
   function qs(sel, root) { return (root || document).querySelector(sel); }
   function qsa(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -58,9 +60,7 @@
     var list = slugs && slugs.length ? slugs : DATA.topics.map(function (t) { return t.slug; });
     var done = list.filter(function (s) { return p[s]; }).length;
     return { done: done, total: list.length, pct: list.length ? Math.round((done / list.length) * 100) : 0 };
-  }
-
-  /* ---------- icons ---------- */
+  }  /* ---------- icons ---------- */
   var ICONS = {
     sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>',
     moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>',
@@ -93,7 +93,8 @@
         '</a>' +
         '<nav class="nav__links" aria-label="主导航">' +
           NAV_ITEMS.map(function (n) {
-            return '<a class="nav__link' + (n.id === active ? ' is-active' : '') + '" href="' + n.href + '">' + n.label + '</a>';
+            return '<a class="nav__link' + (n.id === active ? ' is-active' : '') + '" href="' + n.href + '"' +
+              (n.id === active ? ' aria-current="page"' : '') + '>' + n.label + '</a>';
           }).join('') +
         '</nav>' +
         '<div class="nav__spacer"></div>' +
@@ -105,7 +106,12 @@
         '</div>' +
       '</div>' +
       '<div class="nav__mobile" id="navMobile">' +
-        NAV_ITEMS.map(function (n) {
+        NAV_ITEMS.slice(0, 2).map(function (n) {
+          return '<a href="' + n.href + '"' + (n.id === active ? ' style="color:var(--brand)"' : '') + '>' + n.label + '</a>';
+        }).join('') +
+        '<a class="nav__mobile-sub" href="track.html?track=aiinfra">↳ AI Infra 地图</a>' +
+        '<a class="nav__mobile-sub" href="track.html?track=cpp">↳ C++ 地图</a>' +
+        NAV_ITEMS.slice(2).map(function (n) {
           return '<a href="' + n.href + '"' + (n.id === active ? ' style="color:var(--brand)"' : '') + '>' + n.label + '</a>';
         }).join('') +
       '</div>';
@@ -145,6 +151,8 @@
           '</div>' +
         '</div>' +
         '<div class="footer__links">' +
+          '<a href="track.html?track=aiinfra">AI Infra</a>' +
+          '<a href="track.html?track=cpp">C++</a>' +
           '<a href="track.html">知识地图</a>' +
           '<a href="resources.html">资源库</a>' +
           '<a href="games.html">练一练</a>' +
@@ -195,7 +203,8 @@
     var list = DATA.topics.filter(function (t) { return t.hasContent; });
     if (query) {
       list = list.filter(function (t) {
-        var hay = [t.title, t.subtitle, t.summary, (t.tags || []).join(' '), t.cluster].join(' ').toLowerCase();
+        var track = trackById[t.track] || {};
+        var hay = [t.title, t.subtitle, t.summary, (t.tags || []).join(' '), t.cluster, track.name, t.slug].join(' ').toLowerCase();
         return hay.indexOf(query) >= 0;
       });
     }
@@ -212,9 +221,10 @@
       return;
     }
     host.innerHTML = searchState.results.map(function (t, i) {
-      var lv = DATA.levels[t.level] || { name: '', color: 'var(--muted)' };
+      var track = trackById[t.track] || { name: t.track, levels: [] };
+      var lv = (track.levels || []).filter(function (l) { return l.id === t.level; })[0] || { name: '', color: 'var(--muted)' };
       return '<a class="search-res' + (i === searchState.active ? ' is-active' : '') + '" href="topic.html?t=' + encodeURIComponent(t.slug) + '" data-idx="' + i + '">' +
-        '<span class="search-res__lv" style="color:' + lv.color + ';border-color:color-mix(in srgb,' + lv.color + ' 35%, transparent)">L' + t.level + ' ' + escapeHtml(lv.name) + '</span>' +
+        '<span class="search-res__lv" style="color:' + lv.color + ';border-color:color-mix(in srgb,' + lv.color + ' 35%, transparent)">' + escapeHtml(track.name) + ' · L' + t.level + '</span>' +
         '<span style="min-width:0"><b>' + escapeHtml(t.title) + '</b><small>' + escapeHtml(t.subtitle || '') + '</small></span>' +
       '</a>';
     }).join('');
@@ -277,7 +287,11 @@
     }, 1600);
   }
 
-  function levelOf(t) { return DATA.levels[t.level] || DATA.levels[0]; }
+  function levelOf(t) {
+    var track = trackById[t.track];
+    if (!track) return { name: '', color: 'var(--muted)' };
+    return (track.levels || []).filter(function (l) { return l.id === t.level; })[0] || track.levels[0] || { name: '', color: 'var(--muted)' };
+  }
 
   function init() {
     renderNav();
@@ -298,6 +312,7 @@
     qsa: qsa,
     escapeHtml: escapeHtml,
     topicBySlug: topicBySlug,
+    trackById: trackById,
     levelOf: levelOf,
     isDone: isDone,
     setDone: setDone,

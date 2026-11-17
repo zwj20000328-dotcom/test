@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>知栈 · Stack Atlas — 把复杂的系统拆成可以理解的一层层</title>
-<meta name="description" content="一个关于计算机系统与 AI 基础设施的交互式知识地图：知识链路、深度图文教程、图解与自测。第一卷：AI Infra。">
+<title>知栈 · Stack Atlas — AI Infra 与 C++ 知识地图</title>
+<meta name="description" content="一个关于计算机系统、编程语言与 AI 基础设施的交互式知识地图：知识链路、深度图文教程、图解与自测。已上线 AI Infra 与 C++ 两个模块。">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <script src="assets/js/theme-init.js"></script>
 <link rel="stylesheet" href="assets/css/style.css">
@@ -17,25 +17,25 @@
   <section class="hero">
     <div class="wrap hero__grid">
       <div>
-        <div class="eyebrow">交互式知识地图 · 第一卷</div>
+        <div class="eyebrow">交互式知识地图 · AI Infra / C++</div>
         <h1>把复杂的系统，<br>拆成<em>可以理解的一层层</em></h1>
         <p class="hero__lede">
-          「知栈」用知识地图、长文教程和手绘图解讲计算机系统。第一卷从一颗 GPU 出发，一路走到十万卡集群——每一篇都回答三个问题：它是什么、为什么这样设计、工程上怎么用。
+          「知栈」用知识地图、长文教程和手绘图解讲计算机系统与编程语言。目前已上线 AI Infra 与 C++ 两个模块：从一颗 GPU 到十万卡集群，从对象生命周期到并发内存序——每一篇都回答三个问题：它是什么、为什么这样设计、工程上怎么用。
         </p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="track.html">进入 AI Infra 地图 <span aria-hidden="true">→</span></a>
-          <a class="btn btn--ghost" href="topic.html?t=ai-infra-map">从第一篇开始</a>
+          <a class="btn btn--ghost" href="track.html?track=cpp">进入 C++ 地图</a>
         </div>
         <div class="hero__meta" id="heroStats">
           <div><b>—</b> 篇深度教程</div>
-          <div><b>—</b> 个知识层级</div>
+          <div><b>—</b> 个知识模块</div>
           <div><b>—</b> 张原创图解</div>
           <div><b>—</b> 分钟阅读</div>
         </div>
       </div>
 
       <div class="hero__art" aria-hidden="true">
-        <svg viewBox="0 0 460 460" role="img" aria-label="AI Infra 知识层级示意">
+        <svg viewBox="0 0 460 460" role="img" aria-label="知识模块与层级示意">
           <defs>
             <radialGradient id="heroGlow" cx="50%" cy="45%" r="58%">
               <stop offset="0%" stop-color="var(--brand)" stop-opacity=".20"/>
@@ -73,9 +73,9 @@
           <g>
             <circle cx="230" cy="230" r="62" fill="var(--sv-panel)" stroke="var(--sv-line)"/>
             <circle cx="230" cy="230" r="62" fill="none" stroke="var(--sv-a)" stroke-opacity=".25"/>
-            <text x="230" y="216" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" letter-spacing="2.4" fill="var(--sv-muted)">AI INFRA</text>
-            <text x="230" y="241" text-anchor="middle" font-size="19" font-weight="700" fill="var(--sv-ink)">31 篇</text>
-            <text x="230" y="259" text-anchor="middle" font-size="10.5" fill="var(--sv-muted)">7 层知识链</text>
+            <text x="230" y="216" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" letter-spacing="2.4" fill="var(--sv-muted)">STACK ATLAS</text>
+            <text x="230" y="241" text-anchor="middle" font-size="19" font-weight="700" fill="var(--sv-ink)" id="heroCount">64 个</text>
+            <text x="230" y="259" text-anchor="middle" font-size="10.5" fill="var(--sv-muted)" id="heroSub">知识点 · 2 模块</text>
           </g>
         </svg>
       </div>
@@ -90,7 +90,7 @@
           <h2>知识板块</h2>
           <p>每个板块是一条独立的学习路线，从直觉到工程，按层递进。</p>
         </div>
-        <a class="btn btn--ghost btn--sm" href="track.html">查看完整地图</a>
+        <a class="btn btn--ghost btn--sm" href="track.html?track=aiinfra">查看 AI Infra 地图</a>
       </div>
       <div class="grid grid--3" id="trackGrid"></div>
     </div>
@@ -105,6 +105,7 @@
           <p>地图很大，但你不需要按顺序走完。按目标选一条路径，每篇都标注了前置知识。</p>
         </div>
       </div>
+      <div class="chips" id="pathTabs" style="margin-bottom:20px"></div>
       <div class="paths" id="pathGrid"></div>
     </div>
   </section>
@@ -124,8 +125,8 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M8.2 7.1 15.7 7.4M7.2 8.2l3.6 7.6M17.1 9.2l-3.9 6.6"/></svg>
           </div>
           <h3>先建链路</h3>
-          <p>31 个知识点不是并列的列表，而是一张有前置关系的地图。你会看到“学这个之前需要什么”，以及“它后面接什么”。</p>
-          <div class="card__foot"><span>7 个层级 · 前置关系连线</span></div>
+          <p>每个模块的知识点不是并列的列表，而是一张有前置关系的地图。你会看到“学这个之前需要什么”，以及“它后面接什么”。</p>
+          <div class="card__foot"><span>2 个模块 · 7 层递进 · 前置关系连线</span></div>
         </article>
         <article class="card reveal">
           <div class="card__icon">
@@ -153,7 +154,7 @@
         <div style="flex:1;min-width:280px">
           <div class="eyebrow">Practise</div>
           <h2 style="font-size:24px;margin-bottom:8px">术语配对 · 瓶颈诊断</h2>
-          <p style="margin:0">把 16 个 AI Infra 术语和定义连起来，或者面对 10 个真实场景判断瓶颈在算力、显存、带宽还是网络。成绩只存在你自己的浏览器里。</p>
+          <p style="margin:0">把 AI Infra 或 C++ 的术语与定义连起来，或者面对 10 个真实场景判断瓶颈在算力、显存、带宽还是网络。成绩只存在你自己的浏览器里。</p>
         </div>
         <a class="btn btn--brand" href="games.html">开始挑战 <span aria-hidden="true">→</span></a>
       </div>

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "知栈 · Stack Atlas — 计算机知识地图与深度图文教程",
+  "description": "知栈 · Stack Atlas — AI Infra 与 C++ 知识地图与深度图文教程",
   "scripts": {
     "build": "node tools/build.mjs",
     "serve": "node tools/serve.mjs",

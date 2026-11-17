@@ -4,17 +4,41 @@
   var D = App.DATA;
   var esc = App.escapeHtml;
 
-  var state = { level: 'all', q: '', hideDone: false };
-  var edgeNodes = {}; // slug -> [path elements]
+  var params = new URLSearchParams(location.search);
+  var liveTracks = D.tracks.filter(function (t) { return t.status === 'live' && t.stats && t.stats.topics; });
+  var track = App.trackById[params.get('track')] || liveTracks[0];
+  if (!track || track.status !== 'live' || !track.levels.length) track = liveTracks[0];
 
-  /* ---------- stats strip ---------- */
+  var LEVELS = track.levels;
+  var topics = D.topics.filter(function (t) { return t.track === track.id; });
+  var state = { level: 'all', q: params.get('q') || '', hideDone: false };
+  var edgeNodes = {};
+
+  /* ---------- header ---------- */
+  document.title = track.name + ' 知识地图 · 知栈';
+  var md = document.querySelector('meta[name="description"]');
+  if (md) md.setAttribute('content', track.name + ' 知识地图：' + track.desc);
+  document.getElementById('trackEyebrow').textContent = 'Track ' + track.num + ' · ' + track.en;
+  document.getElementById('trackTitle').textContent = track.name + ' 知识地图';
+  document.getElementById('trackDesc').textContent = track.desc;
+
+  var switchHost = document.getElementById('trackSwitch');
+  if (switchHost && liveTracks.length > 1) {
+    switchHost.innerHTML = liveTracks.map(function (t) {
+      var on = t.id === track.id;
+      return '<a class="chip' + (on ? ' is-on' : '') + '" href="track.html?track=' + encodeURIComponent(t.id) + '"' +
+        (on ? ' aria-current="page"' : '') + '>' + esc(t.name) + '</a>';
+    }).join('');
+  }
+
+  /* ---------- stats ---------- */
   var statsHost = document.getElementById('trackStats');
-  var done = App.completion(D.topics.map(function (t) { return t.slug; }));
-  var totalMinutes = D.topics.reduce(function (a, t) { return a + (t.readingMinutes || 0); }, 0);
+  var done = App.completion(track.topicSlugs);
+  var totalMinutes = topics.reduce(function (a, t) { return a + (t.readingMinutes || 0); }, 0);
   if (statsHost) {
     statsHost.innerHTML = [
-      [D.topics.length, '个知识点'],
-      [D.levels.length, '个层级'],
+      [topics.length, '个知识点'],
+      [LEVELS.length, '个层级'],
       [done.done + ' / ' + done.total, '已完成'],
       [Math.round(totalMinutes / 60) + ' 小时', '总阅读时长']
     ].map(function (it) { return '<div><b>' + it[0] + '</b><span>' + it[1] + '</span></div>'; }).join('');
@@ -22,7 +46,7 @@
 
   /* ---------- level chips ---------- */
   var chipHost = document.getElementById('levelChips');
-  var chips = [{ id: 'all', name: '全部' }].concat(D.levels.map(function (l) { return { id: String(l.id), name: 'L' + l.id + ' ' + l.name }; }));
+  var chips = [{ id: 'all', name: '全部' }].concat(LEVELS.map(function (l) { return { id: String(l.id), name: 'L' + l.id + ' ' + l.name }; }));
   function renderChips() {
     chipHost.innerHTML = chips.map(function (c) {
       return '<button class="chip' + (String(state.level) === String(c.id) ? ' is-on' : '') + '" data-level="' + c.id + '">' +
@@ -40,15 +64,15 @@
   /* ---------- map ---------- */
   var levelList = document.getElementById('levelList');
 
-  function nodeCard(t, index) {
-    var lv = D.levels[t.level];
+  function nodeCard(t) {
+    var lv = LEVELS.filter(function (l) { return l.id === t.level; })[0] || LEVELS[0];
     var isDone = App.isDone(t.slug);
     return '' +
       '<a class="node' + (isDone ? ' is-done' : '') + '" href="topic.html?t=' + encodeURIComponent(t.slug) + '"' +
         ' data-slug="' + esc(t.slug) + '" data-prereq="' + esc((t.prereq || []).join(',')) + '"' +
         ' style="--lv:' + lv.color + '" aria-label="' + esc(t.title) + '，' + (t.readingMinutes || 0) + ' 分钟">' +
         '<div class="node__top">' +
-          '<span class="node__idx">' + String(index).padStart(2, '0') + '</span>' +
+          '<span class="node__idx">' + String(topics.indexOf(t) + 1).padStart(2, '0') + '</span>' +
           '<span class="node__done">' + App.ICONS.mark + '</span>' +
         '</div>' +
         '<h3>' + esc(t.title) + '</h3>' +
@@ -58,11 +82,9 @@
   }
 
   function renderMap() {
-    var globalIndex = 0;
-    levelList.innerHTML = D.levels.map(function (lv) {
-      var items = D.topics.filter(function (t) { return t.level === lv.id; });
+    levelList.innerHTML = LEVELS.map(function (lv) {
+      var items = topics.filter(function (t) { return t.level === lv.id; });
       var lvDone = items.filter(function (t) { return App.isDone(t.slug); }).length;
-      globalIndex += items.length;
       return '' +
         '<section class="level" data-level="' + lv.id + '" style="--lv:' + lv.color + '">' +
           '<div class="level__rail">' +
@@ -73,10 +95,7 @@
               lvDone + ' / ' + items.length + ' DONE</div>' +
           '</div>' +
           '<div class="level__nodes">' +
-            items.map(function (t) {
-              var idx = D.topics.indexOf(t) + 1;
-              return nodeCard(t, idx);
-            }).join('') +
+            items.map(nodeCard).join('') +
           '</div>' +
         '</section>';
     }).join('');
@@ -95,16 +114,14 @@
       var okLevel = state.level === 'all' || String(t.level) === String(state.level);
       var okQuery = !q || hay.indexOf(q) >= 0;
       var okDone = !state.hideDone || !App.isDone(slug);
-      var show = okLevel && okQuery && okDone;
-      n.classList.toggle('is-hidden', !show);
+      n.classList.toggle('is-hidden', !(okLevel && okQuery && okDone));
     });
     App.qsa('#levelList .level').forEach(function (sec) {
       var any = App.qsa('.node:not(.is-hidden)', sec).length > 0;
       sec.style.display = any ? '' : 'none';
     });
-    var count = visibleNodes().length;
     var countEl = document.getElementById('mapCount');
-    if (countEl) countEl.textContent = count + ' / ' + D.topics.length + ' 个知识点';
+    if (countEl) countEl.textContent = visibleNodes().length + ' / ' + topics.length + ' 个知识点';
     drawEdges();
   }
 
@@ -122,32 +139,29 @@
       if (n.classList.contains('is-hidden')) return;
       var r = n.getBoundingClientRect();
       positions[n.getAttribute('data-slug')] = {
-        x1: r.left - mapRect.left + r.width / 2,
+        x: r.left - mapRect.left + r.width / 2,
         y1: r.top - mapRect.top,
-        x2: r.left - mapRect.left + r.width / 2,
         y2: r.top - mapRect.top + r.height
       };
     });
 
     edgeNodes = {};
     var paths = [];
-    D.topics.forEach(function (t) {
+    topics.forEach(function (t) {
       (t.prereq || []).forEach(function (p) {
         var a = positions[p];
         var b = positions[t.slug];
         if (!a || !b) return;
         var dy = Math.max(18, Math.min(54, (b.y1 - a.y2) * 0.6));
-        var d = 'M' + a.x1.toFixed(1) + ' ' + a.y2.toFixed(1) +
-                ' C' + a.x1.toFixed(1) + ' ' + (a.y2 + dy).toFixed(1) +
-                ' ' + b.x2.toFixed(1) + ' ' + (b.y1 - dy).toFixed(1) +
-                ' ' + b.x2.toFixed(1) + ' ' + b.y1.toFixed(1);
-        var p1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        p1.setAttribute('d', d);
-        p1.setAttribute('data-src', p);
-        p1.setAttribute('data-dst', t.slug);
-        paths.push(p1);
-        (edgeNodes[p] = edgeNodes[p] || []).push(p1);
-        (edgeNodes[t.slug] = edgeNodes[t.slug] || []).push(p1);
+        var d = 'M' + a.x.toFixed(1) + ' ' + a.y2.toFixed(1) +
+                ' C' + a.x.toFixed(1) + ' ' + (a.y2 + dy).toFixed(1) +
+                ' ' + b.x.toFixed(1) + ' ' + (b.y1 - dy).toFixed(1) +
+                ' ' + b.x.toFixed(1) + ' ' + b.y1.toFixed(1);
+        var el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        el.setAttribute('d', d);
+        paths.push(el);
+        (edgeNodes[p] = edgeNodes[p] || []).push(el);
+        (edgeNodes[t.slug] = edgeNodes[t.slug] || []).push(el);
       });
     });
     edgeSvg.innerHTML = '';
@@ -162,8 +176,7 @@
   function bindHover() {
     App.qsa('#levelList .node').forEach(function (n) {
       n.addEventListener('mouseenter', function () {
-        var slug = n.getAttribute('data-slug');
-        (edgeNodes[slug] || []).forEach(function (p) { p.classList.add('is-hot'); });
+        (edgeNodes[n.getAttribute('data-slug')] || []).forEach(function (p) { p.classList.add('is-hot'); });
       });
       n.addEventListener('mouseleave', function () {
         App.qsa('#mapEdges path.is-hot').forEach(function (p) { p.classList.remove('is-hot'); });
@@ -176,13 +189,11 @@
   renderMap();
   bindHover();
 
-  var params = new URLSearchParams(location.search);
-  if (params.get('level') !== null) state.level = params.get('level');
-  if (params.get('q')) {
-    state.q = params.get('q');
-    document.getElementById('mapSearch').value = state.q;
+  if (params.get('level') !== null) {
+    state.level = params.get('level');
+    renderChips();
   }
-  if (params.get('level') !== null) renderChips();
+  if (state.q) document.getElementById('mapSearch').value = state.q;
 
   document.getElementById('mapSearch').addEventListener('input', function (e) {
     state.q = e.target.value;

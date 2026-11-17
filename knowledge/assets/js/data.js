@@ -1,62 +1,11 @@
-/* 自动生成：npm run build。请勿手工编辑，源数据在 content/graph.js 与 content/aiinfra/。 */
+/* 自动生成：npm run build。请勿手工编辑，源数据在 content/graph.js 与 content/<track>/。 */
 window.KB_DATA = {
   "site": {
     "name": "知栈",
     "en": "STACK ATLAS",
     "tagline": "把复杂的系统，拆成可以理解的一层层",
-    "description": "一个关于计算机系统与 AI 基础设施的交互式知识地图，配有深度图文教程与轻量练习。"
+    "description": "一个关于计算机系统、编程语言与 AI 基础设施的交互式知识地图，配有深度图文教程与轻量练习。"
   },
-  "levels": [
-    {
-      "id": 0,
-      "name": "全景",
-      "en": "Orientation",
-      "color": "#6366f1",
-      "desc": "先建立地图，再谈细节。理解整条链路与性能直觉。"
-    },
-    {
-      "id": 1,
-      "name": "硬件",
-      "en": "Hardware",
-      "color": "#0ea5e9",
-      "desc": "GPU、显存、互联与加速器：所有软件的物理边界。"
-    },
-    {
-      "id": 2,
-      "name": "单机优化",
-      "en": "Kernels",
-      "color": "#14b8a6",
-      "desc": "CUDA、算子、精度与编译器：把一台机器榨干。"
-    },
-    {
-      "id": 3,
-      "name": "训练",
-      "en": "Training",
-      "color": "#f59e0b",
-      "desc": "并行策略与工程细节：从单卡到万卡。"
-    },
-    {
-      "id": 4,
-      "name": "推理",
-      "en": "Inference",
-      "color": "#ec4899",
-      "desc": "KV Cache、调度、解码与服务化：把模型变成产品。"
-    },
-    {
-      "id": 5,
-      "name": "平台",
-      "en": "Platform",
-      "color": "#8b5cf6",
-      "desc": "调度、存储、可观测性与成本：让集群稳定赚钱。"
-    },
-    {
-      "id": 6,
-      "name": "前沿",
-      "en": "Frontier",
-      "color": "#ef4444",
-      "desc": "MoE、长上下文、RL 与超大规模：正在发生的事。"
-    }
-  ],
   "tracks": [
     {
       "id": "aiinfra",
@@ -64,23 +13,328 @@ window.KB_DATA = {
       "en": "AI Infrastructure",
       "status": "live",
       "num": "01",
-      "desc": "从一颗 GPU 到十万卡集群，理解大模型背后的系统栈。31 篇深度教程，7 个层级，覆盖硬件、算子、训练、推理与平台。"
+      "desc": "从一颗 GPU 到十万卡集群，理解大模型背后的系统栈。31 篇深度教程，7 个层级，覆盖硬件、算子、训练、推理与平台。",
+      "levels": [
+        {
+          "id": 0,
+          "name": "全景",
+          "en": "Orientation",
+          "color": "#6366f1",
+          "desc": "先建立地图，再谈细节。理解整条链路与性能直觉。"
+        },
+        {
+          "id": 1,
+          "name": "硬件",
+          "en": "Hardware",
+          "color": "#0ea5e9",
+          "desc": "GPU、显存、互联与加速器：所有软件的物理边界。"
+        },
+        {
+          "id": 2,
+          "name": "单机优化",
+          "en": "Kernels",
+          "color": "#14b8a6",
+          "desc": "CUDA、算子、精度与编译器：把一台机器榨干。"
+        },
+        {
+          "id": 3,
+          "name": "训练",
+          "en": "Training",
+          "color": "#f59e0b",
+          "desc": "并行策略与工程细节：从单卡到万卡。"
+        },
+        {
+          "id": 4,
+          "name": "推理",
+          "en": "Inference",
+          "color": "#ec4899",
+          "desc": "KV Cache、调度、解码与服务化：把模型变成产品。"
+        },
+        {
+          "id": 5,
+          "name": "平台",
+          "en": "Platform",
+          "color": "#8b5cf6",
+          "desc": "调度、存储、可观测性与成本：让集群稳定赚钱。"
+        },
+        {
+          "id": 6,
+          "name": "前沿",
+          "en": "Frontier",
+          "color": "#ef4444",
+          "desc": "MoE、长上下文、RL 与超大规模：正在发生的事。"
+        }
+      ],
+      "paths": [
+        {
+          "id": "beginner",
+          "name": "零基础入门",
+          "desc": "从地图和性能直觉开始，走通硬件到推理的主干。",
+          "steps": [
+            "ai-infra-map",
+            "three-bottlenecks",
+            "gpu-architecture",
+            "memory-hierarchy",
+            "cuda-model",
+            "inference-basics",
+            "batching-scheduling",
+            "serving-engines"
+          ]
+        },
+        {
+          "id": "training",
+          "name": "训练工程师",
+          "desc": "直奔并行策略与大规模训练工程，适合要做预训练或微调的人。",
+          "steps": [
+            "collective-comm",
+            "data-parallel",
+            "model-parallel",
+            "zero-memory",
+            "large-scale-training",
+            "moe"
+          ]
+        },
+        {
+          "id": "inference",
+          "name": "推理与部署",
+          "desc": "把模型做成稳定的在线服务，关心延迟、吞吐和单位成本。",
+          "steps": [
+            "inference-basics",
+            "batching-scheduling",
+            "speculative-decoding",
+            "quantized-inference",
+            "serving-engines",
+            "capacity-cost"
+          ]
+        },
+        {
+          "id": "platform",
+          "name": "平台与运维",
+          "desc": "面向集群、存储、监控与成本，保障大规模任务的稳定运行。",
+          "steps": [
+            "interconnect",
+            "cluster-scheduling",
+            "storage-data",
+            "observability",
+            "ultra-scale",
+            "capacity-cost"
+          ]
+        }
+      ],
+      "topicSlugs": [
+        "ai-infra-map",
+        "three-bottlenecks",
+        "gpu-architecture",
+        "memory-hierarchy",
+        "interconnect",
+        "accelerator-landscape",
+        "cuda-model",
+        "kernel-optimization",
+        "profiling",
+        "mixed-precision",
+        "flashattention",
+        "compilers",
+        "collective-comm",
+        "data-parallel",
+        "model-parallel",
+        "zero-memory",
+        "large-scale-training",
+        "inference-basics",
+        "batching-scheduling",
+        "speculative-decoding",
+        "serving-engines",
+        "quantized-inference",
+        "cluster-scheduling",
+        "storage-data",
+        "observability",
+        "capacity-cost",
+        "moe",
+        "long-context",
+        "rl-infra",
+        "ultra-scale",
+        "ai-infra-future"
+      ],
+      "stats": {
+        "topics": 31,
+        "written": 31,
+        "minutes": 771,
+        "words": 265228,
+        "diagrams": 111
+      }
+    },
+    {
+      "id": "cpp",
+      "name": "C++",
+      "en": "Modern C++",
+      "status": "live",
+      "num": "02",
+      "desc": "从语法、对象模型到泛型、并发与工程化，建立现代 C++ 的心智模型。33 篇深度教程，7 个层级，配内存布局与调用链图解。",
+      "levels": [
+        {
+          "id": 0,
+          "name": "全景",
+          "en": "Orientation",
+          "color": "#6366f1",
+          "desc": "先建立编译模型与语言地图，再进入语法细节。"
+        },
+        {
+          "id": 1,
+          "name": "语言核心",
+          "en": "Core Language",
+          "color": "#0ea5e9",
+          "desc": "类型、指针、函数、类与多态：把语法变成心智模型。"
+        },
+        {
+          "id": 2,
+          "name": "对象与资源",
+          "en": "Objects & Resources",
+          "color": "#14b8a6",
+          "desc": "生命周期、所有权、内存与异常：C++ 的真正难点。"
+        },
+        {
+          "id": 3,
+          "name": "泛型与标准库",
+          "en": "Templates & STL",
+          "color": "#f59e0b",
+          "desc": "模板、constexpr、容器与算法：写一次，用很多次。"
+        },
+        {
+          "id": 4,
+          "name": "并发与性能",
+          "en": "Concurrency & Perf",
+          "color": "#ec4899",
+          "desc": "线程、内存序、协程与性能工程：把机器用满。"
+        },
+        {
+          "id": 5,
+          "name": "工程化",
+          "en": "Engineering",
+          "color": "#8b5cf6",
+          "desc": "构建、测试、调试、ABI 与 API：让代码活得更久。"
+        },
+        {
+          "id": 6,
+          "name": "深入与演进",
+          "en": "Deep Dive",
+          "color": "#ef4444",
+          "desc": "Modules、标准演进与生态：下一步往哪走。"
+        }
+      ],
+      "paths": [
+        {
+          "id": "beginner",
+          "name": "零基础入门",
+          "desc": "从编译模型开始，走通类型、指针、函数、类与标准库。",
+          "steps": [
+            "cpp-map",
+            "build-to-run",
+            "types-conversions",
+            "pointers-const",
+            "functions-odr",
+            "classes-lifecycle",
+            "copy-move-semantics",
+            "stl-containers"
+          ]
+        },
+        {
+          "id": "modern",
+          "name": "现代 C++",
+          "desc": "补齐值语义、所有权、模板与编译期计算，写出地道的 C++。",
+          "steps": [
+            "value-categories",
+            "smart-pointers",
+            "templates-basics",
+            "templates-advanced",
+            "constexpr",
+            "stl-algorithms",
+            "api-design"
+          ]
+        },
+        {
+          "id": "concurrency",
+          "name": "并发与性能",
+          "desc": "从 RAII 出发，掌握线程、内存序、协程与性能工程。",
+          "steps": [
+            "raii",
+            "concurrency-basics",
+            "atomics-memory-order",
+            "async-coroutines",
+            "performance"
+          ]
+        },
+        {
+          "id": "engineering",
+          "name": "工程化",
+          "desc": "构建、测试、调试、ABI 与接口设计，让项目能长期维护。",
+          "steps": [
+            "build-systems",
+            "testing-sanitizers",
+            "debugging",
+            "abi-linking",
+            "api-design"
+          ]
+        }
+      ],
+      "topicSlugs": [
+        "cpp-map",
+        "build-to-run",
+        "types-conversions",
+        "pointers-const",
+        "functions-odr",
+        "classes-lifecycle",
+        "copy-move-semantics",
+        "operator-overloading",
+        "inheritance-vtable",
+        "raii",
+        "smart-pointers",
+        "value-categories",
+        "memory-layout",
+        "allocation",
+        "exceptions",
+        "undefined-behavior",
+        "templates-basics",
+        "templates-advanced",
+        "constexpr",
+        "stl-containers",
+        "stl-algorithms",
+        "string-view-format",
+        "concurrency-basics",
+        "atomics-memory-order",
+        "async-coroutines",
+        "performance",
+        "build-systems",
+        "testing-sanitizers",
+        "debugging",
+        "abi-linking",
+        "api-design",
+        "modules",
+        "cpp-evolution"
+      ],
+      "stats": {
+        "topics": 33,
+        "written": 33,
+        "minutes": 868,
+        "words": 300007,
+        "diagrams": 118
+      }
     },
     {
       "id": "os",
       "name": "计算机系统",
       "en": "Operating Systems",
       "status": "soon",
-      "num": "02",
-      "desc": "进程、内存、文件系统与虚拟化：所有软件的底座。"
-    },
-    {
-      "id": "compile",
-      "name": "编译原理",
-      "en": "Compilers",
-      "status": "soon",
       "num": "03",
-      "desc": "从词法分析到 IR 与代码生成：程序如何变成机器指令。"
+      "desc": "进程、内存、文件系统与虚拟化：所有软件的底座。",
+      "levels": [],
+      "paths": [],
+      "topicSlugs": [],
+      "stats": {
+        "topics": 0,
+        "written": 0,
+        "minutes": 0,
+        "words": 0,
+        "diagrams": 0
+      }
     },
     {
       "id": "dist",
@@ -88,7 +342,17 @@ window.KB_DATA = {
       "en": "Distributed Systems",
       "status": "soon",
       "num": "04",
-      "desc": "一致性、共识、复制与容错：多台机器的协作法则。"
+      "desc": "一致性、共识、复制与容错：多台机器的协作法则。",
+      "levels": [],
+      "paths": [],
+      "topicSlugs": [],
+      "stats": {
+        "topics": 0,
+        "written": 0,
+        "minutes": 0,
+        "words": 0,
+        "diagrams": 0
+      }
     },
     {
       "id": "algo",
@@ -96,7 +360,17 @@ window.KB_DATA = {
       "en": "Algorithms",
       "status": "soon",
       "num": "05",
-      "desc": "复杂度、图论、动态规划与近似算法：计算的地形图。"
+      "desc": "复杂度、图论、动态规划与近似算法：计算的地形图。",
+      "levels": [],
+      "paths": [],
+      "topicSlugs": [],
+      "stats": {
+        "topics": 0,
+        "written": 0,
+        "minutes": 0,
+        "words": 0,
+        "diagrams": 0
+      }
     },
     {
       "id": "net",
@@ -104,63 +378,17 @@ window.KB_DATA = {
       "en": "Networking",
       "status": "soon",
       "num": "06",
-      "desc": "从 TCP/IP 到数据中心网络：数据如何抵达。"
-    }
-  ],
-  "paths": [
-    {
-      "id": "beginner",
-      "name": "零基础入门",
-      "desc": "从地图和性能直觉开始，走通硬件到推理的主干。",
-      "steps": [
-        "ai-infra-map",
-        "three-bottlenecks",
-        "gpu-architecture",
-        "memory-hierarchy",
-        "cuda-model",
-        "inference-basics",
-        "batching-scheduling",
-        "serving-engines"
-      ]
-    },
-    {
-      "id": "training",
-      "name": "训练工程师",
-      "desc": "直奔并行策略与大规模训练工程，适合要做预训练或微调的人。",
-      "steps": [
-        "collective-comm",
-        "data-parallel",
-        "model-parallel",
-        "zero-memory",
-        "large-scale-training",
-        "moe"
-      ]
-    },
-    {
-      "id": "inference",
-      "name": "推理与部署",
-      "desc": "把模型做成稳定的在线服务，关心延迟、吞吐和单位成本。",
-      "steps": [
-        "inference-basics",
-        "batching-scheduling",
-        "speculative-decoding",
-        "quantized-inference",
-        "serving-engines",
-        "capacity-cost"
-      ]
-    },
-    {
-      "id": "platform",
-      "name": "平台与运维",
-      "desc": "面向集群、存储、监控与成本，保障大规模任务的稳定运行。",
-      "steps": [
-        "interconnect",
-        "cluster-scheduling",
-        "storage-data",
-        "observability",
-        "ultra-scale",
-        "capacity-cost"
-      ]
+      "desc": "从 TCP/IP 到数据中心网络：数据如何抵达。",
+      "levels": [],
+      "paths": [],
+      "topicSlugs": [],
+      "stats": {
+        "topics": 0,
+        "written": 0,
+        "minutes": 0,
+        "words": 0,
+        "diagrams": 0
+      }
     }
   ],
   "topics": [
@@ -176,6 +404,7 @@ window.KB_DATA = {
         "学习路径"
       ],
       "prereq": [],
+      "track": "aiinfra",
       "summary": "用一张六层地图把大模型系统栈串起来：讲清训练与推理两条回路的差异、五类稀缺资源的配比、6ND 算力估算和一次请求的端到端路径，帮你建立分层定位与排障的直觉。",
       "keyPoints": [
         "AI Infra 是把硅片、显存、网络和电力转换成可训练、可计费 token 的工程层，边界是“既定模型如何高效跑在真实硬件上”。",
@@ -185,7 +414,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 24,
       "hasContent": true,
-      "chars": 10148
+      "chars": 8041
     },
     {
       "slug": "three-bottlenecks",
@@ -201,6 +430,7 @@ window.KB_DATA = {
       "prereq": [
         "ai-infra-map"
       ],
+      "track": "aiinfra",
       "summary": "从算力、显存带宽、显存容量三堵墙出发，用算术强度与 Roofline 模型解释 prefill 与 decode 的性能差异，给出容量、延迟与吞吐的估算方法。",
       "keyPoints": [
         "算力墙、带宽墙、容量墙分别对应 FLOPS、bytes/s、bytes 三种资源，性能问题几乎都能归入其中之一",
@@ -211,7 +441,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 25,
       "hasContent": true,
-      "chars": 10878
+      "chars": 8854
     },
     {
       "slug": "gpu-architecture",
@@ -227,6 +457,7 @@ window.KB_DATA = {
       "prereq": [
         "three-bottlenecks"
       ],
+      "track": "aiinfra",
       "summary": "从 SIMT 执行模型出发，拆解 SM 结构、Warp 调度与延迟隐藏，实算 occupancy，讲清 Tensor Core、稀疏与降频的边界。",
       "keyPoints": [
         "thread/block/grid 如何映射到 SM 与 Warp，为什么 Warp 是真正的调度单位",
@@ -236,7 +467,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 27,
       "hasContent": true,
-      "chars": 12108
+      "chars": 9604
     },
     {
       "slug": "memory-hierarchy",
@@ -252,6 +483,7 @@ window.KB_DATA = {
       "prereq": [
         "gpu-architecture"
       ],
+      "track": "aiinfra",
       "summary": "从寄存器到显存，拆解容量、带宽与延迟的数量级，讲清合并访问与 bank 冲突的成因，给出 KV 缓存估算与排障路径，帮你在优化前判断瓶颈在算力还是喂数。",
       "keyPoints": [
         "寄存器、shared memory/L1、L2、HBM 的容量、带宽、延迟数量级与 A100/H100/H200/B200 对比",
@@ -261,7 +493,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 24,
       "hasContent": true,
-      "chars": 10541
+      "chars": 7903
     },
     {
       "slug": "interconnect",
@@ -277,6 +509,7 @@ window.KB_DATA = {
       "prereq": [
         "memory-hierarchy"
       ],
+      "track": "aiinfra",
       "summary": "从显存到机内、再到跨机的三级带宽落差出发，讲清总线代际、GPU 直连域、无损网络与胖树拓扑的取舍，以及在网归约如何降低集合通信量，最后给出张量、流水、数据并行的放置与排障方法。",
       "keyPoints": [
         "PCIe 5.0 x16 单向约 63 GB/s，H100 的 NVLink 每向 450 GB/s，400 Gb/s IB 单向仅 50 GB/s，落差决定并行域",
@@ -286,7 +519,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 25,
       "hasContent": true,
-      "chars": 11015
+      "chars": 8839
     },
     {
       "slug": "accelerator-landscape",
@@ -303,6 +536,7 @@ window.KB_DATA = {
         "gpu-architecture",
         "interconnect"
       ],
+      "track": "aiinfra",
       "summary": "把 GPU、TPU、NPU、ASIC 放回同一条通用性-效率光谱，讲清脉动阵列、SRAM-only 与晶圆级的取舍，并给出以每百万 token 成本为准的选型框架。",
       "keyPoints": [
         "专用加速器的收益来自减少数据搬运，而不是把乘法器做得更快",
@@ -312,7 +546,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 22,
       "hasContent": true,
-      "chars": 8989
+      "chars": 7532
     },
     {
       "slug": "cuda-model",
@@ -329,6 +563,7 @@ window.KB_DATA = {
         "gpu-architecture",
         "memory-hierarchy"
       ],
+      "track": "aiinfra",
       "summary": "从 host/device 分离讲起，拆清三层索引与 Warp 调度，理清五种内存空间的生命周期，再用 vector add 与事件计时写出可运行、可排障的代码。",
       "keyPoints": [
         "能根据数据规模算出 grid 与 block，并写出带边界检查的全局索引",
@@ -338,7 +573,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 29,
       "hasContent": true,
-      "chars": 14235
+      "chars": 9842
     },
     {
       "slug": "kernel-optimization",
@@ -355,6 +590,7 @@ window.KB_DATA = {
         "cuda-model",
         "memory-hierarchy"
       ],
+      "track": "aiinfra",
       "summary": "从 Roofline 定位瓶颈，讲清 tiling、寄存器分块与双缓冲如何降流量、藏延迟，再拆解 bank conflict、算子融合与 occupancy 的取舍。",
       "keyPoints": [
         "先用算术强度和 Roofline 判断 memory-bound 还是 compute-bound，再决定优化方向",
@@ -364,7 +600,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 31,
       "hasContent": true,
-      "chars": 13638
+      "chars": 10861
     },
     {
       "slug": "profiling",
@@ -380,6 +616,7 @@ window.KB_DATA = {
       "prereq": [
         "cuda-model"
       ],
+      "track": "aiinfra",
       "summary": "把“感觉慢”变成可复现的数字：nsys 找时间线空洞，ncu 读单 kernel 的吞吐、占用率与 stall，再用 Roofline 对照硬件峰值并给出瓶颈判定表。",
       "keyPoints": [
         "先定基线再动手：nsys 看整步时间线，ncu 看单 kernel，二者分工不可替代",
@@ -388,7 +625,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 24,
       "hasContent": true,
-      "chars": 9570
+      "chars": 7864
     },
     {
       "slug": "mixed-precision",
@@ -404,6 +641,7 @@ window.KB_DATA = {
       "prereq": [
         "gpu-architecture"
       ],
+      "track": "aiinfra",
       "summary": "比较 FP32、TF32、FP16、BF16、FP8 与 INT8 的范围和精度，讲清主权重、损失缩放、autocast 与累加精度，以及量化 scale 与粒度选择。",
       "keyPoints": [
         "指数位决定动态范围，尾数位决定相对精度；BF16 用 8 位指数换取与 FP32 相同的范围",
@@ -412,7 +650,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 27,
       "hasContent": true,
-      "chars": 13028
+      "chars": 9771
     },
     {
       "slug": "flashattention",
@@ -429,6 +667,7 @@ window.KB_DATA = {
         "gpu-architecture",
         "memory-hierarchy"
       ],
+      "track": "aiinfra",
       "summary": "标准注意力的瓶颈是 N×N 中间矩阵的 HBM 读写。FlashAttention 用 tiling、online softmax 与反向重算把这部分数据留在 SRAM。",
       "keyPoints": [
         "朴素注意力的瓶颈是 Θ(N²) 的 HBM 读写而非 FLOPs，算术强度只有 d/2，远低于 GPU 脊点。",
@@ -437,7 +676,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 24,
       "hasContent": true,
-      "chars": 11163
+      "chars": 8483
     },
     {
       "slug": "compilers",
@@ -454,6 +693,7 @@ window.KB_DATA = {
         "cuda-model",
         "kernel-optimization"
       ],
+      "track": "aiinfra",
       "summary": "从算子图到机器码，拆解 Dynamo、AOTAutograd、Inductor 与 Triton 的编译流水线，说明融合、布局与自动调参的收益来源，并给出性能回退的排障方法。",
       "keyPoints": [
         "编译器把算子清单改写成循环程序，收益主要来自融合、布局选择与自动调参，而不是某种魔法",
@@ -462,7 +702,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 25,
       "hasContent": true,
-      "chars": 10470
+      "chars": 8269
     },
     {
       "slug": "collective-comm",
@@ -478,6 +718,7 @@ window.KB_DATA = {
       "prereq": [
         "interconnect"
       ],
+      "track": "aiinfra",
       "summary": "集合通信是分布式训练的隐形税：从八种原语到 ring/tree 算法、NCCL 拓扑感知与 SHARP 卸载，算清 AllReduce 通信量并给出排障路径。",
       "keyPoints": [
         "八种集合原语的分工，以及 AllReduce = ReduceScatter + AllGather 这一核心恒等式",
@@ -486,7 +727,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 25,
       "hasContent": true,
-      "chars": 10600
+      "chars": 8513
     },
     {
       "slug": "data-parallel",
@@ -503,6 +744,7 @@ window.KB_DATA = {
         "collective-comm",
         "cuda-model"
       ],
+      "track": "aiinfra",
       "summary": "数据并行把完整模型复制到每张卡，再同步梯度。讲清 DDP 的 bucket 重叠、梯度累积的等价条件、global batch 缩放与 FSDP 分片。",
       "keyPoints": [
         "数据并行不省单卡显存，只把墙钟时间按卡数摊薄；每步通信量只与参数量有关，与 batch 大小无关",
@@ -513,7 +755,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 25,
       "hasContent": true,
-      "chars": 10252
+      "chars": 8638
     },
     {
       "slug": "model-parallel",
@@ -529,6 +771,7 @@ window.KB_DATA = {
       "prereq": [
         "collective-comm"
       ],
+      "track": "aiinfra",
       "summary": "当参数与激活超过单卡显存，数据并行就不够用。讲清张量并行的列/行切分、流水并行的 1F1B 调度与气泡公式，并给出并行度选择。",
       "keyPoints": [
         "张量并行中列并行不通信，行并行在输出处做 all-reduce；Transformer 每层前向共 2 次",
@@ -539,7 +782,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 22,
       "hasContent": true,
-      "chars": 9639
+      "chars": 7626
     },
     {
       "slug": "zero-memory",
@@ -555,6 +798,7 @@ window.KB_DATA = {
       "prereq": [
         "data-parallel"
       ],
+      "track": "aiinfra",
       "summary": "从每参数 16 字节的显存账本出发，算清激活、ZeRO 三阶段切分与 offload 的带宽代价，给出 DeepSpeed 与 FSDP 配置和 OOM 排障清单。",
       "keyPoints": [
         "混合精度加 Adam 的参数态约 16 字节/参数，其中优化器状态占 12 字节；加激活与临时区通常到 20 字节以上",
@@ -564,7 +808,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 24,
       "hasContent": true,
-      "chars": 10172
+      "chars": 7830
     },
     {
       "slug": "large-scale-training",
@@ -582,6 +826,7 @@ window.KB_DATA = {
         "model-parallel",
         "zero-memory"
       ],
+      "track": "aiinfra",
       "summary": "从 3D 并行的组合约束讲起，拆解 MFU 与吞吐估算，给出 loss spike、checkpoint 与弹性训练的工程做法，并用两个千卡到万卡级案例说明取舍。",
       "keyPoints": [
         "总卡数 = TP × PP × DP；TP 必须留在 NVLink 域内，PP 与层数、DP 与全局 batch 互相牵制",
@@ -592,7 +837,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 23,
       "hasContent": true,
-      "chars": 10351
+      "chars": 8031
     },
     {
       "slug": "inference-basics",
@@ -609,6 +854,7 @@ window.KB_DATA = {
         "three-bottlenecks",
         "memory-hierarchy"
       ],
+      "track": "aiinfra",
       "summary": "自回归推理分为 prefill 与 decode，前者算力受限，后者带宽受限。核心是 KV Cache 公式与 7B 算例、TTFT 与 TPOT 拆解，以及并发估算。",
       "keyPoints": [
         "prefill 并行处理整段提示词，算术强度约为 T，通常算力受限；decode 每步只处理 1 个 token，算术强度约为 batch size，通常带宽受限。",
@@ -618,7 +864,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 25,
       "hasContent": true,
-      "chars": 11038
+      "chars": 8511
     },
     {
       "slug": "batching-scheduling",
@@ -634,6 +880,7 @@ window.KB_DATA = {
       "prereq": [
         "inference-basics"
       ],
+      "track": "aiinfra",
       "summary": "静态批处理被 padding 与整批屏障拖累；连续批处理逐迭代调度，PagedAttention 分页治理 KV 碎片，叠加前缀缓存提升吞吐。",
       "keyPoints": [
         "静态 batch 的有效 token 占比为 ΣL/(B×L_max)，长度不齐时一半以上算力可能花在 padding 上。",
@@ -643,7 +890,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 24,
       "hasContent": true,
-      "chars": 10408
+      "chars": 8541
     },
     {
       "slug": "speculative-decoding",
@@ -659,6 +906,7 @@ window.KB_DATA = {
       "prereq": [
         "inference-basics"
       ],
+      "track": "aiinfra",
       "summary": "投机解码用小模型先猜、目标模型并行校验，严格拒绝采样保证分布不变；加速比取决于接受率、草稿长度与成本，低并发长输出收益最大，工程上须端到端实测。",
       "keyPoints": [
         "decode 在 batch=1 时算术强度约为 1 FLOP/byte，只有 H100 脊点（约 295 FLOP/byte）的 1/295，瓶颈是权重访存而不是算力。",
@@ -668,7 +916,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 24,
       "hasContent": true,
-      "chars": 10107
+      "chars": 8433
     },
     {
       "slug": "serving-engines",
@@ -684,6 +932,7 @@ window.KB_DATA = {
       "prereq": [
         "batching-scheduling"
       ],
+      "track": "aiinfra",
       "summary": "从五段流水线拆解引擎，对比 vLLM、SGLang、TensorRT-LLM 与 TGI 的取舍，并讲清 TP/EP 部署、KV-aware 路由、SLO 压测与灰度上线。",
       "keyPoints": [
         "引擎把请求拆成 API、tokenizer、scheduler、model runner、detokenizer 五段，延迟大头通常在排队与 prefill",
@@ -694,7 +943,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 26,
       "hasContent": true,
-      "chars": 11468
+      "chars": 8690
     },
     {
       "slug": "quantized-inference",
@@ -711,6 +960,7 @@ window.KB_DATA = {
         "mixed-precision",
         "inference-basics"
       ],
+      "track": "aiinfra",
       "summary": "从解码带宽出发，讲清 weight-only、W8A8 与 KV Cache 量化的差异，拆解 INT4 分组存储与激活离群值，并给出 GPTQ、AWQ、FP8 的落地方案。",
       "keyPoints": [
         "weight-only 只压权重，W8A8 连激活一起压，KV Cache 量化是独立开关，三者收益与风险不同",
@@ -719,7 +969,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 23,
       "hasContent": true,
-      "chars": 11373
+      "chars": 8051
     },
     {
       "slug": "cluster-scheduling",
@@ -735,6 +985,7 @@ window.KB_DATA = {
       "prereq": [
         "large-scale-training"
       ],
+      "track": "aiinfra",
       "summary": "从 K8s 的 GPU 资源模型出发，讲清 MIG 与共享调度的边界、gang 死锁的成因与解法、拓扑和队列配额怎么落地，并比较 Volcano、Kueue、Slurm。",
       "keyPoints": [
         "device plugin 如何把 GPU 变成整数型 extended resource，以及默认为什么不能共享",
@@ -744,7 +995,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 28,
       "hasContent": true,
-      "chars": 13029
+      "chars": 9746
     },
     {
       "slug": "storage-data",
@@ -760,6 +1011,7 @@ window.KB_DATA = {
       "prereq": [
         "large-scale-training"
       ],
+      "track": "aiinfra",
       "summary": "GPU 空转不是算力问题，而是数据没供上：数据管道的格式与预取决定供得上，checkpoint 的分片、异步与一致性决定恢复得了，带宽、并行文件系统与数据治理决定存得下。",
       "keyPoints": [
         "数据加载的瓶颈通常是小文件元数据、CPU 解码与网络尾延迟，而不是字节带宽；文本训练每节点持续读往往只有 0.3 MB/s 量级",
@@ -770,7 +1022,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 23,
       "hasContent": true,
-      "chars": 9677
+      "chars": 7831
     },
     {
       "slug": "observability",
@@ -787,6 +1039,7 @@ window.KB_DATA = {
         "cluster-scheduling",
         "collective-comm"
       ],
+      "track": "aiinfra",
       "summary": "把“训练莫名变慢”拆成证据链：四层监控看什么，XID、ECC、NVLink CRC 与 IB 错误怎么读，再用决策树分流 hang、慢节点、OOM 与数据饥饿，以及隔离与演练方法。",
       "keyPoints": [
         "同步训练的步时由最慢的 rank 决定：单卡慢 20% 会让全局有效算力降到约 83%，且往往没有任何报错",
@@ -796,7 +1049,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 25,
       "hasContent": true,
-      "chars": 10933
+      "chars": 8868
     },
     {
       "slug": "capacity-cost",
@@ -813,6 +1066,7 @@ window.KB_DATA = {
         "serving-engines",
         "large-scale-training"
       ],
+      "track": "aiinfra",
       "summary": "把 GPU 小时、MFU、每百万 token 成本、PUE 与利用率串成一套能算的账：从训练与推理的成本模型，到容量规划、租买与 spot 决策，再到优化杠杆与成本归因。",
       "keyPoints": [
         "每有效 GPU·h 成本 = 时价 ÷ 有效利用率；MFU、集群利用率与 PUE 这些分母比标价更能决定账单",
@@ -822,7 +1076,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 23,
       "hasContent": true,
-      "chars": 9681
+      "chars": 7446
     },
     {
       "slug": "moe",
@@ -839,6 +1093,7 @@ window.KB_DATA = {
         "model-parallel",
         "collective-comm"
       ],
+      "track": "aiinfra",
       "summary": "MoE 用路由让每 token 只激活少数专家，使总参数与计算解耦。本篇讲 gating、容量与丢 token、负载均衡、EP all-to-all、训练稳定性与推理显存。",
       "keyPoints": [
         "MoE 只把 FFN 换成 E 个专家，每 token 选 k 个，总参数随 E 增长而单 token 计算只随 k 增长",
@@ -849,7 +1104,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 26,
       "hasContent": true,
-      "chars": 11433
+      "chars": 9270
     },
     {
       "slug": "long-context",
@@ -866,6 +1121,7 @@ window.KB_DATA = {
         "flashattention",
         "inference-basics"
       ],
+      "track": "aiinfra",
       "summary": "长上下文成本随阶段切换：短序列看 KV 容量，数万 token 后注意力平方项主导，再远则受位置外推与有效利用率限制。重点是 RoPE/YaRN、KV 压缩、稀疏检索与序列并行。",
       "keyPoints": [
         "8B 模型在约 3 万 token 处（QKᵀ/PV 按完整矩阵计；计入因果掩码约 6 万），注意力的 4N²dHL 项超过其余部分的 2NP 项；此前 KV 容量是主角，此后平方项主导 prefill。",
@@ -876,7 +1132,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 27,
       "hasContent": true,
-      "chars": 11351
+      "chars": 9174
     },
     {
       "slug": "rl-infra",
@@ -893,6 +1149,7 @@ window.KB_DATA = {
         "serving-engines",
         "large-scale-training"
       ],
+      "track": "aiinfra",
       "summary": "算清 PPO 四模型与 GRPO 的显存账，讲透 rollout 与训练引擎分离、权重同步、异步 staleness、稳定性与容量规划，并给出框架选型建议。",
       "keyPoints": [
         "RL 训练把生成放进训练循环，rollout 是 memory-bound 的低 MFU 负载，长序列任务中常占总墙钟一半以上",
@@ -903,7 +1160,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 26,
       "hasContent": true,
-      "chars": 11491
+      "chars": 8930
     },
     {
       "slug": "ultra-scale",
@@ -920,6 +1177,7 @@ window.KB_DATA = {
         "interconnect",
         "large-scale-training"
       ],
+      "track": "aiinfra",
       "summary": "从四层拓扑与 NVL72 出发，拆解十万卡规模下的无损网络、MTBF、goodput 分解、checkpoint 重启与液冷电力，给出可量化的容量规划与运维口径。",
       "keyPoints": [
         "十万卡的第一指标不是峰值算力而是 goodput：MFU × 有效时间比例 × 回滚存活率",
@@ -929,7 +1187,7 @@ window.KB_DATA = {
       ],
       "readingMinutes": 23,
       "hasContent": true,
-      "chars": 10106
+      "chars": 7965
     },
     {
       "slug": "ai-infra-future",
@@ -946,6 +1204,7 @@ window.KB_DATA = {
         "moe",
         "ultra-scale"
       ],
+      "track": "aiinfra",
       "summary": "训练决定模型能否做出来，推理决定它能否被用得起。拆解推理成本的四个乘数、超节点与光互连、近存计算、编译器收敛与软硬协同，并给出一张可用于决策的技术雷达。",
       "keyPoints": [
         "训练以一次性资本支出为主，推理成本随调用量增长、主要体现为运营支出；使用量增长、推理模型与 agent 三者叠加，把优化重心推向单位 token 成本",
@@ -955,15 +1214,904 @@ window.KB_DATA = {
       ],
       "readingMinutes": 22,
       "hasContent": true,
-      "chars": 9200
+      "chars": 7271
+    },
+    {
+      "slug": "cpp-map",
+      "title": "C++ 全景与学习路线",
+      "subtitle": "从语言、标准库到工具链的一张地图",
+      "level": 0,
+      "cluster": "全景",
+      "tags": [
+        "概览",
+        "零开销抽象",
+        "学习路线"
+      ],
+      "prereq": [],
+      "track": "cpp",
+      "summary": "把 C++ 拆成核心语言、标准库、工具链与生态四块，讲清编译模型、零开销抽象、值语义与 RAII 如何串成一条主线，并给出七层学习路线。",
+      "keyPoints": [
+        "C++ 由核心语言、标准库、工具链与生态四部分组成，四者边界清楚，排障时才不会归错因。",
+        "分离编译与翻译单元决定了头文件、模板定义位置、ODR 与重编译范围这些日常现象。",
+        "零开销抽象不是“没有成本”，而是不用不付费、用了不比手写差；抽象自身的代价主要在编译期与代码体积，运行时成本要具体测量。",
+        "RAII 把资源生命周期绑定到对象生命周期，是 C++ 没有垃圾回收仍能安全管理资源的根本机制。",
+        "七层路线以“能解释、能动手、能排障”为过关标准，而不是以读完为标准。"
+      ],
+      "readingMinutes": 23,
+      "hasContent": true,
+      "chars": 7929
+    },
+    {
+      "slug": "build-to-run",
+      "title": "从源码到进程",
+      "subtitle": "预处理、编译、汇编与链接",
+      "level": 0,
+      "cluster": "全景",
+      "tags": [
+        "编译模型",
+        "链接",
+        "ELF"
+      ],
+      "prereq": [
+        "cpp-map"
+      ],
+      "track": "cpp",
+      "summary": "C++ 源码到进程要经过预处理、编译、汇编、链接四级流水线。本篇讲清每级产物与错误边界，拆解目标文件的符号表与重定位，对比静态与动态链接的内存布局。",
+      "keyPoints": [
+        "四个阶段各有独立产物，编译错误、链接错误与加载错误分属不同层级",
+        "目标文件靠符号表与重定位描述未定地址，链接器负责符号解析与地址回填",
+        "静态链接复制库代码，动态链接共享库页并在加载时完成重定位"
+      ],
+      "readingMinutes": 23,
+      "hasContent": true,
+      "chars": 7905
+    },
+    {
+      "slug": "types-conversions",
+      "title": "类型系统与隐式转换",
+      "subtitle": "每一个 bug 都可能从一次自动转换开始",
+      "level": 1,
+      "cluster": "语言核心",
+      "tags": [
+        "类型",
+        "隐式转换",
+        "static_cast"
+      ],
+      "prereq": [
+        "cpp-map"
+      ],
+      "track": "cpp",
+      "summary": "从标准保证的最小宽度讲起，拆解有符号与无符号回绕、整型提升与算术转换、窄化与列表初始化、explicit 与四种 cast，以及 auto 与 decltype 推导。",
+      "keyPoints": [
+        "标准只保证最小位宽；跨平台用定宽类型，别把 LP64 与 LLP64 的事实当成语言规则",
+        "无符号运算按模 2^N 回绕，有符号溢出是未定义行为；两者混用会让比较与循环条件悄悄翻转",
+        "单参构造函数默认 explicit，转换用最窄的具名 cast；auto 会丢弃顶层 const 与引用"
+      ],
+      "readingMinutes": 25,
+      "hasContent": true,
+      "chars": 8625
+    },
+    {
+      "slug": "pointers-const",
+      "title": "指针、引用与 const 正确性",
+      "subtitle": "把“谁拥有、能否修改”写进类型里",
+      "level": 1,
+      "cluster": "语言核心",
+      "tags": [
+        "指针",
+        "引用",
+        "const"
+      ],
+      "prereq": [
+        "types-conversions"
+      ],
+      "track": "cpp",
+      "summary": "从地址与别名的差异出发，讲清 nullptr、指针算术与数组退化，拆解 const 的四种组合、两层 const 与 const 成员函数，并给出悬垂指针与成员指针的工程规则。",
+      "keyPoints": [
+        "指针是可空、可重绑、可算术的对象；引用是必须绑定且不可重绑的别名",
+        "const 的四种组合、顶层与底层 const 的拷贝与转换规则",
+        "const 成员函数的 this 类型、重载选择与 mutable 的边界",
+        "悬垂指针的典型来源与检测手段，函数指针/成员指针的声明与调用"
+      ],
+      "readingMinutes": 24,
+      "hasContent": true,
+      "chars": 8094
+    },
+    {
+      "slug": "functions-odr",
+      "title": "函数、重载与 ODR",
+      "subtitle": "链接期才暴露的错误，往往最难查",
+      "level": 1,
+      "cluster": "语言核心",
+      "tags": [
+        "重载",
+        "ODR",
+        "链接属性"
+      ],
+      "prereq": [
+        "pointers-const"
+      ],
+      "track": "cpp",
+      "summary": "从声明与定义讲起，拆开重载决议、默认参数、inline 的真实语义和单一定义规则，并落到链接属性、函数指针、lambda 与头文件设计，让你能定位链接期错误。",
+      "keyPoints": [
+        "函数声明只引入名字与类型，定义才提供函数体；变量还涉及存储与链接属性",
+        "重载决议按候选集、可行集、转换序列排序三步走，返回类型不参与重载",
+        "inline 的真实含义是允许多个编译单元出现相同定义，而不是强制内联",
+        "ODR 违规常常不报错，链接器只能抓住一部分强符号冲突",
+        "头文件只放声明，inline、constexpr、类与模板定义是例外"
+      ],
+      "readingMinutes": 22,
+      "hasContent": true,
+      "chars": 7733
+    },
+    {
+      "slug": "classes-lifecycle",
+      "title": "类与对象生命周期",
+      "subtitle": "构造、析构与成员初始化的顺序",
+      "level": 1,
+      "cluster": "语言核心",
+      "tags": [
+        "类",
+        "构造",
+        "析构"
+      ],
+      "prereq": [
+        "functions-odr"
+      ],
+      "track": "cpp",
+      "summary": "从原始内存如何变成对象讲起，拆解初始化列表、成员初始化顺序、默认/委托/拷贝构造与 explicit，再落到析构、static 成员与异常语义，帮你避开对象生命周期中的顺序陷阱。",
+      "keyPoints": [
+        "class 与 struct 的唯一差别是默认访问权限与默认继承方式，访问控制是编译期检查",
+        "成员初始化列表是初始化，函数体赋值只是赋值；实际顺序取决于声明顺序而非书写顺序",
+        "构造顺序为虚基类、直接基类、成员、函数体，析构严格逆序",
+        "构造失败时已构造的子对象逆序销毁；析构默认 noexcept，前提是所有子对象析构都不抛"
+      ],
+      "readingMinutes": 22,
+      "hasContent": true,
+      "chars": 7611
+    },
+    {
+      "slug": "copy-move-semantics",
+      "title": "拷贝、移动与 Rule of Five",
+      "subtitle": "值语义的核心契约",
+      "level": 1,
+      "cluster": "语言核心",
+      "tags": [
+        "拷贝构造",
+        "移动语义",
+        "Rule of Five"
+      ],
+      "prereq": [
+        "classes-lifecycle"
+      ],
+      "track": "cpp",
+      "summary": "围绕五个特殊成员函数讲清深拷贝、自赋值与异常安全，给出 Rule of 0/3/5 的决策路径，并解释 RVO 与移动后状态的关键约束。",
+      "keyPoints": [
+        "拷贝构造/赋值与移动构造/赋值的语义、签名和隐式生成规则",
+        "深拷贝与浅拷贝的内存布局差异，以及 double free 的成因",
+        "Rule of 0/3/5 决策树，=default 与 =delete 的正确用法",
+        "copy-and-swap、自赋值、异常安全，以及 noexcept 移动对容器的影响",
+        "移动后的有效但未指定状态，RVO/NRVO 让移动消失的原因"
+      ],
+      "readingMinutes": 25,
+      "hasContent": true,
+      "chars": 8977
+    },
+    {
+      "slug": "operator-overloading",
+      "title": "运算符重载与代理类型",
+      "subtitle": "让自定义类型像内建类型一样自然",
+      "level": 1,
+      "cluster": "语言核心",
+      "tags": [
+        "运算符",
+        "代理对象",
+        "比较"
+      ],
+      "prereq": [
+        "classes-lifecycle"
+      ],
+      "track": "cpp",
+      "summary": "从“运算符就是函数调用”出发，讲清可重载边界、成员与非成员的选择、返回值设计、三路比较与代理对象，并给出可编译的 C++20 示例与常见误区。",
+      "keyPoints": [
+        "运算符重载不改变优先级和结合性，只是把表达式翻译成函数调用；先想清楚翻译成谁，再决定写不写",
+        "必须成员的是 =、-> 和类型转换；[] 与 () 传统上也是成员，C++23 起可声明为 static；对称二元运算符应写成非成员（常用 hidden friend）",
+        "返回类型按语义选择：产生新值返回 T，修改自身返回 T&，观察返回 bool 或比较类别",
+        "C++20 的 <=> 把六种比较收敛成三种顺序类别；默认定义按成员字典序比较",
+        "代理对象用“像引用”的中间对象换取存储灵活性，代价是 auto、取地址和生命周期上的陷阱"
+      ],
+      "readingMinutes": 26,
+      "hasContent": true,
+      "chars": 9296
+    },
+    {
+      "slug": "inheritance-vtable",
+      "title": "继承、虚函数与对象布局",
+      "subtitle": "多态在内存里长什么样",
+      "level": 1,
+      "cluster": "语言核心",
+      "tags": [
+        "继承",
+        "虚函数",
+        "vtable"
+      ],
+      "prereq": [
+        "classes-lifecycle",
+        "copy-move-semantics"
+      ],
+      "track": "cpp",
+      "summary": "从访问控制与构造析构顺序讲到 vtable/vptr 布局、虚析构、切片与多继承，用可编译示例和内存图建立多态心智模型，并给出组合优于继承的判据。",
+      "keyPoints": [
+        "public 继承表达 is-a；private 继承只是实现复用，成员可见性由继承方式与基类访问级别共同决定。",
+        "构造顺序是虚基类、直接基类、成员、函数体；期间 vptr 逐层切换，构造与析构中调用虚函数不会到达派生类。",
+        "vtable 是类级函数指针表，vptr 是对象级指针；Itanium ABI 下地址点前是 offset-to-top 与 typeinfo，虚析构占两个槽位，但这些都不是标准保证。",
+        "通过基类指针 delete 时基类析构必须是 public virtual；按值传递或存进 vector<Base> 会发生对象切片。",
+        "多继承时每个多态基类子对象各带 vptr；覆盖调用需要 this 调整与 thunk，dynamic_cast 依赖 RTTI 且向下/交叉转型要求源类型多态。"
+      ],
+      "readingMinutes": 25,
+      "hasContent": true,
+      "chars": 8881
+    },
+    {
+      "slug": "raii",
+      "title": "RAII 与资源管理",
+      "subtitle": "把释放资源的责任交给析构函数",
+      "level": 2,
+      "cluster": "对象与资源",
+      "tags": [
+        "RAII",
+        "异常安全",
+        "作用域守卫"
+      ],
+      "prereq": [
+        "classes-lifecycle"
+      ],
+      "track": "cpp",
+      "summary": "从一段漏掉 fclose 的代码说起，讲清 RAII 的构造-析构契约、异常栈展开、作用域守卫与所有权建模，让你把任意句柄包成不易泄漏、不易误用的类型。",
+      "keyPoints": [
+        "RAII 把资源生命周期绑定到栈对象的生命周期：构造获取并校验，析构释放且不抛异常",
+        "自动存储期对象在正常或异常离开作用域时会被析构，提前 return、抛出异常都算离开；顺序与构造相反",
+        "异常展开只析构抛出点到匹配 handler 之间的对象，构造函数体内裸获取的资源不会自动回收",
+        "封装资源类要明确拷贝与移动语义：通常删除拷贝、实现 noexcept 移动，并保证 moved-from 状态可析构",
+        "RAII 不等于智能指针：锁、文件、套接字、连接都该有对应的守卫类型，所有权用 unique_ptr、shared_ptr 与非拥有指针表达"
+      ],
+      "readingMinutes": 29,
+      "hasContent": true,
+      "chars": 10078
+    },
+    {
+      "slug": "smart-pointers",
+      "title": "智能指针与所有权建模",
+      "subtitle": "unique_ptr 默认，shared_ptr 慎用",
+      "level": 2,
+      "cluster": "对象与资源",
+      "tags": [
+        "unique_ptr",
+        "shared_ptr",
+        "weak_ptr"
+      ],
+      "prereq": [
+        "raii",
+        "pointers-const"
+      ],
+      "track": "cpp",
+      "summary": "从所有权建模出发，讲清 unique_ptr 的独占与删除器、shared_ptr 的控制块、原子计数与线程安全边界，以及 weak_ptr 破环与选型规则。",
+      "keyPoints": [
+        "所有权应写进类型：默认 unique_ptr，确需共享才用 shared_ptr",
+        "shared_ptr 的拷贝不是免费的：控制块原子计数会带来缓存行争用",
+        "make_shared 合并分配省一次分配，但 weak_ptr 存活时整块内存不释放",
+        "循环引用要在建模层面用 weak_ptr 或非拥有指针打破"
+      ],
+      "readingMinutes": 24,
+      "hasContent": true,
+      "chars": 8503
+    },
+    {
+      "slug": "value-categories",
+      "title": "值类别与完美转发",
+      "subtitle": "std::move 不移动，std::forward 不转发",
+      "level": 2,
+      "cluster": "对象与资源",
+      "tags": [
+        "值类别",
+        "完美转发",
+        "move"
+      ],
+      "prereq": [
+        "copy-move-semantics"
+      ],
+      "track": "cpp",
+      "summary": "从值类别三分类出发，讲清引用折叠与万能引用，拆解 std::move 和 std::forward 的真实语义，并解释移动构造、NRVO 与常见误用。",
+      "keyPoints": [
+        "值类别是表达式的属性：lvalue 有身份不可移动，xvalue 有身份可移动，prvalue 无身份可移动",
+        "引用折叠只有一条规则：出现一个 & 就是 &，两个 && 才是 &&；T&& 只有在 T 参与推导时才是万能引用",
+        "std::move 是无条件转成右值引用的 static_cast，对 const 对象会退化为拷贝；std::forward 按 T 有条件还原值类别",
+        "移动构造是普通成员函数，负责窃取资源；noexcept 影响 vector 扩容时走移动还是退回拷贝，moved-from 对象处于有效但未指定状态",
+        "C++17 强制消除 prvalue 的拷贝，NRVO 是可选优化；return std::move(x) 会抑制 NRVO，通常是负优化"
+      ],
+      "readingMinutes": 28,
+      "hasContent": true,
+      "chars": 9407
+    },
+    {
+      "slug": "memory-layout",
+      "title": "对象布局、对齐与存储期",
+      "subtitle": "sizeof 背后的规则",
+      "level": 2,
+      "cluster": "对象与资源",
+      "tags": [
+        "内存布局",
+        "对齐",
+        "存储期"
+      ],
+      "prereq": [
+        "classes-lifecycle"
+      ],
+      "track": "cpp",
+      "summary": "从 sizeof 与 alignof 出发，讲清 padding、成员重排、标准布局、聚合与位域、四类存储期与栈帧，帮你看懂编译器布局，守住对齐与别名边界。",
+      "keyPoints": [
+        "对象表示包含 padding，值表示只含有效位；sizeof/alignof 与三条偏移规则决定布局",
+        "成员按对齐值重排可减少 padding；标准布局保证首成员指针可互换与 offsetof",
+        "聚合初始化与位域的边界：指定初始化是 C++20，位域布局由实现定义",
+        "自动、静态、线程、动态四类存储期，以及栈帧、new[] cookie、EBO 与 SIMD 对齐实践"
+      ],
+      "readingMinutes": 29,
+      "hasContent": true,
+      "chars": 9926
+    },
+    {
+      "slug": "allocation",
+      "title": "new、delete 与分配器",
+      "subtitle": "分配是性能与正确性的交叉点",
+      "level": 2,
+      "cluster": "对象与资源",
+      "tags": [
+        "new",
+        "allocator",
+        "内存池"
+      ],
+      "prereq": [
+        "memory-layout",
+        "raii"
+      ],
+      "track": "cpp",
+      "summary": "从 new 讲起，拆开分配与构造两步，理清数组配对、对齐和放置构造，再进入分配器、pmr 与 arena 内存池，最后用碎片模型与排障清单把性能与正确性落到工程。",
+      "keyPoints": [
+        "new 表达式、operator new、placement new 与 malloc 的分工和失败语义",
+        "new[]/delete[] 配对、数组 cookie 与 over-aligned 类型的对齐分配",
+        "std::allocator 契约、allocator_traits 与 C++17 pmr 多态分配器",
+        "arena/内存池的 O(1) 分配、外部与内部碎片的识别与治理"
+      ],
+      "readingMinutes": 33,
+      "hasContent": true,
+      "chars": 11447
+    },
+    {
+      "slug": "exceptions",
+      "title": "异常、错误处理与异常安全",
+      "subtitle": "异常是控制流，也是接口契约",
+      "level": 2,
+      "cluster": "对象与资源",
+      "tags": [
+        "异常",
+        "noexcept",
+        "错误处理"
+      ],
+      "prereq": [
+        "raii",
+        "classes-lifecycle"
+      ],
+      "track": "cpp",
+      "summary": "异常是 C++ 的第二条控制流。讲清栈展开、异常对象的复制与切片、三级异常安全保证、noexcept 契约与析构边界，并比较错误码与 expected 的取舍。",
+      "keyPoints": [
+        "throw 按表达式的静态类型构造异常对象，随后沿调用栈查找 catch，离开的每一帧逆序析构局部对象；无人接住则 terminate",
+        "catch 按值会复制并切片，捕获多态基类应使用 const 引用；throw 处也可能因静态类型发生切片",
+        "基本保证不泄漏、不破坏不变量；强保证失败即回滚；不抛保证用 noexcept 表达",
+        "noexcept 是契约而不是优化开关，违反即 terminate；它决定 vector 扩容时能否安全移动",
+        "错误码、optional、expected 各有边界；零成本异常把开销放在只读表和抛出路径上"
+      ],
+      "readingMinutes": 25,
+      "hasContent": true,
+      "chars": 8404
+    },
+    {
+      "slug": "undefined-behavior",
+      "title": "未定义行为与严格别名",
+      "subtitle": "编译器没有义务让你的错误代码工作",
+      "level": 2,
+      "cluster": "对象与资源",
+      "tags": [
+        "UB",
+        "严格别名",
+        "优化"
+      ],
+      "prereq": [
+        "pointers-const",
+        "memory-layout"
+      ],
+      "track": "cpp",
+      "summary": "未定义行为不是结果随机，而是标准不再保护你的程序。区分 UB、未指定与实现定义行为，讲清编译器如何利用 UB 优化、严格别名与对象生命周期，给出 sanitizer 的覆盖边界。",
+      "keyPoints": [
+        "UB 指标准对执行不施加任何要求，既非结果不确定也非必然崩溃；未指定行为仍在标准内，实现定义行为必须写入文档",
+        "优化器以程序无 UB 为前提做代数化简、删除分支与重排访存，因此错误会跨语句扩散",
+        "严格别名要求通过对象的真实类型访问，位重解释应使用 memcpy 或 C++20 的 std::bit_cast",
+        "对象生命周期结束后存储可能仍在，但访问已结束生命周期的对象依然是 UB",
+        "ASan、UBSan、TSan、MSan 各自覆盖不同错误，没有单一工具能检测全部 UB"
+      ],
+      "readingMinutes": 24,
+      "hasContent": true,
+      "chars": 8197
+    },
+    {
+      "slug": "templates-basics",
+      "title": "模板基础与实例化",
+      "subtitle": "泛型编程的入口",
+      "level": 3,
+      "cluster": "泛型与标准库",
+      "tags": [
+        "函数模板",
+        "类模板",
+        "特化"
+      ],
+      "prereq": [
+        "functions-odr",
+        "classes-lifecycle"
+      ],
+      "track": "cpp",
+      "summary": "从函数模板与类模板讲到参数推导、显式实参、实例化与代码膨胀、全特化与偏特化，再拆开依赖名称、typename、两阶段查找和模板的 ODR 规则，让你看懂容器与算法的实现方式。",
+      "keyPoints": [
+        "模板是编译期的代码生成器，不是运行时多态，也不是文本替换的宏",
+        "模板实参可以推导也可以显式指定；推导失败时先检查类型是否一致",
+        "每个使用的类型组合都会产生一份实例化，链接器按符号合并同一实例",
+        "全特化改写某个具体类型，偏特化改写一类类型模式，函数模板用重载替代偏特化",
+        "隐式实例化时模板定义必须对实例化点可见，所以通常整体放在头文件里"
+      ],
+      "readingMinutes": 27,
+      "hasContent": true,
+      "chars": 9583
+    },
+    {
+      "slug": "templates-advanced",
+      "title": "变参模板、SFINAE 与 concepts",
+      "subtitle": "让模板报错说人话",
+      "level": 3,
+      "cluster": "泛型与标准库",
+      "tags": [
+        "变参模板",
+        "SFINAE",
+        "concepts"
+      ],
+      "prereq": [
+        "templates-basics"
+      ],
+      "track": "cpp",
+      "summary": "从参数包与折叠表达式讲到 SFINAE 与检测惯用法，再进入概念约束：把要求写进签名、逐项检查表达式良构，并按包含关系决定重载排序；最后以 CRTP 收束静态多态，交代元编程取舍。",
+      "keyPoints": [
+        "参数包必须放在模式里展开，C++17 折叠表达式取代了大部分递归写法",
+        "SFINAE 只在立即上下文生效，失败是移除候选而不是报错",
+        "concepts 把要求写进签名，并通过 subsumption 影响重载排序",
+        "CRTP 用编译期绑定换取零虚调用，但失去运行时多态与异构存储",
+        "优先 concepts，其次 if constexpr 与标签分发，最后才用 SFINAE"
+      ],
+      "readingMinutes": 29,
+      "hasContent": true,
+      "chars": 9896
+    },
+    {
+      "slug": "constexpr",
+      "title": "constexpr 与编译期计算",
+      "subtitle": "把工作从运行时搬到编译时",
+      "level": 3,
+      "cluster": "泛型与标准库",
+      "tags": [
+        "constexpr",
+        "consteval",
+        "编译期"
+      ],
+      "prereq": [
+        "templates-basics"
+      ],
+      "track": "cpp",
+      "summary": "讲清 constexpr、consteval 与 constinit 的区别、常量表达式规则和 C++20 编译期容器，并给出编译期哈希实战与成本评估。",
+      "keyPoints": [
+        "constexpr 是“允许在编译期求值”，只有常量上下文才强制编译期；consteval 才无条件强制",
+        "常量求值有严格规则：不得有未定义行为、不得读未初始化对象，C++20 的分配必须在求值结束前释放",
+        "if constexpr 只丢弃模板中的未选分支，不是预处理器；编译期计算要核算编译时间与二进制体积"
+      ],
+      "readingMinutes": 23,
+      "hasContent": true,
+      "chars": 7726
+    },
+    {
+      "slug": "stl-containers",
+      "title": "STL 容器与迭代器",
+      "subtitle": "先选对容器，再谈优化",
+      "level": 3,
+      "cluster": "泛型与标准库",
+      "tags": [
+        "vector",
+        "map",
+        "迭代器"
+      ],
+      "prereq": [
+        "templates-basics",
+        "copy-move-semantics"
+      ],
+      "track": "cpp",
+      "summary": "把 STL 容器看成一份复杂度与迭代器失效的契约：对比序列、关联、无序容器与适配器的内存布局和操作代价，并给出一张选型决策表。",
+      "keyPoints": [
+        "容器是契约：选择容器等于选择一组复杂度承诺与迭代器失效规则，而不是选择语法。",
+        "vector 默认首选：连续内存、缓存友好，几何扩容把 n 次 push_back 的总迁移摊到 O(n)。",
+        "需要按 key 查找时，有序用 map/set，只查不遍历且哈希质量好时用 unordered_map/set。",
+        "迭代器类别决定算法能否使用；插入删除前先确认哪些迭代器、指针和引用会失效。",
+        "适配器不提供迭代器；span 与 string_view 是非拥有视图，绝不延长被观察对象的生命周期。"
+      ],
+      "readingMinutes": 27,
+      "hasContent": true,
+      "chars": 9204
+    },
+    {
+      "slug": "stl-algorithms",
+      "title": "算法、lambda 与 ranges",
+      "subtitle": "用组合代替手写循环",
+      "level": 3,
+      "cluster": "泛型与标准库",
+      "tags": [
+        "算法",
+        "lambda",
+        "ranges"
+      ],
+      "prereq": [
+        "stl-containers",
+        "value-categories"
+      ],
+      "track": "cpp",
+      "summary": "讲清算法分类与复杂度、lambda 捕获的生命周期、std::function 与 function_ref 的开销，以及 ranges 视图的惰性求值与投影组合。",
+      "keyPoints": [
+        "算法只依赖迭代器能力与可调用对象，不依赖容器；remove 只搬移不删除，删除仍需 erase",
+        "lambda 每个表达式生成唯一闭包类型，按值捕获复制、按引用捕获只存地址，被捕获对象先死即悬垂",
+        "std::function 拥有并可能分配，调用难以内联；function_ref 非拥有、轻量，但不能延长生命周期",
+        "ranges 视图构造 O(1)、迭代时才计算，take 能提前终止；视图通常不拥有数据，底层容器先销毁即悬垂（右值临时容器由 owning_view 接管）",
+        "投影把“按什么比较”从比较器里拆出来；并行算法要求无数据竞争且异常不得逃逸"
+      ],
+      "readingMinutes": 26,
+      "hasContent": true,
+      "chars": 9144
+    },
+    {
+      "slug": "string-view-format",
+      "title": "字符串、string_view 与 format",
+      "subtitle": "文本处理中的生命周期陷阱",
+      "level": 3,
+      "cluster": "泛型与标准库",
+      "tags": [
+        "string",
+        "string_view",
+        "format"
+      ],
+      "prereq": [
+        "stl-containers",
+        "pointers-const"
+      ],
+      "track": "cpp",
+      "summary": "std::string 的 SSO 布局决定指针何时失效，string_view 零拷贝却极易悬垂，std::format 与 to_chars 让格式化类型安全。",
+      "keyPoints": [
+        "std::string 拥有字节，SSO 让短串免于堆分配；阈值与 sizeof 属于标准库与 ABI 的实现细节",
+        "string_view 只是指针加长度：不拥有、不保证 NUL 结尾、不延长被观察对象的生命周期",
+        "只读参数优先 string_view，但不要保存、不要返回，也不要从临时 std::string 构造视图",
+        "C++20 std::format 在格式串编译期可知时检查类型，chrono 可直接按日历字段格式化",
+        "to_chars/from_chars 无分配且与 locale 无关，是数字与文本互转的默认工具"
+      ],
+      "readingMinutes": 29,
+      "hasContent": true,
+      "chars": 9849
+    },
+    {
+      "slug": "concurrency-basics",
+      "title": "线程、互斥量与条件变量",
+      "subtitle": "先保证正确，再追求并行",
+      "level": 4,
+      "cluster": "并发与性能",
+      "tags": [
+        "thread",
+        "mutex",
+        "condition_variable"
+      ],
+      "prereq": [
+        "raii",
+        "classes-lifecycle"
+      ],
+      "track": "cpp",
+      "summary": "从并发与并行的区别讲起，拆解 std::thread 与 jthread 的生命周期、互斥量与三种锁守卫、条件变量的伪唤醒，并用生产者消费者与线程池示例说明死锁四条件与避免策略。",
+      "keyPoints": [
+        "并发是同时应对多件事的结构，并行是同时做多件事的执行；并发代码的第一目标是正确，而不是更快",
+        "std::thread 析构时仍 joinable 会调用 std::terminate；std::jthread（C++20）析构时自动 request_stop 再 join",
+        "互斥量保护的是共享可变状态，锁守卫用 RAII 保证 unlock；同时锁多把时用 std::scoped_lock（C++17）",
+        "条件变量必须配合谓词使用，wait(lock, pred) 消化伪唤醒，状态修改与谓词检查必须在同一把锁下",
+        "死锁的四个必要条件破坏任意一条即可排除：一次取全部锁、固定加锁顺序、try_lock 超时退避"
+      ],
+      "readingMinutes": 31,
+      "hasContent": true,
+      "chars": 10641
+    },
+    {
+      "slug": "atomics-memory-order",
+      "title": "原子操作与内存序",
+      "subtitle": "happens-before 是可以被证明的",
+      "level": 4,
+      "cluster": "并发与性能",
+      "tags": [
+        "atomic",
+        "memory_order",
+        "happens-before"
+      ],
+      "prereq": [
+        "concurrency-basics"
+      ],
+      "track": "cpp",
+      "summary": "从数据竞争的定义出发，拆解六种内存序、release/acquire 配对与传递闭包，讲清 relaxed 计数、CAS 与 ABA、自旋锁与无锁结构的边界。",
+      "keyPoints": [
+        "数据竞争是“两个冲突访问之间没有 happens-before”的未定义行为，而不是“结果看起来不对”",
+        "sequenced-before 约束同一线程，synchronizes-with 约束跨线程，两者取传递闭包得到 happens-before",
+        "release 写与读到该值的 acquire 读配对，把写者屏障前的所有写发布给读者屏障后的所有读",
+        "relaxed 只保证原子性与单对象修改顺序，适合计数；需要发布或消费数据时必须用 acquire/release",
+        "volatile 不提供原子性与跨线程顺序，x86 的强内存模型是硬件行为，不能替代 C++ 的 memory_order"
+      ],
+      "readingMinutes": 29,
+      "hasContent": true,
+      "chars": 10325
+    },
+    {
+      "slug": "async-coroutines",
+      "title": "async、future 与协程",
+      "subtitle": "从任务到挂起的执行模型",
+      "level": 4,
+      "cluster": "并发与性能",
+      "tags": [
+        "future",
+        "coroutine",
+        "co_await"
+      ],
+      "prereq": [
+        "concurrency-basics"
+      ],
+      "track": "cpp",
+      "summary": "从 future 的结果凭据讲到 C++20 协程：拆解 promise_type、awaiter 与 handle，讲清 co_await 展开、帧布局、调度与线程关系。",
+      "keyPoints": [
+        "future 保存结果，协程保存执行现场；这是两种不同的异步模型",
+        "future 是一次性凭据：get 阻塞且只能成功取一次，async 的 future 析构可能阻塞",
+        "协程由 promise_type 控制生命周期，由 awaiter 决定挂起行为，由 handle 负责恢复",
+        "协程帧通常分配在堆上，形参按值复制进帧，引用形参只保存引用",
+        "协程不是线程也不是并行：resume 在哪个线程执行，协程体就在哪个线程运行"
+      ],
+      "readingMinutes": 28,
+      "hasContent": true,
+      "chars": 9707
+    },
+    {
+      "slug": "performance",
+      "title": "C++ 性能工程",
+      "subtitle": "缓存、分配与测量的三角",
+      "level": 4,
+      "cluster": "并发与性能",
+      "tags": [
+        "性能",
+        "缓存",
+        "benchmark"
+      ],
+      "prereq": [
+        "memory-layout",
+        "stl-containers"
+      ],
+      "track": "cpp",
+      "summary": "从测量闭环讲起，拆解缓存局部性、AoS/SoA 布局、分支与内联、分配与拷贝、伪共享，并给出 Google Benchmark 与 perf 的正确用法。",
+      "keyPoints": [
+        "性能结论只在具体场景成立：先建立可重复的基线，一次只改一个变量，改动幅度必须超过测量噪声",
+        "缓存层级决定了大多数“看似算得快”的优化：局部性、数据布局与缓存行利用率往往比指令条数更关键",
+        "AoS 适合整体访问对象，SoA 适合批量扫描单列；选择依据是访问模式，不是直觉",
+        "内联、LTO、分支提示都只是给编译器的信息，是否生效要反汇编或看 profile 验证",
+        "在热点路径上减少分配与拷贝（reserve、移动、string_view）通常有直接收益，但零拷贝会把生命周期风险转移给调用方"
+      ],
+      "readingMinutes": 28,
+      "hasContent": true,
+      "chars": 9409
+    },
+    {
+      "slug": "build-systems",
+      "title": "CMake 与构建系统",
+      "subtitle": "把编译命令变成可维护的工程",
+      "level": 5,
+      "cluster": "工程化",
+      "tags": [
+        "CMake",
+        "target",
+        "依赖管理"
+      ],
+      "prereq": [
+        "build-to-run"
+      ],
+      "track": "cpp",
+      "summary": "从 g++ 命令出发，讲清 CMake target 与属性传播、include 与链接两条链、构建类型、依赖管理、PCH 与 ccache、交叉编译与增量构建及排障路径。",
+      "keyPoints": [
+        "构建系统是依赖图而非命令集合：描述、调度、增量三件事缺一不可",
+        "现代 CMake 只围绕 target 与 usage requirements，PUBLIC/PRIVATE/INTERFACE 决定属性是否传给下游",
+        "include 是编译期的头文件搜索，链接是链接期的符号解析，两条链的失败信息与修法完全不同",
+        "依赖必须显式、版本必须锁定、构建必须可复现；增量出错先看图，再决定是否清空"
+      ],
+      "readingMinutes": 30,
+      "hasContent": true,
+      "chars": 10661
+    },
+    {
+      "slug": "testing-sanitizers",
+      "title": "测试、Sanitizer 与模糊测试",
+      "subtitle": "让机器替你找未定义行为",
+      "level": 5,
+      "cluster": "工程化",
+      "tags": [
+        "GoogleTest",
+        "ASan",
+        "fuzzing"
+      ],
+      "prereq": [
+        "build-systems",
+        "undefined-behavior"
+      ],
+      "track": "cpp",
+      "summary": "从测试金字塔、GoogleTest 断言与夹具、四种 Sanitizer 的检测边界，到 Valgrind、libFuzzer、覆盖率与 CI 门禁，讲清各工具能证明什么。",
+      "keyPoints": [
+        "测试金字塔是成本模型而非教条：越靠底层反馈越快、定位越准，越靠顶层越接近真实但越脆",
+        "断言分致命与非致命，夹具让每个测试用例拥有独立且可复现的初始状态",
+        "ASan 查越界与释放后使用，UBSan 查语言层未定义运算，TSan 查数据竞争，MSan 查未初始化读，没有工具覆盖全部 UB",
+        "Sanitizer 只能报告本次执行实际走到的路径，未命中不等于代码正确",
+        "Fuzzing 用覆盖率引导输入变异，把崩溃样本固化为回归用例；覆盖率度量执行范围，不度量断言质量"
+      ],
+      "readingMinutes": 24,
+      "hasContent": true,
+      "chars": 8238
+    },
+    {
+      "slug": "debugging",
+      "title": "调试：gdb、lldb 与崩溃分析",
+      "subtitle": "从现象回到最小复现",
+      "level": 5,
+      "cluster": "工程化",
+      "tags": [
+        "gdb",
+        "core dump",
+        "调试"
+      ],
+      "prereq": [
+        "build-systems"
+      ],
+      "track": "cpp",
+      "summary": "以复现、定位、最小化、验证的闭环为主线，讲清 gdb 与 lldb 的断点、观察点与栈回溯，core dump 分析、反向调试边界和日志调试纪律。",
+      "keyPoints": [
+        "调试是闭环：先让失败可重复，再用可证伪的假设驱动观测，最后最小化并固化为回归测试",
+        "断点决定停在哪里，观察点回答谁改了内存；栈回溯与 core dump 把崩溃现场还原成调用链",
+        "符号匹配、优化级别与构建指纹决定分析是否可信，工具选择服从问题类型"
+      ],
+      "readingMinutes": 24,
+      "hasContent": true,
+      "chars": 8201
+    },
+    {
+      "slug": "abi-linking",
+      "title": "ABI、动态库与二进制兼容",
+      "subtitle": "为什么换个编译器就链接失败",
+      "level": 5,
+      "cluster": "工程化",
+      "tags": [
+        "ABI",
+        "动态链接",
+        "符号"
+      ],
+      "prereq": [
+        "build-to-run",
+        "inheritance-vtable"
+      ],
+      "track": "cpp",
+      "summary": "API 与头文件都没变，为何换个编译器就链接失败或运行崩溃？拆解名字修饰、符号可见性、soname、RTTI 与异常跨库、STL 与内联风险，给出二进制兼容规则。",
+      "keyPoints": [
+        "API 是源码契约，ABI 是二进制契约；C++ 标准不规定 ABI，平台与编译器决定细节",
+        "名字修饰决定符号名；extern \"C\" 只关闭修饰，不保证布局、异常与分配器兼容",
+        "soname 与版本脚本管理运行期查找和符号版本；ABI 破坏必须提升 soname",
+        "RTTI、异常、STL 与 inline 函数体是跨库的四大风险源",
+        "插件边界首选 C ABI 或稳定纯虚接口，配合版本握手与明确的分配归属"
+      ],
+      "readingMinutes": 27,
+      "hasContent": true,
+      "chars": 9416
+    },
+    {
+      "slug": "api-design",
+      "title": "API 设计与接口演进",
+      "subtitle": "好接口让错误难以写出来",
+      "level": 5,
+      "cluster": "工程化",
+      "tags": [
+        "API 设计",
+        "pimpl",
+        "版本演进"
+      ],
+      "prereq": [
+        "raii",
+        "exceptions",
+        "templates-basics"
+      ],
+      "track": "cpp",
+      "summary": "从参数传递、const 正确性、noexcept 契约到 pimpl 编译防火墙与弃用策略，用反例讲清哪些设计能让错误在编译期暴露，以及如何不破坏调用方地演进接口。",
+      "keyPoints": [
+        "参数写法由三个语义问题决定：接口是否拥有、参数是否可空、接口是否修改，而不是个人偏好",
+        "const 成员函数、noexcept、[[nodiscard]] 都是写进类型的承诺，承诺越准确，调用方越难误用",
+        "强类型与具名结构体把参数换位、单位混用从运行期错误变成编译期错误",
+        "pimpl 用一次间接寻址和一次堆分配换取编译防火墙与布局稳定，析构必须在实现完整可见处定义",
+        "演进遵循先加、再标弃用、后删除；默认参数与新增重载都可能在重新编译后静默改变行为"
+      ],
+      "readingMinutes": 30,
+      "hasContent": true,
+      "chars": 10524
+    },
+    {
+      "slug": "modules",
+      "title": "C++20 Modules",
+      "subtitle": "告别头文件的下一次编译模型变革",
+      "level": 6,
+      "cluster": "深入与演进",
+      "tags": [
+        "modules",
+        "import",
+        "编译模型"
+      ],
+      "prereq": [
+        "build-systems"
+      ],
+      "track": "cpp",
+      "summary": "从头文件模型的重复解析讲起，拆解 module、export、分区与 BMI 编译模型，说明与头文件的差异、工具链现状、迁移策略和 ABI 边界。",
+      "keyPoints": [
+        "头文件是预处理阶段的文本粘贴，模块是编译器管理的语义接口",
+        "export 决定可见性，模块内未导出的名字对导入方不可见，宏也不会随 export 传播",
+        "接口单元产出 BMI，导入方加载 BMI 而非重新解析源码；BMI 是编译器私有格式，不可分发",
+        "模块不改变平台 ABI，也不保证跨编译器二进制兼容；迁移应从叶子库开始并保留头文件出口"
+      ],
+      "readingMinutes": 24,
+      "hasContent": true,
+      "chars": 8104
+    },
+    {
+      "slug": "cpp-evolution",
+      "title": "C++ 的演进与生态",
+      "subtitle": "从 C++11 到 C++26 的设计脉络",
+      "level": 6,
+      "cluster": "深入与演进",
+      "tags": [
+        "标准演进",
+        "WG21",
+        "生态"
+      ],
+      "prereq": [
+        "templates-advanced",
+        "constexpr",
+        "modules"
+      ],
+      "track": "cpp",
+      "summary": "梳理 C++11 到 C++26 的关键特性与设计取舍，讲清零开销、兼容、渐进三原则、WG21 流程，以及 Boost、Abseil、fmt、range-v3 的生态作用。",
+      "keyPoints": [
+        "版本号是协议批次，不是产品换代；新标准在旧代码上增量叠加，理解特性要看它替代了什么旧写法。",
+        "零开销决定抽象形态，兼容性限制改造空间，渐进式决定落地节奏，三者共同解释标准为什么长成这样。",
+        "提案要过研究组、演进组、措辞组、全会与 ISO 投票；进入工作草案不等于发布，更不等于编译器可用。",
+        "生态是标准的试验场：Boost、Abseil、fmt、range-v3 提供设计验证，Core Guidelines 提供工程规范。"
+      ],
+      "readingMinutes": 25,
+      "hasContent": true,
+      "chars": 8366
     }
   ],
   "stats": {
-    "topics": 31,
-    "levels": 7,
-    "written": 31,
-    "minutes": 771,
-    "diagrams": 111,
-    "words": 265505
+    "topics": 64,
+    "written": 64,
+    "minutes": 1639,
+    "words": 565235,
+    "diagrams": 229
   }
 };

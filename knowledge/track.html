@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Infra 知识地图 · 知栈</title>
-<meta name="description" content="AI Infra 的 31 个知识点，按硬件、单机优化、训练、推理、平台与前沿七个层级组织，标注前置关系。">
+<title>知识地图 · 知栈</title>
+<meta name="description" content="AI Infra 与 C++ 的交互式知识地图：层级、前置关系与学习路径。">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <script src="assets/js/theme-init.js"></script>
 <link rel="stylesheet" href="assets/css/style.css">
@@ -16,10 +16,11 @@
 <main>
   <section class="pagehead">
     <div class="wrap">
-      <div class="eyebrow">Track 01 · AI Infrastructure</div>
-      <h1>AI Infra 知识地图</h1>
-      <p>从一颗 GPU 到十万卡集群。31 个知识点按七层组织，卡片之间的细线是前置关系——沿着线走，就不会在某个术语上卡住。</p>
+      <div class="eyebrow" id="trackEyebrow">Track 01 · AI Infrastructure</div>
+      <h1 id="trackTitle">AI Infra 知识地图</h1>
+      <p id="trackDesc">从一颗 GPU 到十万卡集群。31 个知识点按七层组织，卡片之间的细线是前置关系——沿着线走，就不会在某个术语上卡住。</p>
       <div class="stat-strip" id="trackStats"></div>
+      <div class="chips" id="trackSwitch" style="margin-top:22px"></div>
     </div>
   </section>
 
